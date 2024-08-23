@@ -1,8 +1,9 @@
-function App() {
+import Main from '~/page/Main/Main'
 
+function App() {
   return (
     <>
-      Hallo
+      <Main />
     </>
   )
 }
