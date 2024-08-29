@@ -1,0 +1,147 @@
+import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import Tooltip from '@mui/material/Tooltip'
+import { useState } from 'react'
+import IconButton from '@mui/material/IconButton'
+import ControlPointIcon from '@mui/icons-material/ControlPoint'
+
+const CoverImage = styled('div')({
+  'position': 'relative',
+  'width': 56,
+  'height': 56,
+  'objectFit': 'cover',
+  'overflow': 'hidden',
+  'flexShrink': 0,
+  'borderRadius': 8,
+  'backgroundColor': 'rgba(0,0,0,0.08)',
+  '& > img': {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover'
+  },
+  '&:hover .MuiIconButton-root': {
+    opacity: 1
+  }
+})
+
+const TextFade = styled(Box)(({ theme }) => ({
+  'display': 'flex',
+  'alignItems': 'center',
+  'overflow': 'hidden',
+  'textOverflow': 'ellipsis',
+  'whiteSpace': 'nowrap',
+  'cursor': 'pointer',
+  '&:hover': {
+    color: theme.palette.secondary4.main,
+    textDecoration: 'underline'
+  }
+}))
+
+type Props = {
+  musicImage: string
+  musicName: string
+  artistName: string[]
+}
+
+export default function MusicInfo({ musicImage, musicName, artistName }: Props) {
+  const [isZoom, setIsZoom] = useState<boolean>(false)
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'start',
+        pl: '8px',
+        gap: 1,
+        flex: '1 1 auto', // Allow the container to grow/shrink
+        overflow: 'hidden'
+      }}
+    >
+      <CoverImage>
+        <img
+          alt={musicName}
+          src={musicImage.replace('{w}x{h}bb', '56x56bb')}
+          style={{
+            width: '56px',
+            height: '56px',
+            objectFit: 'cover'
+          }}
+        />
+        <Tooltip title={isZoom ? 'Phóng to' : 'Thu nhỏ'}>
+          <IconButton
+            sx={{
+              'color': (theme) => theme.palette.secondary4.main,
+              'position': 'absolute',
+              'top': '5%',
+              'right': '5%',
+              'height': '24px',
+              'width': '24px',
+              'borderRadius': '100%',
+              'opacity': 0,
+              'transition': 'opacity 0.3s',
+              '&:hover': {
+                bgcolor: (theme) => theme.palette.secondary2.main
+              }
+            }}
+            onClick={() => setIsZoom(!isZoom)}
+          >
+            {isZoom ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </Tooltip>
+      </CoverImage>
+      <Box
+        sx={{
+          flex: '1 1 auto',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden'
+          }}
+        >
+          <TextFade sx={{ fontSize: 14, fontWeight: '450' }}>{musicName}</TextFade>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'start',
+              gap: 0.3,
+              fontSize: 11,
+              color: (theme) => theme.palette.neutral.neutral1,
+              overflow: 'hidden'
+            }}
+          >
+            {artistName.map((name, index) => (
+              <TextFade key={index}>
+                {name}
+                {index < artistName.length - 1 && ','}
+              </TextFade>
+            ))}
+          </Box>
+        </Box>
+        <Tooltip title='Thêm vào bài hát đã thích'>
+          <ControlPointIcon
+            sx={{
+              'color': (theme) => theme.palette.neutral.neutral1,
+              'cursor': 'pointer',
+              'fontSize': 18,
+              'ml': 1, // Thêm khoảng cách nhỏ giữa MusicInfo và ControlPointIcon
+              'flexShrink': 0, // Prevent icon from shrinking
+              '&:hover': {
+                color: (theme) => theme.palette.secondary4.main
+              }
+            }}
+          />
+        </Tooltip>
+      </Box>
+    </Box>
+  )
+}
