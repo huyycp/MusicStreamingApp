@@ -9,22 +9,24 @@ import Slider from '@mui/material/Slider'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded'
 import VolumeDownRounded from '@mui/icons-material/VolumeDownRounded'
+import { useEffect, useState } from 'react'
+import FullScreenView from '../FullScreenView/FullScreenView'
+import { useMusic } from '~/hooks/useMusic'
 
-import { useEffect, useRef, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '~/redux/store'
-import { setMuteState, setVolumeState } from '~/redux/songSlice'
+type Props = {
+  artistName: string[]
+  musicName: string
+  musicImage: string
+}
 
-export default function MusicTool() {
-  const volume = useAppSelector((state) => state.song.volume)
-  const mute = useAppSelector((state) => state.song.mute)
-  const dispatch = useAppDispatch()
+export default function MusicTool({ artistName, musicName, musicImage }: Props) {
+  const { mute, setMute, volume, setVolume } = useMusic()
   const [fullScreen, setFullScreen] = useState(false)
-  const fullscreenBoxRef = useRef<HTMLDivElement | null>(null)
 
   const handleVolume = (_: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-      dispatch(setVolumeState(newValue / 100))
-      dispatch(setMuteState(newValue === 0))
+      setVolume(newValue / 100)
+      setMute(newValue === 0)
     }
   }
   useEffect(() => {
@@ -69,11 +71,11 @@ export default function MusicTool() {
         <Tooltip title='Tắt tiếng' placement='top'>
           <Box>
             {mute ? (
-              <SvgIcon component={VolumeOffIcon} inheritViewBox onClick={() => dispatch(setMuteState(false))} />
+              <SvgIcon component={VolumeOffIcon} inheritViewBox onClick={() => setMute(false)} />
             ) : volume <= 0.5 ? (
-              <SvgIcon component={VolumeDownRounded} inheritViewBox onClick={() => dispatch(setMuteState(true))} />
+              <SvgIcon component={VolumeDownRounded} inheritViewBox onClick={() => setMute(true)} />
             ) : (
-              <SvgIcon component={VolumeUpRounded} inheritViewBox onClick={() => dispatch(setMuteState(true))} />
+              <SvgIcon component={VolumeUpRounded} inheritViewBox onClick={() => setMute(true)} />
             )}
           </Box>
         </Tooltip>
@@ -126,18 +128,11 @@ export default function MusicTool() {
         </Tooltip>
       </Box>
       {fullScreen && (
-        <Box
-          ref={fullscreenBoxRef}
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: (theme) => theme.palette.secondary2.main,
-            zIndex: 9999
-          }}
-          onClick={() => setFullScreen(false)}
+        <FullScreenView
+          setFullScreen={setFullScreen}
+          artistName={artistName}
+          musicImage={musicImage}
+          musicName={musicName}
         />
       )}
     </Box>
