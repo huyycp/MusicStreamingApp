@@ -43,12 +43,12 @@ android {
     productFlavors {
         dev {
             dimension "app"
-            resValue "string", "app_name", "Dev Magic Sol"
+            resValue "string", "app_name", "Dev Magic Music"
             versionNameSuffix "-dev"
         }
         prod {
             dimension "app"
-            resValue "string", "app_name", "Magic Sol"
+            resValue "string", "app_name", "Magic Music"
             applicationId "com.example.mobile.prod"
         }
     }
