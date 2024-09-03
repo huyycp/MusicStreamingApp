@@ -24,6 +24,7 @@ class MyApp extends ConsumerWidget {
       title: 'Music Streaming App',
       theme: ref.read(themeProvider).themeData,
       routerConfig: routeConfig,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
