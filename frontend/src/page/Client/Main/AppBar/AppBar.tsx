@@ -15,7 +15,7 @@ import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneR
 import Divider from '@mui/material/Divider'
 import Profile from './Profile/Profile'
 
-export default function AppBar() {
+const AppBar = () => {
   const [searchValue, setSearchValue] = useState<null | string>('')
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const navigate = useNavigate()
@@ -217,3 +217,5 @@ export default function AppBar() {
     </Box>
   )
 }
+
+export default AppBar

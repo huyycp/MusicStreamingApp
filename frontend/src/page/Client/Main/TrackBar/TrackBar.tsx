@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Box from '@mui/material/Box'
 import MusicInfo from './MusicInfo/MusicInfo'
 import MusicPlayer from './MusicPlayer/MusicPlayer'
@@ -56,37 +57,6 @@ export default function TrackBar() {
       >
         <MusicTool />
       </Box>
-      <MusicProvider musicUrl={listMusic.listMusics[currentTrackIndex].musicUrl} onNextTrack={handleNextTrack} onPreviousTrack={handlePreviousTrack}>
-        <Box
-          sx={{
-            flex: '0 1 605px',
-            minWidth: '313px',
-            maxWidth: '605px',
-            color: 'white',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap'
-          }}
-        >
-          <MusicPlayer />
-        </Box>
-        <Box
-          sx={{
-            flex: '0 1 auto',
-            color: 'white',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            marginLeft: 'auto'
-          }}
-        >
-          <MusicTool
-            artistName={listMusic.listMusics[currentTrackIndex].artistName}
-            musicImage={listMusic.listMusics[currentTrackIndex].artUrl}
-            musicName={listMusic.listMusics[currentTrackIndex].name}
-          />
-        </Box>
-      </MusicProvider>
     </Box>
   )
 }

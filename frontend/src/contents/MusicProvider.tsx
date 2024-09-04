@@ -10,15 +10,6 @@ interface MusicProviderProps {
 }
 
 export function MusicProvider({ children, intialMusic, onNextTrack, onPreviousTrack }: MusicProviderProps) {
-
-interface MusicProviderProps {
-  musicUrl: string
-  children: ReactNode
-  onNextTrack: () => void
-  onPreviousTrack: () => void
-}
-
-export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack }: MusicProviderProps) {
   const [pause, setPause] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(0.5)
   const [mute, setMute] = useState<boolean>(false)
@@ -30,7 +21,6 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
 
   useEffect(() => {
     const audio = new Audio(music.musicUrl)
-    const audio = new Audio(musicUrl)
     audio.addEventListener('loadedmetadata', () => {
       setDuration(audio.duration)
     })
@@ -49,9 +39,6 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
 
     audio.addEventListener('timeupdate', handleTimeUpdate)
     audio.addEventListener('ended', handleEnded)
-
-    audio.addEventListener('timeupdate', handleTimeUpdate)
-    audio.addEventListener('ended', onNextTrack)
     setAudioElement(audio)
 
     return () => {
@@ -63,11 +50,6 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onNextTrack])
-        audio.removeEventListener('ended', onNextTrack)
-        audio.pause()
-      }
-    }
-  }, [musicUrl, onNextTrack])
 
   useEffect(() => {
     if (audioElement) {
@@ -92,10 +74,6 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
     if (audioElement) {
       audioElement.src = nextMusic.musicUrl
       setPosition(0)
-    if (audioElement) {
-      audioElement.currentTime = 0
-      setPosition(0)
-      onNextTrack()
       audioElement.play()
     }
   }
@@ -106,10 +84,6 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
     if (audioElement) {
       audioElement.src = prevMusic.musicUrl
       setPosition(0)
-    if (audioElement) {
-      audioElement.currentTime = 0
-      setPosition(0)
-      onPreviousTrack()
       audioElement.play()
     }
   }
@@ -147,7 +121,6 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
         setVolume,
         music,
         changeMusic
-        setVolume
       }}
     >
       {children}

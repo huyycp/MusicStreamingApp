@@ -14,7 +14,7 @@ export default function LibraryBody() {
         overflowY: 'hidden'
       }}
     >
-      <div className='scrollable-container' style={{ height: '100%', overflow: 'auto' }}>
+      <div className='scrollable-container' style={{ height: '100vh', overflow: 'auto' }}>
         <Box sx={{ width: '100%', height: '5px' }}></Box>
         <MusicView1 collection={true} totalMusic={6} />
         {data.listMusics.map((music, index) => (
