@@ -368,6 +368,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3+4"
+  password_text_field:
+    dependency: "direct main"
+    description:
+      name: password_text_field
+      sha256: "6da4f27d613eb38d83080919bcbaec6737656b87a9acea195d1c0d001b215e79"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   path:
     dependency: "direct main"
     description:
