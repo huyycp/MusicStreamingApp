@@ -3,6 +3,7 @@ import SvgIcon from '@mui/material/SvgIcon'
 import MusicIcon from '~/assets/icon/MusicIcon2.svg?react'
 import Footer from './Footer/Footer'
 import { styled } from '@mui/material/styles'
+import { useMusic } from '~/hooks/useMusic'
 
 const CoverImage = styled('div')({
   '@keyframes shrink': {
@@ -57,12 +58,10 @@ const ContentBox = styled(Box)({
 type Props = {
   // eslint-disable-next-line no-unused-vars
   setFullScreen: (value: React.SetStateAction<boolean>) => void
-  artistName: string[]
-  musicName: string
-  musicImage: string
 }
 
-export default function FullScreenView({ artistName, musicName, musicImage, setFullScreen }: Props) {
+export default function FullScreenView({ setFullScreen }: Props) {
+  const { music } = useMusic()
   return (
     <Box
       sx={{
@@ -108,10 +107,10 @@ export default function FullScreenView({ artistName, musicName, musicImage, setF
       <Box sx={{ width: '100%', flex: 1, display: 'flex', alignItems: 'end' }}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'end' }}>
           <CoverImage>
-            <img alt={musicName} src={musicImage.replace('{w}x{h}bb', '294x294bb')} />
+            <img alt={music.name} src={music.artUrl.replace('{w}x{h}bb', '294x294bb')} />
           </CoverImage>
           <ContentBox>
-            <TextFade sx={{ fontSize: 30, fontWeight: 'bold' }}>{musicName}</TextFade>
+            <TextFade sx={{ fontSize: 30, fontWeight: 'bold' }}>{music.name}</TextFade>
             <Box
               sx={{
                 display: 'flex',
@@ -123,10 +122,10 @@ export default function FullScreenView({ artistName, musicName, musicImage, setF
                 overflow: 'hidden'
               }}
             >
-              {artistName.map((name, index) => (
+              {music.artistName.map((name, index) => (
                 <TextFade key={index}>
                   {name}
-                  {index < artistName.length - 1 && ','}
+                  {index < music.artistName.length - 1 && ','}
                 </TextFade>
               ))}
             </Box>

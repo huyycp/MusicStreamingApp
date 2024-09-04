@@ -1,25 +1,26 @@
 import { useState, useEffect, ReactNode } from 'react'
 import MusicContext from '~/hooks/useMusic'
+import { IMusic } from '~/type/IMusic'
 
 interface MusicProviderProps {
-  musicUrl: string
+  intialMusic: IMusic
   children: ReactNode
-  onNextTrack: () => void
-  onPreviousTrack: () => void
+  onNextTrack: () => IMusic
+  onPreviousTrack: () => IMusic
 }
 
-export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack }: MusicProviderProps) {
+export function MusicProvider({ children, intialMusic, onNextTrack, onPreviousTrack }: MusicProviderProps) {
   const [pause, setPause] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(0.5)
   const [mute, setMute] = useState<boolean>(false)
   const [repeat, setRepeat] = useState<boolean>(false)
-
+  const [music, setMusic] = useState<IMusic>(intialMusic)
   const [position, setPosition] = useState(0)
   const [duration, setDuration] = useState(0)
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    const audio = new Audio(musicUrl)
+    const audio = new Audio(music.musicUrl)
     audio.addEventListener('loadedmetadata', () => {
       setDuration(audio.duration)
     })
@@ -29,19 +30,26 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
         setPosition(audio.currentTime)
       }
     }
+    const handleEnded = () => {
+      const nextMusic = onNextTrack()
+      setMusic(nextMusic)
+      audio.src = nextMusic.musicUrl
+      audio.play()
+    }
 
     audio.addEventListener('timeupdate', handleTimeUpdate)
-    audio.addEventListener('ended', onNextTrack)
+    audio.addEventListener('ended', handleEnded)
     setAudioElement(audio)
 
     return () => {
       if (audio) {
         audio.removeEventListener('timeupdate', handleTimeUpdate)
-        audio.removeEventListener('ended', onNextTrack)
+        audio.removeEventListener('ended', handleEnded)
         audio.pause()
       }
     }
-  }, [musicUrl, onNextTrack])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onNextTrack])
 
   useEffect(() => {
     if (audioElement) {
@@ -61,20 +69,36 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
   }, [audioElement, pause])
 
   const playNextTrack = () => {
+    const nextMusic = onNextTrack()
+    setMusic(nextMusic)
     if (audioElement) {
-      audioElement.currentTime = 0
+      audioElement.src = nextMusic.musicUrl
       setPosition(0)
-      onNextTrack()
       audioElement.play()
     }
   }
 
   const playPreviousTrack = () => {
+    const prevMusic = onPreviousTrack()
+    setMusic(prevMusic)
     if (audioElement) {
-      audioElement.currentTime = 0
+      audioElement.src = prevMusic.musicUrl
       setPosition(0)
-      onPreviousTrack()
       audioElement.play()
+    }
+  }
+
+  const changeMusic = (song: IMusic) => {
+    if (song._id === music._id) setPause(!pause)
+    else {
+      if (audioElement) {
+        audioElement.src = song.musicUrl
+        setPosition(0)
+        audioElement.play()
+      }
+      setMusic(song)
+
+      setPause(false)
     }
   }
 
@@ -94,7 +118,9 @@ export function MusicProvider({ children, musicUrl, onNextTrack, onPreviousTrack
         mute,
         setMute,
         volume,
-        setVolume
+        setVolume,
+        music,
+        changeMusic
       }}
     >
       {children}

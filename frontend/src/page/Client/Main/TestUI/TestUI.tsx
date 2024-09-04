@@ -1,11 +1,59 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
 import SvgIcon from '@mui/material/SvgIcon'
 import DemoIcon from '~/assets/icon/DemoIcon.svg?react'
 
 export default function TestUI() {
   return (
     <Box sx={{ bgcolor: 'black', display: 'flex', gap: 1 }}>
+      <Box
+        sx={{
+          'display': 'flex',
+          'alignItems': 'center',
+          'position': 'relative',
+          'width': 'auto',
+          'padding': 2,
+          '& .MuiChip-root': {
+            'boxShadow': 2,
+            cursor: 'pointer',
+            'bgcolor': (theme) => theme.palette.neutral.neutral1,
+            'color': (theme) => theme.palette.secondary1.main,
+            '&:hover': {
+              bgcolor: (theme) => theme.palette.neutral.neutral2
+            }
+          }
+        }}
+      >
+        <Chip
+          label='Chip lớn'
+          sx={{
+            bgcolor: (theme) => theme.palette.primary.main,
+            color: (theme) => theme.palette.primary.contrastText,
+            padding: '10px 20px',
+            position: 'relative',
+            zIndex: 99
+          }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: 'calc(100% - 50px)',
+            transform: 'translateY(-50%)',
+            zIndex: 1
+          }}
+        >
+          <Chip
+            label='Chip nhỏ'
+            sx={{
+              bgcolor: (theme) => theme.palette.secondary.main,
+              color: (theme) => theme.palette.secondary.contrastText,
+              padding: '5px 0px 5px 30px'
+            }}
+          />
+        </Box>
+      </Box>
       <Box
         sx={{
           bgcolor: (theme) => theme.palette.primary.main,

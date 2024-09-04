@@ -1,3 +1,4 @@
+import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import HomeIcon from '@mui/icons-material/Home'
 import MusicIcon from '~/assets/icon/MusicIcon2.svg?react'
@@ -5,17 +6,16 @@ import Stack2Icon from '~/assets/icon/Stack2.svg?react'
 import StackIcon from '~/assets/icon/Stack.svg?react'
 import SvgIcon from '@mui/material/SvgIcon'
 import TextField from '@mui/material/TextField'
-import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
-import { useLocation, useNavigate } from 'react-router-dom'
 import Tooltip from '@mui/material/Tooltip'
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded'
 import Divider from '@mui/material/Divider'
 import Profile from './Profile/Profile'
 
-export default function AppBar() {
+const AppBar = () => {
   const [searchValue, setSearchValue] = useState<null | string>('')
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const navigate = useNavigate()
@@ -31,6 +31,18 @@ export default function AppBar() {
   useEffect(() => {
     setIsSearch(location.pathname === '/search')
   }, [location.pathname])
+
+  const handleSearchChange = useCallback((e: { target: { value: SetStateAction<string | null> } }) => {
+    setSearchValue(e.target.value)
+  }, [])
+
+  const handleSearchClick = useCallback(() => {
+    navigate('/search')
+  }, [navigate])
+
+  const handleClearSearch = useCallback(() => {
+    setSearchValue('')
+  }, [])
 
   return (
     <Box
@@ -74,7 +86,7 @@ export default function AppBar() {
               cursor: 'pointer',
               borderRadius: '50%',
               p: 1,
-              bgcolor: (theme) => theme.palette.secondary2.main
+              bgcolor: (theme) => theme.palette.secondary5.main
             }}
             onClick={() => navigate('/')}
           />
@@ -85,7 +97,7 @@ export default function AppBar() {
           type='text'
           size='small'
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={handleSearchChange}
           inputRef={textFieldRef}
           InputProps={{
             startAdornment: (
@@ -100,7 +112,7 @@ export default function AppBar() {
                         color: (theme) => theme.palette.secondary4.main
                       }
                     }}
-                    onClick={() => navigate('/search')}
+                    onClick={handleSearchClick}
                   />
                 </Tooltip>
               </InputAdornment>
@@ -118,7 +130,7 @@ export default function AppBar() {
                         },
                         'cursor': 'pointer'
                       }}
-                      onClick={() => setSearchValue('')}
+                      onClick={handleClearSearch}
                     />
                   )}
                   {!searchValue && isSearch && (
@@ -174,7 +186,7 @@ export default function AppBar() {
             'minWidth': '380px',
             'maxWidth': '520px',
             'width': '520px',
-            'bgcolor': (theme) => theme.palette.secondary2.main,
+            'bgcolor': (theme) => theme.palette.secondary5.main,
             'border': 'none',
             '& input': { color: 'white', height: '30px', cursor: 'pointer' },
             '& .MuiOutlinedInput-root': {
@@ -205,3 +217,5 @@ export default function AppBar() {
     </Box>
   )
 }
+
+export default AppBar

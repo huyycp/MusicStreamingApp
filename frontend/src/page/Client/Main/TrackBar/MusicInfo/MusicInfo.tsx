@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
+import { IMusic } from '~/type/IMusic'
 
 const CoverImage = styled('div')({
   'position': 'relative',
@@ -38,14 +39,11 @@ const TextFade = styled(Box)(({ theme }) => ({
     textDecoration: 'underline'
   }
 }))
-
 type Props = {
-  musicImage: string
-  musicName: string
-  artistName: string[]
+  music: IMusic
 }
 
-export default function MusicInfo({ musicImage, musicName, artistName }: Props) {
+export default function MusicInfo({ music }: Props) {
   const [isZoom, setIsZoom] = useState<boolean>(false)
 
   return (
@@ -62,8 +60,8 @@ export default function MusicInfo({ musicImage, musicName, artistName }: Props) 
     >
       <CoverImage>
         <img
-          alt={musicName}
-          src={musicImage.replace('{w}x{h}bb', '56x56bb')}
+          alt={music.name}
+          src={music.artUrl.replace('{w}x{h}bb', '56x56bb')}
           style={{
             width: '56px',
             height: '56px',
@@ -107,7 +105,7 @@ export default function MusicInfo({ musicImage, musicName, artistName }: Props) 
             overflow: 'hidden'
           }}
         >
-          <TextFade sx={{ fontSize: 14, fontWeight: '450' }}>{musicName}</TextFade>
+          <TextFade sx={{ fontSize: 14, fontWeight: '450' }}>{music.name}</TextFade>
           <Box
             sx={{
               display: 'flex',
@@ -119,10 +117,10 @@ export default function MusicInfo({ musicImage, musicName, artistName }: Props) 
               overflow: 'hidden'
             }}
           >
-            {artistName.map((name, index) => (
+            {music.artistName.map((name, index) => (
               <TextFade key={index}>
                 {name}
-                {index < artistName.length - 1 && ','}
+                {index < music.artistName.length - 1 && ','}
               </TextFade>
             ))}
           </Box>

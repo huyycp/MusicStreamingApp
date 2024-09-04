@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { createContext, useContext } from 'react'
+import { IMusic } from '~/type/IMusic'
 
 interface MusicContextProps {
   audioElement: HTMLAudioElement | null
@@ -15,6 +17,8 @@ interface MusicContextProps {
   duration: number
   playNextTrack: () => void
   playPreviousTrack: () => void
+  music: IMusic,
+  changeMusic: (music: IMusic) => void
 }
 
 const MusicContext = createContext<MusicContextProps | undefined>(undefined)
