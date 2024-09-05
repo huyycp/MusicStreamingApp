@@ -74,7 +74,9 @@ class AuthService {
       verify: UserVerifyStatus.Unverified
     })
     const { iat, exp } = await this.decodeRefreshToken(refresh_token)
-    await databaseService.refreshTokens.insertOne(new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, iat, exp }))
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, iat, exp })
+    )
     return {
       access_token,
       refresh_token
@@ -90,6 +92,21 @@ class AuthService {
     const users = await databaseService.users.find().toArray()
     const emails = users.map((item) => item.email)
     return emails
+  }
+
+  async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
+      user_id,
+      verify
+    })
+    const { iat, exp } = await this.decodeRefreshToken(refresh_token)
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, iat, exp })
+    )
+    return {
+      access_token,
+      refresh_token
+    }
   }
 }
 

@@ -24,7 +24,18 @@ export default class Track {
   listen: number
   created_at: Date
   updated_at: Date
-  constructor({ _id, album_id, listen, name, path_audio, created_at, description, image, lyrics, updated_at }: TrackType) {
+  constructor({
+    _id,
+    album_id,
+    listen,
+    name,
+    path_audio,
+    created_at,
+    description,
+    image,
+    lyrics,
+    updated_at
+  }: TrackType) {
     const date = new Date()
     this._id = _id
     this.album_id = album_id

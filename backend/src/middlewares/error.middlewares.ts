@@ -10,7 +10,10 @@ export const defaultErrorHandler = (err: any, req: Request, res: Response, next:
     }
     const finalError: any = {}
     Object.getOwnPropertyNames(err).forEach((key) => {
-      if (!Object.getOwnPropertyDescriptor(err, key)?.configurable || !Object.getOwnPropertyDescriptor(err, key)?.writable) {
+      if (
+        !Object.getOwnPropertyDescriptor(err, key)?.configurable ||
+        !Object.getOwnPropertyDescriptor(err, key)?.writable
+      ) {
         return
       }
       finalError[key] = err[key]
