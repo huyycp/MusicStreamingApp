@@ -15,9 +15,9 @@ module.exports = tseslint.config(
       ['@typescript-eslint']: tseslint.plugin
     },
     rules: {
-      'no-console': 1,
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
       'no-lonely-if': 1,
-      'no-unused-vars': 1,
       'no-trailing-spaces': 1,
       'no-multi-spaces': 1,
       'no-multiple-empty-lines': 1,
