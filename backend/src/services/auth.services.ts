@@ -7,6 +7,7 @@ import databaseService from './database.services'
 import User from '~/models/schemas/User.schema'
 import { hashPassword } from '~/utils/crypto'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
+import { AUTH_MESSAGES } from '~/constants/messages'
 
 class AuthService {
   private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -106,6 +107,13 @@ class AuthService {
     return {
       access_token,
       refresh_token
+    }
+  }
+
+  async logout(refresh_token: string) {
+    await databaseService.refreshTokens.deleteOne({ token: refresh_token })
+    return {
+      message: AUTH_MESSAGES.LOGOUT_SUCCESS
     }
   }
 }

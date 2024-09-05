@@ -19,5 +19,10 @@ export const AUTH_MESSAGES = {
   REGISTER_SUCCESS: 'Register success',
   LOGIN_SUCCESS: 'Login success',
   GET_LIST_EMAIL_SUCCESS: 'Get list email success',
-  CHECK_EMAIL_SUCCESS: 'Check email success'
+  CHECK_EMAIL_SUCCESS: 'Check email success',
+  ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
+  REFRESH_TOKEN_IS_REQUIRED: 'Refresh token is required',
+  REFRESH_TOKEN_IS_INVALID: 'Refresh token is invalid',
+  USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
+  LOGOUT_SUCCESS: 'Logout success'
 } as const
