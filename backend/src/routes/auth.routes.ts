@@ -7,7 +7,8 @@ import {
   forgotPasswordValidator,
   loginValidator,
   refreshTokenValidator,
-  registerValidator
+  registerValidator,
+  verifyForgotPasswordTokenValidator
 } from '~/middlewares/auth.middewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -80,5 +81,17 @@ authRouter.post(
  * Body: {email: string}
  */
 authRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(controller.forgotPasswordController))
+
+/**
+ * Description. Verify link in email to reset password
+ * Path: /verify-forgot-password
+ * Method: POST
+ * Body: {forgot_password_token: string}
+ */
+authRouter.post(
+  '/verify-forgot-password',
+  verifyForgotPasswordTokenValidator,
+  wrapRequestHandler(controller.verifyForgotPasswordController)
+)
 
 export default authRouter
