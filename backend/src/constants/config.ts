@@ -24,9 +24,8 @@ export const isProduction = env === 'production'
 
 export const envConfig = {
   port: (process.env.PORT as string) || 5000,
+  dbUri: process.env.DB_URI as string,
   dbName: process.env.DB_NAME as string,
-  dbUsername: process.env.DB_USERNAME as string,
-  dbPassword: process.env.DB_PASSWORD as string,
   dbUsersCollection: process.env.DB_USERS_COLLECTION as string,
   dbLikesCollection: process.env.DB_LIKES_COLLECTION as string,
   dbRefreshTokensCollection: process.env.DB_REFRESH_TOKENS_COLLECTION as string,

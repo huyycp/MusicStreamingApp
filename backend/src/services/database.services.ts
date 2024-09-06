@@ -10,7 +10,7 @@ import Release from '~/models/schemas/Release.schema'
 import Playlist from '~/models/schemas/Playlist.schema'
 import Album from '~/models/schemas/Album.schema'
 config()
-const uri = `mongodb+srv://${envConfig.dbUsername}:${envConfig.dbPassword}@cluster0.lbjyr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const uri = envConfig.dbUri
 
 class DatabaseService {
   private client: MongoClient

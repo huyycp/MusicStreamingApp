@@ -4,6 +4,7 @@ import {
   accessTokenValidator,
   emailValidator,
   emailVerifyTokenValidator,
+  forgotPasswordValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator
@@ -71,5 +72,13 @@ authRouter.post(
   accessTokenValidator,
   wrapRequestHandler(controller.resendVerifyEmailController)
 )
+
+/**
+ * Description. Submit email to reset password, send email to user
+ * Path: /forgot-password
+ * Method: POST
+ * Body: {email: string}
+ */
+authRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(controller.forgotPasswordController))
 
 export default authRouter
