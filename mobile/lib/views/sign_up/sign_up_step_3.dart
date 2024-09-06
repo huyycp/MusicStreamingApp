@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
+import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/views/sign_up/widgets/gender_item.dart';
 
 class SignUpStep3 extends ConsumerStatefulWidget {
@@ -47,10 +48,13 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3> {
             children: [
               const Text('What\'s your gender?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
               _genderInput(),
-              const SizedBox(height: 20),
             ],        
           ),
-          _forwardBtn(),
+          const SizedBox(height: 20),
+          ForwardButton(
+            destination: '/sign-up/step-4',
+            currentFormKey: ref.read(signUpViewModel).genderFormKey,
+          ),
         ],
       )
     );
@@ -78,42 +82,30 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3> {
           ),
           suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24, minHeight: 24, minWidth: 24),
         ),
-        onTap: () {
-          showModalBottomSheet(
-            context: context, 
-            builder: (context) => Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GenderItem('Male'),
-                  GenderItem('Female'),
-                ],
-              ),
-            )
-          );
-        },
+        onTap: genderOnTap,
       ),
     );
   }
 
-  Widget _forwardBtn() {
-    return  ElevatedButton(
-      onPressed: () {
-        if (ref.read(signUpViewModel).genderFormKey.currentState!.validate()) {
-          context.push('/sign-up/step-4');
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        disabledForegroundColor: Colors.black,
-        backgroundColor: Color(0xFF535353),
-        disabledBackgroundColor: Color(0xFF535353),
+  void genderOnTap() => showModalBottomSheet(
+    context: context, 
+    enableDrag: true,
+    useSafeArea: true,
+    showDragHandle: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))
+    ),
+    builder: (context) => Container(
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GenderItem('Male'),
+          const SizedBox(height: 8),
+          GenderItem('Female'),
+        ],
       ),
-      child: const Text('Next'),
-    );
-  }
+    )
+  );
 }

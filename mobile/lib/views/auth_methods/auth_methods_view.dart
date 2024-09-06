@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view_model.dart';
 
