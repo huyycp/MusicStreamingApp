@@ -1,12 +1,18 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/dto/register_dto.dart';
+import 'package:mobile/repositories/user_repository.dart';
 
 final signUpViewModel = ChangeNotifierProvider<SignUpViewModel>(
-  (ref) => SignUpViewModel()
+  (ref) => SignUpViewModel(ref.read(userRepoProvider))
 );
 
 class SignUpViewModel extends ChangeNotifier{
-  SignUpViewModel();
+  SignUpViewModel(UserRepository userRepo) {
+    _userRepo = userRepo;
+  }
+
+  late final UserRepository _userRepo;
 
   final emailFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
@@ -17,15 +23,22 @@ class SignUpViewModel extends ChangeNotifier{
   final genderController = TextEditingController(text: 'Male');
   final nameController = TextEditingController();
   UserRole userRole = UserRole.listener;
+  bool registerSuccess = false;
 
   void changeUserRole(UserRole? value) {
     if (value == null || value == userRole) return;
     userRole = value;
     notifyListeners();
   }
-}
 
-enum UserRole {
-  listener,
-  artist
+  Future<void> registerWithEmail() async {
+    registerSuccess = await _userRepo.registerWithEmail(
+      email: emailController.text,
+      password: passwordController.text,
+      gender: genderController.text,
+      name: nameController.text,
+      role: userRole,
+    );
+    notifyListeners();
+  } 
 }
