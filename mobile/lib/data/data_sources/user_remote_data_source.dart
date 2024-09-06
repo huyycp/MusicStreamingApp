@@ -13,7 +13,7 @@ class UserRemoteDataSource {
   }
 
   late MagicMusicApi _magicMusicApi;
-  final String _registerPath = '/';
+  final String _registerPath = '/auth/register';
 
   Future<bool> registerWithEmail(RegisterDto dto) async {
     final response = await _magicMusicApi.request(
@@ -24,7 +24,7 @@ class UserRemoteDataSource {
     
     if (response.statusCode == HttpStatus.created) {
       final data = response.data;
-      final accessToken = data['access_token'] ?? '';
+      final accessToken = data['result']['access_token'] ?? '';
       _magicMusicApi.setAccessToken(accessToken);
       return true;
     } else {
