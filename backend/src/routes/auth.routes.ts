@@ -3,6 +3,7 @@ import * as controller from '~/controllers/auth.controllers'
 import {
   accessTokenValidator,
   emailValidator,
+  emailVerifyTokenValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator
@@ -49,5 +50,13 @@ authRouter.post('/login', loginValidator, wrapRequestHandler(controller.loginCon
  * Body: { refresh_token: string }
  */
 authRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(controller.logoutController))
+
+/**
+ * Description. Verify email when user client click on the link in email
+ * Path: /verify-email
+ * Method: POST
+ * Body: { email_verify_token: string }
+ */
+authRouter.post('/verify-email', emailVerifyTokenValidator, wrapRequestHandler(controller.verifyEmailController))
 
 export default authRouter

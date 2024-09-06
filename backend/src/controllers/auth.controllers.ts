@@ -1,10 +1,18 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import { ObjectId } from 'mongodb'
+import HTTP_STATUS from '~/constants/httpStatus'
 import { AUTH_MESSAGES } from '~/constants/messages'
-import { LoginReqBody, LogoutReqBody, RegisterReqBody } from '~/models/requests/Auth.requests'
+import {
+  LoginReqBody,
+  LogoutReqBody,
+  RegisterReqBody,
+  TokenPayLoad,
+  VerifyEmailReqBody
+} from '~/models/requests/Auth.requests'
 import User from '~/models/schemas/User.schema'
 import authService from '~/services/auth.services'
+import databaseService from '~/services/database.services'
 
 export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
   const result = await authService.register(req.body)
@@ -45,4 +53,30 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
   const { refresh_token } = req.body
   const result = await authService.logout(refresh_token)
   return res.json(result)
+}
+
+export const verifyEmailController = async (
+  req: Request<ParamsDictionary, any, VerifyEmailReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user_id } = req.decoded_email_verify_token as TokenPayLoad
+  const user = await databaseService.users.findOne({
+    _id: new ObjectId(user_id)
+  })
+  if (!user) {
+    return res.status(HTTP_STATUS.NOT_FOUND).json({
+      message: AUTH_MESSAGES.USER_NOT_FOUND
+    })
+  }
+  if (user.email_verify_token === '') {
+    return res.json({
+      message: AUTH_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
+    })
+  }
+  const result = await authService.verifyEmail(user_id)
+  return res.json({
+    message: AUTH_MESSAGES.EMAIL_VERIFY_SUCCESS,
+    result
+  })
 }
