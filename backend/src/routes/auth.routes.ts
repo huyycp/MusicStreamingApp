@@ -103,4 +103,12 @@ authRouter.post(
  */
 authRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(controller.resetPasswordController))
 
+/**
+ * Description. Refresh Token
+ * Path: /refresh-token
+ * Method: POST
+ * Body: { refresh_token: string }
+ */
+authRouter.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(controller.refreshTokenController))
+
 export default authRouter

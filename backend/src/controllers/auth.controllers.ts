@@ -8,6 +8,7 @@ import {
   ForgotPasswordReqBody,
   LoginReqBody,
   LogoutReqBody,
+  RefreshTokenReqBody,
   RegisterReqBody,
   ResetPasswordReqBody,
   TokenPayLoad,
@@ -131,4 +132,17 @@ export const resetPasswordController = async (
   const { password } = req.body
   const result = await authService.resetPassword(user_id, password)
   return res.json(result)
+}
+
+export const refreshTokenController = async (
+  req: Request<ParamsDictionary, any, RefreshTokenReqBody>,
+  res: Response
+) => {
+  const { refresh_token } = req.body
+  const { user_id, verify, exp } = req.decoded_refresh_token as TokenPayLoad
+  const result = await authService.refreshToken({ user_id, refresh_token, verify, exp })
+  return res.json({
+    message: AUTH_MESSAGES.REFRESH_TOKEN_SUCCESS,
+    result
+  })
 }
