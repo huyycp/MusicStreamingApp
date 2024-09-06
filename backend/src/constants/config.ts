@@ -23,5 +23,16 @@ config({
 export const isProduction = env === 'production'
 
 export const envConfig = {
-  port: (process.env.PORT as string) || 5000
+  port: (process.env.PORT as string) || 5000,
+  dbName: process.env.DB_NAME as string,
+  dbUsername: process.env.DB_USERNAME as string,
+  dbPassword: process.env.DB_PASSWORD as string,
+  dbUsersCollection: process.env.DB_USERS_COLLECTION as string,
+  dbLikesCollection: process.env.DB_LIKES_COLLECTION as string,
+  dbRefreshTokensCollection: process.env.DB_REFRESH_TOKENS_COLLECTION as string,
+  dbFollowersCollection: process.env.DB_FOLLOWERS_COLLECTION as string,
+  dbTracksCollection: process.env.DB_TRACKS_COLLECTION as string,
+  dbReleasesCollection: process.env.DB_RELEASES_COLLECTION as string,
+  dbPlaylistsCollection: process.env.DB_PLAYLISTS_COLLECTION as string,
+  dbAlbumsCollection: process.env.DB_ALBUMS_COLLECTION as string
 }
