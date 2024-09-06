@@ -8,6 +8,7 @@ import {
   loginValidator,
   refreshTokenValidator,
   registerValidator,
+  resetPasswordValidator,
   verifyForgotPasswordTokenValidator
 } from '~/middlewares/auth.middewares'
 import { wrapRequestHandler } from '~/utils/handlers'
@@ -93,5 +94,13 @@ authRouter.post(
   verifyForgotPasswordTokenValidator,
   wrapRequestHandler(controller.verifyForgotPasswordController)
 )
+
+/**
+ * Description: Reset password
+ * Path: /reset-password
+ * Method: POST
+ * Body: {forgot_password_token: string, password: string}
+ */
+authRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(controller.resetPasswordController))
 
 export default authRouter
