@@ -19,7 +19,7 @@ class RegisterDto {
     'password': password,
     'gender': gender,
     'name': name,
-    'role': role.name
+    'role': role.index.toString()
   };
 }
 
