@@ -59,4 +59,17 @@ authRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequ
  */
 authRouter.post('/verify-email', emailVerifyTokenValidator, wrapRequestHandler(controller.verifyEmailController))
 
+/**
+ * Description. Resend verify email when user client click on button resend
+ * Path: /resend-verify-email
+ * Method: POST
+ * Header: { Authorization: Bearer <access_token> }
+ * Body: {}
+ */
+authRouter.post(
+  '/resend-verify-email',
+  accessTokenValidator,
+  wrapRequestHandler(controller.resendVerifyEmailController)
+)
+
 export default authRouter

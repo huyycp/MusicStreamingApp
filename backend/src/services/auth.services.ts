@@ -161,6 +161,32 @@ class AuthService {
       refresh_token
     }
   }
+
+  async resendVerifyEmail(user_id: string, email: string) {
+    const email_verify_token = await this.signEmailVerifyToken({
+      user_id,
+      verify: UserVerifyStatus.Unverified
+    })
+    console.log('Resend verify email: ', email_verify_token)
+    // Gui mail o vi tri nay
+    // Cap nhat gia tri
+    await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(user_id)
+      },
+      [
+        {
+          $set: {
+            email_verify_token,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    )
+    return {
+      message: AUTH_MESSAGES.RESEND_VERIFY_EMAIL_SUCCESS
+    }
+  }
 }
 
 const authService = new AuthService()
