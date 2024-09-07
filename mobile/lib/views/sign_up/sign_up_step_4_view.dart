@@ -6,15 +6,16 @@ import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
+import 'package:mobile/widgets/base_container.dart';
 
-class SignUpStep4 extends ConsumerStatefulWidget {
-  const SignUpStep4({super.key});
+class SignUpStep4View extends ConsumerStatefulWidget {
+  const SignUpStep4View({super.key});
 
   @override
-  ConsumerState<SignUpStep4> createState() => _SignUpStep4State();
+  ConsumerState<SignUpStep4View> createState() => _SignUpStep4State();
 }
 
-class _SignUpStep4State extends ConsumerState<SignUpStep4> {
+class _SignUpStep4State extends ConsumerState<SignUpStep4View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +38,7 @@ class _SignUpStep4State extends ConsumerState<SignUpStep4> {
   }
 
   Widget _body() {
-    return Container(
+    return BaseContainer(
       padding: const EdgeInsets.all(30),
       child: Column(
         children: [
@@ -52,10 +53,7 @@ class _SignUpStep4State extends ConsumerState<SignUpStep4> {
             ],        
           ),
           const SizedBox(height: 20),
-          ForwardButton(
-            destination: '/sign-up/step-5',
-            currentFormKey: ref.read(signUpViewModel).nameFormKey,
-          ),
+          _forwardBtn(),
         ],
       )
     );
@@ -77,6 +75,14 @@ class _SignUpStep4State extends ConsumerState<SignUpStep4> {
           filled: true,
         ),
       ),
+    );
+  }
+
+  Widget _forwardBtn() {
+    return  ForwardButton(
+      onPressed: () {
+        context.push('/auth/sign-up/step-5');
+      },
     );
   }
 }

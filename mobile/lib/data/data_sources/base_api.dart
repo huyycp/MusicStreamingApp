@@ -49,6 +49,20 @@ abstract class BaseApi {
     await storage.delete(key: 'access_token');
   }
 
+  // Manage refresh token
+  Future<void> setRefreshToken(String? refreshToken) async {
+    if (refreshToken == null || refreshToken.isEmpty) return;
+    await storage.write(key: 'refresh_token', value: refreshToken);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return await storage.read(key: 'refresh_token');
+  }
+
+  Future<void> removeRefreshToken() async {
+    await storage.delete(key: 'refresh_token');
+  }
+
   // Interceptors
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final accessToken = await getAccessToken();
@@ -60,7 +74,7 @@ abstract class BaseApi {
   }
 
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    debugPrint(response.data.toString());
+    debugPrint('STATUS CODE ${response.statusCode}: ${response.data.toString()}');
     return handler.next(response);
   }
 

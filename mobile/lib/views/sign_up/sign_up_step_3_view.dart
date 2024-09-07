@@ -7,15 +7,16 @@ import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/views/sign_up/widgets/gender_item.dart';
+import 'package:mobile/widgets/base_container.dart';
 
-class SignUpStep3 extends ConsumerStatefulWidget {
-  const SignUpStep3({super.key});
+class SignUpStep3View extends ConsumerStatefulWidget {
+  const SignUpStep3View({super.key});
 
   @override
-  ConsumerState<SignUpStep3> createState() => _SignUpStep3State();
+  ConsumerState<SignUpStep3View> createState() => _SignUpStep3State();
 }
 
-class _SignUpStep3State extends ConsumerState<SignUpStep3> {
+class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +39,7 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3> {
   }
 
   Widget _body() {
-    return Container(
+    return BaseContainer(
       padding: const EdgeInsets.all(30),
       child: Column(
         children: [
@@ -51,10 +52,7 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3> {
             ],        
           ),
           const SizedBox(height: 20),
-          ForwardButton(
-            destination: '/sign-up/step-4',
-            currentFormKey: ref.read(signUpViewModel).genderFormKey,
-          ),
+          _forwardBtn(),
         ],
       )
     );
@@ -108,4 +106,12 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3> {
       ),
     )
   );
+
+  Widget _forwardBtn() {
+    return ForwardButton(
+      onPressed: () {
+        context.push('/auth/sign-up/step-4');
+      },
+    );
+  }
 }

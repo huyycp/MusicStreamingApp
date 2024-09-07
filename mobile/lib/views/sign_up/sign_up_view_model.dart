@@ -23,6 +23,8 @@ class SignUpViewModel extends ChangeNotifier{
   final genderController = TextEditingController(text: 'Male');
   final nameController = TextEditingController();
   UserRole userRole = UserRole.listener;
+
+  bool verifySuccess = false;
   bool registerSuccess = false;
 
   void changeUserRole(UserRole? value) {
@@ -41,4 +43,16 @@ class SignUpViewModel extends ChangeNotifier{
     );
     notifyListeners();
   } 
+
+  Future<void> getAuthOTP() async {
+    await _userRepo.getAuthOTP(emailController.text);
+  }
+
+  Future<void> verifyEmail(String otp) async {
+    verifySuccess = await _userRepo.verifyEmail(
+      email: emailController.text, 
+      otp: otp
+    );
+    notifyListeners();
+  }
 }
