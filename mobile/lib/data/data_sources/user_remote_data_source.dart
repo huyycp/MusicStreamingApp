@@ -17,6 +17,7 @@ class UserRemoteDataSource {
   final String _registerPath = '/auth/register';
   final String _getOtpPath = '/auth/get-otp-verify';
   final String _verifyEmailPath = '/auth/verify-email';
+  final String _getAvailableEmailsPath = '/auth/get-list-email';
 
   Future<bool> registerWithEmail(RegisterDto dto) async {
     final response = await _magicMusicApi.request(
@@ -55,5 +56,22 @@ class UserRemoteDataSource {
     );
     
     return response.statusCode == HttpStatus.ok;
+  }
+
+  Future<List<String>> getAvailableEmails() async {
+    final response = await _magicMusicApi.request(
+      _getAvailableEmailsPath,
+      method: HttpMethod.GET
+    );
+
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data;
+      return List.from(
+        data['result']?.map(
+          (json) => json.toString()
+        ) ?? []);
+    } else {
+      return List.empty();
+    }
   }
 }

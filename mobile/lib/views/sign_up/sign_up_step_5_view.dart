@@ -41,13 +41,17 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
     return BaseContainer(
       padding: const EdgeInsets.all(30),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('You are ...?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
-          _roleSelect(),
-          const SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('You are ...?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+              _roleSelect(),
+              const SizedBox(height: 20),
+            ],        
+          ),
           _forwardBtn(),
-        ],        
+        ],
       )
     );
   }

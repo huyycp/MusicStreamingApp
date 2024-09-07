@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/widgets/base_container.dart';
+import 'package:string_validator/string_validator.dart';
 
 class SignUpStep1View extends ConsumerStatefulWidget {
   const SignUpStep1View({super.key});
@@ -16,6 +16,12 @@ class SignUpStep1View extends ConsumerStatefulWidget {
 }
 
 class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(signUpViewModel).getAvailableEmails();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +69,15 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
     return Form(
       key: ref.read(signUpViewModel).emailFormKey,
       child: TextFormField(
-        validator: emailValidator,
+        validator: (value) {
+          if (value == null || !isEmail(value)) {
+            return 'Please check your email again';
+          }
+          if (ref.watch(signUpViewModel.select((value) => value.availableEmails)).contains(value)) {
+            return 'Email has already existed';
+          }
+          return null;
+        },
         keyboardType: TextInputType.emailAddress,
         controller: ref.read(signUpViewModel).emailController,
         decoration: InputDecoration(
@@ -80,9 +94,13 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
 
   Widget _forwardBtn() {
     return ForwardButton(
-      onPressed: () {
-        context.push('/auth/sign-up/step-2');
-      },
+      onPressed: ref.watch(signUpViewModel.select((value) => value.availableEmails)) != ['']
+        ? () {
+          if (ref.read(signUpViewModel).emailFormKey.currentState!.validate()) {
+            context.push('/auth/sign-up/step-2');
+          }
+        }
+        : null,  
     );
   }
 }

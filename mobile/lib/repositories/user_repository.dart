@@ -43,4 +43,8 @@ class UserRepository {
       otp: otp
     ));
   }
+
+  Future<List<String>> getAvailableEmails() async {
+    return await _userRemote.getAvailableEmails();
+  }
 }

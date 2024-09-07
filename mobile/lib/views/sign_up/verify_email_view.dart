@@ -40,31 +40,13 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
           context: context, 
           barrierDismissible: false,
           builder: (context) {
-          return
-            Dialog(
-              insetPadding: const EdgeInsets.all(30),
-              backgroundColor: PRIMARY_BACKGROUND,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-                side: BorderSide(color: Colors.white)
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 10),
-                  const Text('Registering...')
-                ],
-              ),
-            );
-        });
+            return _statusDialog('Registering...');
+          });
         ref.read(signUpViewModel).registerWithEmail();
       } else {
         debugPrint('Verify email failed');
       }
     });
-
-    
 
     return Scaffold(
       appBar: _appBar(),
@@ -134,23 +116,32 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
       context: context, 
       barrierDismissible: false,
       builder: (context) {
-      return
-       Dialog(
-        insetPadding: const EdgeInsets.all(30),
-        backgroundColor: PRIMARY_BACKGROUND,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: Colors.white)
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            const SizedBox(height: 10),
-            const Text('Verifying email...'),
-          ],
-        ),
-      );
+      return _statusDialog('Verifying email...');
     });
+  }
+
+  Widget _statusDialog(String message) {
+    return Dialog(
+      insetPadding: const EdgeInsets.all(30),
+      backgroundColor: PRIMARY_BACKGROUND,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: Colors.white)
+      ),
+      child: Container(
+        width: 0.8 * MediaQuery.sizeOf(context).width,
+        height: 200,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircularProgressIndicator(color: Colors.white),
+              const SizedBox(height: 10),
+              Text(message),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
