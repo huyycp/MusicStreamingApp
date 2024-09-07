@@ -58,4 +58,8 @@ class UserRepository {
       password: password
     ));
   }
+
+  Future<bool> logout() async {
+    return await _userRemote.logout();
+  }
 }

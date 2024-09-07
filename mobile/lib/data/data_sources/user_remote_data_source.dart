@@ -20,6 +20,7 @@ class UserRemoteDataSource {
   final String _verifyEmailPath = '/auth/verify-email';
   final String _getAvailableEmailsPath = '/auth/get-list-email';
   final String _loginPath = '/auth/login';
+  final String _logoutPath = '/auth/logout';
 
   Future<bool> registerWithEmail(RegisterDto dto) async {
     final response = await _magicMusicApi.request(
@@ -92,5 +93,17 @@ class UserRemoteDataSource {
     } else {
       return false;
     }
+  }
+
+  Future<bool> logout() async {
+    final response = await _magicMusicApi.request(
+      _logoutPath,
+      method: HttpMethod.POST,
+      data: {
+        'refresh_token': await _magicMusicApi.getRefreshToken()
+      }
+    );
+    
+    return response.statusCode == HttpStatus.ok;
   }
 }

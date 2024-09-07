@@ -89,6 +89,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget _passwordInput() {
     return PasswordTextFormField(
       validator: emptyValidator,
+      initialObscurity: true,
       controller: ref.read(loginViewModel).passwordController,
       decoration: InputDecoration(
         border: OutlineInputBorder(
