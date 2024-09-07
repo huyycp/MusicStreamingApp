@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/user_remote_data_source.dart';
+import 'package:mobile/data/dto/login_dto.dart';
 import 'package:mobile/data/dto/register_dto.dart';
 
 final userRepoProvider = Provider<UserRepository>(
@@ -26,6 +27,16 @@ class UserRepository {
       gender: gender, 
       name: name, 
       role: role
+    ));
+  }
+
+  Future<bool> loginWithEmail({
+    required String email,
+    required String password
+  }) async {
+    return await _userRemote.loginWithEmail(LoginDto(
+      email: email,
+      password: password
     ));
   }
 }

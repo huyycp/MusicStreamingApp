@@ -103,7 +103,9 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
 
   Widget _loginBtn() {
     return TextButton(
-      onPressed: () {}, 
+      onPressed: () {
+        context.push('/auth/login');
+      }, 
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,
       ),
