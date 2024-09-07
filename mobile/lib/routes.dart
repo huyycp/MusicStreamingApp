@@ -6,6 +6,7 @@ import 'package:mobile/views/sign_up/sign_up_step_1.dart';
 import 'package:mobile/views/sign_up/sign_up_step_2.dart';
 import 'package:mobile/views/sign_up/sign_up_step_3.dart';
 import 'package:mobile/views/sign_up/sign_up_step_4.dart';
+import 'package:mobile/views/sign_up/sign_up_step_5.dart';
 
 final routeConfig = GoRouter(
   initialLocation: '/auth',
@@ -33,6 +34,10 @@ final routeConfig = GoRouter(
         GoRoute(
           path: 'step-4',
           builder: (context, state) => SignUpStep4()
+        ),
+        GoRoute(
+          path: 'step-5',
+          builder: (context, state) => SignUpStep5()
         ),
       ]
     ),

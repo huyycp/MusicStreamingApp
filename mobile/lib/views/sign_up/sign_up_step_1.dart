@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
+import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 
 class SignUpStep1 extends ConsumerStatefulWidget {
   const SignUpStep1({super.key});
@@ -48,10 +49,13 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1> {
               _emailInput(),
               const SizedBox(height: 8),
               const Text('You\'ll need to confirm this email later. ', style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w400),),
-              const SizedBox(height: 20),
             ],        
           ),
-          _forwardBtn(),
+          const SizedBox(height: 20),
+          ForwardButton(
+            destination: '/sign-up/step-2',
+            currentFormKey: ref.read(signUpViewModel).emailFormKey,
+          ),
         ],
       )
     );
@@ -73,23 +77,6 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1> {
           filled: true,
         ),
       ),
-    );
-  }
-
-  Widget _forwardBtn() {
-    return  ElevatedButton(
-      onPressed: () {
-        if(ref.read(signUpViewModel).emailFormKey.currentState!.validate()) {
-          context.push('/sign-up/step-2');
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        disabledForegroundColor: Colors.black,
-        backgroundColor: Color(0xFF535353),
-        disabledBackgroundColor: Color(0xFF535353),
-      ),
-      child: const Text('Next'),
     );
   }
 }
