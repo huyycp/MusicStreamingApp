@@ -11,6 +11,7 @@ import {
   RefreshTokenReqBody,
   RegisterReqBody,
   ResetPasswordReqBody,
+  SendVerifyEmailReqBody,
   TokenPayLoad,
   VerifyEmailReqBody,
   VerifyForgotPasswordReqBody
@@ -20,8 +21,9 @@ import authService from '~/services/auth.services'
 import databaseService from '~/services/database.services'
 
 export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
+  console.log(req.body)
   const result = await authService.register(req.body)
-  return res.json({
+  return res.status(201).json({
     message: AUTH_MESSAGES.REGISTER_SUCCESS,
     result
   })
@@ -60,28 +62,26 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
   return res.json(result)
 }
 
+export const sendVerifyEmailController = async (
+  req: Request<ParamsDictionary, any, SendVerifyEmailReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email } = req.body
+  console.log(email)
+  const result = await authService.sendVerifyEmail(email)
+  return res.json(result)
+}
+
 export const verifyEmailController = async (
   req: Request<ParamsDictionary, any, VerifyEmailReqBody>,
   res: Response,
   next: NextFunction
 ) => {
-  const { user_id } = req.decoded_email_verify_token as TokenPayLoad
-  const user = await databaseService.users.findOne({
-    _id: new ObjectId(user_id)
-  })
-  if (!user) {
-    return res.status(HTTP_STATUS.NOT_FOUND).json({
-      message: AUTH_MESSAGES.USER_NOT_FOUND
-    })
-  }
-  if (user.email_verify_token === '') {
-    return res.json({
-      message: AUTH_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
-    })
-  }
-  const result = await authService.verifyEmail(user_id)
+  const { email, otp } = req.body
+  const result = await authService.verifyEmail({ email, otp })
   return res.json({
-    message: AUTH_MESSAGES.EMAIL_VERIFY_SUCCESS,
+    message: AUTH_MESSAGES.CHECK_EMAIL_VERIFY_SUCCESS,
     result
   })
 }

@@ -62,12 +62,12 @@ const forgotPasswordTokenSchema: ParamSchema = {
             status: HTTP_STATUS.UNAUTHORIZED
           })
         }
-        if (user.forgot_password_token !== value) {
-          throw new ErrorWithStatus({
-            message: AUTH_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN,
-            status: HTTP_STATUS.UNAUTHORIZED
-          })
-        }
+        // if (user.verify !== value) {
+        //   throw new ErrorWithStatus({
+        //     message: AUTH_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN,
+        //     status: HTTP_STATUS.UNAUTHORIZED
+        //   })
+        // }
         req.decoded_forgot_password_token = decoded_forgot_password_token
       } catch (error) {
         if (error instanceof JsonWebTokenError) {

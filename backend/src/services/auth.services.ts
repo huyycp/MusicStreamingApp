@@ -8,6 +8,8 @@ import User from '~/models/schemas/User.schema'
 import { hashPassword } from '~/utils/crypto'
 import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import { AUTH_MESSAGES } from '~/constants/messages'
+import { generateRandomNumber } from '~/utils/generate'
+import { sendEmail } from '~/utils/email'
 
 class AuthService {
   private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -90,15 +92,11 @@ class AuthService {
 
   async register(payload: RegisterReqBody) {
     const user_id = new ObjectId()
-    const email_verify_token = await this.signEmailVerifyToken({
-      user_id: user_id.toString(),
-      verify: UserVerifyStatus.Unverified
-    })
     await databaseService.users.insertOne(
       new User({
         ...payload,
         _id: user_id,
-        email_verify_token,
+        verify: UserVerifyStatus.Verified,
         password: hashPassword(payload.password),
         role: parseInt(payload.role)
       })
@@ -113,8 +111,7 @@ class AuthService {
     )
     return {
       access_token,
-      refresh_token,
-      email_verify_token
+      refresh_token
     }
   }
 
@@ -151,29 +148,27 @@ class AuthService {
     }
   }
 
-  async verifyEmail(user_id: string) {
-    const [token] = await Promise.all([
-      this.signAccessAndRefreshToken({ user_id, verify: UserVerifyStatus.Verified }),
-      databaseService.users.updateOne({ _id: new ObjectId(user_id) }, [
-        {
-          $set: {
-            email_verify_token: '',
-            verify: UserVerifyStatus.Verified,
-            updated_at: '$$NOW'
-          }
-        }
-      ])
-    ])
-    const [access_token, refresh_token] = token
-    const { iat, exp } = await this.decodeRefreshToken(refresh_token)
-    await databaseService.refreshTokens.deleteOne({ user_id: new ObjectId(user_id) })
-    await databaseService.refreshTokens.insertOne(
-      new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, iat, exp })
-    )
+  async sendVerifyEmail(email: string) {
+    const subject = 'Verify email'
+    const title = 'Verify email'
+    const otp = generateRandomNumber(6)
+
+    await databaseService.verify.insertOne({
+      email,
+      otp,
+      expiresAt: new Date(Date.now() + 3 * 60 * 1000)
+    })
+
+    sendEmail({ email, subject, title, otp })
+
     return {
-      access_token,
-      refresh_token
+      message: AUTH_MESSAGES.SEND_VERIFY_EMAIL_SUCCESS
     }
+  }
+
+  async verifyEmail({ email, otp }: { email: string; otp: string }) {
+    const verify = await databaseService.verify.findOneAndDelete({ email, otp })
+    return Boolean(verify)
   }
 
   async resendVerifyEmail(user_id: string, email: string) {

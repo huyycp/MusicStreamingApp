@@ -18,8 +18,13 @@ export interface LogoutReqBody {
   refresh_token: string
 }
 
+export interface SendVerifyEmailReqBody {
+  email: string
+}
+
 export interface VerifyEmailReqBody {
-  email_verify_token: string
+  email: string
+  otp: string
 }
 
 export interface ForgotPasswordReqBody {

@@ -27,15 +27,15 @@ authRouter.post('/register', registerValidator, wrapRequestHandler(controller.re
  * Path: /email
  * Method: GET
  */
-authRouter.get('/email', wrapRequestHandler(controller.getEmailController))
+authRouter.get('/get-list-email', wrapRequestHandler(controller.getEmailController))
 
 /**
  * Description. Check exist email
- * Path: /email
+ * Path: /check-email
  * Method: POST
  * Body: { email: string }
  */
-authRouter.post('/email', emailValidator, wrapRequestHandler(controller.checkEmailController))
+authRouter.post('/check-email', emailValidator, wrapRequestHandler(controller.checkEmailController))
 
 /**
  * Description. Login a user
@@ -55,12 +55,20 @@ authRouter.post('/login', loginValidator, wrapRequestHandler(controller.loginCon
 authRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(controller.logoutController))
 
 /**
- * Description. Verify email when user client click on the link in email
+ * Description. Send verify email when user client register
+ * Path: /get-otp-verify
+ * Method: POST
+ * Body: { email: string }
+ */
+authRouter.post('/get-otp-verify', emailValidator, wrapRequestHandler(controller.sendVerifyEmailController))
+
+/**
+ * Description. Verify email
  * Path: /verify-email
  * Method: POST
- * Body: { email_verify_token: string }
+ * Body: { email: string, otp: string }
  */
-authRouter.post('/verify-email', emailVerifyTokenValidator, wrapRequestHandler(controller.verifyEmailController))
+authRouter.post('/verify-email', emailValidator, wrapRequestHandler(controller.verifyEmailController))
 
 /**
  * Description. Resend verify email when user client click on button resend

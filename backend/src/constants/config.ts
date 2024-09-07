@@ -34,6 +34,7 @@ export const envConfig = {
   dbReleasesCollection: process.env.DB_RELEASES_COLLECTION as string,
   dbPlaylistsCollection: process.env.DB_PLAYLISTS_COLLECTION as string,
   dbAlbumsCollection: process.env.DB_ALBUMS_COLLECTION as string,
+  dbVerifyCollection: process.env.DB_VERIFY_COLLECTION as string,
   passwordSecret: process.env.PASSWORD_SECRET as string,
   jwtSecretAccessToken: process.env.JWT_SECRET_ACCESS_TOKEN as string,
   jwtSecretRefreshToken: process.env.JWT_SECRET_REFRESH_TOKEN as string,
@@ -42,5 +43,7 @@ export const envConfig = {
   refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN as string,
   accessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN as string,
   emailVerifyTokenExpiresIn: process.env.EMAIL_VERIFY_TOKEN_EXPIRES_IN as string,
-  forgotPasswordTokenExpiresIn: process.env.FORGOT_PASSWORD_TOKEN_EXPIRES_IN as string
+  forgotPasswordTokenExpiresIn: process.env.FORGOT_PASSWORD_TOKEN_EXPIRES_IN as string,
+  dbEmailUser: process.env.EMAIL_USER as string,
+  dbPasswordUser: process.env.EMAIL_PASSWORD as string
 }

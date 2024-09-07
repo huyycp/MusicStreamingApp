@@ -8,7 +8,9 @@ import authRouter from './routes/auth.routes'
 const app = express()
 const port = envConfig.port
 
-databaseService.connect()
+databaseService.connect().then(() => {
+  databaseService.indexVerify()
+})
 
 app.use(cors())
 app.use(express.json())
