@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/data/dto/register_dto.dart';
 import 'package:mobile/utils/capitalize.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/widgets/base_container.dart';
+import 'package:mobile/views/sign_up/widgets/sign_up_app_bar.dart';
 
 class SignUpStep5View extends ConsumerStatefulWidget {
   const SignUpStep5View({super.key});
@@ -19,21 +19,8 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: SignUpAppBar(text: 'Create account', context: context),
       body: _body(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create account'),
-      centerTitle: true,
-      leading: IconButton(
-        icon: SvgPicture.asset('assets/icons/ic_chevron_left.svg'),
-        onPressed: () {
-          context.pop();
-        },
-      ),
     );
   }
 
@@ -42,13 +29,17 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
       padding: const EdgeInsets.all(30),
       child: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('You are ...?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
-              _roleSelect(),
-              const SizedBox(height: 20),
-            ],        
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'You are ...?', 
+                  style: Theme.of(context).textTheme.titleLarge
+                ),
+                _roleSelect(),
+              ],        
+            ),
           ),
           _forwardBtn(),
         ],
@@ -60,7 +51,10 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: UserRole.values.map((value) => RadioListTile<UserRole>(
-        title: Text(capitalize(value.name)),
+        title: Text(
+          capitalize(value.name),
+          style: Theme.of(context).textTheme.bodyLarge
+        ),
         value: value,
         activeColor: Colors.white,
         shape: RoundedRectangleBorder(

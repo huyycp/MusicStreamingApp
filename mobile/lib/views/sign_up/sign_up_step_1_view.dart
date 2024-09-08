@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
+import 'package:mobile/views/sign_up/widgets/sign_up_app_bar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -25,21 +25,8 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: SignUpAppBar(text: 'Create account', context: context),
       body: _body(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create account'),
-      centerTitle: true,
-      leading: IconButton(
-        icon: SvgPicture.asset('assets/icons/ic_chevron_left.svg'),
-        onPressed: () {
-          context.pop();
-        },
-      ),
     );
   }
 
@@ -52,10 +39,16 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('What\'s your email?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+              Text(
+                'What\'s your email?', 
+                style: Theme.of(context).textTheme.titleLarge
+              ),
               _emailInput(),
               const SizedBox(height: 8),
-              const Text('You\'ll need to confirm this email later. ', style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w400),),
+              Text(
+                'You\'ll need to confirm this email later. ', 
+                style: Theme.of(context).textTheme.bodySmall
+              ),
             ],        
           ),
           const SizedBox(height: 20),

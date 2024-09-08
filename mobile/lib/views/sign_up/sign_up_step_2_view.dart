@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/widgets/base_container.dart';
+import 'package:mobile/views/sign_up/widgets/sign_up_app_bar.dart';
 import 'package:password_text_field/password_text_field.dart';
 
 class SignUpStep2View extends ConsumerStatefulWidget {
@@ -20,21 +20,8 @@ class _SignUpStep2State extends ConsumerState<SignUpStep2View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: SignUpAppBar(text: 'Create account', context: context),
       body: _body(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create account'),
-      centerTitle: true,
-      leading: IconButton(
-        icon: SvgPicture.asset('assets/icons/ic_chevron_left.svg'),
-        onPressed: () {
-          context.pop();
-        },
-      ),
     );
   }
 
@@ -47,7 +34,10 @@ class _SignUpStep2State extends ConsumerState<SignUpStep2View> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Create a password', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+              Text(
+                'Create a password', 
+                style: Theme.of(context).textTheme.titleLarge
+              ),
               _passwordInput(),
             ],        
           ),
