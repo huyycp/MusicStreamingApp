@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import { ObjectId } from 'mongodb'
+import { envConfig } from '~/constants/config'
 import { UserVerifyStatus } from '~/constants/enums'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { AUTH_MESSAGES } from '~/constants/messages'
@@ -86,23 +87,6 @@ export const verifyEmailController = async (
   })
 }
 
-export const resendVerifyEmailController = async (req: Request, res: Response, next: NextFunction) => {
-  const { user_id } = req.decoded_authorization as TokenPayLoad
-  const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
-  if (!user) {
-    return res.status(HTTP_STATUS.NOT_FOUND).json({
-      message: AUTH_MESSAGES.USER_NOT_FOUND
-    })
-  }
-  if (user.verify === UserVerifyStatus.Verified) {
-    return res.json({
-      message: AUTH_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
-    })
-  }
-  const result = await authService.resendVerifyEmail(user_id, user.email)
-  return res.json(result)
-}
-
 export const forgotPasswordController = async (
   req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
   res: Response,
@@ -118,8 +102,11 @@ export const verifyForgotPasswordController = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { email, otp } = req.body
+  const result = await authService.verifyForgotPassword({ email, otp })
   return res.json({
-    message: AUTH_MESSAGES.VERIFY_FORGOT_PASSWORD_SUCCESS
+    message: AUTH_MESSAGES.CHECK_FORGOT_PASSWORD_VERIFY_SUCCESS,
+    result
   })
 }
 
@@ -128,9 +115,8 @@ export const resetPasswordController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { user_id } = req.decoded_forgot_password_token as TokenPayLoad
-  const { password } = req.body
-  const result = await authService.resetPassword(user_id, password)
+  const { email, password } = req.body
+  const result = await authService.resetPassword(email, password)
   return res.json(result)
 }
 
@@ -145,4 +131,11 @@ export const refreshTokenController = async (
     message: AUTH_MESSAGES.REFRESH_TOKEN_SUCCESS,
     result
   })
+}
+
+export const oauthController = async (req: Request, res: Response) => {
+  const { code } = req.query
+  const result = await authService.oauth(code as string)
+  const urlRedirect = `${envConfig.clientRedirectCallback}?access_token=${result.access_token}&refresh_token=${result.refresh_token}&new_user=${result.newUser}&verify=${result.verify}`
+  return res.redirect(urlRedirect)
 }

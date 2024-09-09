@@ -1,6 +1,6 @@
 export enum UserVerifyStatus {
-  Unverified,
-  Verified
+  Verified,
+  Banned
 }
 
 export enum RoleType {

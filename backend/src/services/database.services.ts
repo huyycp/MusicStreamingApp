@@ -10,6 +10,7 @@ import Release from '~/models/schemas/Release.schema'
 import Playlist from '~/models/schemas/Playlist.schema'
 import Album from '~/models/schemas/Album.schema'
 import Verify from '~/models/schemas/Verify.schema'
+import Verified from '~/models/schemas/Verified.schema'
 config()
 const uri = envConfig.dbUri
 
@@ -73,6 +74,10 @@ class DatabaseService {
 
   get verify(): Collection<Verify> {
     return this.db.collection(envConfig.dbVerifyCollection)
+  }
+
+  get verified(): Collection<Verified> {
+    return this.db.collection(envConfig.dbVerifiedColection)
   }
 }
 

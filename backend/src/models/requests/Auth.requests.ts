@@ -6,7 +6,7 @@ export interface RegisterReqBody {
   name: string
   email: string
   password: string
-  gender: string
+  gender?: string
 }
 
 export interface LoginReqBody {
@@ -32,12 +32,13 @@ export interface ForgotPasswordReqBody {
 }
 
 export interface VerifyForgotPasswordReqBody {
-  forgot_password_token: string
+  email: string
+  otp: string
 }
 
 export interface ResetPasswordReqBody {
+  email: string
   password: string
-  forgot_password_token: string
 }
 
 export interface RefreshTokenReqBody {

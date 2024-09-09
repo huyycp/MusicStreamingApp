@@ -36,5 +36,8 @@ export const AUTH_MESSAGES = {
   INVALID_FORGOT_PASSWORD_TOKEN: 'Invalid forgot password token',
   RESET_PASSWORD_SUCCESS: 'Reset password success',
   REFRESH_TOKEN_SUCCESS: 'Refresh token success',
-  SEND_VERIFY_EMAIL_SUCCESS: 'Send verify email sucess'
+  SEND_VERIFY_EMAIL_SUCCESS: 'Send verify email sucess',
+  USER_NOT_VERIFIED: 'User not verified',
+  CHECK_FORGOT_PASSWORD_VERIFY_SUCCESS: 'Check forgot password verify success',
+  GMAIL_NOT_VERIFIED: 'Gmail not verified'
 } as const

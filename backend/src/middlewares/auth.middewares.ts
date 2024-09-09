@@ -103,6 +103,26 @@ export const emailValidator = validate(
 export const registerValidator = validate(
   checkSchema(
     {
+      email: {
+        notEmpty: {
+          errorMessage: AUTH_MESSAGES.EMAIL_IS_REQUIRED
+        },
+        isEmail: {
+          errorMessage: AUTH_MESSAGES.EMAIL_IS_INVALID
+        },
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            const verified_user = await databaseService.verified.findOne({
+              email: value
+            })
+            if (verified_user === null) {
+              throw new Error(AUTH_MESSAGES.USER_NOT_VERIFIED)
+            }
+            return true
+          }
+        }
+      },
       name: {
         notEmpty: {
           errorMessage: AUTH_MESSAGES.NAME_IS_REQUIRED
@@ -290,20 +310,10 @@ export const forgotPasswordValidator = validate(
   )
 )
 
-export const verifyForgotPasswordTokenValidator = validate(
-  checkSchema(
-    {
-      forgot_password_token: forgotPasswordTokenSchema
-    },
-    ['body']
-  )
-)
-
 export const resetPasswordValidator = validate(
   checkSchema(
     {
-      password: passwordSchema,
-      forgot_password_token: forgotPasswordTokenSchema
+      password: passwordSchema
     },
     ['body']
   )
