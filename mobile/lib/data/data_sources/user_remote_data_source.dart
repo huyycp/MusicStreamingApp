@@ -76,8 +76,8 @@ class UserRemoteDataSource {
     } else {
       return List.empty();
     }
-  }
-
+  }\
+    
   Future<bool> loginWithEmail(LoginDto dto) async {
     final response = await _magicMusicApi.request(
       _loginPath, 

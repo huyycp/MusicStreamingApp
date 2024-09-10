@@ -17,6 +17,16 @@ final routeConfig = GoRouter(
       path: '/auth',
       builder: (context, state) => AuthMethodsView(),
       routes: <RouteBase>[
+        GoRoute(
+          path: 'login',
+          builder: (context, state) => LoginView()
+        )
+      ]
+    ),
+    GoRoute(
+      path: '/sign-up',
+      builder: (context, state) => NotFoundView(),
+      routes: <RouteBase>[
          GoRoute(
           path: 'login',
           builder: (context, state) => LoginView()
