@@ -12,4 +12,3 @@ const DIVIDER = Color(0xFF1B1B1B);
 const TRACK_LINE = Color(0xFF2A2A2A);
 const BUTTON_STROKE = Color(0xFF7F7F7F);
 const INPUT_FILL_COLOR = Color(0xFF777777);
-const BUTTON_STROKE = Color(0xFF7F7F7F);

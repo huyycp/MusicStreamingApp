@@ -9,7 +9,7 @@ class GenderItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return OutlinedButton(
+    return OutlinedButton.icon(
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.all(8),
         side: BorderSide(
@@ -18,13 +18,14 @@ class GenderItem extends ConsumerWidget {
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8)
-        )
+        ),
       ),
       onPressed: () {
         ref.read(signUpViewModel).genderController.text = genderName;
         context.pop();
       },
-      child: Text(genderName, style: TextStyle(fontSize: 20))
+      icon: Icon(genderName == 'Male' ? Icons.man : Icons.woman),
+      label: Text(genderName, style: TextStyle(fontSize: 20))
     );
   }
 }
