@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view.dart';
-import 'package:mobile/views/home/home_view.dart';
 import 'package:mobile/views/login/login_view.dart';
+import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_1_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_2_view.dart';
@@ -11,7 +11,7 @@ import 'package:mobile/views/sign_up/sign_up_step_5_view.dart';
 import 'package:mobile/views/sign_up/verify_email_view.dart';
 
 final routeConfig = GoRouter(
-  initialLocation: '/auth',
+  initialLocation: '/main',
   routes: <RouteBase>[
     GoRoute(
       path: '/auth',
@@ -64,8 +64,8 @@ final routeConfig = GoRouter(
       ]
     ),
     GoRoute(
-      path: '/home',
-      builder: (context, state) => HomeView()
+      path: '/main',
+      builder: (context, state) => MainView()
     )
   ]
 );
