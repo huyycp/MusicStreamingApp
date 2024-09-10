@@ -6,15 +6,17 @@ import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
+import 'package:mobile/widgets/base_container.dart';
+import 'package:password_text_field/password_text_field.dart';
 
-class SignUpStep4 extends ConsumerStatefulWidget {
-  const SignUpStep4({super.key});
+class SignUpStep2View extends ConsumerStatefulWidget {
+  const SignUpStep2View({super.key});
 
   @override
-  ConsumerState<SignUpStep4> createState() => _SignUpStep4State();
+  ConsumerState<SignUpStep2View> createState() => _SignUpStep2State();
 }
 
-class _SignUpStep4State extends ConsumerState<SignUpStep4> {
+class _SignUpStep2State extends ConsumerState<SignUpStep2View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +39,7 @@ class _SignUpStep4State extends ConsumerState<SignUpStep4> {
   }
 
   Widget _body() {
-    return Container(
+    return BaseContainer(
       padding: const EdgeInsets.all(30),
       child: Column(
         children: [
@@ -45,29 +47,25 @@ class _SignUpStep4State extends ConsumerState<SignUpStep4> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('What\'s your name?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
-              _nameInput(),
-              const SizedBox(height: 8),
-              const Text('This appears on your profile ', style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w400),),
+              const Text('Create a password', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+              _passwordInput(),
             ],        
           ),
           const SizedBox(height: 20),
-          ForwardButton(
-            destination: '/sign-up/step-5',
-            currentFormKey: ref.read(signUpViewModel).nameFormKey,
-          ),
+          _forwardBtn(),
         ],
       )
     );
   }
 
-  Widget _nameInput() {
+  Widget _passwordInput() {
     return Form(
-      key: ref.read(signUpViewModel).nameFormKey,
-      child: TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        validator: emptyValidator,
-        controller: ref.read(signUpViewModel).nameController,
+      key: ref.read(signUpViewModel).passwordFormKey,
+      child: PasswordTextFormField(
+        initialObscurity: true,
+        validator: passwordValidator,
+        cursorColor: Colors.white,
+        controller: ref.read(signUpViewModel).passwordController,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
@@ -75,8 +73,19 @@ class _SignUpStep4State extends ConsumerState<SignUpStep4> {
           ),
           fillColor: INPUT_FILL_COLOR,
           filled: true,
+          errorMaxLines: 5,
         ),
       ),
+    );
+  }
+
+  Widget _forwardBtn() {
+    return ForwardButton(
+      onPressed: () {
+        if (ref.read(signUpViewModel).passwordFormKey.currentState!.validate()) {
+          context.push('/auth/sign-up/step-3');
+        }
+      },
     );
   }
 }
