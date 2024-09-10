@@ -35,6 +35,7 @@ export const envConfig = {
   dbPlaylistsCollection: process.env.DB_PLAYLISTS_COLLECTION as string,
   dbAlbumsCollection: process.env.DB_ALBUMS_COLLECTION as string,
   dbVerifyCollection: process.env.DB_VERIFY_COLLECTION as string,
+  dbVerifiedColection: process.env.DB_VERIFIED_COLLECTION as string,
   passwordSecret: process.env.PASSWORD_SECRET as string,
   jwtSecretAccessToken: process.env.JWT_SECRET_ACCESS_TOKEN as string,
   jwtSecretRefreshToken: process.env.JWT_SECRET_REFRESH_TOKEN as string,
@@ -45,5 +46,9 @@ export const envConfig = {
   emailVerifyTokenExpiresIn: process.env.EMAIL_VERIFY_TOKEN_EXPIRES_IN as string,
   forgotPasswordTokenExpiresIn: process.env.FORGOT_PASSWORD_TOKEN_EXPIRES_IN as string,
   dbEmailUser: process.env.EMAIL_USER as string,
-  dbPasswordUser: process.env.EMAIL_PASSWORD as string
+  dbPasswordUser: process.env.EMAIL_PASSWORD as string,
+  googleClientId: process.env.GOOGLE_CLIENT_ID as string,
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+  googleRedirectUri: process.env.GOOGLE_REDIRECT_URI as string,
+  clientRedirectCallback: process.env.CLIENT_REDIRECT_CALLBACK as string
 }

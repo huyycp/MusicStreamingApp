@@ -8,8 +8,7 @@ import {
   loginValidator,
   refreshTokenValidator,
   registerValidator,
-  resetPasswordValidator,
-  verifyForgotPasswordTokenValidator
+  resetPasswordValidator
 } from '~/middlewares/auth.middewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -71,19 +70,6 @@ authRouter.post('/get-otp-verify', emailValidator, wrapRequestHandler(controller
 authRouter.post('/verify-email', emailValidator, wrapRequestHandler(controller.verifyEmailController))
 
 /**
- * Description. Resend verify email when user client click on button resend
- * Path: /resend-verify-email
- * Method: POST
- * Header: { Authorization: Bearer <access_token> }
- * Body: {}
- */
-authRouter.post(
-  '/resend-verify-email',
-  accessTokenValidator,
-  wrapRequestHandler(controller.resendVerifyEmailController)
-)
-
-/**
  * Description. Submit email to reset password, send email to user
  * Path: /forgot-password
  * Method: POST
@@ -92,14 +78,14 @@ authRouter.post(
 authRouter.post('/forgot-password', forgotPasswordValidator, wrapRequestHandler(controller.forgotPasswordController))
 
 /**
- * Description. Verify link in email to reset password
+ * Description. Verify otp to reset password
  * Path: /verify-forgot-password
  * Method: POST
- * Body: {forgot_password_token: string}
+ * Body: {email: string, otp: string}
  */
 authRouter.post(
   '/verify-forgot-password',
-  verifyForgotPasswordTokenValidator,
+  forgotPasswordValidator,
   wrapRequestHandler(controller.verifyForgotPasswordController)
 )
 
@@ -107,7 +93,7 @@ authRouter.post(
  * Description: Reset password
  * Path: /reset-password
  * Method: POST
- * Body: {forgot_password_token: string, password: string}
+ * Body: { email: string, password: string }
  */
 authRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(controller.resetPasswordController))
 
@@ -118,5 +104,13 @@ authRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(co
  * Body: { refresh_token: string }
  */
 authRouter.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(controller.refreshTokenController))
+
+/**
+ * Description. OAuth with Google
+ * Path: /oauth/google
+ * Method: GET
+ * Query: { code: string }
+ */
+authRouter.get('/oauth/google', wrapRequestHandler(controller.oauthController))
 
 export default authRouter

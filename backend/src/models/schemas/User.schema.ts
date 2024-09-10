@@ -7,7 +7,7 @@ interface UserType {
   name: string
   email: string
   password: string
-  gender: string
+  gender?: string
   created_at?: Date
   updated_at?: Date
   verify?: UserVerifyStatus
@@ -31,14 +31,14 @@ export default class User {
   constructor({ _id, email, gender, name, password, role, avatar, created_at, genre, updated_at, verify }: UserType) {
     const date = new Date()
     this._id = _id
-    this.role = role || RoleType.Listener
-    this.name = name || ''
+    this.role = role
+    this.name = name
     this.email = email
     this.password = password
-    this.gender = gender
+    this.gender = gender || 'Male'
     this.created_at = created_at || date
     this.updated_at = updated_at || date
-    this.verify = verify || UserVerifyStatus.Unverified
+    this.verify = verify || UserVerifyStatus.Verified
     this.genre = genre || MusicGenre.Pop
     this.avatar = avatar || ''
   }
