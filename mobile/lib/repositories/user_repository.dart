@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/user_remote_data_source.dart';
+import 'package:mobile/data/dto/login_dto.dart';
 import 'package:mobile/data/dto/register_dto.dart';
 import 'package:mobile/data/dto/verify_email_dto.dart';
 
@@ -46,5 +47,19 @@ class UserRepository {
 
   Future<List<String>> getAvailableEmails() async {
     return await _userRemote.getAvailableEmails();
+  }
+
+  Future<bool> loginWithEmail({
+    required String email,
+    required String password
+  }) async {
+    return await _userRemote.loginWithEmail(LoginDto(
+      email: email,
+      password: password
+    ));
+  }
+
+  Future<bool> logout() async {
+    return await _userRemote.logout();
   }
 }
