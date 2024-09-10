@@ -26,6 +26,7 @@ class SignUpViewModel extends ChangeNotifier{
 
   bool verifySuccess = false;
   bool registerSuccess = false;
+  List<String> availableEmails = [''];
 
   void changeUserRole(UserRole? value) {
     if (value == null || value == userRole) return;
@@ -53,6 +54,11 @@ class SignUpViewModel extends ChangeNotifier{
       email: emailController.text, 
       otp: otp
     );
+    notifyListeners();
+  }
+
+  Future<void> getAvailableEmails() async {
+    availableEmails = await _userRepo.getAvailableEmails();
     notifyListeners();
   }
 }

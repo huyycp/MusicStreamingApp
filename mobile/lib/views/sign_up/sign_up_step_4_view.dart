@@ -81,7 +81,9 @@ class _SignUpStep4State extends ConsumerState<SignUpStep4View> {
   Widget _forwardBtn() {
     return  ForwardButton(
       onPressed: () {
-        context.push('/auth/sign-up/step-5');
+        if (ref.read(signUpViewModel).nameFormKey.currentState!.validate()) {
+          context.push('/auth/sign-up/step-5');
+        }
       },
     );
   }

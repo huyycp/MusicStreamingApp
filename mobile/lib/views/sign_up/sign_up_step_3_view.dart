@@ -110,7 +110,9 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
   Widget _forwardBtn() {
     return ForwardButton(
       onPressed: () {
-        context.push('/auth/sign-up/step-4');
+        if (ref.read(signUpViewModel).genderFormKey.currentState!.validate()) {
+          context.push('/auth/sign-up/step-4');
+        }
       },
     );
   }
