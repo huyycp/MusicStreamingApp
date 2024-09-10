@@ -5,23 +5,19 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/data/dto/register_dto.dart';
 import 'package:mobile/utils/capitalize.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
+import 'package:mobile/views/sign_up/widgets/forward_button.dart';
+import 'package:mobile/widgets/base_container.dart';
 
-class SignUpStep5 extends ConsumerStatefulWidget {
-  const SignUpStep5({super.key});
+class SignUpStep5View extends ConsumerStatefulWidget {
+  const SignUpStep5View({super.key});
 
   @override
-  ConsumerState<SignUpStep5> createState() => _SignUpStep5State();
+  ConsumerState<SignUpStep5View> createState() => _SignUpStep5State();
 }
 
-class _SignUpStep5State extends ConsumerState<SignUpStep5> {
+class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(signUpViewModel.select((value) => value.registerSuccess), (prev, next) {
-      if (next == true) {
-        context.go('/home');
-      }
-    }); 
-
     return Scaffold(
       appBar: _appBar(),
       body: _body(),
@@ -42,18 +38,17 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5> {
   }
 
   Widget _body() {
-    return Container(
+    return BaseContainer(
       padding: const EdgeInsets.all(30),
       child: Column(
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('You are ...?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
-                _roleSelect(),
-              ],        
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('You are ...?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+              _roleSelect(),
+              const SizedBox(height: 20),
+            ],        
           ),
           _forwardBtn(),
         ],
@@ -78,22 +73,15 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5> {
   }
 
   Widget _forwardBtn() {
-    return  ElevatedButton(
+    return  ForwardButton(
       onPressed: () {
         debugPrint(ref.read(signUpViewModel).emailController.text);
         debugPrint(ref.read(signUpViewModel).passwordController.text);
         debugPrint(ref.read(signUpViewModel).genderController.text);
         debugPrint(ref.read(signUpViewModel).nameController.text);
         debugPrint(ref.read(signUpViewModel).userRole.name);
-        ref.read(signUpViewModel).registerWithEmail();
+        context.push('/auth/verify-email');
       },
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        disabledForegroundColor: Colors.black,
-        backgroundColor: Color(0xFFFFFFFF),
-        disabledBackgroundColor: Color(0xFF535353),
-      ),
-      child: const Text('Create account'),
     );
   }
 }

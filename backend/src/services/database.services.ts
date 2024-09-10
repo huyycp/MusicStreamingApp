@@ -9,8 +9,9 @@ import Track from '~/models/schemas/Track.schema'
 import Release from '~/models/schemas/Release.schema'
 import Playlist from '~/models/schemas/Playlist.schema'
 import Album from '~/models/schemas/Album.schema'
+import Verify from '~/models/schemas/Verify.schema'
 config()
-const uri = `mongodb+srv://${envConfig.dbUsername}:${envConfig.dbPassword}@cluster0.lbjyr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const uri = envConfig.dbUri
 
 class DatabaseService {
   private client: MongoClient
@@ -27,6 +28,14 @@ class DatabaseService {
     } catch (error) {
       console.log('Error', error)
       throw error
+    }
+  }
+
+  async indexVerify() {
+    const exists = await this.verify.indexExists(['expiresAt_1'])
+
+    if (!exists) {
+      this.verify.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 })
     }
   }
 
@@ -60,6 +69,10 @@ class DatabaseService {
 
   get albums(): Collection<Album> {
     return this.db.collection(envConfig.dbAlbumsCollection)
+  }
+
+  get verify(): Collection<Verify> {
+    return this.db.collection(envConfig.dbVerifyCollection)
   }
 }
 

@@ -50,6 +50,7 @@ dependencies:
   string_validator: ^1.1.0
   password_text_field: ^2.0.0
   flutter_secure_storage: ^9.2.2
+  otp_pin_field: ^1.2.9+1
 
 
 dev_dependencies:

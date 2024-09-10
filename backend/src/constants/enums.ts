@@ -18,3 +18,10 @@ export enum MusicGenre {
   Soul,
   Electronic
 }
+
+export enum TokenType {
+  AccessToken,
+  RefreshToken,
+  ForgotPasswordToken,
+  EmailVerifyToken
+}

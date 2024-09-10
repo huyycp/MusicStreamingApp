@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view_model.dart';
+import 'package:mobile/widgets/base_container.dart';
 
 class AuthMethodsView extends ConsumerStatefulWidget {
   const AuthMethodsView({super.key});
@@ -17,7 +18,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
   Widget build(BuildContext context) {
     final gap = const SizedBox(height: 4);
     return Scaffold(
-      body: Container(
+      body: BaseContainer(
         padding: const EdgeInsets.symmetric(horizontal: 46, vertical: 54),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -42,7 +43,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
   Widget _signUpBtn() {
     return ElevatedButton(
       onPressed: () {
-        context.push('/sign-up/step-1');
+        context.push('/auth/sign-up/step-1');
       }, 
       style: ElevatedButton.styleFrom(
         backgroundColor: PRIMARY_COLOR,
