@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/dto/register_dto.dart';
 import 'package:mobile/repositories/user_repository.dart';
 
-final signUpViewModel = ChangeNotifierProvider<SignUpViewModel>(
+final signUpViewModel = ChangeNotifierProvider.autoDispose<SignUpViewModel>(
   (ref) => SignUpViewModel(ref.read(userRepoProvider))
 );
 
@@ -60,5 +60,13 @@ class SignUpViewModel extends ChangeNotifier{
   Future<void> getAvailableEmails() async {
     availableEmails = await _userRepo.getAvailableEmails();
     notifyListeners();
+  }
+
+  void clear() {
+    emailController.clear();
+    passwordController.clear();
+    genderController.clear();
+    nameController.clear();
+    userRole = UserRole.listener;
   }
 }

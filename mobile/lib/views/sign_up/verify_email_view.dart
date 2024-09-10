@@ -26,7 +26,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
       debugPrint('Register status: ${next}');
       context.pop();
       if (next) {
-        context.go('/home');
+        context.go('/main');
       } else {
         debugPrint('Register failed');
       }
@@ -48,9 +48,12 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
       }
     });
 
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body(),
+    return PopScope(
+      onPopInvokedWithResult: (_, __) => ref.read(signUpViewModel).clear(),
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _body(),
+      ),
     );
   }
 
