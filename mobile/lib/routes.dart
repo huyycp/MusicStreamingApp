@@ -11,23 +11,13 @@ import 'package:mobile/views/sign_up/sign_up_step_5_view.dart';
 import 'package:mobile/views/sign_up/verify_email_view.dart';
 
 final routeConfig = GoRouter(
-  initialLocation: '/main',
+  initialLocation: '/auth',
   routes: <RouteBase>[
     GoRoute(
       path: '/auth',
       builder: (context, state) => AuthMethodsView(),
       routes: <RouteBase>[
         GoRoute(
-          path: 'login',
-          builder: (context, state) => LoginView()
-        )
-      ]
-    ),
-    GoRoute(
-      path: '/sign-up',
-      builder: (context, state) => NotFoundView(),
-      routes: <RouteBase>[
-         GoRoute(
           path: 'login',
           builder: (context, state) => LoginView()
         ),

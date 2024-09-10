@@ -20,7 +20,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget build(BuildContext context) {
     ref.listen(loginViewModel.select((value) => value.loginSuccess), (prev, next) {
       if (next) {
-        context.go('/home');
+        context.go('/main');
       }
     });
 
