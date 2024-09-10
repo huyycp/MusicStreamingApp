@@ -19,7 +19,6 @@ class GenderItem extends ConsumerWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8)
         ),
-        
       ),
       onPressed: () {
         ref.read(signUpViewModel).genderController.text = genderName;
@@ -27,14 +26,6 @@ class GenderItem extends ConsumerWidget {
       },
       icon: Icon(genderName == 'Male' ? Icons.man : Icons.woman),
       label: Text(genderName, style: TextStyle(fontSize: 20))
-    );
-  }
-
-  Widget a() {
-    return Container(
-      decoration: BoxDecoration(
-
-      ),
     );
   }
 }

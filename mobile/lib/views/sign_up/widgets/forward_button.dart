@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/theme/text_theme.dart';
 
 class ForwardButton extends ConsumerWidget {
   final void Function()? onPressed;
@@ -15,7 +16,10 @@ class ForwardButton extends ConsumerWidget {
         backgroundColor: Color(0xFFFFFFFF),
         disabledBackgroundColor: Color(0xFF535353),
       ),
-      child: const Text('Next'),
+      child: Text(
+        'Next',
+        style: BaseTextTheme.LABEL_BUTTON,
+      ),
     );
   }
 }

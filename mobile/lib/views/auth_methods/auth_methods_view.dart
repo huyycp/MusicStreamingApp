@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/theme/text_theme.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view_model.dart';
 import 'package:mobile/widgets/base_container.dart';
 
@@ -24,7 +25,12 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Center(child: Text('Chill Tunes', style: TextStyle(fontSize: 32))),
+              child: Center(
+                child: Text(
+                  'Chill Tunes', 
+                  style: Theme.of(context).textTheme.displaySmall
+                )
+              ),
             ),
             gap,
             _signUpBtn(),
@@ -50,11 +56,9 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
         foregroundColor: PRIMARY_BACKGROUND,
         padding: const EdgeInsets.all(8)
       ),
-      child: const Text(
+      child: Text(
         'Sign up free',
-        style: TextStyle(
-          fontSize: 16
-        ),
+        style: BaseTextTheme.LABEL_BUTTON,
       ),
     );
   }
@@ -70,12 +74,10 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
         padding: const EdgeInsets.all(8)
 
       ),
-      label: const Text(
+      label: Text(
         'Continue with google',
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 16,
-        ),
+        style: BaseTextTheme.LABEL_BUTTON,
       ),
       icon: SvgPicture.asset('assets/icons/ic_google.svg'),
     );
@@ -91,12 +93,10 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
         ),
         padding: const EdgeInsets.all(8)
       ),
-      label: const Text(
+      label: Text(
         'Continue with Facebook', 
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 16
-        ),
+        style: BaseTextTheme.LABEL_BUTTON,
       ),
       icon: SvgPicture.asset('assets/icons/ic_facebook.svg'),
     );
@@ -110,11 +110,9 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,
       ),
-      child: const Text(
+      child:  Text(
         'Log in',
-        style: TextStyle(
-          fontSize: 16
-        ),
+        style: BaseTextTheme.LABEL_BUTTON,
       ),
     );
   }

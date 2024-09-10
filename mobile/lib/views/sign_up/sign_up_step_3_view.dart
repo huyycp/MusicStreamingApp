@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
@@ -8,6 +7,8 @@ import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/views/sign_up/widgets/gender_item.dart';
 import 'package:mobile/widgets/base_container.dart';
+import 'package:mobile/views/sign_up/widgets/sign_up_app_bar.dart';
+import 'package:mobile/widgets/dynamic_image.dart';
 
 class SignUpStep3View extends ConsumerStatefulWidget {
   const SignUpStep3View({super.key});
@@ -20,21 +21,8 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: SignUpAppBar(text: 'Create account', context: context),
       body: _body(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create account'),
-      centerTitle: true,
-      leading: IconButton(
-        icon: SvgPicture.asset('assets/icons/ic_chevron_left.svg'),
-        onPressed: () {
-          context.pop();
-        },
-      ),
     );
   }
 
@@ -47,7 +35,10 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('What\'s your gender?', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+              Text(
+                'What\'s your gender?', 
+                style: Theme.of(context).textTheme.titleLarge
+              ),
               _genderInput(),
             ],        
           ),
@@ -76,7 +67,7 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
           filled: true,
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: SvgPicture.asset('assets/icons/ic_chevron_down.svg'),
+            child: DynamicImage('assets/icons/ic_chevron_down.svg', width: 20, height: 20),
           ),
           suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24, minHeight: 24, minWidth: 24),
         ),
