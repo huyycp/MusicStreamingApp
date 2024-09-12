@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import Box from '@mui/material/Box'
 import MusicInfo from './MusicInfo/MusicInfo'
 import MusicPlayer from './MusicPlayer/MusicPlayer'
