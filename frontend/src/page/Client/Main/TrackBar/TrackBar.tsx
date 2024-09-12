@@ -1,11 +1,10 @@
-import { memo } from 'react'
 import Box from '@mui/material/Box'
 import MusicInfo from './MusicInfo/MusicInfo'
 import MusicPlayer from './MusicPlayer/MusicPlayer'
 import MusicTool from './MusicTool/MusicTool'
 import { useMusic } from '~/hooks/useMusic'
 
-const TrackBar = () => {
+export default function TrackBar() {
   const { music } = useMusic()
   return (
     <Box
@@ -59,5 +58,3 @@ const TrackBar = () => {
     </Box>
   )
 }
-
-export default memo(TrackBar)

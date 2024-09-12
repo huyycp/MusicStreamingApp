@@ -10,10 +10,12 @@ import Popper from '@mui/material/Popper'
 import Tooltip from '@mui/material/Tooltip'
 import { useEffect, useRef, useState } from 'react'
 import LaunchIcon from '@mui/icons-material/Launch'
+import useLogout from '~/hooks/Auth/useLogout'
 
 export default function Profile() {
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
+  const { mutate: logout } = useLogout()
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
   }
@@ -24,6 +26,10 @@ export default function Profile() {
     }
 
     setOpen(false)
+  }
+
+  const handleLogout = () => {
+    logout()
   }
 
   function handleListKeyDown(event: React.KeyboardEvent) {
@@ -127,7 +133,7 @@ export default function Profile() {
                       }
                     }}
                   />
-                  <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
+                  <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

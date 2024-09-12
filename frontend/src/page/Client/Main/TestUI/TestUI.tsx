@@ -16,7 +16,7 @@ export default function TestUI() {
           'padding': 2,
           '& .MuiChip-root': {
             'boxShadow': 2,
-            cursor: 'pointer',
+            'cursor': 'pointer',
             'bgcolor': (theme) => theme.palette.neutral.neutral1,
             'color': (theme) => theme.palette.secondary1.main,
             '&:hover': {
