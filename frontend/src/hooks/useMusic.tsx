@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createContext, useContext } from 'react'
 import { IMusic } from '~/type/IMusic'
-
+import { createContext, useContext } from 'react'
 interface MusicContextProps {
   audioElement: HTMLAudioElement | null
   position: number

@@ -62,6 +62,12 @@ type Props = {
 
 export default function FullScreenView({ setFullScreen }: Props) {
   const { music } = useMusic()
+  artistName: string[]
+  musicName: string
+  musicImage: string
+}
+
+export default function FullScreenView({ artistName, musicName, musicImage, setFullScreen }: Props) {
   return (
     <Box
       sx={{
@@ -111,6 +117,10 @@ export default function FullScreenView({ setFullScreen }: Props) {
           </CoverImage>
           <ContentBox>
             <TextFade sx={{ fontSize: 30, fontWeight: 'bold' }}>{music.name}</TextFade>
+            <img alt={musicName} src={musicImage.replace('{w}x{h}bb', '294x294bb')} />
+          </CoverImage>
+          <ContentBox>
+            <TextFade sx={{ fontSize: 30, fontWeight: 'bold' }}>{musicName}</TextFade>
             <Box
               sx={{
                 display: 'flex',
@@ -126,6 +136,10 @@ export default function FullScreenView({ setFullScreen }: Props) {
                 <TextFade key={index}>
                   {name}
                   {index < music.artistName.length - 1 && ','}
+              {artistName.map((name, index) => (
+                <TextFade key={index}>
+                  {name}
+                  {index < artistName.length - 1 && ','}
                 </TextFade>
               ))}
             </Box>
