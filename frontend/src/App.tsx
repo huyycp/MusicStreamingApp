@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import Main from './page/Client/Main/Main'
+import Main from './page/Client/Main/MainLayout'
 
 function App() {
   return (

@@ -1,23 +1,12 @@
-import { memo, useState } from 'react'
 import Box from '@mui/material/Box'
-import { mockData } from '~/apis/data-mock'
 import MusicInfo from './MusicInfo/MusicInfo'
 import MusicPlayer from './MusicPlayer/MusicPlayer'
 import MusicTool from './MusicTool/MusicTool'
+import { useMusic } from '~/hooks/useMusic'
 import { MusicProvider } from '~/contents/MusicProvider'
 
-const TrackBar = () => {
-  const listMusic = mockData
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
-
-  const handleNextTrack = () => {
-    setCurrentTrackIndex((prevIndex) => (prevIndex < listMusic.listMusics.length - 1 ? prevIndex + 1 : 0))
-  }
-
-  const handlePreviousTrack = () => {
-    setCurrentTrackIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : listMusic.listMusics.length - 1))
-  }
-
+export default function TrackBar() {
+  const { music } = useMusic()
   return (
     <Box
       sx={{
@@ -40,11 +29,32 @@ const TrackBar = () => {
           whiteSpace: 'nowrap'
         }}
       >
-        <MusicInfo
-          artistName={listMusic.listMusics[currentTrackIndex].artistName}
-          musicImage={listMusic.listMusics[currentTrackIndex].artUrl}
-          musicName={listMusic.listMusics[currentTrackIndex].name}
-        />
+        <MusicInfo music={music} />
+      </Box>
+      <Box
+        sx={{
+          flex: '0 1 605px',
+          minWidth: '313px',
+          maxWidth: '605px',
+          color: 'white',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        }}
+      >
+        <MusicPlayer />
+      </Box>
+      <Box
+        sx={{
+          flex: '0 1 auto',
+          color: 'white',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          marginLeft: 'auto'
+        }}
+      >
+        <MusicTool />
       </Box>
       <MusicProvider musicUrl={listMusic.listMusics[currentTrackIndex].musicUrl} onNextTrack={handleNextTrack} onPreviousTrack={handlePreviousTrack}>
         <Box
@@ -80,5 +90,3 @@ const TrackBar = () => {
     </Box>
   )
 }
-
-export default memo(TrackBar)

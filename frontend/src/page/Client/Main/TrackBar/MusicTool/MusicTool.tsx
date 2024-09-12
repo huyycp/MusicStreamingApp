@@ -12,6 +12,11 @@ import VolumeDownRounded from '@mui/icons-material/VolumeDownRounded'
 import { useEffect, useState } from 'react'
 import FullScreenView from '../FullScreenView/FullScreenView'
 import { useMusic } from '~/hooks/useMusic'
+import { useResize } from '~/hooks/useResize'
+
+export default function MusicTool() {
+  const { mute, setMute, volume, setVolume } = useMusic()
+  const { setIsBox2Visible, setOpenList, openList, openMusic, setOpenMusic, isBox2Visible } = useResize()
 
 type Props = {
   artistName: string[]
@@ -55,7 +60,22 @@ export default function MusicTool({ artistName, musicName, musicImage }: Props) 
       >
         <Tooltip title='Chế độ xem Đang phát' placement='top'>
           <Box>
-            <SvgIcon component={ViewModeIcon} inheritViewBox />
+            <SvgIcon
+              component={ViewModeIcon}
+              inheritViewBox
+              onClick={() => {
+                if (isBox2Visible === true) {
+                  setIsBox2Visible(false)
+                  setOpenMusic(true)
+                } else if (!openList && openMusic) {
+                  setIsBox2Visible(true)
+                  setOpenMusic(false)
+                } else {
+                  setIsBox2Visible(false)
+                  setOpenMusic(!openList)
+                }
+              }}
+            />
           </Box>
         </Tooltip>
         <Tooltip title='Lời bài hát' placement='top'>
@@ -65,7 +85,22 @@ export default function MusicTool({ artistName, musicName, musicImage }: Props) 
         </Tooltip>
         <Tooltip title='Danh sách chờ' placement='top'>
           <Box>
-            <SvgIcon component={ListIcon} inheritViewBox />
+            <SvgIcon
+              component={ListIcon}
+              inheritViewBox
+              onClick={() => {
+                if (isBox2Visible === true) {
+                  setIsBox2Visible(false)
+                  setOpenList(true)
+                } else if (!openMusic && openList) {
+                  setIsBox2Visible(true)
+                  setOpenList(false)
+                } else {
+                  setIsBox2Visible(false)
+                  setOpenList(!openList)
+                }
+              }}
+            />
           </Box>
         </Tooltip>
         <Tooltip title='Tắt tiếng' placement='top'>
@@ -127,6 +162,7 @@ export default function MusicTool({ artistName, musicName, musicImage }: Props) 
           </Box>
         </Tooltip>
       </Box>
+      {fullScreen && <FullScreenView setFullScreen={setFullScreen}/>}
       {fullScreen && (
         <FullScreenView
           setFullScreen={setFullScreen}

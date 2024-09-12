@@ -5,6 +5,7 @@ declare module '@mui/material/styles' {
   interface Palette {
     secondary1: Palette['primary']
     secondary2: Palette['primary']
+    secondary5: Palette['primary']
     secondary3: Palette['primary']
     secondary4: Palette['primary']
     neutral: {
@@ -38,6 +39,7 @@ declare module '@mui/material/styles' {
     secondary2: PaletteOptions['primary']
     secondary3: PaletteOptions['primary']
     secondary4: PaletteOptions['primary']
+    secondary5: PaletteOptions['primary']
     neutral: {
       neutral1: string
       neutral2: string
@@ -100,7 +102,7 @@ const theme = createTheme({
       main: '#000000'
     },
     secondary2: {
-      main: '#393939'
+      main: '#121212'
     },
     secondary3: {
       main: '#3a433e'
@@ -108,10 +110,13 @@ const theme = createTheme({
     secondary4: {
       main: '#ffffff'
     },
+    secondary5: {
+      main: '#1f1f1f'
+    },
     neutral: {
       neutral1: '#b3b3b3',
       neutral2: '#777777',
-      neutral3: '#535353'
+      neutral3: '#2a2a2a'
     },
     other: {
       cyan400: cyan[400],
@@ -172,6 +177,61 @@ const theme = createTheme({
         text: ({ theme }) => ({
           color: theme.palette.secondary4.main
         })
+      }
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          'border': '2px solid #777777',
+          'height': '48px',
+          'padding': '12px',
+          'borderRadius': '4px',
+          '&:hover': {
+            borderColor: '#ffffff'
+          },
+          '&.Mui-focused': {
+            borderColor: '#ffffff',
+            boxShadow: 'none'
+          },
+          '& input': {
+            color: '#ffffff'
+          },
+          '& input::placeholder': {
+            color: '#b3b3b3'
+          },
+          '&::before, &::after': {
+            borderBottom: 'none'
+          }
+        }
+      }
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        '*::-webkit-scrollbar': {
+          width: '16px',
+          opacity: 0,
+          transition: 'opacity 0.3s ease-in-out'
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: '#2a2a2a'
+        },
+        '*::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#b3b3b3'
+        },
+        '*::-webkit-scrollbar-track': {
+          background: '#121212'
+        },
+        '*::-webkit-scrollbar-track:hover': {
+          background: '#121212'
+        },
+        '.scrollable-container:hover::-webkit-scrollbar': {
+          opacity: 1
+        },
+        '.scrollable-container': {
+          overflow: 'auto',
+          scrollbarGutter: 'stable',
+          position: 'relative'
+        }
       }
     }
   }
