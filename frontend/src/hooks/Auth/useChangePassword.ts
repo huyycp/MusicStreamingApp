@@ -21,7 +21,7 @@ const useChangePassword = () => {
   const changePasswordMutation = useMutation({
     mutationFn: apiResetPassword,
     onSuccess: () => {
-      navigate('/')
+      navigate('/login')
     }
   })
 

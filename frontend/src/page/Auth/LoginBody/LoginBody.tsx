@@ -28,18 +28,18 @@ export default function LoginBody() {
   const handleChangeEmail = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     setEmail(value)
+    setError('')
   }
 
   const handleChangePassword = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     setPassword(value)
+    setError('')
   }
 
   const handleNext = () => {
     if (password === '') setError('Mật khẩu không được bỏ trống')
-    else if (error === 'Email hoặc mật khẩu không đúng') {
-      setError('')
-    } else if (password !== '' && error === '') {
+    else if (password !== '' && error === '') {
       login(
         { email, password },
         {
