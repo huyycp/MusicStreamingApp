@@ -13,6 +13,7 @@ import useForgotPassword from '~/hooks/Auth/useForgotPassword'
 import CircularProgress from '@mui/material/CircularProgress'
 import useRegister from '~/hooks/Auth/useRegister'
 
+
 export default function ResetPassword() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState<string>('')
