@@ -17,15 +17,6 @@ import { useResize } from '~/hooks/useResize'
 export default function MusicTool() {
   const { mute, setMute, volume, setVolume } = useMusic()
   const { setIsBox2Visible, setOpenList, openList, openMusic, setOpenMusic, isBox2Visible } = useResize()
-
-type Props = {
-  artistName: string[]
-  musicName: string
-  musicImage: string
-}
-
-export default function MusicTool({ artistName, musicName, musicImage }: Props) {
-  const { mute, setMute, volume, setVolume } = useMusic()
   const [fullScreen, setFullScreen] = useState(false)
 
   const handleVolume = (_: Event, newValue: number | number[]) => {
@@ -163,14 +154,6 @@ export default function MusicTool({ artistName, musicName, musicImage }: Props) 
         </Tooltip>
       </Box>
       {fullScreen && <FullScreenView setFullScreen={setFullScreen}/>}
-      {fullScreen && (
-        <FullScreenView
-          setFullScreen={setFullScreen}
-          artistName={artistName}
-          musicImage={musicImage}
-          musicName={musicName}
-        />
-      )}
     </Box>
   )
 }

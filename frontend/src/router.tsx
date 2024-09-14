@@ -2,8 +2,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Error from './page/Client/Error/Error'
 import TestUI from './page/Client/Main/TestUI/TestUI'
-import MainLayout from './page/Client/Main/MainLayout'
-import BodyContent from './page/Client/Main/BodyContent/BodyContent'
 import AuthLayout from './page/Auth/AuthLayout'
 import RegisterBody from './page/Auth/RegisterBody/RegisterBody'
 import RegisterStep1 from './page/Auth/RegisterBody/RegisterStep1/RegisterStep1'
@@ -14,6 +12,8 @@ import VerifyEmail from './page/Auth/RegisterBody/VerifyEmail/VerifyEmail'
 import ResetPassword from './page/Auth/LoginBody/ResetPassword/ResetPassword'
 import ChangePassword from './page/Auth/LoginBody/ChangePassword/ChangePassword/ChangePassword'
 import ProtectedRouteAuth from './page/Auth/ProtectedRouteAuth'
+import MainLayout from './page/Client/Main/MainLayout'
+import BodyContent from './page/Client/Main/BodyContent/BodyContent'
 
 const router = createBrowserRouter([
   {

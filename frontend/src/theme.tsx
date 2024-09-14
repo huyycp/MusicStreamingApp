@@ -233,6 +233,61 @@ const theme = createTheme({
           position: 'relative'
         }
       }
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          'border': '2px solid #777777',
+          'height': '48px',
+          'padding': '12px',
+          'borderRadius': '4px',
+          '&:hover': {
+            borderColor: '#ffffff'
+          },
+          '&.Mui-focused': {
+            borderColor: '#ffffff',
+            boxShadow: 'none'
+          },
+          '& input': {
+            color: '#ffffff'
+          },
+          '& input::placeholder': {
+            color: '#b3b3b3'
+          },
+          '&::before, &::after': {
+            borderBottom: 'none'
+          }
+        }
+      }
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        '*::-webkit-scrollbar': {
+          width: '16px',
+          opacity: 0,
+          transition: 'opacity 0.3s ease-in-out'
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: '#2a2a2a'
+        },
+        '*::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#b3b3b3'
+        },
+        '*::-webkit-scrollbar-track': {
+          background: '#121212'
+        },
+        '*::-webkit-scrollbar-track:hover': {
+          background: '#121212'
+        },
+        '.scrollable-container:hover::-webkit-scrollbar': {
+          opacity: 1
+        },
+        '.scrollable-container': {
+          overflow: 'auto',
+          scrollbarGutter: 'stable',
+          position: 'relative'
+        }
+      }
     }
   }
 })

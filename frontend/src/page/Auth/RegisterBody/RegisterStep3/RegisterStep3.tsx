@@ -79,25 +79,6 @@ export default function RegisterStep3() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-      {isPending && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            opacity: '0.7',
-            zIndex: 10
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
-
       <BorderLinearProgress variant='determinate' value={Math.floor((3 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
