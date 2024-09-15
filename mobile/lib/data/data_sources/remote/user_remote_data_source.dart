@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/data_sources/magic_music_api.dart';
+import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/login_dto.dart';
 import 'package:mobile/data/dto/register_dto.dart';
 import 'package:mobile/data/dto/verify_email_dto.dart';
@@ -31,10 +33,11 @@ class UserRemoteDataSource {
     
     if (response.statusCode == HttpStatus.created) {
       final data = response.data;
-      final accessToken = data['result']['access_token'] ?? '';
-      final refreshToken = data['result']['refresh_token'] ?? '';
-      _magicMusicApi.setAccessToken(accessToken);
-      _magicMusicApi.setRefreshToken(refreshToken);
+      final accessToken = data['result']['access_token']?.toString() ;
+      final refreshToken = data['result']['refresh_token']?.toString();
+      await _magicMusicApi.setAccessToken(accessToken);
+      await _magicMusicApi.setRefreshToken(refreshToken);
+      _magicMusicApi.token = accessToken;
       return true;
     } else {
       return false;
@@ -57,7 +60,6 @@ class UserRemoteDataSource {
       method: HttpMethod.POST,
       data: dto.toJson()
     );
-    
     return response.statusCode == HttpStatus.ok;
   }
 
@@ -88,7 +90,10 @@ class UserRemoteDataSource {
     if (response.statusCode == HttpStatus.ok) {
       final data = response.data;
       final accessToken = data['result']['access_token'] ?? '';
-      _magicMusicApi.setAccessToken(accessToken);
+      final refreshToken = data['result']['refresh_token'] ?? '';
+      await _magicMusicApi.setAccessToken(accessToken);
+      await _magicMusicApi.setRefreshToken(refreshToken);
+      _magicMusicApi.token = accessToken;
       return true;
     } else {
       return false;
@@ -99,11 +104,26 @@ class UserRemoteDataSource {
     final response = await _magicMusicApi.request(
       _logoutPath,
       method: HttpMethod.POST,
-      data: {
-        'refresh_token': await _magicMusicApi.getRefreshToken()
-      }
+      options: Options(
+        headers: {
+          HttpHeaders.userAgentHeader: 'mobile ${await _magicMusicApi.getRefreshToken()}'
+        }
+      )
     );
-    
-    return response.statusCode == HttpStatus.ok;
+    if (response.statusCode == HttpStatus.ok) {
+      await _magicMusicApi.removeAccessToken();
+      await _magicMusicApi.removeRefreshToken();
+      _magicMusicApi.token = null;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> loadAccessToken() async {
+    final accessToken = await _magicMusicApi.getAccessToken();
+    debugPrint('Access token: $accessToken');
+    _magicMusicApi.token = accessToken;
+    return accessToken != null;
   }
 }

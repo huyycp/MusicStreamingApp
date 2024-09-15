@@ -9,9 +9,10 @@ import 'package:mobile/views/sign_up/sign_up_step_3_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_4_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_5_view.dart';
 import 'package:mobile/views/sign_up/verify_email_view.dart';
+import 'package:mobile/views/splash/splash_view.dart';
 
 final routeConfig = GoRouter(
-  initialLocation: '/auth',
+  initialLocation: '/splash',
   routes: <RouteBase>[
     GoRoute(
       path: '/auth',
@@ -56,6 +57,10 @@ final routeConfig = GoRouter(
     GoRoute(
       path: '/main',
       builder: (context, state) => MainView()
+    ),
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => SplashView()
     )
   ]
 );
