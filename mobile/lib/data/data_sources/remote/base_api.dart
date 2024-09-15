@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 abstract class BaseApi {
   BaseApi() {
@@ -19,6 +19,7 @@ abstract class BaseApi {
       onResponse: onResponse,
       onError: onError
     ));
+    
     storage = FlutterSecureStorage(
       aOptions: AndroidOptions(
         encryptedSharedPreferences: true
@@ -30,10 +31,26 @@ abstract class BaseApi {
   }
 
   late Dio dio;
-  late FlutterSecureStorage storage;
+  late final FlutterSecureStorage storage;
   final connectTimeOut = Duration(milliseconds: 3000);
   final sendTimeOut = Duration(milliseconds: 3000);
   final receiveTimeOut = Duration(milliseconds: 3000);
+
+  set token(String? value) {
+    String? bearerToken;
+    if (value != null && value.isNotEmpty) {
+      bearerToken = value.startsWith('Bearer') ? value : 'Bearer $value';
+    }
+    if (dio.options.headers[HttpHeaders.authorizationHeader] != bearerToken) {
+      dio.options.headers[HttpHeaders.authorizationHeader] = bearerToken;
+    }
+  }
+
+  String get token => dio.options.headers[HttpHeaders.authorizationHeader] ?? '';
+
+  set baseUrl(String baseUrl) {
+    dio.options.baseUrl = baseUrl;
+  }
 
   // Manage access token
   Future<void> setAccessToken(String? accessToken) async {
@@ -63,13 +80,26 @@ abstract class BaseApi {
     await storage.delete(key: 'refresh_token');
   }
 
+  Future<({String? accessToken, String? refreshToken})> refreshToken();
+
   // Interceptors
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final accessToken = await getAccessToken();
-    if (accessToken != null) {
-      options.headers[HttpHeaders.authorizationHeader] = "Bearer $accessToken";
+
+    // Check expire token
+    var accessToken = token;
+    if (accessToken.isNotEmpty) {
+      if (accessToken.startsWith('Bearer')) {
+        accessToken = accessToken.substring('Bearer '.length);
+      }
+      if (JwtDecoder.isExpired(accessToken)) {
+        final newTokens = await refreshToken();
+        token = newTokens.accessToken;
+        options.headers[HttpHeaders.authorizationHeader] = token;
+        options.headers[HttpHeaders.userAgentHeader] = 'mobile ${newTokens.refreshToken}';
+      }
     }
-    debugPrint(options.uri.toString());
+  
+    debugPrint('${options.uri.toString()} ${options.method}');
     return handler.next(options);
   }
 
