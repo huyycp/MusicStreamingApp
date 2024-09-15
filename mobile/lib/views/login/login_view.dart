@@ -24,9 +24,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
       }
     });
 
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body()
+    return PopScope(
+      onPopInvokedWithResult: (_, __) => ref.read(loginViewModel).clear(),
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _body()
+      ),
     );
   }
 

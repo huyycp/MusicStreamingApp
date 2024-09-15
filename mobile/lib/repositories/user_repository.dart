@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/data_sources/user_remote_data_source.dart';
+import 'package:mobile/data/data_sources/remote/user_remote_data_source.dart';
 import 'package:mobile/data/dto/login_dto.dart';
 import 'package:mobile/data/dto/register_dto.dart';
 import 'package:mobile/data/dto/verify_email_dto.dart';
 
 final userRepoProvider = Provider<UserRepository>(
-  (ref) => UserRepository(ref.read(userRemoteProvider))
+  (ref) => UserRepository(
+    ref.read(userRemoteProvider)
+  )
 );
 
 class UserRepository {
@@ -61,5 +63,9 @@ class UserRepository {
 
   Future<bool> logout() async {
     return await _userRemote.logout();
+  }
+
+  Future<bool> loadAccessToken() async {
+    return await _userRemote.loadAccessToken();
   }
 }

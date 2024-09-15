@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/repositories/user_repository.dart';
 
-final loginViewModel = ChangeNotifierProvider<LoginViewModel>(
+final loginViewModel = ChangeNotifierProvider.autoDispose<LoginViewModel>(
   (ref) => LoginViewModel(ref.read(userRepoProvider))
 );
 
@@ -29,5 +29,6 @@ class LoginViewModel extends ChangeNotifier{
   void clear() {
     emailController.clear();
     passwordController.clear();
+    loginSuccess = false;
   }
 }

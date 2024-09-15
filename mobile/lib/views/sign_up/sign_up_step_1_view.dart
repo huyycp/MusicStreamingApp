@@ -24,9 +24,12 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SignUpAppBar(text: 'Create account', context: context),
-      body: _body(),
+    return PopScope(
+      onPopInvokedWithResult: (_, __) => ref.read(signUpViewModel).clear(),
+      child: Scaffold(
+        appBar: SignUpAppBar(text: 'Create account', context: context),
+        body: _body(),
+      ),
     );
   }
 

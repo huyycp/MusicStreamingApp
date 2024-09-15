@@ -68,5 +68,7 @@ class SignUpViewModel extends ChangeNotifier{
     genderController.clear();
     nameController.clear();
     userRole = UserRole.listener;
+    verifySuccess = false;
+    registerSuccess = false;
   }
 }
