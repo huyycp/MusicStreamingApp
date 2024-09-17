@@ -74,7 +74,7 @@ export default function ChangePassword() {
       <Typography variant='body1' sx={{ textAlign: 'center', mb: '40px' }}>
         Vui lòng nhập mật khẩu mới bên dưới cho tài khoản MagicMusic của bạn.
       </Typography>
-      <FormControl sx={{ width: '100%', pb: 1, pl: 5, pr: 5 }} error={!!errorOtp}>
+      <FormControl sx={{ inlineSize: '100%', pb: 1, pl: 5, pr: 5 }} error={!!errorOtp}>
         <Box sx={{ fontSize: 14, fontWeight: 'bold' }}>Nhập mã xác nhận</Box>
         <Input
           id='my-input3'
@@ -113,7 +113,7 @@ export default function ChangePassword() {
           </FormHelperText>
         )}
       </FormControl>
-      <FormControl sx={{ width: '100%', pb: 2, pl: 5, pr: 5 }} error={!!error}>
+      <FormControl sx={{ inlineSize: '100%', pb: 2, pl: 5, pr: 5 }} error={!!error}>
         <Box sx={{ fontSize: 14, fontWeight: 'bold', pb: 1 }}>Mật khẩu mới</Box>
         <Input
           id='my-input'
@@ -169,7 +169,7 @@ export default function ChangePassword() {
           </Box>
         </Box>
       </FormControl>
-      <FormControl sx={{ width: '100%', pb: 2, pl: 5, pr: 5 }} error={!!error}>
+      <FormControl sx={{ inlineSize: '100%', pb: 2, pl: 5, pr: 5 }} error={!!error}>
         <Box sx={{ fontSize: 14, fontWeight: 'bold', pb: 1 }}>Nhập lại mật khẩu mới </Box>
         <Input
           id='my-input-1'
@@ -218,7 +218,7 @@ export default function ChangePassword() {
         </Box>
       )}
       {!isPending && (
-        <Button sx={{ width: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
+        <Button sx={{ inlineSize: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
           Tạo mật khẩu
         </Button>
       )}

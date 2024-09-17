@@ -12,8 +12,8 @@ export default function BodyContent({ viewType }: Props) {
   return (
     <Box
       sx={{
-        width: '100%',
-        height: (theme) => theme.music.appBodyHeight,
+        inlineSize: '100%',
+        blockSize: (theme) => theme.music.appBodyHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'start',

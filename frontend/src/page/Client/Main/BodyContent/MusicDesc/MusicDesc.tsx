@@ -8,9 +8,9 @@ export default function MusicDesc() {
   return (
     <Box
       sx={{
-        width: '100%',
-        height: '100%',
-        maxHeight: 'auto',
+        inlineSize: '100%',
+        blockSize: '100%',
+        maxBlockSize: 'auto',
         display: 'flex',
         justifyContent: 'space-between',
         bgcolor: (theme) => theme.palette.secondary2.main,
