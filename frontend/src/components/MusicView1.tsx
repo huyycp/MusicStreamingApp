@@ -28,8 +28,8 @@ const CoverImage = styled('div')({
   'padding': 1,
   'backgroundColor': 'rgba(0,0,0,0.08)', // Default background color
   '& > img': {
-    width: '100%',
-    height: '100%',
+    inlineSize: '100%',
+    blockSize: '100%',
     objectFit: 'cover'
   },
   'transition': 'background-color 0.3s'
@@ -99,13 +99,13 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
                   alt={initMusic?.name}
                   src={initMusic?.artUrl?.replace('{w}x{h}bb', '48x48bb')}
                   style={{
-                    width: '48px',
-                    height: '48px',
+                    inlineSize: '48px',
+                    blockSize: '48px',
                     objectFit: 'cover'
                   }}
                 />
               )}
-              {collection && <Box sx={{ width: '48px', height: '48px', background: (theme) => theme.palette.gradient.gradient1 }}></Box>}
+              {collection && <Box sx={{ inlineSize: '48px', blockSize: '48px', background: (theme) => theme.palette.gradient.gradient1 }}></Box>}
               <IconButton
                 sx={{
                   'color': (theme) => theme.palette.secondary4.main,
@@ -136,7 +136,7 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  maxWidth: 'auto'
+                  maxInlineSize: 'auto'
                 }}
               >
                 {initMusic?.name || 'Bài hát đã thích'}
@@ -169,13 +169,13 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
               alt={initMusic?.name}
               src={initMusic?.artUrl?.replace('{w}x{h}bb', '48x48bb')}
               style={{
-                width: '48px',
-                height: '48px',
+                inlineSize: '48px',
+                blockSize: '48px',
                 objectFit: 'cover'
               }}
             />
           )}
-          {collection && <Box sx={{ width: '48px', height: '48px', background: (theme) => theme.palette.gradient.gradient1 }}></Box>}
+          {collection && <Box sx={{ inlineSize: '48px', blockSize: '48px', background: (theme) => theme.palette.gradient.gradient1 }}></Box>}
           <IconButton
             sx={{
               'color': (theme) => theme.palette.secondary4.main,

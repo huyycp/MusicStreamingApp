@@ -14,9 +14,17 @@ export const mockData: { listMusics: IMusic[] } = {
       _id: '2',
       name: 'See You Again (feat. Charlie Puth)',
       artUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e6/8a/68/e68a688e-129e-cb9d-938f-bc3ee37059ae/075679930910.jpg/{w}x{h}bb.jpg',
-      artistName: ['Wiz Khalifa', 'Charlie Puth'],
+      artistName: ['Wiz Khalifa', 'Charlie Puth', '2131321321'],
       musicUrl:
         'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/d8/df/0b/d8df0bf5-c518-8e10-3bcb-48ece88a44cb/mzaf_15402632809603686925.plus.aac.ep.m4a'
+    },
+    {
+      _id: '3',
+      name: 'See You Again (feat. Charlie Puth)',
+      artUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e6/8a/68/e68a688e-129e-cb9d-938f-bc3ee37059ae/075679930910.jpg/{w}x{h}bb.jpg',
+      artistName: ['Wiz Khalifa', 'Charlie Puth'],
+      musicUrl:
+        'http://res.cloudinary.com/dnavrxwoi/video/upload/v1719301021/wakxginexapberongeke.mp3'
     }
   ]
 }

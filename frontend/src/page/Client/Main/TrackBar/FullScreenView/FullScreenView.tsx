@@ -66,10 +66,10 @@ export default function FullScreenView({ setFullScreen }: Props) {
     <Box
       sx={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
+        insetBlockStart: 0,
+        insetInlineStart: 0,
+        inlineSize: '100vw',
+        blockSize: '100vh',
         backgroundColor: (theme) => theme.palette.secondary2.main,
         zIndex: 9999,
         display: 'flex',
@@ -81,14 +81,14 @@ export default function FullScreenView({ setFullScreen }: Props) {
       {/* Header */}
       <Box
         sx={{
-          width: '100%',
-          height: '152px',
+          inlineSize: '100%',
+          blockSize: '152px',
           display: 'flex',
           alignItems: 'center',
           gap: 3
         }}
       >
-        <SvgIcon component={MusicIcon} inheritViewBox sx={{ height: '36px', width: '36px', cursor: 'pointer' }} />
+        <SvgIcon component={MusicIcon} inheritViewBox sx={{ blockSize: '36px', inlineSize: '36px', cursor: 'pointer' }} />
         <Box
           sx={{
             display: 'flex-1',
@@ -104,7 +104,7 @@ export default function FullScreenView({ setFullScreen }: Props) {
       </Box>
 
       {/* Main Content */}
-      <Box sx={{ width: '100%', flex: 1, display: 'flex', alignItems: 'end' }}>
+      <Box sx={{ inlineSize: '100%', flex: 1, display: 'flex', alignItems: 'end' }}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'end' }}>
           <CoverImage>
             <img alt={music.name} src={music.artUrl.replace('{w}x{h}bb', '294x294bb')} />
