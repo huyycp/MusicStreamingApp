@@ -22,7 +22,6 @@ import authService from '~/services/auth.services'
 import databaseService from '~/services/database.services'
 
 export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
-  console.log(req.body)
   const result = await authService.register(req.body)
   return res.status(201).json({
     message: AUTH_MESSAGES.REGISTER_SUCCESS,
@@ -58,7 +57,14 @@ export const loginController = async (req: Request<ParamsDictionary, any, LoginR
 }
 
 export const logoutController = async (req: Request<ParamsDictionary, any, LogoutReqBody>, res: Response) => {
-  const { refresh_token } = req.body
+  const userAgent = (req.headers['user-agent'] || '').split(' ')[0]
+  const isMobile = /mobile/i.test(userAgent)
+  let refresh_token
+  if (isMobile) {
+    refresh_token = (req.headers['user-agent'] as string).split(' ')[1]
+  } else {
+    refresh_token = req.body.refresh_token
+  }
   const result = await authService.logout(refresh_token)
   return res.json(result)
 }
@@ -69,7 +75,6 @@ export const sendVerifyEmailController = async (
   next: NextFunction
 ) => {
   const { email } = req.body
-  console.log(email)
   const result = await authService.sendVerifyEmail(email)
   return res.json(result)
 }

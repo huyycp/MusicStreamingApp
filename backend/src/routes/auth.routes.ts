@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Router, Request, Response, NextFunction } from 'express'
 import * as controller from '~/controllers/auth.controllers'
 import {
   accessTokenValidator,
@@ -6,6 +6,7 @@ import {
   emailVerifyTokenValidator,
   forgotPasswordValidator,
   loginValidator,
+  refreshTokenMobileValidator,
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator
@@ -48,10 +49,23 @@ authRouter.post('/login', loginValidator, wrapRequestHandler(controller.loginCon
  * Description. Logout a user
  * Path: /logout
  * Method: POST
- * Header: { Authorization: Bearer <access_token> }
- * Body: { refresh_token: string }
+ * Header: { Authorization: Bearer <access_token>, user-agent: 'Mobile <refresh_token>' (with mobile) }
+ * Body: { refresh_token: string } (with web)
  */
-authRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(controller.logoutController))
+authRouter.post(
+  '/logout',
+  accessTokenValidator,
+  (req: Request, res: Response, next: NextFunction) => {
+    const userAgent = (req.headers['user-agent'] || '').split(' ')[0]
+    const isMobile = /mobile/i.test(userAgent)
+    if (isMobile) {
+      return refreshTokenMobileValidator(req, res, next)
+    } else {
+      return refreshTokenValidator
+    }
+  },
+  wrapRequestHandler(controller.logoutController)
+)
 
 /**
  * Description. Send verify email when user client register
