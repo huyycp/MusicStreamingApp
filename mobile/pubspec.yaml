@@ -51,7 +51,7 @@ dependencies:
   password_text_field: ^2.0.0
   flutter_secure_storage: ^9.2.2
   otp_pin_field: ^1.2.9+1
-
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -110,3 +110,13 @@ flutter:
   - prod.env
   - assets/images/
   - assets/icons/
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/app_image.png
+
+  web: false
+
+  android_12:
+    color: "#000000"
+    image: assets/images/app_image.png
