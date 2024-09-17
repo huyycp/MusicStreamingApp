@@ -18,8 +18,8 @@ const CoverImage = styled('div')({
   'borderRadius': 8,
   'backgroundColor': 'rgba(0,0,0,0.08)',
   '& > img': {
-    width: '100%',
-    height: '100%',
+    inlineSize: '100%',
+    blockSize: '100%',
     objectFit: 'cover'
   },
   '&:hover .MuiIconButton-root': {
@@ -63,8 +63,8 @@ export default function MusicInfo({ music }: Props) {
           alt={music.name}
           src={music.artUrl.replace('{w}x{h}bb', '56x56bb')}
           style={{
-            width: '56px',
-            height: '56px',
+            inlineSize: '56px',
+            blockSize: '56px',
             objectFit: 'cover'
           }}
         />

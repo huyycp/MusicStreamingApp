@@ -3,15 +3,14 @@ import MusicInfo from './MusicInfo/MusicInfo'
 import MusicPlayer from './MusicPlayer/MusicPlayer'
 import MusicTool from './MusicTool/MusicTool'
 import { useMusic } from '~/hooks/useMusic'
-import { MusicProvider } from '~/contents/MusicProvider'
 
 export default function TrackBar() {
   const { music } = useMusic()
   return (
     <Box
       sx={{
-        width: '100%',
-        height: (theme) => theme.music.appTrackHeight,
+        inlineSize: '100%',
+        blockSize: (theme) => theme.music.appTrackHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -21,8 +20,8 @@ export default function TrackBar() {
       <Box
         sx={{
           flex: '0 1 446px',
-          minWidth: '227px',
-          maxWidth: '446px',
+          minInlineSize: '227px',
+          maxInlineSize: '446px',
           color: 'white',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -34,8 +33,8 @@ export default function TrackBar() {
       <Box
         sx={{
           flex: '0 1 605px',
-          minWidth: '313px',
-          maxWidth: '605px',
+          minInlineSize: '313px',
+          maxInlineSize: '605px',
           color: 'white',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -51,7 +50,7 @@ export default function TrackBar() {
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
-          marginLeft: 'auto'
+          marginInlineStart: 'auto'
         }}
       >
         <MusicTool />
