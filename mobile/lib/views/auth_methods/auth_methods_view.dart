@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/theme/text_theme.dart';
+import 'package:mobile/utils/constants.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view_model.dart';
 import 'package:mobile/widgets/base_container.dart';
 
@@ -27,7 +28,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
             Expanded(
               child: Center(
                 child: Text(
-                  'Chill Tunes', 
+                  APP_NAME, 
                   style: Theme.of(context).textTheme.displaySmall
                 )
               ),
