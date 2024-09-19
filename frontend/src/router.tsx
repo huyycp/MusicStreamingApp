@@ -30,12 +30,16 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='search' /> // Element cho trang tìm kiếm
       },
       {
-        path: '/collection/tracks',
-        element: <BodyContent viewType='collection' />
+        path: '/liked-music/tracks',
+        element: <BodyContent viewType='liked-music' />
       },
       {
         path: '/playlist/:id',
         element: <BodyContent viewType='playlist' />
+      },
+      {
+        path: '/my-music',
+        element: <BodyContent viewType='my-music' />
       },
       {
         path: '/test',

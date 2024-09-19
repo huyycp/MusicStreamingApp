@@ -26,7 +26,7 @@ export default function MainLayout() {
 
   return (
     <Box
-      sx={{ minInlineSize: '784px', bgcolor: '#000000', inlineSize: '100%', blockOverflow: '100vh', p: 1, overflowY: 'hidden', overflowX: 'auto' }}
+      sx={{ minInlineSize: '784px', bgcolor: '#000000', inlineSize: '100%', blockOverflow: '100vh', padding: '8px 8px 0px 8px', overflowY: 'hidden', overflowX: 'auto' }}
     >
       <AppBar />
       <MusicProvider intialMusic={listMusic.listMusics[currentTrackIndex]} onNextTrack={handleNextTrack} onPreviousTrack={handlePreviousTrack}>
