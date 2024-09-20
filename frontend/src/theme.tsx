@@ -86,7 +86,7 @@ declare module '@mui/material/styles' {
 
 const appBarHeight = '50px'
 const appTrackHeight = '75px'
-const appBodyHeight = `calc(100vh - ${appBarHeight} - ${appTrackHeight})`
+const appBodyHeight = `calc(100vh - ${appBarHeight} - ${appTrackHeight} - 8px)`
 
 const theme = createTheme({
   music: {

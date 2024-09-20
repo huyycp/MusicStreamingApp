@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box'
 import { mockData } from '~/apis/data-mock'
+import MyMusic from '~/components/MyMusic'
 import RecommendAlbum from '~/components/RecommendAlbum'
 
 type Props = {
@@ -22,11 +23,11 @@ export default function MainMusic({ viewType }: Props) {
         color: (theme) => theme.palette.secondary4.main
       }}
     >
-      {/* {!viewType && <Box>Home</Box>}
       {viewType === 'search' && <Box>Search</Box>}
-      {viewType === 'collection' && <Box>Collection</Box>}
-      {viewType === 'playlist' && <Box>PlayList</Box>} */}
-      <RecommendAlbum musicList={musicList} />
+      {viewType === 'liked-music' && <Box>Collection</Box>}
+      {viewType === 'playlist' && <Box>PlayList</Box>}
+      {viewType === 'my-music' && <MyMusic />}
+      {!viewType && <RecommendAlbum musicList={musicList} />}
     </Box>
   )
 }

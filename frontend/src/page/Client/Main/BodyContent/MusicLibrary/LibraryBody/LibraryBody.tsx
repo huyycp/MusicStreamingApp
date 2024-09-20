@@ -16,20 +16,11 @@ export default function LibraryBody() {
     >
       <div className='scrollable-container' style={{ blockSize: '100%', overflow: 'auto' }}>
         <Box sx={{ inlineSize: '100%', blockSize: '5px' }}></Box>
-        <MusicView1 collection={true} totalMusic={6} />
+        <MusicView1 type='liked-music' totalMusic={6} />
+        <MusicView1 type='my-music' totalMusic={4} />
         {data.listMusics.map((music, index) => (
-          <MusicView1 key={index} initMusic={music} />
+          <MusicView1 key={index} initMusic={music} type='album'/>
         ))}
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
-        <MusicView1 collection={true} totalMusic={6} />
       </div>
     </Box>
   )

@@ -13,8 +13,7 @@ export default function TrackBar() {
         blockSize: (theme) => theme.music.appTrackHeight,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        pb: 1
+        justifyContent: 'space-between'
       }}
     >
       <Box

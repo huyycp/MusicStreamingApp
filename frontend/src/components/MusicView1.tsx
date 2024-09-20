@@ -9,10 +9,12 @@ import { IMusic } from '~/type/IMusic'
 import { useMusic } from '~/hooks/useMusic'
 import { useNavigate } from 'react-router-dom'
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 
 type Props = {
   initMusic?: IMusic
-  collection?: boolean | false
+  type: string
   totalMusic?: number | 0
 }
 
@@ -48,20 +50,30 @@ const TextFade = styled(Box)(({ theme }) => ({
   }
 }))
 
-export default function MusicView1({ initMusic, collection, totalMusic }: Props) {
+export default function MusicView1({ initMusic, type = 'album', totalMusic }: Props) {
   const { widths, minWidths } = useResize()
   const { changeMusic, pause, music } = useMusic()
   const navigate = useNavigate()
 
   const handlePlay = () => {
-    if (!collection && initMusic) {
+    if (type === 'album' && initMusic) {
       changeMusic(initMusic)
     }
   }
+  const handleGetList = () => {
+    if (type === 'liked-music') {
+      navigate('/liked-music/tracks')
+    }
+    if (type === 'my-music') {
+      navigate('/my-music')
+    }
+  }
   const handleClick = () => {
-    if (!collection && initMusic) {
+    if (type === 'album' && initMusic) {
       navigate(`/playlist/${initMusic._id}`)
-    } else navigate('/collection/tracks')
+    } else if (type === 'album') {
+      navigate('/liked-music/tracks')
+    }
   }
 
   return (
@@ -87,14 +99,15 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between', // Đảm bảo icon cuối nằm sát mép phải
+            justifyContent: 'space-between',
             gap: 1,
             padding: 1
           }}
+          onClick={handleGetList}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <CoverImage className='cover-image'>
-              {!collection && (
+              {type === 'album' && (
                 <img
                   alt={initMusic?.name}
                   src={initMusic?.artUrl?.replace('{w}x{h}bb', '48x48bb')}
@@ -105,7 +118,23 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
                   }}
                 />
               )}
-              {collection && <Box sx={{ inlineSize: '48px', blockSize: '48px', background: (theme) => theme.palette.gradient.gradient1 }}></Box>}
+              {type !== 'album' && (
+                <Box
+                  sx={{
+                    inlineSize: '48px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    blockSize: '48px',
+                    background: (theme) => theme.palette.gradient.gradient1,
+                    color: (theme) => theme.palette.secondary4.main
+                  }}
+                  onClick={handleGetList}
+                >
+                  {type === 'liked-music' && <FavoriteIcon />}
+                  {type === 'my-music' && <CloudUploadIcon />}
+                </Box>
+              )}
               <IconButton
                 sx={{
                   'color': (theme) => theme.palette.secondary4.main,
@@ -139,17 +168,19 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
                   maxInlineSize: 'auto'
                 }}
               >
-                {initMusic?.name || 'Bài hát đã thích'}
+                {type === 'album' && initMusic?.name}
+                {type === 'liked-music' && 'Bài hát đã thích'}
+                {type === 'my-music' && 'Bài hát của bạn'}
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'start', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
-                {!collection &&
+                {type === 'album' &&
                   initMusic?.artistName?.map((name, index) => (
                     <TextFade key={index}>
                       {name}
                       {index < initMusic.artistName.length - 1 && ','}
                     </TextFade>
                   ))}
-                {collection && (
+                {type !== 'album' && (
                   <TextFade>
                     <PushPinIcon sx={{ fontSize: 15, color: (theme) => theme.palette.primary.main, transform: 'rotate(45deg)' }} />
                     {` ${totalMusic} bài hát`}
@@ -163,8 +194,8 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
         </Box>
       )}
       {widths[0] === minWidths[0] && (
-        <CoverImage className='cover-image'>
-          {!collection && (
+        <CoverImage className='cover-image' onClick={handleGetList}>
+          {type === 'album' && (
             <img
               alt={initMusic?.name}
               src={initMusic?.artUrl?.replace('{w}x{h}bb', '48x48bb')}
@@ -175,29 +206,23 @@ export default function MusicView1({ initMusic, collection, totalMusic }: Props)
               }}
             />
           )}
-          {collection && <Box sx={{ inlineSize: '48px', blockSize: '48px', background: (theme) => theme.palette.gradient.gradient1 }}></Box>}
-          <IconButton
-            sx={{
-              'color': (theme) => theme.palette.secondary4.main,
-              'position': 'absolute',
-              'top': '50%',
-              'left': '50%',
-              'transform': 'translate(-50%, -50%)',
-              'height': '24px',
-              'width': '24px',
-              'borderRadius': '100%',
-              'opacity': 0,
-              'transition': 'opacity 0.3s',
-              'bgcolor': (theme) => theme.palette.secondary2.main,
-              '&:hover': {
-                bgcolor: (theme) => theme.palette.secondary2.main
-              }
-            }}
-            // onClick={() => setIsPlay(!isPlay)}
-          >
-            {music._id === initMusic?._id && (pause === true ? <PlayArrowIcon /> : <PauseIcon />)}
-            {music._id !== initMusic?._id && <PlayArrowIcon />}
-          </IconButton>
+          {type !== 'album' && (
+            <Box
+              sx={{
+                inlineSize: '48px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                blockSize: '48px',
+                background: (theme) => theme.palette.gradient.gradient1,
+                color: (theme) => theme.palette.secondary4.main
+              }}
+              onClick={handleGetList}
+            >
+              {type === 'liked-music' && <FavoriteIcon />}
+              {type === 'my-music' && <CloudUploadIcon />}
+            </Box>
+          )}
         </CoverImage>
       )}
     </Box>
