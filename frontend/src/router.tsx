@@ -14,6 +14,12 @@ import ChangePassword from './page/Auth/LoginBody/ChangePassword/ChangePassword/
 import ProtectedRouteAuth from './page/Auth/ProtectedRouteAuth'
 import MainLayout from './page/Client/Main/MainLayout'
 import BodyContent from './page/Client/Main/BodyContent/BodyContent'
+import UploadMusicLayout from './page/Client/UploadMusic/UploadMusicLayout'
+import UploadMusicBody from './page/Client/UploadMusic/UploadMusicBody/UploadMusicBody'
+import UploadStep1 from './page/Client/UploadMusic/UploadStep1/UploadStep1'
+import UploadStep2 from './page/Client/UploadMusic/UploadStep2/UploadStep2'
+import ProtectedRoute from './components/ProtectedRoute'
+import UploadStep3 from './page/Client/UploadMusic/UploadStep3/UploadStep3'
 
 const router = createBrowserRouter([
   {
@@ -55,6 +61,34 @@ const router = createBrowserRouter([
       {
         element: <AuthLayout />,
         children: [{ index: true, element: <LoginBody /> }]
+      }
+    ]
+  },
+  {
+    path: '/upload-music',
+    element: <ProtectedRoute />,
+    errorElement: <Error />,
+    children: [
+      {
+        element: <UploadMusicLayout />,
+        children: [
+          {
+            index: true,
+            element: <UploadMusicBody />
+          },
+          {
+            path: 'step1',
+            element: <UploadStep1 />
+          },
+          {
+            path: 'step2',
+            element: <UploadStep2 />
+          },
+          {
+            path: 'step3',
+            element: <UploadStep3 />
+          }
+        ]
       }
     ]
   },
