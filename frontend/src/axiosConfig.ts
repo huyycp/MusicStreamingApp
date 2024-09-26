@@ -10,7 +10,8 @@ const instance = axios.create({
   baseURL: API_ROOT,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  timeout: 60000 * 3
 })
 
 instance.interceptors.request.use(

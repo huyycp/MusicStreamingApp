@@ -10,11 +10,11 @@ import AddIcon from '@mui/icons-material/Add'
 import MusicTable from './MusicTable'
 import { mockData } from '~/apis/data-mock'
 import { useResize } from '~/hooks/useResize'
-import UploadMusic from './UploadMusic'
+import { useNavigate } from 'react-router-dom'
 
 export default function MyMusic() {
   const [searchValue, setSearchValue] = useState<null | string>('')
-  const [open, setOpen] = useState<boolean>(false)
+  const navigate = useNavigate()
   const { widths } = useResize()
 
   const listMusic = mockData.listMusics
@@ -74,7 +74,7 @@ export default function MyMusic() {
               }}
             />
           )}
-          <Button variant='contained' startIcon={<AddIcon />} onClick={() => setOpen(true)}>
+          <Button variant='contained' startIcon={<AddIcon />} onClick={() => navigate('/upload-music')}>
             Tải nhạc lên
           </Button>
         </Box>
@@ -83,7 +83,6 @@ export default function MyMusic() {
       <Box sx={{ width: '100%' }}>
         <MusicTable listMusic={listMusic} />
       </Box>
-      {open && <UploadMusic open={open} setOpen={setOpen} />}
     </Box>
   )
 }
