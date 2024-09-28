@@ -1,5 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view.dart';
+import 'package:mobile/views/create_track/create_track_audio_view.dart';
+import 'package:mobile/views/create_track/create_track_info_view.dart';
+import 'package:mobile/views/create_track/create_track_lyrics_view.dart';
+import 'package:mobile/views/create_track/create_track_thumbnail_view.dart';
 import 'package:mobile/views/login/login_view.dart';
 import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
@@ -61,6 +65,34 @@ final routeConfig = GoRouter(
     GoRoute(
       path: '/splash',
       builder: (context, state) => SplashView()
+    ),
+    GoRoute(
+      path: '/track',
+      builder: (context, state) => NotFoundView(),
+      routes: [
+        GoRoute(
+          path: 'create',
+          builder: (context, state) => NotFoundView(),
+          routes: [
+            GoRoute(
+              path: 'track-info',
+              builder: (context, state) => CreateTrackInfoView()
+            ),
+            GoRoute(
+              path: 'audio',
+              builder: (context, state) => CreateTrackAudioView()
+            ),
+            GoRoute(
+              path: 'lyrics',
+              builder: (context, state) => CreateTrackLyricsView( )
+            ),
+            GoRoute(
+              path: 'thumbnail',
+              builder: (context, state) => CreateTrackThumbnailView()
+            ),
+          ]
+        )
+      ]
     )
   ]
 );
