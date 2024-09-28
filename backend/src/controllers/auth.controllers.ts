@@ -23,7 +23,7 @@ import databaseService from '~/services/database.services'
 
 export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
   const result = await authService.register(req.body)
-  return res.status(201).json({
+  return res.status(HTTP_STATUS.CREATED).json({
     message: AUTH_MESSAGES.REGISTER_SUCCESS,
     result
   })

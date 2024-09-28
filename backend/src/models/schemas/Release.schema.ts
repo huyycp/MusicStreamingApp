@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 interface ReleaseType {
-  _id: ObjectId
+  _id?: ObjectId
   artist_id: ObjectId
   product_id: ObjectId
   created_at?: Date

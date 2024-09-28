@@ -47,5 +47,6 @@ export const TRACKS_MESSAGES = {
   GET_DETAIL_TRACK_SUCCESS: 'Get detail track success',
   TRACK_ID_IS_REQUIRED: 'Track id is required',
   TRACK_ID_IS_INVALID: 'Track id is invalid',
-  TRACK_NOT_FOUND: 'Track not found'
+  TRACK_NOT_FOUND: 'Track not found',
+  CREATE_TRACK_SUCCESS: 'Create track success'
 } as const
