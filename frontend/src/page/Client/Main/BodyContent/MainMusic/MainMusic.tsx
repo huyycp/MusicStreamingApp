@@ -1,14 +1,17 @@
 import Box from '@mui/material/Box'
-import { mockData } from '~/apis/data-mock'
 import MyMusic from '~/components/MyMusic'
 import RecommendAlbum from '~/components/RecommendAlbum'
+import useGetTracks from '~/hooks/Tracks/useGetTracks'
 
 type Props = {
   viewType?: string | ''
 }
 
 export default function MainMusic({ viewType }: Props) {
-  const musicList = mockData.listMusics
+  // const musicList = mockData.listMusics
+  const { data, error, isLoading, isError } = useGetTracks()
+
+  const musicList = data?.result
   return (
     <Box
       sx={{
@@ -27,7 +30,7 @@ export default function MainMusic({ viewType }: Props) {
       {viewType === 'liked-music' && <Box>Collection</Box>}
       {viewType === 'playlist' && <Box>PlayList</Box>}
       {viewType === 'my-music' && <MyMusic />}
-      {!viewType && <RecommendAlbum musicList={musicList} />}
+      {!viewType && musicList && <RecommendAlbum musicList={musicList} />}
     </Box>
   )
 }
