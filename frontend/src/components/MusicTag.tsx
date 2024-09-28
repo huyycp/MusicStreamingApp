@@ -1,12 +1,13 @@
 import Box from '@mui/material/Box'
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined'
-import { IMusic } from '~/type/IMusic'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import { keyframes } from '@emotion/react'
+import { ITrack } from '~/type/Tracks/ITrack'
+import Typography from '@mui/material/Typography'
 
 type Props = {
-  music: IMusic
+  music: ITrack
 }
 const TextFade = styled(Box)(({ theme }) => ({
   'whiteSpace': 'nowrap',
@@ -52,13 +53,17 @@ export default function MusicTag({ music }: Props) {
     >
       <img
         alt={music?.name}
-        src={music?.artUrl?.replace('{w}x{h}bb', '142x142bb')}
+        src={music?.image || 'src/assets/image/no-image.avif'}
+        onError={(e) => {
+          e.currentTarget.src = 'src/assets/image/no-image.avif' // Đường dẫn đến ảnh mặc định
+        }}
         style={{
           inlineSize: '142px',
           blockSize: '142px',
           objectFit: 'cover'
         }}
       />
+
       <Box
         sx={{
           display: 'flex',
@@ -74,12 +79,13 @@ export default function MusicTag({ music }: Props) {
           overflow: 'hidden'
         }}
       >
-        {music.artistName.map((name, index) => (
+        <Typography>{music.name}</Typography>
+        {/* {music.artistName.map((name, index) => (
           <TextFade key={index}>
             {name}
             {index < music.artistName.length - 1 && ','}
           </TextFade>
-        ))}
+        ))} */}
       </Box>
       <IconButton
         sx={{
