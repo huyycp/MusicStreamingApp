@@ -5,6 +5,7 @@ import databaseService from './services/database.services'
 import { defaultErrorHandler } from './middlewares/error.middlewares'
 import authRouter from './routes/auth.routes'
 import tracksRouter from './routes/tracks.routes'
+import { initFolder } from './utils/files'
 
 const app = express()
 const port = envConfig.port
@@ -12,6 +13,8 @@ const port = envConfig.port
 databaseService.connect().then(() => {
   databaseService.indexVerify()
 })
+
+initFolder()
 
 app.use(cors())
 app.use(express.json())
