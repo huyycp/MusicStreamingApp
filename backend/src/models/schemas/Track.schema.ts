@@ -2,24 +2,24 @@ import { ObjectId } from 'mongodb'
 
 interface TrackType {
   _id?: ObjectId
-  album_id: ObjectId
+  album_id?: string
   name: string
   image?: string
   description?: string
   lyrics?: string
   path_audio: string
-  listen: number
+  listen?: number
   created_at?: Date
   updated_at?: Date
 }
 
 export default class Track {
   _id?: ObjectId
-  album_id: ObjectId
+  album_id: string
   name: string
-  image?: string
-  description?: string
-  lyrics?: string
+  image: string
+  description: string
+  lyrics: string
   path_audio: string
   listen: number
   created_at: Date
@@ -38,13 +38,13 @@ export default class Track {
   }: TrackType) {
     const date = new Date()
     this._id = _id
-    this.album_id = album_id
+    this.album_id = album_id || ''
     this.name = name
     this.image = image || ''
     this.description = description || ''
     this.lyrics = lyrics || ''
     this.path_audio = path_audio
-    this.listen = listen
+    this.listen = listen || 0
     this.created_at = created_at || date
     this.updated_at = updated_at || date
   }
