@@ -1,0 +1,181 @@
+
+body {
+    min-width: 800px;
+}
+.Bg{
+    display: flex;
+    margin: 10px;
+    color: black;
+}
+.TopArtist{
+    background-color: #393939;
+    flex: 2;
+    height: 100%;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+.TotalReviews{
+    background-color: #393939;
+    flex: 1;
+    height: 492px;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+.Top{
+    display: flex;
+    margin-top: 0px;
+}
+.Left{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    color: #ffffff; 
+}
+.Right{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #ffffff;
+}
+h3{
+    color: #ffffff;
+}
+select{
+    padding: 10px;
+    border: 1px solid #777777;
+    border-radius: 5px;
+    background-color: #393939;
+    font-size: 16px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    margin-left: 5px;
+    margin-right: 5px;
+  
+    &:focus {
+      border-color: #1db954;
+      ;
+      outline: none;
+    }
+}
+option{
+    font-size: 16px;
+    color: #ffffff;
+}
+.TableContainer{
+    width: 100%;
+    height: 290px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    overflow: auto;
+    text-align: center;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  
+    &::-webkit-scrollbar {
+      display: none;
+    }
+}
+table{
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+  
+    thead {
+      position: sticky;
+      top: 0; /* Giữ cố định tiêu đề ở trên cùng khi cuộn */
+      background-color: #393939; /* Màu nền cho tiêu đề để phân biệt */
+      z-index: 1; /* Đảm bảo nó nằm trên các hàng khác */
+    }
+  
+    td,
+    th {
+      vertical-align: top; /* Căn lề trên cho các hàng */
+      padding: 8px; /* Tùy chỉnh khoảng cách để dễ nhìn hơn */
+    }
+}
+th{
+    padding: 10px;
+    text-align: left;
+    color: #1db954;
+}
+td{
+    padding: 5px;
+    text-align: left;
+    color: #ffffff;
+}
+input{
+    width: 40%;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #ffffff;
+    border: 1px solid #777777;
+    background-color: #393939;
+    border-radius: 5px;
+  
+  
+    &::placeholder {
+      opacity: 0.7;
+    }
+}
+.Pagination{
+    display: flex;
+    justify-content: center;
+    background-color: #383838;
+    align-items: center;
+}
+button{
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #383838;
+    color: #fff;
+    cursor: pointer;
+}
+.RecentUsers{
+    background-color: #393939;
+    flex: 1;
+    height: 400px;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+.TotalReviews2{
+    background-color: #393939;
+    flex: 1;
+    height: 400px;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 5px;
+}
+.CircularProgressBar{
+    width: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+img{
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+@media only screen and (max-width: 990px) {
+    .Bg{
+        flex-direction: column-reverse;
+    }
+    .TotalReviews .content{
+        display: flex;
+    }
+    .CircularProgressBar {
+        width: 200px;
+        margin-left: 10px;
+    }
+    .HorizontalBar{
+        margin-left: 30px;
+        width: 68%;
+    }
+    
+}
