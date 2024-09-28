@@ -1,0 +1,63 @@
+body {
+    min-width: 800px;
+}
+.BG{
+    width: 18vw;
+    height: 200px;
+    background-color: #393939;
+    display: flex;
+    border-radius: 5px;
+    justify-content: center;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+.Circle{
+    width: 90px;
+    height: 90px;
+    background-color: #1db954;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    margin-top: 18px;
+}
+p{
+    margin-top: 155px;
+    color: #ffffff;
+}
+.Wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    margin-top: 25px;
+    margin-right: 30px;
+}
+@media only screen and (max-width: 1150px) {
+    p{
+        display: none;
+    }
+    .BG {
+        width: 200;
+        height: 130px;
+    }
+    
+    .Circle {
+        margin-top: 20px;
+    }
+}
+@media only screen and (max-width: 800px) {
+    p{
+        display: none;
+    }
+    .BG {
+        width: 124px;
+        height: 130px;
+    }
+    
+    .Circle {
+        margin-top: 20px;
+        visibility: visible; /* Đảm bảo .Circle vẫn hiện */
+    }
+}
