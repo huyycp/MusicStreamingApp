@@ -6,11 +6,11 @@ import { wrapRequestHandler } from '~/utils/handlers'
 
 const tracksRouter = Router()
 /**
- * Description. Get all track
+ * Description. Get all tracks
  * Path: /get-list-track
  * Method: GET
  */
-tracksRouter.get('/get-list-track', wrapRequestHandler(controller.getTracksController))
+tracksRouter.get('/get-list-tracks', wrapRequestHandler(controller.getTracksController))
 
 /**
  * Description. Get detail track
