@@ -1,5 +1,10 @@
 import { ParamsDictionary } from 'express-serve-static-core'
 
-export interface DetailTrackReqParams extends ParamsDictionary {
+export interface TrackParams extends ParamsDictionary {
   track_id: string
+}
+
+export interface Pagination {
+  limit: string
+  page: string
 }

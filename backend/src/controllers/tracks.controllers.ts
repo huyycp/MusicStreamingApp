@@ -1,23 +1,37 @@
 import { Request, Response, NextFunction } from 'express'
+import { ParamsDictionary } from 'express-serve-static-core'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { TRACKS_MESSAGES } from '~/constants/messages'
 import { TokenPayLoad } from '~/models/requests/Auth.requests'
-import { DetailTrackReqParams } from '~/models/requests/Track.requests'
+import { TrackParams, Pagination } from '~/models/requests/Track.requests'
 import trackService from '~/services/tracks.services'
 
-export const getTracksController = async (req: Request, res: Response, next: NextFunction) => {
-  const result = await trackService.getListTrack()
-  return res.json({
-    message: TRACKS_MESSAGES.GET_LIST_TRACK_SUCCESS,
-    result
-  })
-}
-
-export const getDetailTrackController = async (
-  req: Request<DetailTrackReqParams>,
+export const getTracksController = async (
+  req: Request<ParamsDictionary, any, any, Pagination>,
   res: Response,
   next: NextFunction
 ) => {
+  const limit = Number(req.query.limit) || 5
+  const page = Number(req.query.page) || 1
+  const result = await trackService.getListTrack({
+    limit,
+    page
+  })
+  return res.json({
+    message: TRACKS_MESSAGES.GET_LIST_TRACK_SUCCESS,
+    result: {
+      data: result.tracks,
+      meta: {
+        items_per_page: limit,
+        total_items: result.total,
+        current_page: page,
+        total_pages: Math.ceil(result.total / limit)
+      }
+    }
+  })
+}
+
+export const getDetailTrackController = async (req: Request<TrackParams>, res: Response, next: NextFunction) => {
   const { track_id } = req.params
   const result = await trackService.getDetailTrack(track_id)
   return res.json({
