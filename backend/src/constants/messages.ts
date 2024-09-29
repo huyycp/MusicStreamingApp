@@ -43,7 +43,7 @@ export const AUTH_MESSAGES = {
 } as const
 
 export const TRACKS_MESSAGES = {
-  GET_LIST_TRACK_SUCCESS: 'Get list track success',
+  GET_LIST_TRACK_SUCCESS: 'Get list tracks success',
   GET_DETAIL_TRACK_SUCCESS: 'Get detail track success',
   TRACK_ID_IS_REQUIRED: 'Track id is required',
   TRACK_ID_IS_INVALID: 'Track id is invalid',
