@@ -54,6 +54,10 @@ export default function RegisterStep3() {
   const [selectedValue, setSelectedValue] = useState('')
 
   useEffect(() => {
+    document.title = 'Magic Music - Register: Step 3'
+  }, [])
+
+  useEffect(() => {
     if (!email || !password || !name || !gender) navigate('/register')
   }, [email, password, name, gender, navigate])
 
@@ -193,9 +197,11 @@ export default function RegisterStep3() {
           </Box>
         )}
 
-        {!isPending && <Button sx={{ width: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
-          Đăng Ký
-        </Button>}
+        {!isPending && (
+          <Button sx={{ width: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
+            Đăng Ký
+          </Button>
+        )}
         {isPending && <CircularProgress color='success' />}
       </FormControl>
     </Box>

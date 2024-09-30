@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box'
-import { mockData } from '~/apis/data-mock'
 import MusicView1 from '~/components/MusicView1'
+import useGetTracks from '~/hooks/Tracks/useGetTracks'
 
 export default function LibraryBody() {
-  const data = mockData
+  const { data } = useGetTracks()
   return (
     <Box
       sx={{
@@ -18,9 +18,7 @@ export default function LibraryBody() {
         <Box sx={{ inlineSize: '100%', blockSize: '5px' }}></Box>
         <MusicView1 type='liked-music' totalMusic={6} />
         <MusicView1 type='my-music' totalMusic={4} />
-        {data.listMusics.map((music, index) => (
-          <MusicView1 key={index} initMusic={music} type='album'/>
-        ))}
+        {data?.result.data.map((music, index) => <MusicView1 key={index} initMusic={music} type='album' />)}
       </div>
     </Box>
   )

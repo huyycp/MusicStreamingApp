@@ -5,7 +5,7 @@ function App() {
   return (
     <Box
       sx={{
-        bgcolor: '#000000',
+        bgcolor: 'black',
         width: '100%',
         height: '100vh',
         p: 1,

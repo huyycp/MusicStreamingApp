@@ -5,7 +5,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import Input from '@mui/material/Input'
 import Typography from '@mui/material/Typography'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGetUploadData } from '~/hooks/useGetUploadData'
 
@@ -15,6 +15,10 @@ export default function UploadMusicBody() {
 
   const navigate = useNavigate()
   const { setName: setUploadName, name } = useGetUploadData()
+
+  useEffect(() => {
+    document.title = 'Magic Music - Upload music'
+  }, [])
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target

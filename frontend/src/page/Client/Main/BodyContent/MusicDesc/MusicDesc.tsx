@@ -19,7 +19,7 @@ export default function MusicDesc() {
       }}
     >
       {openList && <Box>ListMusic</Box>}
-      {openMusic && <Box>{music.name}</Box>}
+      {openMusic && <Box>{music?.name}</Box>}
     </Box>
   )
 }

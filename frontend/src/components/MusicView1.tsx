@@ -5,15 +5,15 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PauseIcon from '@mui/icons-material/Pause'
 import { useResize } from '~/hooks/useResize'
 import PushPinIcon from '@mui/icons-material/PushPin'
-import { IMusic } from '~/type/IMusic'
 import { useMusic } from '~/hooks/useMusic'
 import { useNavigate } from 'react-router-dom'
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { ITrack } from '~/type/Tracks/ITrack'
 
 type Props = {
-  initMusic?: IMusic
+  initMusic?: ITrack
   type: string
   totalMusic?: number | 0
 }
@@ -110,7 +110,10 @@ export default function MusicView1({ initMusic, type = 'album', totalMusic }: Pr
               {type === 'album' && (
                 <img
                   alt={initMusic?.name}
-                  src={initMusic?.artUrl?.replace('{w}x{h}bb', '48x48bb')}
+                  src={initMusic?.image?.replace('{w}x{h}bb', '48x48bb')}
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
+                  }}
                   style={{
                     inlineSize: '48px',
                     blockSize: '48px',
@@ -154,14 +157,14 @@ export default function MusicView1({ initMusic, type = 'album', totalMusic }: Pr
                 }}
                 onClick={handlePlay}
               >
-                {music._id === initMusic?._id && (pause === true ? <PlayArrowIcon /> : <PauseIcon />)}
-                {music._id !== initMusic?._id && <PlayArrowIcon />}
+                {music?._id === initMusic?._id && (pause === true ? <PlayArrowIcon /> : <PauseIcon />)}
+                {music?._id !== initMusic?._id && <PlayArrowIcon />}
               </IconButton>
             </CoverImage>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
               <Box
                 sx={{
-                  color: music._id === initMusic?._id ? (theme) => theme.palette.primary.main : (theme) => theme.palette.secondary4.main,
+                  color: music?._id === initMusic?._id ? (theme) => theme.palette.primary.main : (theme) => theme.palette.secondary4.main,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -174,10 +177,10 @@ export default function MusicView1({ initMusic, type = 'album', totalMusic }: Pr
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'start', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
                 {type === 'album' &&
-                  initMusic?.artistName?.map((name, index) => (
+                  initMusic?.artistsName?.map((name, index) => (
                     <TextFade key={index}>
                       {name}
-                      {index < initMusic.artistName.length - 1 && ','}
+                      {index < initMusic.artistsName.length - 1 && ','}
                     </TextFade>
                   ))}
                 {type !== 'album' && (
@@ -190,7 +193,7 @@ export default function MusicView1({ initMusic, type = 'album', totalMusic }: Pr
             </Box>
           </Box>
 
-          {music._id === initMusic?._id && <VolumeUpOutlinedIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
+          {music?._id === initMusic?._id && <VolumeUpOutlinedIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
         </Box>
       )}
       {widths[0] === minWidths[0] && (
@@ -198,7 +201,13 @@ export default function MusicView1({ initMusic, type = 'album', totalMusic }: Pr
           {type === 'album' && (
             <img
               alt={initMusic?.name}
-              src={initMusic?.artUrl?.replace('{w}x{h}bb', '48x48bb')}
+              src={
+                initMusic?.image?.replace('{w}x{h}bb', '48x48bb') ||
+                'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
+              }
+              onError={(e) => {
+                e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
+              }}
               style={{
                 inlineSize: '48px',
                 blockSize: '48px',

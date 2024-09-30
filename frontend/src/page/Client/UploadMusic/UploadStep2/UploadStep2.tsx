@@ -66,7 +66,6 @@ export default function UploadStep2() {
         gap: 3
       }}
     >
-
       <BorderLinearProgress variant='determinate' value={Math.floor((2 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon

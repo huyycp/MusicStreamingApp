@@ -17,16 +17,22 @@ export default function MyMusic() {
   const navigate = useNavigate()
   const { widths } = useResize()
 
+  const [selectedTab, setSelectedTab] = useState<'songs' | 'albums'>('songs')
+
   const listMusic = mockData.listMusics
+
+  // Hàm xử lý tìm kiếm theo tên bài nhạc
+  const filteredMusic = listMusic.filter((music) => music.name.toLowerCase().includes((searchValue ?? '').toLowerCase()))
 
   const handleSearchChange = useCallback((e: { target: { value: SetStateAction<string | null> } }) => {
     setSearchValue(e.target.value)
   }, [])
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', pt: 2, width: '100%', gap: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant='h3' noWrap>
-          My Music
+          {selectedTab === 'songs' ? 'My Music' : 'My Album'}
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'end', gap: 1 }}>
           {widths[1] > 650 && (
@@ -50,7 +56,6 @@ export default function MyMusic() {
                             color: (theme) => theme.palette.secondary4.main
                           }
                         }}
-                        //   onClick={handleSearchClick}
                       />
                     </Tooltip>
                   </InputAdornment>
@@ -79,9 +84,59 @@ export default function MyMusic() {
           </Button>
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}></Box>
+
+      {/* Thêm phần nút Songs và Albums */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 2, pt: 2 }}>
+        <Button
+          onClick={() => setSelectedTab('songs')}
+          sx={{
+            'color': selectedTab === 'songs' ? 'white' : 'gray',
+            'bgcolor': selectedTab === 'songs' ? 'primary.main' : 'transparent',
+            'textDecoration': selectedTab === 'songs' ? 'underline' : 'none',
+            '&:hover': {
+              bgcolor: selectedTab === 'songs' ? 'primary.main' : 'transparent',
+              color: 'white'
+            }
+          }}
+        >
+          Songs
+        </Button>
+        <Button
+          onClick={() => setSelectedTab('albums')}
+          sx={{
+            'color': selectedTab === 'albums' ? 'white' : 'gray',
+            'bgcolor': selectedTab === 'albums' ? 'primary.main' : 'transparent',
+            'textDecoration': selectedTab === 'albums' ? 'underline' : 'none',
+            '&:hover': {
+              bgcolor: selectedTab === 'albums' ? 'primary.main' : 'transparent',
+              color: 'white'
+            }
+          }}
+        >
+          Albums
+        </Button>
+        {selectedTab === 'albums' && (
+          <Button
+            startIcon={<AddIcon />}
+            sx={{
+              'color': selectedTab === 'albums' ? 'white' : 'gray',
+              'bgcolor': selectedTab === 'albums' ? 'primary.main' : 'transparent',
+              'textDecoration': selectedTab === 'albums' ? 'underline' : 'none',
+              '&:hover': {
+                bgcolor: selectedTab === 'albums' ? 'primary.main' : 'transparent',
+                color: 'white'
+              }
+            }}
+          >
+            New Album
+          </Button>
+        )}
+      </Box>
+
+      {/* Hiển thị danh sách nhạc đã lọc */}
       <Box sx={{ width: '100%' }}>
-        <MusicTable listMusic={listMusic} />
+        {selectedTab === 'songs' && <MusicTable listMusic={filteredMusic} />}
+        {selectedTab === 'albums' && <MusicTable listMusic={filteredMusic} />}
       </Box>
     </Box>
   )

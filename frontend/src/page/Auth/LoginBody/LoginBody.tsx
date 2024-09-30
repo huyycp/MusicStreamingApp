@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import SvgIcon from '@mui/material/SvgIcon'
 import Typography from '@mui/material/Typography'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import GoogleIcon from '~/assets/icon/GoogleIcon.svg?react'
 import FormControl from '@mui/material/FormControl'
@@ -22,6 +22,10 @@ export default function LoginBody() {
   const [password, setPassword] = useState('')
   const [visible, setVisible] = useState(true)
   const { mutate: login, isPending } = useLogin()
+
+  useEffect(() => {
+    document.title = 'Magic Music - Login'
+  }, [])
 
   const navigate = useNavigate()
 

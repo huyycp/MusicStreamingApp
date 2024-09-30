@@ -1,55 +1,85 @@
 import { useState, useEffect, ReactNode } from 'react'
 import MusicContext from '~/hooks/useMusic'
-import { IMusic } from '~/type/IMusic'
+import { ITrack } from '~/type/Tracks/ITrack'
 
 interface MusicProviderProps {
-  intialMusic: IMusic
+  listMusic: ITrack[]
   children: ReactNode
-  onNextTrack: () => IMusic
-  onPreviousTrack: () => IMusic
 }
 
-export function MusicProvider({ children, intialMusic, onNextTrack, onPreviousTrack }: MusicProviderProps) {
+export function MusicProvider({ children, listMusic }: MusicProviderProps) {
   const [pause, setPause] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(0.5)
   const [mute, setMute] = useState<boolean>(false)
   const [repeat, setRepeat] = useState<boolean>(false)
-  const [music, setMusic] = useState<IMusic>(intialMusic)
+  const [music, setMusic] = useState<ITrack | null>(null) // Bắt đầu với null, chưa set bài hát
   const [position, setPosition] = useState(0)
   const [duration, setDuration] = useState(0)
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null)
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null) // Bắt đầu với null
+
+  // Lấy chỉ số bài hát từ localStorage khi trang load
+  useEffect(() => {
+    const savedTrackIndex = localStorage.getItem('currentTrackIndex')
+    if (savedTrackIndex !== null) {
+      const index = parseInt(savedTrackIndex, 10)
+      setCurrentTrackIndex(index)
+      setMusic(listMusic[index])
+    } else {
+      setCurrentTrackIndex(0) // Nếu không có trong localStorage, set về 0 khi cần thiết
+      setMusic(listMusic[0])
+    }
+  }, [listMusic])
+
+  const handleNextTrack = () => {
+    const nextIndex = currentTrackIndex !== null && currentTrackIndex < listMusic.length - 1 ? currentTrackIndex + 1 : 0
+    setCurrentTrackIndex(nextIndex)
+    localStorage.setItem('currentTrackIndex', nextIndex.toString()) // Lưu lại chỉ số bài hát vào localStorage
+    return listMusic[nextIndex]
+  }
+
+  const handlePreviousTrack = () => {
+    const prevIndex = currentTrackIndex !== null && currentTrackIndex > 0 ? currentTrackIndex - 1 : listMusic.length - 1
+    setCurrentTrackIndex(prevIndex)
+    localStorage.setItem('currentTrackIndex', prevIndex.toString()) // Lưu lại chỉ số bài hát vào localStorage
+    return listMusic[prevIndex]
+  }
 
   useEffect(() => {
-    const audio = new Audio(music.musicUrl)
-    audio.addEventListener('loadedmetadata', () => {
-      setDuration(audio.duration)
-    })
+    if (music) {
+      const audio = new Audio(music.path_audio)
+      audio.addEventListener('loadedmetadata', () => {
+        setDuration(audio.duration)
+      })
 
-    const handleTimeUpdate = () => {
-      if (audio) {
-        setPosition(audio.currentTime)
+      const handleTimeUpdate = () => {
+        if (audio) {
+          setPosition(audio.currentTime)
+        }
+      }
+      const handleEnded = () => {
+        const nextMusic = handleNextTrack()
+        setMusic(nextMusic)
+        audio.src = nextMusic.path_audio
+        document.title = `${music.name}`
+        audio.play()
+      }
+
+      audio.addEventListener('timeupdate', handleTimeUpdate)
+      audio.addEventListener('ended', handleEnded)
+      setAudioElement(audio)
+
+      return () => {
+        if (audio) {
+          audio.removeEventListener('timeupdate', handleTimeUpdate)
+          audio.removeEventListener('ended', handleEnded)
+          document.title = 'Magic Music'
+          audio.pause()
+        }
       }
     }
-    const handleEnded = () => {
-      const nextMusic = onNextTrack()
-      setMusic(nextMusic)
-      audio.src = nextMusic.musicUrl
-      audio.play()
-    }
-
-    audio.addEventListener('timeupdate', handleTimeUpdate)
-    audio.addEventListener('ended', handleEnded)
-    setAudioElement(audio)
-
-    return () => {
-      if (audio) {
-        audio.removeEventListener('timeupdate', handleTimeUpdate)
-        audio.removeEventListener('ended', handleEnded)
-        audio.pause()
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onNextTrack])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [music])
 
   useEffect(() => {
     if (audioElement) {
@@ -61,43 +91,44 @@ export function MusicProvider({ children, intialMusic, onNextTrack, onPreviousTr
   useEffect(() => {
     if (audioElement) {
       if (pause) {
+        document.title = 'Magic Music'
         audioElement.pause()
       } else {
+        document.title = `${music?.name || 'Music'}`
         audioElement.play()
       }
     }
-  }, [audioElement, pause])
+  }, [audioElement, music?.name, pause])
 
   const playNextTrack = () => {
-    const nextMusic = onNextTrack()
+    const nextMusic = handleNextTrack()
     setMusic(nextMusic)
     if (audioElement) {
-      audioElement.src = nextMusic.musicUrl
+      audioElement.src = nextMusic.path_audio
       setPosition(0)
       audioElement.play()
     }
   }
 
   const playPreviousTrack = () => {
-    const prevMusic = onPreviousTrack()
+    const prevMusic = handlePreviousTrack()
     setMusic(prevMusic)
     if (audioElement) {
-      audioElement.src = prevMusic.musicUrl
+      audioElement.src = prevMusic.path_audio
       setPosition(0)
       audioElement.play()
     }
   }
 
-  const changeMusic = (song: IMusic) => {
-    if (song._id === music._id) setPause(!pause)
+  const changeMusic = (song: ITrack) => {
+    if (song._id === music?._id) setPause(!pause)
     else {
       if (audioElement) {
-        audioElement.src = song.musicUrl
+        audioElement.src = song.path_audio
         setPosition(0)
         audioElement.play()
       }
       setMusic(song)
-
       setPause(false)
     }
   }

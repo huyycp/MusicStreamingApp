@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { apiGetTracks } from '~/apis/Tracks/TrackAPI'
-import { ITrack } from '~/type/Tracks/ITrack'
+import { apiGetTracks, ITrackResponse } from '~/apis/Tracks/TrackAPI'
 
-const useGetTracks = () => {
-  return useQuery<{ message: string; result: ITrack[] }>({
-    queryKey: ['tracks'],
-    queryFn: apiGetTracks
+const useGetTracks = (limit: number = 5, page: number = 0) => {
+  return useQuery<ITrackResponse>({
+    queryKey: ['tracks', limit, page],
+    queryFn: () => apiGetTracks(limit, page)
   })
 }
 export default useGetTracks
