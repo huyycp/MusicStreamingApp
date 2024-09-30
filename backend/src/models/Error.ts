@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import HTTP_STATUS from '~/constants/httpStatus'
 import { AUTH_MESSAGES } from '~/constants/messages'
 
