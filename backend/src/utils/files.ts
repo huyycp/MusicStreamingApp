@@ -9,7 +9,6 @@ import { Media } from '~/models/Other'
 import { uploadFileToS3 } from './s3'
 import { CompleteMultipartUploadCommandOutput } from '@aws-sdk/client-s3'
 import { MediaType } from '~/constants/enums'
-import { nanoid } from 'nanoid'
 
 export const initFolder = () => {
   ;[UPLOAD_MEDIA_TEMP_DIR].forEach((dir) => {

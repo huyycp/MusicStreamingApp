@@ -8,3 +8,7 @@ export interface Pagination {
   limit: string
   page: string
 }
+
+export interface ArtistParams extends ParamsDictionary {
+  artist_id: string
+}
