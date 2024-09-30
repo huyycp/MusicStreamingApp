@@ -23,8 +23,7 @@ export const mockData: { listMusics: IMusic[] } = {
       name: 'See You Again (feat. Charlie Puth)',
       artUrl: 'https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/e6/8a/68/e68a688e-129e-cb9d-938f-bc3ee37059ae/075679930910.jpg/{w}x{h}bb.jpg',
       artistName: ['Wiz Khalifa', 'Charlie Puth'],
-      musicUrl:
-        'http://res.cloudinary.com/dnavrxwoi/video/upload/v1719301021/wakxginexapberongeke.mp3'
+      musicUrl: 'http://res.cloudinary.com/dnavrxwoi/video/upload/v1719301021/wakxginexapberongeke.mp3'
     }
   ]
 }

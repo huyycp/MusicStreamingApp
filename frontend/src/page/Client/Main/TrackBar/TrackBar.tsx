@@ -27,7 +27,7 @@ export default function TrackBar() {
           whiteSpace: 'nowrap'
         }}
       >
-        <MusicInfo music={music} />
+        {music && <MusicInfo music={music} />}
       </Box>
       <Box
         sx={{

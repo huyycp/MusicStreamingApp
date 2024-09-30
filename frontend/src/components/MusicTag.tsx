@@ -1,10 +1,11 @@
 import Box from '@mui/material/Box'
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined'
-import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import { keyframes } from '@emotion/react'
 import { ITrack } from '~/type/Tracks/ITrack'
 import Typography from '@mui/material/Typography'
+import { styled } from '@mui/material/styles'
+import { capitalizeFirstLetterOfEachWord } from '~/utils/capitalizeFirstLetterOfEachWord'
 
 type Props = {
   music: ITrack
@@ -53,9 +54,9 @@ export default function MusicTag({ music }: Props) {
     >
       <img
         alt={music?.name}
-        src={music?.image || 'src/assets/image/no-image.avif'}
+        src={music?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
         onError={(e) => {
-          e.currentTarget.src = 'src/assets/image/no-image.avif' // Đường dẫn đến ảnh mặc định
+          e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
         }}
         style={{
           inlineSize: '142px',
@@ -64,6 +65,7 @@ export default function MusicTag({ music }: Props) {
         }}
       />
 
+      <Typography>{capitalizeFirstLetterOfEachWord(music.name)}</Typography>
       <Box
         sx={{
           display: 'flex',
@@ -79,13 +81,12 @@ export default function MusicTag({ music }: Props) {
           overflow: 'hidden'
         }}
       >
-        <Typography>{music.name}</Typography>
-        {/* {music.artistName.map((name, index) => (
+        {music.artistsName.map((name, index) => (
           <TextFade key={index}>
             {name}
-            {index < music.artistName.length - 1 && ','}
+            {index < music.artistsName.length - 1 && ','}
           </TextFade>
-        ))} */}
+        ))}
       </Box>
       <IconButton
         sx={{

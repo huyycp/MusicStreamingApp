@@ -26,6 +26,10 @@ export default function VerifyEmail() {
     if (!email || !password || !name || !gender || !role) navigate('/register')
   }, [email, password, name, gender, navigate, role])
 
+  useEffect(() => {
+    document.title = 'Magic Music - Register: Verify'
+  }, [])
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     setOtp(value)

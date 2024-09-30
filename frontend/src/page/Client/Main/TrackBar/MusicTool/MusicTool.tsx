@@ -153,7 +153,7 @@ export default function MusicTool() {
           </Box>
         </Tooltip>
       </Box>
-      {fullScreen && <FullScreenView setFullScreen={setFullScreen}/>}
+      {fullScreen && <FullScreenView setFullScreen={setFullScreen} />}
     </Box>
   )
 }

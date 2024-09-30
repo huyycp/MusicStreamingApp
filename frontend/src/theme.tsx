@@ -207,6 +207,12 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: {
+        'body': {
+          backgroundColor: '#000000'
+        },
+        '*': {
+          userSelect: 'none' // Ngăn chặn việc chọn nội dung
+        },
         '*::-webkit-scrollbar': {
           width: '16px',
           opacity: 0,

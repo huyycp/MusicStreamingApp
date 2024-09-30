@@ -28,6 +28,10 @@ export default function ChangePassword() {
     }
   }, [email, navigate])
 
+  useEffect(() => {
+    document.title = 'Magic Music - Change Password'
+  }, [])
+
   const [visible, setVisible] = useState(true)
   const [visible2, setVisible2] = useState(true)
   const [otp, setOtp] = useState('')
