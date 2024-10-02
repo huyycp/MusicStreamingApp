@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import { capitalizeFirstLetterOfEachWord } from '~/utils/capitalizeFirstLetterOfEachWord'
 
+
 type Props = {
   music: ITrack
 }
@@ -64,8 +65,8 @@ export default function MusicTag({ music }: Props) {
           objectFit: 'cover'
         }}
       />
-
       <Typography>{capitalizeFirstLetterOfEachWord(music.name)}</Typography>
+
       <Box
         sx={{
           display: 'flex',
@@ -86,7 +87,7 @@ export default function MusicTag({ music }: Props) {
             {name}
             {index < music.artistsName.length - 1 && ','}
           </TextFade>
-        ))}
+        ))} */}
       </Box>
       <IconButton
         sx={{

@@ -17,5 +17,4 @@ export const apiGetTracks = async (limit: number, page: number): Promise<ITrackR
 
 export const apiGetTracksByArtist = async (limit: number, page: number, status: TrackStatus) => {
   const response = await instance.get<ITrackResponse>(`/tracks/my-tracks?limit=${limit}&page=${page}&status=${status}`)
-  return response.data
-}
+

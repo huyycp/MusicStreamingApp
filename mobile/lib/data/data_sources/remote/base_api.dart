@@ -32,9 +32,9 @@ abstract class BaseApi {
 
   late Dio dio;
   late final FlutterSecureStorage storage;
-  final connectTimeOut = Duration(milliseconds: 3000);
-  final sendTimeOut = Duration(milliseconds: 3000);
-  final receiveTimeOut = Duration(milliseconds: 3000);
+  final connectTimeOut = Duration(milliseconds: 3 * 60000);
+  final sendTimeOut = Duration(milliseconds: 3 * 60000);
+  final receiveTimeOut = Duration(milliseconds: 3 * 60000);
 
   set token(String? value) {
     String? bearerToken;

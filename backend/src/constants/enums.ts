@@ -25,3 +25,13 @@ export enum TokenType {
   ForgotPasswordToken,
   EmailVerifyToken
 }
+
+export enum MediaType {
+  Image,
+  Audio
+}
+
+export enum ProductType {
+  Track,
+  Album
+}

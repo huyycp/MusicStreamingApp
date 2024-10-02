@@ -43,9 +43,15 @@ export const AUTH_MESSAGES = {
 } as const
 
 export const TRACKS_MESSAGES = {
-  GET_LIST_TRACK_SUCCESS: 'Get list track success',
+  GET_LIST_TRACKS_SUCCESS: 'Get list tracks success',
+  GET_LIST_TRACKS_BY_ARTIST_SUCCESS: 'Get list tracks by artist success',
   GET_DETAIL_TRACK_SUCCESS: 'Get detail track success',
   TRACK_ID_IS_REQUIRED: 'Track id is required',
   TRACK_ID_IS_INVALID: 'Track id is invalid',
-  TRACK_NOT_FOUND: 'Track not found'
+  TRACK_NOT_FOUND: 'Track not found',
+  CREATE_TRACK_SUCCESS: 'Create track success',
+  ROLE_NOT_ARTIST: 'Role not artist',
+  ARTIST_ID_IS_REQUIRED: 'Artist id is required',
+  ARTIST_ID_IS_INVALID: 'Artist id is invalid',
+  ARTIST_NOT_FOUND: 'Artist not found'
 } as const

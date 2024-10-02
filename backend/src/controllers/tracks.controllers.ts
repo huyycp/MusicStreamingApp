@@ -1,25 +1,73 @@
 import { Request, Response, NextFunction } from 'express'
+import { ParamsDictionary } from 'express-serve-static-core'
+import HTTP_STATUS from '~/constants/httpStatus'
 import { TRACKS_MESSAGES } from '~/constants/messages'
-import { DetailTrackReqParams } from '~/models/requests/Track.requests'
+import { TokenPayLoad } from '~/models/requests/Auth.requests'
+import { TrackParams, Pagination, ArtistParams } from '~/models/requests/Track.requests'
 import trackService from '~/services/tracks.services'
 
-export const getTracksController = async (req: Request, res: Response, next: NextFunction) => {
-  const result = await trackService.getListTrack()
-  return res.json({
-    message: TRACKS_MESSAGES.GET_LIST_TRACK_SUCCESS,
-    result
-  })
-}
-
-export const getDetailTrackController = async (
-  req: Request<DetailTrackReqParams>,
+export const getTracksController = async (
+  req: Request<ParamsDictionary, any, any, Pagination>,
   res: Response,
   next: NextFunction
 ) => {
+  const limit = Number(req.query.limit) || 5
+  const page = Number(req.query.page) || 1
+  const result = await trackService.getListTrack({
+    limit,
+    page
+  })
+  return res.json({
+    message: TRACKS_MESSAGES.GET_LIST_TRACKS_SUCCESS,
+    result: {
+      data: result.tracks,
+      meta: {
+        items_per_page: limit,
+        total_items: result.total,
+        current_page: page,
+        total_pages: Math.ceil(result.total / limit)
+      }
+    }
+  })
+}
+
+export const getDetailTrackController = async (req: Request<TrackParams>, res: Response, next: NextFunction) => {
   const { track_id } = req.params
   const result = await trackService.getDetailTrack(track_id)
   return res.json({
     message: TRACKS_MESSAGES.GET_DETAIL_TRACK_SUCCESS,
     result
+  })
+}
+
+export const createTrackController = async (req: Request, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayLoad
+  const result = await trackService.createTrack({ req, user_id })
+  return res.status(HTTP_STATUS.CREATED).json({
+    message: TRACKS_MESSAGES.CREATE_TRACK_SUCCESS,
+    result
+  })
+}
+
+export const getTrackByArtistController = async (
+  req: Request<ArtistParams, any, any, Pagination>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { artist_id } = req.params
+  const limit = Number(req.query.limit) || 5
+  const page = Number(req.query.page) || 1
+  const result = await trackService.getTrackByArtist({ artist_id, limit, page })
+  return res.json({
+    message: TRACKS_MESSAGES.GET_LIST_TRACKS_BY_ARTIST_SUCCESS,
+    result: {
+      data: result.tracks,
+      meta: {
+        items_per_page: limit,
+        total_items: result.total,
+        current_page: page,
+        total_pages: Math.ceil(result.total / limit)
+      }
+    }
   })
 }

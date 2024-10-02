@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/login/login_view_model.dart';
 import 'package:mobile/widgets/status_dialog_widget.dart';
@@ -78,14 +77,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
       validator: emailValidator,
       keyboardType: TextInputType.emailAddress,
       controller: ref.read(loginViewModel).emailController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide.none
-        ),
-        fillColor: INPUT_FILL_COLOR,
-        filled: true,
-      ),
     );
   }
 
@@ -94,14 +85,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
       validator: emptyValidator,
       initialObscurity: true,
       controller: ref.read(loginViewModel).passwordController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide.none
-        ),
-        fillColor: INPUT_FILL_COLOR,
-        filled: true,
-      ),
     );
   }
 
