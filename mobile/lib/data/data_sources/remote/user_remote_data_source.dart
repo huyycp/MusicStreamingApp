@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
-import 'package:mobile/data/dto/login_dto.dart';
-import 'package:mobile/data/dto/register_dto.dart';
-import 'package:mobile/data/dto/verify_email_dto.dart';
+import 'package:mobile/data/dto/req/login_dto.dart';
+import 'package:mobile/data/dto/req/register_dto.dart';
+import 'package:mobile/data/dto/req/verify_email_dto.dart';
 
 final userRemoteProvider = Provider<UserRemoteDataSource>(
   (ref) => UserRemoteDataSource(ref.read(magicMusicApiProvider))
@@ -27,7 +27,7 @@ class UserRemoteDataSource {
   Future<bool> registerWithEmail(RegisterDto dto) async {
     final response = await _magicMusicApi.request(
       _registerPath, 
-      method: HttpMethod.POST,
+      method: HttpMethods.POST,
       data: dto.toJson()
     );
     
@@ -47,7 +47,7 @@ class UserRemoteDataSource {
   Future<void> getAuthOTP(String email) async {
     await _magicMusicApi.request(
       _getOtpPath,
-      method: HttpMethod.POST,
+      method: HttpMethods.POST,
       data: {
         'email': email
       }
@@ -57,7 +57,7 @@ class UserRemoteDataSource {
   Future<bool> verifyEmail(VerifyEmailDto dto) async {
     final response = await _magicMusicApi.request(
       _verifyEmailPath,
-      method: HttpMethod.POST,
+      method: HttpMethods.POST,
       data: dto.toJson()
     );
     return response.statusCode == HttpStatus.ok;
@@ -66,7 +66,7 @@ class UserRemoteDataSource {
   Future<List<String>> getAvailableEmails() async {
     final response = await _magicMusicApi.request(
       _getAvailableEmailsPath,
-      method: HttpMethod.GET
+      method: HttpMethods.GET
     );
 
     if (response.statusCode == HttpStatus.ok) {
@@ -83,7 +83,7 @@ class UserRemoteDataSource {
   Future<bool> loginWithEmail(LoginDto dto) async {
     final response = await _magicMusicApi.request(
       _loginPath, 
-      method: HttpMethod.POST,
+      method: HttpMethods.POST,
       data: dto.toJson()
     );
 
@@ -103,7 +103,7 @@ class UserRemoteDataSource {
   Future<bool> logout() async {
     final response = await _magicMusicApi.request(
       _logoutPath,
-      method: HttpMethod.POST,
+      method: HttpMethods.POST,
       options: Options(
         headers: {
           HttpHeaders.userAgentHeader: 'mobile ${await _magicMusicApi.getRefreshToken()}'

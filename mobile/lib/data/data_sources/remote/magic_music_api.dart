@@ -39,7 +39,7 @@ class MagicMusicApi extends BaseApi {
   /// Handle requests
   Future<Response> request(
     String path, {
-    required HttpMethod method,
+    required HttpMethods method,
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -60,7 +60,7 @@ class MagicMusicApi extends BaseApi {
   }
 }
 
-enum HttpMethod {
+enum HttpMethods {
   GET,
   POST,
   PUT,
