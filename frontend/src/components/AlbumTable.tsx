@@ -5,30 +5,25 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
+import { IMusic } from '~/type/IMusic'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
-import SortIcon from '@mui/icons-material/Sort'
-import { ITrack } from '~/type/Tracks/ITrack'
 
 type Props = {
-  listMusic: ITrack[] | undefined
+  listMusic: IMusic[]
 }
 
-export default function MusicTable({ listMusic }: Props) {
+export default function AlbumTable({ listMusic }: Props) {
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
 
   return (
-    <TableContainer component={Paper} sx={{ minWidth: 150, maxWidth: '100%', overflow: 'auto', bgcolor: 'transparent' }}>
-      <Table aria-label='music table' sx={{ tableLayout: 'fixed' }}>
+    <TableContainer component={Paper} sx={{ minWidth: 150, maxWidth: '100%', overflowX: 'auto', bgcolor: 'transparent' }}>
+      <Table aria-label='album table' sx={{ tableLayout: 'fixed' }}>
         <TableHead sx={{ bgcolor: theme.palette.secondary5.main }}>
           <TableRow>
-            <TableCell sx={{ color: textColor }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                Song <SortIcon sx={{ fontSize: 16 }} />
-              </Box>
-            </TableCell>
+            <TableCell sx={{ color: textColor }}>Song</TableCell>
             <TableCell align='left' sx={{ color: textColor }}>
               Artist
             </TableCell>
@@ -44,28 +39,15 @@ export default function MusicTable({ listMusic }: Props) {
           </TableRow>
         </TableHead>
         <TableBody sx={{ bgcolor: theme.palette.neutral.neutral3 }}>
-          {listMusic?.map((row) => (
+          {listMusic.map((row) => (
             <TableRow key={row._id}>
               <TableCell
                 component='th'
                 scope='row'
-                sx={{ color: textColor, maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                sx={{ color: textColor, maxWidth: 300, minWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
               >
                 <Box display='flex' alignItems='center'>
-                  <img
-                    alt={row?.name}
-                    src={row?.image?.replace('{w}x{h}bb', '48x48bb')}
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
-                    }}
-                    style={{
-                      inlineSize: '48px',
-                      blockSize: '48px',
-                      objectFit: 'cover',
-                      borderRadius: '10px',
-                      marginRight: '10px'
-                    }}
-                  />
+                  <img src={row.artUrl.replace('{w}', '50').replace('{h}', '50')} alt={row.name} style={{ marginRight: 8, width: 50, height: 50 }} />
                   <Typography noWrap variant='body2'>
                     {row.name}
                   </Typography>
@@ -77,7 +59,7 @@ export default function MusicTable({ listMusic }: Props) {
                   variant='body2'
                   sx={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: textColor }}
                 >
-                  {row.artistsName.join(', ')}
+                  {row.artistName.join(', ')}
                 </Typography>
               </TableCell>
               <TableCell align='right' sx={{ color: textColor }}>

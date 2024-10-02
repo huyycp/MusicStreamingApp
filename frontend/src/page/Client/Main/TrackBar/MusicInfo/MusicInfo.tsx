@@ -6,7 +6,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
-import { IMusic } from '~/type/IMusic'
+import { ITrack } from '~/type/Tracks/ITrack'
 
 const CoverImage = styled('div')({
   'position': 'relative',
@@ -40,7 +40,7 @@ const TextFade = styled(Box)(({ theme }) => ({
   }
 }))
 type Props = {
-  music: IMusic
+  music: ITrack
 }
 
 export default function MusicInfo({ music }: Props) {
@@ -54,14 +54,17 @@ export default function MusicInfo({ music }: Props) {
         justifyContent: 'start',
         pl: '8px',
         gap: 1,
-        flex: '1 1 auto', // Allow the container to grow/shrink
+        flex: '1 1 auto',
         overflow: 'hidden'
       }}
     >
       <CoverImage>
         <img
           alt={music.name}
-          src={music.artUrl.replace('{w}x{h}bb', '56x56bb')}
+          src={music.image.replace('{w}x{h}bb', '56x56bb')}
+          onError={(e) => {
+            e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
+          }}
           style={{
             inlineSize: '56px',
             blockSize: '56px',
@@ -117,10 +120,10 @@ export default function MusicInfo({ music }: Props) {
               overflow: 'hidden'
             }}
           >
-            {music.artistName.map((name, index) => (
+            {music.artistsName.map((name, index) => (
               <TextFade key={index}>
                 {name}
-                {index < music.artistName.length - 1 && ','}
+                {index < music.artistsName.length - 1 && ','}
               </TextFade>
             ))}
           </Box>
@@ -131,8 +134,8 @@ export default function MusicInfo({ music }: Props) {
               'color': (theme) => theme.palette.neutral.neutral1,
               'cursor': 'pointer',
               'fontSize': 18,
-              'ml': 1, // Thêm khoảng cách nhỏ giữa MusicInfo và ControlPointIcon
-              'flexShrink': 0, // Prevent icon from shrinking
+              'ml': 1,
+              'flexShrink': 0,
               '&:hover': {
                 color: (theme) => theme.palette.secondary4.main
               }

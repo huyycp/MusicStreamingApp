@@ -5,36 +5,41 @@ import AppBar from './AppBar/AppBar'
 import TrackBar from './TrackBar/TrackBar'
 import { ResizeProvider } from '~/contents/ResizeProvider'
 import { MusicProvider } from '~/contents/MusicProvider'
-import { mockData } from '~/apis/data-mock'
-import { useState } from 'react'
+import useGetTracks from '~/hooks/Tracks/useGetTracks'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export default function MainLayout() {
-  const listMusic = mockData
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
+  const { data, isPending } = useGetTracks()
 
-  const handleNextTrack = () => {
-    const nextIndex = currentTrackIndex < listMusic.listMusics.length - 1 ? currentTrackIndex + 1 : 0
-    setCurrentTrackIndex(nextIndex)
-    return listMusic.listMusics[nextIndex]
-  }
-
-  const handlePreviousTrack = () => {
-    const prevIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : listMusic.listMusics.length - 1
-    setCurrentTrackIndex(prevIndex)
-    return listMusic.listMusics[prevIndex]
-  }
+  const listMusic = data?.result.data
 
   return (
     <Box
-      sx={{ minInlineSize: '784px', bgcolor: '#000000', inlineSize: '100%', blockOverflow: '100vh', padding: '8px 8px 0px 8px', overflowY: 'hidden', overflowX: 'auto', maxHeight: 'auto' }}
+      sx={{
+        minInlineSize: '784px',
+        bgcolor: '#000000',
+        inlineSize: '100%',
+        blockOverflow: '100vh',
+        padding: '8px 8px 0px 8px',
+        overflowY: 'hidden',
+        overflowX: 'auto',
+        maxHeight: 'auto'
+      }}
     >
       <AppBar />
-      <MusicProvider intialMusic={listMusic.listMusics[currentTrackIndex]} onNextTrack={handleNextTrack} onPreviousTrack={handlePreviousTrack}>
-        <ResizeProvider>
-          <Outlet />
-          <TrackBar />
-        </ResizeProvider>
-      </MusicProvider>
+      {listMusic && (
+        <MusicProvider listMusic={listMusic}>
+          <ResizeProvider>
+            <Outlet />
+            <TrackBar />
+          </ResizeProvider>
+        </MusicProvider>
+      )}
+      {isPending && (
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
+          <CircularProgress sx={{ color: (theme) => theme.palette.primary.main }} />
+        </Box>
+      )}
     </Box>
   )
 }

@@ -23,7 +23,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export default function UploadStep2() {
   const [textContent, setTextContent] = useState<string>('')
 
-  const { setLyrics, name, audioFile, setAudioFile } = useGetUploadData()
+  const { setLyrics, name, audioFile, setAudioFile, setImageFile } = useGetUploadData()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -32,7 +32,8 @@ export default function UploadStep2() {
     } else if (!audioFile) {
       navigate('/upload-music/step1')
     }
-  }, [audioFile, name, navigate])
+    setImageFile(null)
+  }, [audioFile, name, navigate, setImageFile])
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
@@ -66,7 +67,6 @@ export default function UploadStep2() {
         gap: 3
       }}
     >
-
       <BorderLinearProgress variant='determinate' value={Math.floor((2 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon

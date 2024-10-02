@@ -7,22 +7,22 @@ import Typography from '@mui/material/Typography'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useGetUploadData } from '~/hooks/useGetUploadData'
+import { useGetCreateAlbumData } from '~/hooks/useGetCreateAlbumData'
 
-export default function UploadMusicBody() {
-  // const [name, setName] = useState('')
+export default function CreateAlbumBody() {
   const [error, setError] = useState('')
 
+  const { name, setName } = useGetCreateAlbumData()
+
   const navigate = useNavigate()
-  const { setName: setUploadName, name } = useGetUploadData()
 
   useEffect(() => {
-    document.title = 'Magic Music - Upload music'
+    document.title = 'Magic Music - Create Album'
   }, [])
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    setUploadName(value)
+    setName(value)
     if (value === '') setError('Không để trống')
     else setError('')
   }
@@ -31,8 +31,8 @@ export default function UploadMusicBody() {
     setError('')
     if (name.trim() === '') setError('Không để trống')
     else if (error === '') {
-      setUploadName(name)
-      navigate('/upload-music/step1')
+      setName(name)
+      navigate('/create-album/step1')
     }
   }
 
@@ -50,7 +50,7 @@ export default function UploadMusicBody() {
       }}
     >
       <Typography variant='h3' fontWeight='bold' sx={{ textAlign: 'center', mb: '20px' }}>
-        Nhập tên bài hát và người tham gia
+        Nhập tên album
       </Typography>
       <Box
         sx={{
@@ -76,11 +76,11 @@ export default function UploadMusicBody() {
         }}
       >
         <FormControl sx={{ width: '100%', pb: 2 }} error={!!error}>
-          <Box sx={{ fontSize: 14, fontWeight: 'bold' }}>Tên của bài hát</Box>
+          <Box sx={{ fontSize: 14, fontWeight: 'bold' }}>Tên của album</Box>
           <Input
             id='my-input'
             aria-describedby='my-helper-text'
-            placeholder='Tên bài hát'
+            placeholder='Tên album'
             value={name}
             onChange={handleChange}
             sx={{

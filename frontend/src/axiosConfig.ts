@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
-import { API_ROOT } from './utils/constant'
 import { apiRefreshToken } from './apis/Auth/LoginAPI'
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -7,7 +6,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 const instance = axios.create({
-  baseURL: API_ROOT,
+  baseURL: import.meta.env.VITE_API_ROOT,
   headers: {
     'Content-Type': 'application/json'
   },

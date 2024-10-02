@@ -139,6 +139,23 @@ const theme = createTheme({
     }
   },
   components: {
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          'color': '#fff',
+          '&.Mui-notChecked svg': {
+            color: '#fff'
+          },
+          '&:hover': {
+            backgroundColor: 'transparent'
+          },
+          '&:before': {
+            backgroundColor: '#fff',
+            border: '1px solid #d3d3d3'
+          }
+        }
+      }
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -207,6 +224,12 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: {
+        'body': {
+          backgroundColor: '#000000'
+        },
+        '*': {
+          userSelect: 'none' // Ngăn chặn việc chọn nội dung
+        },
         '*::-webkit-scrollbar': {
           width: '16px',
           opacity: 0,

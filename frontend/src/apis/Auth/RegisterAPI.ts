@@ -21,4 +21,3 @@ export const apiCheckEmail = async (data: { email: string }): Promise<IResponse>
   const response = await instance.post<IResponse>('/auth/check-email', data)
   return response.data
 }
-
