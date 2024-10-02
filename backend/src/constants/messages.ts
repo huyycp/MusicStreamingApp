@@ -55,3 +55,7 @@ export const TRACKS_MESSAGES = {
   ARTIST_ID_IS_INVALID: 'Artist id is invalid',
   ARTIST_NOT_FOUND: 'Artist not found'
 } as const
+
+export const ALBUMS_MESSAGES = {
+  CREATE_ALBUM_SUCCESS: 'Create album success'
+} as const

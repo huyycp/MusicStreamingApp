@@ -154,27 +154,43 @@ class TrackService {
     return track
   }
 
-  async getTrackByArtist({ artist_id, limit, page }: { artist_id: string; limit: number; page: number }) {
+  async getTrackByArtist({
+    user_id,
+    limit,
+    page,
+    status
+  }: {
+    user_id: string
+    limit: number
+    page: number
+    status: string
+  }) {
     const tracks_of_artist = await databaseService.releases
       .aggregate<Release>([
         {
           $match: {
-            artist_id: new ObjectId(artist_id),
+            artist_id: new ObjectId(user_id),
             product_type: ProductType.Track
           }
         }
       ])
       .toArray()
     const ids = tracks_of_artist.map((item) => item.product_id as ObjectId)
+    const matchCondition: any = {
+      _id: {
+        $in: ids
+      }
+    }
+    if (status === 'pending') {
+      matchCondition['album_id'] = ''
+    } else if (status === 'available') {
+      matchCondition['album_id'] = { $ne: '' }
+    }
     const [tracks, total] = await Promise.all([
       databaseService.tracks
         .aggregate([
           {
-            $match: {
-              _id: {
-                $in: ids
-              }
-            }
+            $match: matchCondition
           },
           {
             $lookup: {
@@ -230,11 +246,7 @@ class TrackService {
       databaseService.tracks
         .aggregate([
           {
-            $match: {
-              _id: {
-                $in: ids
-              }
-            }
+            $match: matchCondition
           },
           {
             $count: 'total'
