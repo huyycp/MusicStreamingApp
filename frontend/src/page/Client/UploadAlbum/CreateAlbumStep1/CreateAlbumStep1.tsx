@@ -6,10 +6,8 @@ import { useEffect, useState } from 'react'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useNavigate } from 'react-router-dom'
 import CancelIcon from '@mui/icons-material/Cancel'
-import { useGetUploadData } from '~/hooks/useGetUploadData'
 import IconButton from '@mui/material/IconButton'
-import useUploadMusic from '~/hooks/Upload/useUploadMusic'
-import CircularProgress from '@mui/material/CircularProgress'
+import { useGetCreateAlbumData } from '~/hooks/useGetCreateAlbumData'
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 2,
@@ -23,19 +21,17 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }))
 
-export default function UploadStep3() {
-  const { setLyrics, name, audioFile, setImageFile, imageFile, lyrics, clearData } = useGetUploadData()
-  const { mutate: uploadMusic, isPending } = useUploadMusic()
+export default function CreateAlbumStep1() {
+  const { name, setImageFile, imageFile } = useGetCreateAlbumData()
   const [imageUrl, setImageUrl] = useState<string>('')
   const navigate = useNavigate()
 
   useEffect(() => {
     if (!name) {
-      navigate('/upload-music')
-    } else if (!audioFile) {
-      navigate('/upload-music/step2')
+      navigate('/create-album')
     }
-  }, [audioFile, name, navigate])
+    setImageFile(null)
+  }, [name, navigate, setImageFile])
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
@@ -58,18 +54,7 @@ export default function UploadStep3() {
 
   const handleNext = () => {
     setImageFile(imageFile)
-    const formData = new FormData()
-    formData.append('name', name)
-    formData.append('audio', audioFile as File)
-    formData.append('image', imageFile as File)
-    formData.append('lyrics', lyrics)
-    // navigate('/upload-music/final')
-    uploadMusic(formData, {
-      onSuccess: () => {
-        clearData()
-        navigate('/')
-      }
-    })
+    navigate('/create-album/step2')
   }
 
   return (
@@ -83,7 +68,7 @@ export default function UploadStep3() {
         gap: 3
       }}
     >
-      <BorderLinearProgress variant='determinate' value={Math.floor((3 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
+      <BorderLinearProgress variant='determinate' value={Math.floor((1 / 2) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
           sx={{
@@ -97,14 +82,13 @@ export default function UploadStep3() {
             }
           }}
           onClick={() => {
-            setLyrics('')
             setImageFile(null)
-            navigate('/upload-music/step2')
+            navigate('/create-album/step2')
           }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 3/3</Box>
-          <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Tải hình ảnh cho bài hát</Box>
+          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 1/2</Box>
+          <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Tải hình ảnh cho album</Box>
         </Box>
       </Box>
       <Button variant='contained' component='label'>
@@ -127,12 +111,11 @@ export default function UploadStep3() {
           </IconButton>
         </Box>
       )}
-      {imageFile && !isPending && (
+      {imageFile && (
         <Button variant='contained' color='primary' onClick={handleNext}>
-          Tải lên
+          Tiếp theo
         </Button>
       )}
-      {isPending && <CircularProgress color='success' />}
     </Box>
   )
 }

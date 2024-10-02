@@ -8,21 +8,22 @@ import { SetStateAction, useCallback, useState } from 'react'
 import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import MusicTable from './MusicTable'
-import { mockData } from '~/apis/data-mock'
 import { useResize } from '~/hooks/useResize'
 import { useNavigate } from 'react-router-dom'
+import useGetTracksByArtist from '~/hooks/Tracks/useGetTracksByArtist'
 
 export default function MyMusic() {
   const [searchValue, setSearchValue] = useState<null | string>('')
   const navigate = useNavigate()
   const { widths } = useResize()
+  const { data } = useGetTracksByArtist()
 
   const [selectedTab, setSelectedTab] = useState<'songs' | 'albums'>('songs')
 
-  const listMusic = mockData.listMusics
+  const listMusic = data?.result.data
 
   // Hàm xử lý tìm kiếm theo tên bài nhạc
-  const filteredMusic = listMusic.filter((music) => music.name.toLowerCase().includes((searchValue ?? '').toLowerCase()))
+  const filteredMusic = listMusic?.filter((music) => music.name.toLowerCase().includes((searchValue ?? '').toLowerCase()))
 
   const handleSearchChange = useCallback((e: { target: { value: SetStateAction<string | null> } }) => {
     setSearchValue(e.target.value)
@@ -127,6 +128,9 @@ export default function MyMusic() {
                 color: 'white'
               }
             }}
+            onClick={() => {
+              navigate('/create-album')
+            }}
           >
             New Album
           </Button>
@@ -134,7 +138,7 @@ export default function MyMusic() {
       </Box>
 
       {/* Hiển thị danh sách nhạc đã lọc */}
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', overflowY: 'auto' }}>
         {selectedTab === 'songs' && <MusicTable listMusic={filteredMusic} />}
         {selectedTab === 'albums' && <MusicTable listMusic={filteredMusic} />}
       </Box>

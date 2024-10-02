@@ -8,7 +8,14 @@ export interface ITrackResponse {
   }
 }
 
+type TrackStatus = 'all' | 'pending' | 'available'
+
 export const apiGetTracks = async (limit: number, page: number): Promise<ITrackResponse> => {
-  const response = await instance.get<ITrackResponse>(`/tracks/get-list-tracks?limit=${limit}&page=${page}`)
+  const response = await instance.get<ITrackResponse>(`/tracks?limit=${limit}&page=${page}`)
+  return response.data
+}
+
+export const apiGetTracksByArtist = async (limit: number, page: number, status: TrackStatus) => {
+  const response = await instance.get<ITrackResponse>(`/tracks/my-tracks?limit=${limit}&page=${page}&status=${status}`)
   return response.data
 }
