@@ -20,6 +20,10 @@ import UploadStep1 from './page/Client/UploadMusic/UploadStep1/UploadStep1'
 import UploadStep2 from './page/Client/UploadMusic/UploadStep2/UploadStep2'
 import ProtectedRoute from './components/ProtectedRoute'
 import UploadStep3 from './page/Client/UploadMusic/UploadStep3/UploadStep3'
+import CreateAlbumBody from './page/Client/UploadAlbum/CreateAlbumBody/CreateAlbumBody'
+import CreateAlbumLayout from './page/Client/UploadAlbum/CreateAlbumLayout'
+import CreateAlbumStep1 from './page/Client/UploadAlbum/CreateAlbumStep1/CreateAlbumStep1'
+import CreateAlbumStep2 from './page/Client/UploadAlbum/CreateAlbumStep2/CreateAlbumStep2'
 
 const router = createBrowserRouter([
   {
@@ -87,6 +91,30 @@ const router = createBrowserRouter([
           {
             path: 'step3',
             element: <UploadStep3 />
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/create-album',
+    element: <ProtectedRoute />,
+    errorElement: <Error />,
+    children: [
+      {
+        element: <CreateAlbumLayout />,
+        children: [
+          {
+            index: true,
+            element: <CreateAlbumBody />
+          },
+          {
+            path: 'step1',
+            element: <CreateAlbumStep1 />
+          },
+          {
+            path: 'step2',
+            element: <CreateAlbumStep2 />
           }
         ]
       }

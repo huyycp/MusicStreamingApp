@@ -6,9 +6,10 @@ import TrackBar from './TrackBar/TrackBar'
 import { ResizeProvider } from '~/contents/ResizeProvider'
 import { MusicProvider } from '~/contents/MusicProvider'
 import useGetTracks from '~/hooks/Tracks/useGetTracks'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export default function MainLayout() {
-  const { data } = useGetTracks()
+  const { data, isPending } = useGetTracks()
 
   const listMusic = data?.result.data
 
@@ -33,6 +34,11 @@ export default function MainLayout() {
             <TrackBar />
           </ResizeProvider>
         </MusicProvider>
+      )}
+      {isPending && (
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
+          <CircularProgress sx={{ color: (theme) => theme.palette.primary.main }} />
+        </Box>
       )}
     </Box>
   )

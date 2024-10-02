@@ -12,11 +12,11 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
   const [volume, setVolume] = useState<number>(0.5)
   const [mute, setMute] = useState<boolean>(false)
   const [repeat, setRepeat] = useState<boolean>(false)
-  const [music, setMusic] = useState<ITrack | null>(null) // Bắt đầu với null, chưa set bài hát
+  const [music, setMusic] = useState<ITrack | null>(null)
   const [position, setPosition] = useState(0)
   const [duration, setDuration] = useState(0)
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null)
-  const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null) // Bắt đầu với null
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null)
 
   // Lấy chỉ số bài hát từ localStorage khi trang load
   useEffect(() => {
@@ -26,7 +26,7 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
       setCurrentTrackIndex(index)
       setMusic(listMusic[index])
     } else {
-      setCurrentTrackIndex(0) // Nếu không có trong localStorage, set về 0 khi cần thiết
+      setCurrentTrackIndex(0)
       setMusic(listMusic[0])
     }
   }, [listMusic])
@@ -45,41 +45,73 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
     return listMusic[prevIndex]
   }
 
+  const changeMusic = (song: ITrack) => {
+    if (audioElement) {
+      // Dừng bài hát hiện tại
+      audioElement.pause()
+
+      if (song._id === music?._id) {
+        setPause(!pause)
+      } else {
+        // Cập nhật source và play bài hát mới
+        audioElement.src = song.path_audio
+        setMusic(song)
+        setPosition(0)
+        audioElement.play()
+      }
+
+      setPause(false)
+    }
+  }
+
+  // useEffect để khởi tạo và quản lý `audioElement`
   useEffect(() => {
-    if (music) {
-      const audio = new Audio(music.path_audio)
-      audio.addEventListener('loadedmetadata', () => {
-        setDuration(audio.duration)
-      })
+    const audio = new Audio() // Khởi tạo một lần duy nhất
+    setAudioElement(audio)
 
-      const handleTimeUpdate = () => {
-        if (audio) {
-          setPosition(audio.currentTime)
-        }
-      }
-      const handleEnded = () => {
-        const nextMusic = handleNextTrack()
-        setMusic(nextMusic)
-        audio.src = nextMusic.path_audio
-        document.title = `${music.name}`
-        audio.play()
-      }
+    audio.addEventListener('loadedmetadata', () => {
+      setDuration(audio.duration)
+    })
 
-      audio.addEventListener('timeupdate', handleTimeUpdate)
-      audio.addEventListener('ended', handleEnded)
-      setAudioElement(audio)
+    const handleTimeUpdate = () => {
+      setPosition(audio.currentTime)
+    }
 
-      return () => {
-        if (audio) {
-          audio.removeEventListener('timeupdate', handleTimeUpdate)
-          audio.removeEventListener('ended', handleEnded)
-          document.title = 'Magic Music'
-          audio.pause()
-        }
+    const handleEnded = () => {
+      const nextMusic = handleNextTrack()
+      setMusic(nextMusic)
+      audio.src = nextMusic.path_audio
+      document.title = `${nextMusic.name}`
+      audio.play()
+    }
+
+    audio.addEventListener('timeupdate', handleTimeUpdate)
+    audio.addEventListener('ended', handleEnded)
+
+    return () => {
+      // Hủy các sự kiện khi component bị unmount
+      audio.removeEventListener('timeupdate', handleTimeUpdate)
+      audio.removeEventListener('ended', handleEnded)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (audioElement && music) {
+      // Dừng nhạc hiện tại trước khi phát nhạc mới
+      audioElement.pause()
+
+      audioElement.src = music.path_audio
+      document.title = `${music.name}`
+      setPosition(0)
+
+      // Nếu không tạm dừng, tự động phát bài mới
+      if (!pause) {
+        audioElement.play()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [music])
+  }, [music, audioElement])
 
   useEffect(() => {
     if (audioElement) {
@@ -91,14 +123,12 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
   useEffect(() => {
     if (audioElement) {
       if (pause) {
-        document.title = 'Magic Music'
         audioElement.pause()
       } else {
-        document.title = `${music?.name || 'Music'}`
         audioElement.play()
       }
     }
-  }, [audioElement, music?.name, pause])
+  }, [pause, audioElement])
 
   const playNextTrack = () => {
     const nextMusic = handleNextTrack()
@@ -117,19 +147,6 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
       audioElement.src = prevMusic.path_audio
       setPosition(0)
       audioElement.play()
-    }
-  }
-
-  const changeMusic = (song: ITrack) => {
-    if (song._id === music?._id) setPause(!pause)
-    else {
-      if (audioElement) {
-        audioElement.src = song.path_audio
-        setPosition(0)
-        audioElement.play()
-      }
-      setMusic(song)
-      setPause(false)
     }
   }
 

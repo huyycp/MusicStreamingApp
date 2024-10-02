@@ -2,7 +2,9 @@ import { Tooltip } from '@mui/material'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
+import { useEffect, useState } from 'react'
 import MusicDiskSVG from '~/assets/icon/MusicDisk.svg?react'
+import { useGetCreateAlbumData } from '~/hooks/useGetCreateAlbumData'
 
 const RotatingAlbumIcon = styled(MusicDiskSVG)(() => ({
   'width': '75px',
@@ -36,19 +38,19 @@ const StyledAlbumContainer = styled('div')(({ theme }) => ({
 }))
 
 const MusicAlbum = () => {
-  //   const { name: songName, imageFile, artistName } = useGetUploadData()
-  //   const [image, setImage] = useState<string | null>(null)
+  const { name, imageFile, artistName } = useGetCreateAlbumData()
+  const [image, setImage] = useState<string | null>(null)
   //   const songName = '2123123213'
 
-  //   useEffect(() => {
-  //     if (imageFile) {
-  //       const url = URL.createObjectURL(imageFile)
-  //       setImage(url)
+  useEffect(() => {
+    if (imageFile) {
+      const url = URL.createObjectURL(imageFile)
+      setImage(url)
 
-  //       // Giải phóng URL khi component unmount
-  //       return () => URL.revokeObjectURL(url)
-  //     } else setImage(null)
-  //   }, [imageFile])
+      // Giải phóng URL khi component unmount
+      return () => URL.revokeObjectURL(url)
+    } else setImage(null)
+  }, [imageFile])
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
@@ -66,24 +68,27 @@ const MusicAlbum = () => {
             }
           }}
         >
-          {
+          {!image && (
             <StyledAlbumContainer style={{ backgroundSize: 'cover' }}>
               <Typography variant='body2' sx={{ color: 'white', bottom: '8px' }}>
-                {'Bài hát'}
-              </Typography>
-            </StyledAlbumContainer>
-          }
-          <RotatingAlbumIcon />
-          {/* {image && (
-            <StyledAlbumContainer style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover' }}>
-              <Typography variant='h6' sx={{ color: 'white', bottom: '8px' }}>
-                {'Bài hát'}
+                {name || 'Album'}
               </Typography>
               <Typography variant='body2' sx={{ color: 'white', bottom: '20px' }}>
-                {'Người tham gia'}
+                {artistName || 'Người tham gia'}
               </Typography>
             </StyledAlbumContainer>
-          )} */}
+          )}
+          <RotatingAlbumIcon />
+          {image && (
+            <StyledAlbumContainer style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover' }}>
+              <Typography variant='h6' sx={{ color: 'white', bottom: '8px' }}>
+                {name || 'Album'}
+              </Typography>
+              <Typography variant='body2' sx={{ color: 'white', bottom: '20px' }}>
+                {artistName || 'Người tham gia'}
+              </Typography>
+            </StyledAlbumContainer>
+          )}
         </Box>
       </Tooltip>
     </Box>

@@ -1,10 +1,9 @@
 import Box from '@mui/material/Box'
-import { useMusic } from '~/hooks/useMusic'
 import { useResize } from '~/hooks/useResize'
+import DescMusic from './DescMusic/DescMusic'
 
 export default function MusicDesc() {
   const { openList, openMusic } = useResize()
-  const { music } = useMusic()
   return (
     <Box
       sx={{
@@ -19,7 +18,7 @@ export default function MusicDesc() {
       }}
     >
       {openList && <Box>ListMusic</Box>}
-      {openMusic && <Box>{music?.name}</Box>}
+      {openMusic && <DescMusic />}
     </Box>
   )
 }

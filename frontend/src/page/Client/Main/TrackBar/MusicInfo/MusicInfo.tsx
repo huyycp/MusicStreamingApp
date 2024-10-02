@@ -54,7 +54,7 @@ export default function MusicInfo({ music }: Props) {
         justifyContent: 'start',
         pl: '8px',
         gap: 1,
-        flex: '1 1 auto', // Allow the container to grow/shrink
+        flex: '1 1 auto',
         overflow: 'hidden'
       }}
     >
@@ -134,8 +134,8 @@ export default function MusicInfo({ music }: Props) {
               'color': (theme) => theme.palette.neutral.neutral1,
               'cursor': 'pointer',
               'fontSize': 18,
-              'ml': 1, // Thêm khoảng cách nhỏ giữa MusicInfo và ControlPointIcon
-              'flexShrink': 0, // Prevent icon from shrinking
+              'ml': 1,
+              'flexShrink': 0,
               '&:hover': {
                 color: (theme) => theme.palette.secondary4.main
               }
