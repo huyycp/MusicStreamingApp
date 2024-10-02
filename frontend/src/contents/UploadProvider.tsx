@@ -18,7 +18,9 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <UploadContext.Provider value={{ name, audioFile, imageFile, lyrics, setName, setAudioFile, setImageFile, setLyrics, artistName, setArtistName, clearData }}>
+    <UploadContext.Provider
+      value={{ name, audioFile, imageFile, lyrics, setName, setAudioFile, setImageFile, setLyrics, artistName, setArtistName, clearData }}
+    >
       {children}
     </UploadContext.Provider>
   )

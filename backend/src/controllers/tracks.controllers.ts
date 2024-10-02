@@ -3,7 +3,7 @@ import { ParamsDictionary } from 'express-serve-static-core'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { TRACKS_MESSAGES } from '~/constants/messages'
 import { TokenPayLoad } from '~/models/requests/Auth.requests'
-import { TrackParams, Pagination, ArtistParams } from '~/models/requests/Track.requests'
+import { TrackParams, Pagination, ArtistParams, ArtistQuery } from '~/models/requests/Track.requests'
 import trackService from '~/services/tracks.services'
 
 export const getTracksController = async (
@@ -50,14 +50,15 @@ export const createTrackController = async (req: Request, res: Response, next: N
 }
 
 export const getTrackByArtistController = async (
-  req: Request<ArtistParams, any, any, Pagination>,
+  req: Request<ArtistParams, any, any, ArtistQuery>,
   res: Response,
   next: NextFunction
 ) => {
-  const { artist_id } = req.params
+  const { user_id } = req.decoded_authorization as TokenPayLoad
   const limit = Number(req.query.limit) || 5
   const page = Number(req.query.page) || 1
-  const result = await trackService.getTrackByArtist({ artist_id, limit, page })
+  const status = req.query.status || 'all'
+  const result = await trackService.getTrackByArtist({ user_id, limit, page, status })
   return res.json({
     message: TRACKS_MESSAGES.GET_LIST_TRACKS_BY_ARTIST_SUCCESS,
     result: {

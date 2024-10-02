@@ -98,6 +98,7 @@ export default function UploadStep3() {
           }}
           onClick={() => {
             setLyrics('')
+            setImageFile(null)
             navigate('/upload-music/step2')
           }}
         />

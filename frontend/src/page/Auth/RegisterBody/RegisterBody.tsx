@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
@@ -20,6 +20,10 @@ export default function RegisterBody() {
   const [error, setError] = useState<string>('')
   const { checkEmail, isPending } = useRegister()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    document.title = 'Magic Music - Register'
+  }, [])
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -82,10 +86,12 @@ export default function RegisterBody() {
           </FormHelperText>
         )}
       </FormControl>
-      {!isPending && <Button sx={{ width: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
-        Tiếp theo
-      </Button>}
-      {isPending && <CircularProgress color="success" />}
+      {!isPending && (
+        <Button sx={{ width: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
+          Tiếp theo
+        </Button>
+      )}
+      {isPending && <CircularProgress color='success' />}
       <Box sx={{ mt: '32px', width: '100%' }}>
         <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', pb: 2 }}>
           <Divider

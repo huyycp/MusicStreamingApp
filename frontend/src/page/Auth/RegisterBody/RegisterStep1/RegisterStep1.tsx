@@ -39,6 +39,9 @@ export default function RegisterStep1() {
   useEffect(() => {
     if (!email) navigate('/register')
   })
+  useEffect(() => {
+    document.title = 'Magic Music - Register: Step 1'
+  }, [])
 
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string>('')

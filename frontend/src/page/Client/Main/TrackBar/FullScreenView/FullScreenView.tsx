@@ -107,10 +107,10 @@ export default function FullScreenView({ setFullScreen }: Props) {
       <Box sx={{ inlineSize: '100%', flex: 1, display: 'flex', alignItems: 'end' }}>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'end' }}>
           <CoverImage>
-            <img alt={music.name} src={music.artUrl.replace('{w}x{h}bb', '294x294bb')} />
+            <img alt={music?.name} src={music?.image.replace('{w}x{h}bb', '294x294bb')} />
           </CoverImage>
           <ContentBox>
-            <TextFade sx={{ fontSize: 30, fontWeight: 'bold' }}>{music.name}</TextFade>
+            <TextFade sx={{ fontSize: 30, fontWeight: 'bold' }}>{music?.name}</TextFade>
             <Box
               sx={{
                 display: 'flex',
@@ -122,10 +122,10 @@ export default function FullScreenView({ setFullScreen }: Props) {
                 overflow: 'hidden'
               }}
             >
-              {music.artistName.map((name, index) => (
+              {music?.artistsName.map((name, index) => (
                 <TextFade key={index}>
                   {name}
-                  {index < music.artistName.length - 1 && ','}
+                  {index < music.artistsName.length - 1 && ','}
                 </TextFade>
               ))}
             </Box>

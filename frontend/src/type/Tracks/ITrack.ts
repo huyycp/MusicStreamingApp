@@ -7,6 +7,7 @@ export interface ITrack {
   lyrics: string
   path_audio: string
   listen: number
+  artistsName: string[]
   created_at: string
   updated_at: string
 }

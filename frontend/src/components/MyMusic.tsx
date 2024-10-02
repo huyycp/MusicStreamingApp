@@ -8,25 +8,32 @@ import { SetStateAction, useCallback, useState } from 'react'
 import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import MusicTable from './MusicTable'
-import { mockData } from '~/apis/data-mock'
 import { useResize } from '~/hooks/useResize'
 import { useNavigate } from 'react-router-dom'
+import useGetTracksByArtist from '~/hooks/Tracks/useGetTracksByArtist'
 
 export default function MyMusic() {
   const [searchValue, setSearchValue] = useState<null | string>('')
   const navigate = useNavigate()
   const { widths } = useResize()
+  const { data } = useGetTracksByArtist()
 
-  const listMusic = mockData.listMusics
+  const [selectedTab, setSelectedTab] = useState<'songs' | 'albums'>('songs')
+
+  const listMusic = data?.result.data
+
+  // Hàm xử lý tìm kiếm theo tên bài nhạc
+  const filteredMusic = listMusic?.filter((music) => music.name.toLowerCase().includes((searchValue ?? '').toLowerCase()))
 
   const handleSearchChange = useCallback((e: { target: { value: SetStateAction<string | null> } }) => {
     setSearchValue(e.target.value)
   }, [])
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', pt: 2, width: '100%', gap: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant='h3' noWrap>
-          My Music
+          {selectedTab === 'songs' ? 'My Music' : 'My Album'}
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'end', gap: 1 }}>
           {widths[1] > 650 && (
@@ -50,7 +57,6 @@ export default function MyMusic() {
                             color: (theme) => theme.palette.secondary4.main
                           }
                         }}
-                        //   onClick={handleSearchClick}
                       />
                     </Tooltip>
                   </InputAdornment>
@@ -79,9 +85,62 @@ export default function MyMusic() {
           </Button>
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}></Box>
-      <Box sx={{ width: '100%' }}>
-        <MusicTable listMusic={listMusic} />
+
+      {/* Thêm phần nút Songs và Albums */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 2, pt: 2 }}>
+        <Button
+          onClick={() => setSelectedTab('songs')}
+          sx={{
+            'color': selectedTab === 'songs' ? 'white' : 'gray',
+            'bgcolor': selectedTab === 'songs' ? 'primary.main' : 'transparent',
+            'textDecoration': selectedTab === 'songs' ? 'underline' : 'none',
+            '&:hover': {
+              bgcolor: selectedTab === 'songs' ? 'primary.main' : 'transparent',
+              color: 'white'
+            }
+          }}
+        >
+          Songs
+        </Button>
+        <Button
+          onClick={() => setSelectedTab('albums')}
+          sx={{
+            'color': selectedTab === 'albums' ? 'white' : 'gray',
+            'bgcolor': selectedTab === 'albums' ? 'primary.main' : 'transparent',
+            'textDecoration': selectedTab === 'albums' ? 'underline' : 'none',
+            '&:hover': {
+              bgcolor: selectedTab === 'albums' ? 'primary.main' : 'transparent',
+              color: 'white'
+            }
+          }}
+        >
+          Albums
+        </Button>
+        {selectedTab === 'albums' && (
+          <Button
+            startIcon={<AddIcon />}
+            sx={{
+              'color': selectedTab === 'albums' ? 'white' : 'gray',
+              'bgcolor': selectedTab === 'albums' ? 'primary.main' : 'transparent',
+              'textDecoration': selectedTab === 'albums' ? 'underline' : 'none',
+              '&:hover': {
+                bgcolor: selectedTab === 'albums' ? 'primary.main' : 'transparent',
+                color: 'white'
+              }
+            }}
+            onClick={() => {
+              navigate('/create-album')
+            }}
+          >
+            New Album
+          </Button>
+        )}
+      </Box>
+
+      {/* Hiển thị danh sách nhạc đã lọc */}
+      <Box sx={{ width: '100%', overflowY: 'auto' }}>
+        {selectedTab === 'songs' && <MusicTable listMusic={filteredMusic} />}
+        {selectedTab === 'albums' && <MusicTable listMusic={filteredMusic} />}
       </Box>
     </Box>
   )

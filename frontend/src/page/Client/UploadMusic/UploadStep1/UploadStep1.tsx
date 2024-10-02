@@ -24,7 +24,7 @@ export default function UploadStep1() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [error, setError] = useState('')
-  const { setAudioFile: setAudio, name, setName } = useGetUploadData()
+  const { setAudioFile: setAudio, name, setName, audioFile: audioData } = useGetUploadData()
 
   const navigate = useNavigate()
 
@@ -32,7 +32,8 @@ export default function UploadStep1() {
     if (!name) {
       navigate('/upload-music')
     }
-  }, [name, navigate])
+    if (audioData) setAudio(null)
+  }, [audioData, name, navigate, setAudio])
 
   useEffect(() => {
     if (audioFile) {
