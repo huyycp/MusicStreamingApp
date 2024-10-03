@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/dto/req/register_dto.dart';
+import 'package:mobile/data/dto/req/register_req.dart';
 import 'package:mobile/repositories/user_repository.dart';
 
 final signUpViewModel = ChangeNotifierProvider.autoDispose<SignUpViewModel>(

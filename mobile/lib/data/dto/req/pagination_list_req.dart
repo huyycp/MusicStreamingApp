@@ -1,5 +1,5 @@
-class PaginationListDto {
-  PaginationListDto({
+class PaginationListReq {
+  PaginationListReq({
     this.page = 1,
     this.limit = 5,
   });

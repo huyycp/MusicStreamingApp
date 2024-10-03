@@ -39,8 +39,22 @@ class _LibraryViewState extends State<LibraryView> {
   
   List<Widget> _appBarActions() {
     return [
+      _createAlbumNavBtn(),
       _createProductBtn(),
     ];
+  }
+
+  Widget _createAlbumNavBtn() {
+    return IconButton(
+      onPressed: () {
+        context.push('/album/create');
+      },
+      icon: DynamicImage(
+        'assets/icons/ic_folder.svg',
+        width: 24,
+        height: 24,
+      ),
+    );
   }
 
   Widget _createProductBtn() {

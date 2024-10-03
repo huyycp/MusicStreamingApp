@@ -33,8 +33,8 @@ class TrackModel {
     lyrics: json['lyrics'] ?? '',
     audioLink: json['path_audio'] ?? '',
     listenCount: json['listen'] ?? 0,
-    createdAt: json['created_at'], 
-    updatedAt: json['updated_at'],
+    createdAt: DateTime.parse(json['created_at'] ?? ''), 
+    updatedAt: DateTime.parse(json['updated_at'] ?? ''),
     artists: List.from(json['artistsName'] ?? []),
   );
 

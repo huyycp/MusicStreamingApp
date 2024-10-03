@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
-import 'package:mobile/views/create_track/widgets/field_label.dart';
+import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 

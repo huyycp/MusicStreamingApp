@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
-import 'package:mobile/views/create_track/widgets/field_label.dart';
+import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 
@@ -16,13 +16,10 @@ class CreateTrackInfoView extends ConsumerStatefulWidget {
 class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvokedWithResult: (_, __) => ref.read(createTrackViewModel).clear(),
-      child: Scaffold(
-        appBar: _appBar(),
-        body: _body(),
-        bottomNavigationBar: _nextBtn(),
-      ),
+    return Scaffold(
+      appBar: _appBar(),
+      body: _body(),
+      bottomNavigationBar: _nextBtn(),
     );
   }
 

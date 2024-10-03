@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
-import 'package:mobile/data/dto/req/login_dto.dart';
-import 'package:mobile/data/dto/req/register_dto.dart';
-import 'package:mobile/data/dto/req/verify_email_dto.dart';
+import 'package:mobile/data/dto/req/login_req.dart';
+import 'package:mobile/data/dto/req/register_req.dart';
+import 'package:mobile/data/dto/req/verify_email_req.dart';
 
 final userRemoteProvider = Provider<UserRemoteDataSource>(
   (ref) => UserRemoteDataSource(ref.read(magicMusicApiProvider))
@@ -24,7 +24,7 @@ class UserRemoteDataSource {
   final String _loginPath = '/auth/login';
   final String _logoutPath = '/auth/logout';
 
-  Future<bool> registerWithEmail(RegisterDto dto) async {
+  Future<bool> registerWithEmail(RegisterReq dto) async {
     final response = await _magicMusicApi.request(
       _registerPath, 
       method: HttpMethods.POST,
@@ -54,7 +54,7 @@ class UserRemoteDataSource {
     );
   }
 
-  Future<bool> verifyEmail(VerifyEmailDto dto) async {
+  Future<bool> verifyEmail(VerifyEmailReq dto) async {
     final response = await _magicMusicApi.request(
       _verifyEmailPath,
       method: HttpMethods.POST,
@@ -80,7 +80,7 @@ class UserRemoteDataSource {
     }
   }
     
-  Future<bool> loginWithEmail(LoginDto dto) async {
+  Future<bool> loginWithEmail(LoginReq dto) async {
     final response = await _magicMusicApi.request(
       _loginPath, 
       method: HttpMethods.POST,

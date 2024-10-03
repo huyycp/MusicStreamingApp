@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view.dart';
+import 'package:mobile/views/create_album/create_album_view.dart';
 import 'package:mobile/views/create_track/create_track_audio_view.dart';
 import 'package:mobile/views/create_track/create_track_info_view.dart';
 import 'package:mobile/views/create_track/create_track_lyrics_view.dart';
@@ -7,6 +8,7 @@ import 'package:mobile/views/create_track/create_track_thumbnail_view.dart';
 import 'package:mobile/views/login/login_view.dart';
 import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
+import 'package:mobile/views/pick_track/pick_track_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_1_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_2_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_3_view.dart';
@@ -20,14 +22,17 @@ final routeConfig = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/auth',
+      name: 'auth',
       builder: (context, state) => AuthMethodsView(),
       routes: <RouteBase>[
         GoRoute(
           path: 'login',
+          name: 'login',
           builder: (context, state) => LoginView()
         ),
         GoRoute(
           path: 'sign-up',
+          name: 'sign-up',
           builder: (context, state) => NotFoundView(),
           routes: <RouteBase>[
             GoRoute(
@@ -54,16 +59,19 @@ final routeConfig = GoRouter(
         ),
         GoRoute(
           path: 'verify-email',
+          name: 'verify-email',
           builder: (context, state) => VerifyEmailView()
         ),
       ]
     ),
     GoRoute(
       path: '/main',
+      name: 'main',
       builder: (context, state) => MainView()
     ),
     GoRoute(
       path: '/splash',
+      name: 'splash',
       builder: (context, state) => SplashView()
     ),
     GoRoute(
@@ -72,6 +80,7 @@ final routeConfig = GoRouter(
       routes: [
         GoRoute(
           path: 'create',
+          name: 'create-track',
           builder: (context, state) => NotFoundView(),
           routes: [
             GoRoute(
@@ -93,6 +102,22 @@ final routeConfig = GoRouter(
           ]
         )
       ]
+    ),
+    GoRoute(
+      path: '/album',
+      builder: (context, state) => NotFoundView(),
+      routes: [
+        GoRoute(
+          path: 'create',
+          name: 'create-album',
+          builder: (context, state) => CreateAlbumView()
+        ),
+      ]
+    ),
+    GoRoute(
+      path: '/pick-track',
+      name: 'pick-track',
+      builder: (context, state) => PickTrackView()
     )
   ]
 );
