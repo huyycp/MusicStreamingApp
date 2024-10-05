@@ -18,9 +18,9 @@ class CreateAlbumView extends ConsumerStatefulWidget {
 class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(createAlbumViewModel.select((value) => value.isAlbumCreated), (prev, next) {
-      if (next == true) {
-        context.push('/pick-track');
+    ref.listen(createAlbumViewModel, (prev, next) {
+      if (next.isAlbumCreated == true) {
+        context.push('/pick-track/${next.albumId}');
       }
     });
 

@@ -115,9 +115,9 @@ final routeConfig = GoRouter(
       ]
     ),
     GoRoute(
-      path: '/pick-track',
+      path: '/pick-track/:albumId',
       name: 'pick-track',
-      builder: (context, state) => PickTrackView()
-    )
+      builder: (context, state) => PickTrackView(albumId: state.pathParameters['albumId'] ?? '')
+    ),
   ]
 );

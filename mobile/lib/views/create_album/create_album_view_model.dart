@@ -19,6 +19,7 @@ class CreateAlbumViewModel extends ChangeNotifier {
   XFile? albumImage;
 
   bool? isAlbumCreated;
+  late String albumId;
 
   Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
@@ -30,10 +31,14 @@ class CreateAlbumViewModel extends ChangeNotifier {
   }
 
   Future<void> createAlbum() async {
-    isAlbumCreated = await _albumRepo.createAlbum(
+    final album = await _albumRepo.createAlbum(
       name: albumNameController.text,
       image: albumImage!
     );
-    notifyListeners();
+    if (album != null) {
+      albumId = album.id;
+      isAlbumCreated = true;
+      notifyListeners();
+    }
   }
 }

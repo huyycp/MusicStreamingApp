@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/views/pick_track/pick_track_view_model.dart';
-import 'package:mobile/views/pick_track/widgets/track_widget.dart';
+import 'package:mobile/views/pick_track/widgets/pick_track_widget.dart';
 import 'package:mobile/widgets/base_container.dart';
 
 class PickTrackView extends ConsumerStatefulWidget {
-  const PickTrackView({super.key});
+  final String albumId;
+  const PickTrackView({ required this.albumId, super.key});
 
   @override
   ConsumerState<PickTrackView> createState() => _PickTrackViewState();
@@ -15,11 +16,18 @@ class _PickTrackViewState extends ConsumerState<PickTrackView> {
   @override
   void initState() {
     super.initState();
+    ref.read(pickTrackViewModel).setAlbumId(widget.albumId);
     ref.read(pickTrackViewModel).getPendingTracks();
   }
   
   @override
   Widget build(BuildContext context) {
+    ref.listen(pickTrackViewModel.select((value) => value.addTrackSuccess), (prev, next) {
+      if (next) {
+        Navigator.popUntil(context, ModalRoute.withName('main'));
+      }
+    });
+
     return Scaffold(
       appBar: _appBar(),
       body: _body(),
@@ -73,7 +81,7 @@ class _PickTrackViewState extends ConsumerState<PickTrackView> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: ElevatedButton(
         onPressed: () {
-          
+          ref.read(pickTrackViewModel).addPickedTracks();
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

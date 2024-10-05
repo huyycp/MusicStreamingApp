@@ -18,6 +18,12 @@ class CreateTrackThumbnailView extends ConsumerStatefulWidget {
 class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailView> {
   @override
   Widget build(BuildContext context) {
+    ref.listen(createTrackViewModel.select((value) => value.isTrackCreatedSuccess), (prev, next) {
+      if (next) {
+        Navigator.popUntil(context, ModalRoute.withName('main'));
+      }
+    });
+
     return Scaffold(
       appBar: _appBar(),
       body: _body(),

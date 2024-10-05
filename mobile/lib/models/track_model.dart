@@ -25,6 +25,8 @@ class TrackModel {
   DateTime? updatedAt;
   List<String> artists;
 
+  String get artistsName => artists.join(', ');
+
   factory TrackModel.fromJson(Map<String, dynamic> json) => TrackModel(
     id: json['_id'] ?? '',
     albumId: json['album_id'] ?? '',

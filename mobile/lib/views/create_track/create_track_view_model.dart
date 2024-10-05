@@ -63,13 +63,6 @@ class CreateTrackViewModel extends ChangeNotifier {
   }
 
   Future<void> createTrack() async {
-    // print('''
-    //   ${trackTitleController.text},
-    //   ${trackDescController.text},
-    //   ${audioFile?.name ?? 'No audio'},
-    //   ${trackLyricsController.text},
-    //   ${thumbnail?.name ?? 'No thumbnail'},
-    // ''');
     isTrackCreatedSuccess = await _trackRepo.createTrack(
       title: trackTitleController.text, 
       description: trackDescController.text,
