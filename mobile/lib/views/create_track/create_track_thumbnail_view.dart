@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
-import 'package:mobile/views/create_track/widgets/field_label.dart';
+import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
@@ -18,6 +18,12 @@ class CreateTrackThumbnailView extends ConsumerStatefulWidget {
 class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailView> {
   @override
   Widget build(BuildContext context) {
+    ref.listen(createTrackViewModel.select((value) => value.isTrackCreatedSuccess), (prev, next) {
+      if (next) {
+        Navigator.popUntil(context, ModalRoute.withName('main'));
+      }
+    });
+
     return Scaffold(
       appBar: _appBar(),
       body: _body(),

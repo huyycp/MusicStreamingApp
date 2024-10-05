@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CreateTrackDto {
-  CreateTrackDto({
+class CreateTrackReq {
+  CreateTrackReq({
     required this.title,
     this.description = '',
     required this.audio,

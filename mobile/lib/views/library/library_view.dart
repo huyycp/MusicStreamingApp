@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/views/library/album_list_view.dart';
+import 'package:mobile/views/library/library_view_model.dart';
+import 'package:mobile/views/library/track_list_view.dart';
+import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class LibraryView extends StatefulWidget {
+class LibraryView extends ConsumerStatefulWidget {
   const LibraryView({super.key});
 
   @override
-  State<LibraryView> createState() => _LibraryViewState();
+  ConsumerState<LibraryView> createState() => _LibraryViewState();
 }
 
-class _LibraryViewState extends State<LibraryView> {
+class _LibraryViewState extends ConsumerState<LibraryView> with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(libraryViewModel).initTabBar(this);
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
-      body: Center(
-        child: Text('Library'),
-      ),
+      body: _body(),
     );
   }
 
@@ -25,6 +34,17 @@ class _LibraryViewState extends State<LibraryView> {
       title: const Text('Your Library'),
       leading: _userAvatar(),
       actions: _appBarActions(),
+      bottom: _tabBar(),
+    );
+  }
+
+  PreferredSize _tabBar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(24),
+      child: TabBar(
+        tabs: ref.read(libraryViewModel).tabs,
+        controller: ref.read(libraryViewModel).tabController,
+      ),
     );
   }
 
@@ -39,8 +59,22 @@ class _LibraryViewState extends State<LibraryView> {
   
   List<Widget> _appBarActions() {
     return [
+      _createAlbumNavBtn(),
       _createProductBtn(),
     ];
+  }
+
+  Widget _createAlbumNavBtn() {
+    return IconButton(
+      onPressed: () {
+        context.push('/album/create');
+      },
+      icon: DynamicImage(
+        'assets/icons/ic_folder.svg',
+        width: 24,
+        height: 24,
+      ),
+    );
   }
 
   Widget _createProductBtn() {
@@ -52,6 +86,19 @@ class _LibraryViewState extends State<LibraryView> {
         'assets/icons/ic_add_song.svg',
         width: 24,
         height: 24,
+      ),
+    );
+  }
+
+  Widget _body() {
+    return BaseContainer(
+      padding: EdgeInsets.zero,
+      child: TabBarView(
+        children: [
+          AlbumListView(),
+          TrackListView(),
+        ],
+        controller: ref.read(libraryViewModel).tabController,
       ),
     );
   }

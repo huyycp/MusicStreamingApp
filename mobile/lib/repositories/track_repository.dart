@@ -1,11 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/data/data_sources/remote/track_remote_data_source.dart';
-import 'package:mobile/data/dto/req/create_track_dto.dart';
-import 'package:mobile/data/dto/req/get_track_dto.dart';
-import 'package:mobile/data/dto/req/pagination_list_dto.dart';
+import 'package:mobile/data/dto/req/create_track_req.dart';
+import 'package:mobile/data/dto/req/get_track_req.dart';
+import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/data/dto/resp/get_track_resp.dart';
 import 'package:mobile/models/track_model.dart';
 
@@ -29,7 +28,7 @@ class TrackRepository {
     String lyrics = '',
     required XFile thumbnail,
   }) async  {
-    return await _trackRemote.createTrack(CreateTrackDto(
+    return await _trackRemote.createTrack(CreateTrackReq(
       title: title,
       description: description,
       audio: audio,
@@ -39,12 +38,12 @@ class TrackRepository {
   }
 
   Future<GetTrackResp?> getTracks({
-    required PaginationListDto pagination
+    required PaginationListReq pagination
   }) async {
-    final dto = GetTrackDto(
+    final req = GetTrackReq(
       pagination: pagination
     );
-    return await _trackRemote.getTracks(dto);
+    return await _trackRemote.getTracks(req);
   }
 
   Future<TrackModel?> getTrack({
@@ -53,16 +52,16 @@ class TrackRepository {
     return await _trackRemote.getTrack(id);
   }
 
-  Future<GetTrackResp?> getTracksByArtist({
-    required PaginationListDto pagination,
-    required String artistId,
+  Future<GetTrackResp?> getTracksByUser({
+    required PaginationListReq pagination,
+    TrackStatus status = TrackStatus.all,
   }) async {
-    final dto = GetTrackDto(
+    final req = GetTrackReq(
       pagination: pagination
     );
-    return await _trackRemote.getTracksByArtist(
-      dto: dto,
-      artistId: artistId
+    return await _trackRemote.getTracksByUser(
+      req: req,
+      status: status,
     );
   }
 }

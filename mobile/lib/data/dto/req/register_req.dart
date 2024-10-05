@@ -1,6 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-class RegisterDto {
-  RegisterDto({
+class RegisterReq {
+  RegisterReq({
     required this.email,
     required this.password,
     required this.gender,

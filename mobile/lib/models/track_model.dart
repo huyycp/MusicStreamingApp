@@ -25,6 +25,8 @@ class TrackModel {
   DateTime? updatedAt;
   List<String> artists;
 
+  String get artistsName => artists.join(', ');
+
   factory TrackModel.fromJson(Map<String, dynamic> json) => TrackModel(
     id: json['_id'] ?? '',
     albumId: json['album_id'] ?? '',
@@ -33,8 +35,8 @@ class TrackModel {
     lyrics: json['lyrics'] ?? '',
     audioLink: json['path_audio'] ?? '',
     listenCount: json['listen'] ?? 0,
-    createdAt: json['created_at'], 
-    updatedAt: json['updated_at'],
+    createdAt: DateTime.parse(json['created_at'] ?? ''), 
+    updatedAt: DateTime.parse(json['updated_at'] ?? ''),
     artists: List.from(json['artistsName'] ?? []),
   );
 

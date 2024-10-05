@@ -16,12 +16,6 @@ class CreateTrackAudioView extends ConsumerStatefulWidget {
 class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(createTrackViewModel.select((value) => value.isTrackCreatedSuccess), (prev, next) {
-      if (next) {
-        Navigator.popUntil(context, ModalRoute.withName('/main'));
-      }
-    });
-
     return Scaffold(
       appBar: _appBar(),
       body: _body(),

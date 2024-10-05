@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mobile/repositories/track_repository.dart';
 
-final createTrackViewModel = ChangeNotifierProvider<CreateTrackViewModel>(
+final createTrackViewModel = ChangeNotifierProvider.autoDispose<CreateTrackViewModel>(
   (ref) => CreateTrackViewModel(
     trackRepo: ref.read(trackRepoProvider)
   )
@@ -63,13 +63,6 @@ class CreateTrackViewModel extends ChangeNotifier {
   }
 
   Future<void> createTrack() async {
-    // print('''
-    //   ${trackTitleController.text},
-    //   ${trackDescController.text},
-    //   ${audioFile?.name ?? 'No audio'},
-    //   ${trackLyricsController.text},
-    //   ${thumbnail?.name ?? 'No thumbnail'},
-    // ''');
     isTrackCreatedSuccess = await _trackRepo.createTrack(
       title: trackTitleController.text, 
       description: trackDescController.text,
@@ -78,13 +71,5 @@ class CreateTrackViewModel extends ChangeNotifier {
       thumbnail: thumbnail!,
     );
     notifyListeners();
-  }
-
-  void clear() {
-    trackTitleController.clear();
-    trackDescController.clear();
-    audioFile = null;
-    thumbnail = null;
-    isTrackCreatedSuccess = false;
   }
 }

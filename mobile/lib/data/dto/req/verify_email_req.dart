@@ -1,14 +1,14 @@
-class LoginDto {
-  LoginDto({
+class VerifyEmailReq {
+  VerifyEmailReq({
     required this.email,
-    required this.password,
+    required this.otp,
   });
 
   String email;
-  String password;
-
+  String otp;
+  
   Map<String, dynamic> toJson() => {
     'email': email,
-    'password': password
+    'otp': otp,
   };
 }

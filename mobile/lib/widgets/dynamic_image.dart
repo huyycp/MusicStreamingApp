@@ -24,7 +24,7 @@ class DynamicImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageType = url.substring(url.lastIndexOf('.') + 1);
-    Widget image = Container(color: Colors.amber);
+    Widget image = Container(color: Colors.grey);
     switch (imageType) {
       case 'svg':
         {

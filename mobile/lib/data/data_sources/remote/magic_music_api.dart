@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/base_api.dart';
 
 final magicMusicApiProvider = Provider<MagicMusicApi>(
-  (ref) => MagicMusicApi(dotenv.env['MAGIC_MUSIC_BASE_URL']!)
+  (ref) => MagicMusicApi(dotenv.env['MAGIC_MUSIC_URL']!)
 );
 
 class MagicMusicApi extends BaseApi {
@@ -18,7 +18,7 @@ class MagicMusicApi extends BaseApi {
   Future<({String? accessToken, String? refreshToken})> refreshToken() async {
     Dio tempDio = Dio();
     final response = await tempDio.post(
-      '${dotenv.env['MAGIC_MUSIC_BASE_URL']}/auth/refresh-token',
+      '$baseUrl/auth/refresh-token',
       data: {
         'refresh_token': await getRefreshToken()
       }

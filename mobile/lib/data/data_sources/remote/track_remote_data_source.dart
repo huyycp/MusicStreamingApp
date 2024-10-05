@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
-import 'package:mobile/data/dto/req/create_track_dto.dart';
-import 'package:mobile/data/dto/req/get_track_dto.dart';
+import 'package:mobile/data/dto/req/create_track_req.dart';
+import 'package:mobile/data/dto/req/get_track_req.dart';
 import 'package:mobile/data/dto/resp/get_track_resp.dart';
 import 'package:mobile/models/track_model.dart';
 
@@ -22,8 +22,8 @@ class TrackRemoteDataSource {
   final MagicMusicApi _magicMusicApi;
   final String _trackPath = '/tracks';
 
-  Future<bool> createTrack(CreateTrackDto dto) async {
-    final data = FormData.fromMap(await dto.toJson());
+  Future<bool> createTrack(CreateTrackReq req) async {
+    final data = FormData.fromMap(await req.toJson());
     final response = await _magicMusicApi.request(
       _trackPath,
       method: HttpMethods.POST,
@@ -35,11 +35,11 @@ class TrackRemoteDataSource {
     return response.statusCode == HttpStatus.created;
   }
 
-  Future<GetTrackResp?> getTracks(GetTrackDto dto) async {
+  Future<GetTrackResp?> getTracks(GetTrackReq req) async {
     final response = await _magicMusicApi.request(
       _trackPath,
       method: HttpMethods.GET,
-      queryParameters: dto.toJson()
+      queryParameters: req.toJson()
     );
 
     if (response.statusCode == HttpStatus.ok) {
@@ -68,15 +68,14 @@ class TrackRemoteDataSource {
     }
   }
 
-  Future<GetTrackResp?> getTracksByArtist({
-    required GetTrackDto dto,
-    required String artistId,
+  Future<GetTrackResp?> getTracksByUser({
+    required GetTrackReq req,
     TrackStatus status = TrackStatus.all,
   }) async {
-    final queryParams = dto.toJson();
+    final queryParams = req.toJson();
     queryParams['status'] = (status == TrackStatus.all ? '' : status.name);
     final response = await _magicMusicApi.request(
-      '$_trackPath/artist/$artistId',
+      '$_trackPath/my-tracks',
       method: HttpMethods.GET,
       queryParameters: queryParams,
     );
