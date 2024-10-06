@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/user_remote_data_source.dart';
-import 'package:mobile/data/dto/login_dto.dart';
-import 'package:mobile/data/dto/register_dto.dart';
-import 'package:mobile/data/dto/verify_email_dto.dart';
+import 'package:mobile/data/dto/req/login_req.dart';
+import 'package:mobile/data/dto/req/register_req.dart';
+import 'package:mobile/data/dto/req/verify_email_req.dart';
 
 final userRepoProvider = Provider<UserRepository>(
   (ref) => UserRepository(
@@ -24,7 +24,7 @@ class UserRepository {
     required String name, 
     required UserRole role, 
   }) async {
-    return await _userRemote.registerWithEmail(RegisterDto(
+    return await _userRemote.registerWithEmail(RegisterReq(
       email: email, 
       password: password, 
       gender: gender, 
@@ -41,7 +41,7 @@ class UserRepository {
     required String email,
     required String otp,
   }) {
-    return _userRemote.verifyEmail(VerifyEmailDto(
+    return _userRemote.verifyEmail(VerifyEmailReq(
       email: email, 
       otp: otp
     ));
@@ -55,7 +55,7 @@ class UserRepository {
     required String email,
     required String password
   }) async {
-    return await _userRemote.loginWithEmail(LoginDto(
+    return await _userRemote.loginWithEmail(LoginReq(
       email: email,
       password: password
     ));

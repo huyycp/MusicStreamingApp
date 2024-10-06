@@ -57,5 +57,10 @@ export const TRACKS_MESSAGES = {
 } as const
 
 export const ALBUMS_MESSAGES = {
-  CREATE_ALBUM_SUCCESS: 'Create album success'
+  CREATE_ALBUM_SUCCESS: 'Create album success',
+  GET_LIST_ALBUMS_BY_ARTIST_SUCCESS: 'Get list albums by artist success',
+  GET_DETAIL_ALBUM_SUCCESS: 'Get detail album success',
+  ALBUM_ID_IS_REQUIRED: 'Album id is required',
+  ALBUM_ID_IS_INVALID: 'Album id is invalid',
+  ALBUM_NOT_FOUND: 'Album not found'
 } as const

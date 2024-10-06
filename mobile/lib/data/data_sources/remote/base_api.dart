@@ -52,6 +52,8 @@ abstract class BaseApi {
     dio.options.baseUrl = baseUrl;
   }
 
+  String get baseUrl => dio.options.baseUrl;
+
   // Manage access token
   Future<void> setAccessToken(String? accessToken) async {
     if (accessToken == null || accessToken.isEmpty) return;
