@@ -8,6 +8,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGetCreateAlbumData } from '~/hooks/useGetCreateAlbumData'
+import MusicAlbum from '~/components/MusicAlbum'
 
 export default function CreateAlbumBody() {
   const [error, setError] = useState('')
@@ -32,7 +33,7 @@ export default function CreateAlbumBody() {
     if (name.trim() === '') setError('Không để trống')
     else if (error === '') {
       setName(name)
-      navigate('/create-album/step1')
+      navigate('/create-album/final')
     }
   }
 
@@ -49,6 +50,7 @@ export default function CreateAlbumBody() {
         color: (theme) => theme.palette.secondary4.main
       }}
     >
+      <MusicAlbum />
       <Typography variant='h3' fontWeight='bold' sx={{ textAlign: 'center', mb: '20px' }}>
         Nhập tên album
       </Typography>

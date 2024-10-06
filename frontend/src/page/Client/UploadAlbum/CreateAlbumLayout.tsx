@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box'
 import { Outlet } from 'react-router-dom'
-import MusicAlbum from '~/components/MusicAlbum'
 import AppBar from './AppBar/AppBar'
 import { CreateAlbumProvider } from '~/contents/CreateAlbumProvider'
 
@@ -23,7 +22,6 @@ export default function CreateAlbumLayout() {
     >
       <CreateAlbumProvider>
         <AppBar />
-        <MusicAlbum />
         <Box sx={{ width: '390px', height: 'auto', flexGrow: 1 }}>
           <Outlet />
         </Box>

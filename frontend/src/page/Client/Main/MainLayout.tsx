@@ -28,7 +28,7 @@ export default function MainLayout() {
     >
       <AppBar />
       {listMusic && (
-        <MusicProvider listMusic={listMusic}>
+        <MusicProvider initMusic={listMusic}>
           <ResizeProvider>
             <Outlet />
             <TrackBar />
