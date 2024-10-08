@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as controller from '~/controllers/albums.controller'
-import { albumIdValidator } from '~/middlewares/albums.middlewares'
+import { addTrackIdValidator, albumIdValidator } from '~/middlewares/albums.middlewares'
 import { accessTokenValidator } from '~/middlewares/auth.middewares'
 import { verifiedArtistValidator } from '~/middlewares/tracks.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
@@ -39,5 +39,20 @@ albumsRouter.get(
  * Method: GET
  */
 albumsRouter.get('/:album_id', albumIdValidator, wrapRequestHandler(controller.getDetailAlbumController))
+
+/**
+ * Description. Add tracks to album
+ * Path: /:album_id/tracks
+ * Header: { Authorization: Bearer <access_token> }
+ * Method: PATCH
+ */
+albumsRouter.patch(
+  '/:album_id/tracks',
+  accessTokenValidator,
+  verifiedArtistValidator,
+  albumIdValidator,
+  addTrackIdValidator,
+  wrapRequestHandler(controller.addTrackToAlbumController)
+)
 
 export default albumsRouter
