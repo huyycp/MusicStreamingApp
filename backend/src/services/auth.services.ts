@@ -13,6 +13,7 @@ import { sendEmail } from '~/utils/email'
 import axios from 'axios'
 import { ErrorWithStatus } from '~/models/Error'
 import HTTP_STATUS from '~/constants/httpStatus'
+import Playlist from '~/models/schemas/Playlist.schema'
 
 class AuthService {
   private signAccessToken({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -112,6 +113,7 @@ class AuthService {
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, iat, exp })
     )
+    await databaseService.playlists.insertOne(new Playlist({ user_id: new ObjectId(user_id), favorite: true }))
     return {
       access_token,
       refresh_token
