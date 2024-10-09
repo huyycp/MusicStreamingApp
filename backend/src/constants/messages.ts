@@ -68,3 +68,7 @@ export const ALBUMS_MESSAGES = {
   LIST_OF_TRACKS_IS_INVALID: 'List of tracks is invalid',
   EXISTING_TRACK_NOT_FOUND: 'Existing track not found'
 } as const
+
+export const USERS_MESSAGES = {
+  GET_ME_SUCCESS: 'Get me success'
+} as const
