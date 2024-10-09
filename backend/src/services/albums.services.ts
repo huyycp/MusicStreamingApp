@@ -256,6 +256,22 @@ class AlbumService {
       list_of_tracks
     }
   }
+
+  async addTrackToAlbum({ album_id, track_list }: { album_id: string; track_list: string }) {
+    const track_arr = JSON.parse(track_list)
+    const trackId = track_arr.map((item: string) => new ObjectId(item))
+    const date = new Date()
+    await databaseService.tracks.updateMany(
+      {
+        _id: {
+          $in: trackId
+        }
+      },
+      {
+        $set: { album_id, updated_at: date }
+      }
+    )
+  }
 }
 
 const albumService = new AlbumService()

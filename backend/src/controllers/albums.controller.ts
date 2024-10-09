@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { ParamsDictionary } from 'express-serve-static-core'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { ALBUMS_MESSAGES } from '~/constants/messages'
-import { AlbumIdParams, AlbumPagination } from '~/models/requests/Album.requests'
+import { AddTrackReqBody, AlbumIdParams, AlbumPagination } from '~/models/requests/Album.requests'
 import { TokenPayLoad } from '~/models/requests/Auth.requests'
 import albumService from '~/services/albums.services'
 
@@ -47,5 +47,18 @@ export const getDetailAlbumController = async (req: Request<AlbumIdParams>, res:
       album_info: result.album[0],
       list_of_tracks: result.list_of_tracks
     }
+  })
+}
+
+export const addTrackToAlbumController = async (
+  req: Request<AlbumIdParams, any, AddTrackReqBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { album_id } = req.params
+  const { track_list } = req.body
+  await albumService.addTrackToAlbum({ album_id, track_list })
+  return res.json({
+    message: ALBUMS_MESSAGES.ADD_TRACKS_TO_ALBUM_SUCCESS
   })
 }
