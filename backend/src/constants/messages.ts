@@ -64,3 +64,7 @@ export const ALBUMS_MESSAGES = {
   ALBUM_ID_IS_INVALID: 'Album id is invalid',
   ALBUM_NOT_FOUND: 'Album not found'
 } as const
+
+export const USERS_MESSAGES = {
+  GET_ME_SUCCESS: 'Get me success'
+} as const
