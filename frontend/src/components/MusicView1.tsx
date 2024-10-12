@@ -8,6 +8,7 @@ import { useMusic } from '~/hooks/useMusic'
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
 import { IAlbum } from '~/type/Album/IAlbum'
 import useGetAlbumDetail from '~/hooks/Album/useGetAlbumDetail'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   initAlbum: IAlbum
@@ -48,6 +49,7 @@ const TextFade = styled(Box)(({ theme }) => ({
 export default function MusicView1({ initAlbum }: Props) {
   const { widths, minWidths } = useResize()
   const { changeListMusic, pause, music } = useMusic()
+  const navigate = useNavigate()
 
   const { data } = useGetAlbumDetail(initAlbum._id)
 
@@ -57,7 +59,7 @@ export default function MusicView1({ initAlbum }: Props) {
     }
   }
   const handleClick = () => {
-
+    navigate(`/album/${initAlbum._id}`)
   }
 
   return (
