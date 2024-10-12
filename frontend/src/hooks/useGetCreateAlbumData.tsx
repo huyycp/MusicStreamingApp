@@ -12,6 +12,8 @@ interface CreateAlbumType {
   setTrackList: (data: string[]) => void
   setArtistName: (data: string[]) => void
   clearData: () => void
+  imageUrl: string
+  setImageUrl: (url: string) => void
 }
 
 // Tạo context

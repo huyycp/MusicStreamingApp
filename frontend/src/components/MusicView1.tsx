@@ -4,18 +4,13 @@ import { styled } from '@mui/material/styles'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PauseIcon from '@mui/icons-material/Pause'
 import { useResize } from '~/hooks/useResize'
-import PushPinIcon from '@mui/icons-material/PushPin'
 import { useMusic } from '~/hooks/useMusic'
-import { useNavigate } from 'react-router-dom'
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { ITrack } from '~/type/Tracks/ITrack'
+import { IAlbum } from '~/type/Album/IAlbum'
+import useGetAlbumDetail from '~/hooks/Album/useGetAlbumDetail'
 
 type Props = {
-  initMusic?: ITrack
-  type: string
-  totalMusic?: number | 0
+  initAlbum: IAlbum
 }
 
 // Styled component for the cover image
@@ -50,30 +45,19 @@ const TextFade = styled(Box)(({ theme }) => ({
   }
 }))
 
-export default function MusicView1({ initMusic, type = 'album', totalMusic }: Props) {
+export default function MusicView1({ initAlbum }: Props) {
   const { widths, minWidths } = useResize()
-  const { changeMusic, pause, music } = useMusic()
-  const navigate = useNavigate()
+  const { changeListMusic, pause, music } = useMusic()
+
+  const { data } = useGetAlbumDetail(initAlbum._id)
 
   const handlePlay = () => {
-    if (type === 'album' && initMusic) {
-      changeMusic(initMusic)
-    }
-  }
-  const handleGetList = () => {
-    if (type === 'liked-music') {
-      navigate('/liked-music/tracks')
-    }
-    if (type === 'my-music') {
-      navigate('/my-music')
+    if (data?.result.list_of_tracks) {
+      changeListMusic(data.result.list_of_tracks)
     }
   }
   const handleClick = () => {
-    if (type === 'album' && initMusic) {
-      navigate(`/playlist/${initMusic._id}`)
-    } else if (type === 'album') {
-      navigate('/liked-music/tracks')
-    }
+
   }
 
   return (
@@ -103,41 +87,21 @@ export default function MusicView1({ initMusic, type = 'album', totalMusic }: Pr
             gap: 1,
             padding: 1
           }}
-          onClick={handleGetList}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <CoverImage className='cover-image'>
-              {type === 'album' && (
-                <img
-                  alt={initMusic?.name}
-                  src={initMusic?.image?.replace('{w}x{h}bb', '48x48bb')}
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
-                  }}
-                  style={{
-                    inlineSize: '48px',
-                    blockSize: '48px',
-                    objectFit: 'cover'
-                  }}
-                />
-              )}
-              {type !== 'album' && (
-                <Box
-                  sx={{
-                    inlineSize: '48px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    blockSize: '48px',
-                    background: (theme) => theme.palette.gradient.gradient1,
-                    color: (theme) => theme.palette.secondary4.main
-                  }}
-                  onClick={handleGetList}
-                >
-                  {type === 'liked-music' && <FavoriteIcon />}
-                  {type === 'my-music' && <CloudUploadIcon />}
-                </Box>
-              )}
+              <img
+                alt={initAlbum?.name}
+                src={initAlbum?.image?.replace('{w}x{h}bb', '48x48bb')}
+                onError={(e) => {
+                  e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
+                }}
+                style={{
+                  inlineSize: '48px',
+                  blockSize: '48px',
+                  objectFit: 'cover'
+                }}
+              />
               <IconButton
                 sx={{
                   'color': (theme) => theme.palette.secondary4.main,
@@ -157,81 +121,56 @@ export default function MusicView1({ initMusic, type = 'album', totalMusic }: Pr
                 }}
                 onClick={handlePlay}
               >
-                {music?._id === initMusic?._id && (pause === true ? <PlayArrowIcon /> : <PauseIcon />)}
-                {music?._id !== initMusic?._id && <PlayArrowIcon />}
+                {music?.album_id === initAlbum?._id && (pause === true ? <PlayArrowIcon /> : <PauseIcon />)}
+                {music?.album_id !== initAlbum?._id && <PlayArrowIcon />}
               </IconButton>
             </CoverImage>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
               <Box
                 sx={{
-                  color: music?._id === initMusic?._id ? (theme) => theme.palette.primary.main : (theme) => theme.palette.secondary4.main,
+                  color: music?.album_id === initAlbum?._id ? (theme) => theme.palette.primary.main : (theme) => theme.palette.secondary4.main,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   maxInlineSize: 'auto'
                 }}
               >
-                {type === 'album' && initMusic?.name}
-                {type === 'liked-music' && 'Bài hát đã thích'}
-                {type === 'my-music' && 'Bài hát của bạn'}
+                {initAlbum?.name}
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'start', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
-                {type === 'album' &&
-                  initMusic?.artistsName?.map((name, index) => (
+                {
+                  initAlbum?.artistsName?.map((name, index) => (
                     <TextFade key={index}>
                       {name}
-                      {index < initMusic.artistsName.length - 1 && ','}
+                      {index < initAlbum.artistsName.length - 1 && ','}
                     </TextFade>
-                  ))}
-                {type !== 'album' && (
-                  <TextFade>
-                    <PushPinIcon sx={{ fontSize: 15, color: (theme) => theme.palette.primary.main, transform: 'rotate(45deg)' }} />
-                    {` ${totalMusic} bài hát`}
-                  </TextFade>
-                )}
+                  ))
+                }
               </Box>
             </Box>
           </Box>
 
-          {music?._id === initMusic?._id && <VolumeUpOutlinedIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
+          {music?.album_id === initAlbum?._id && <VolumeUpOutlinedIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
         </Box>
       )}
       {widths[0] === minWidths[0] && (
-        <CoverImage className='cover-image' onClick={handleGetList}>
-          {type === 'album' && (
-            <img
-              alt={initMusic?.name}
-              src={
-                initMusic?.image?.replace('{w}x{h}bb', '48x48bb') ||
-                'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
-              }
-              onError={(e) => {
-                e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
-              }}
-              style={{
-                inlineSize: '48px',
-                blockSize: '48px',
-                objectFit: 'cover'
-              }}
-            />
-          )}
-          {type !== 'album' && (
-            <Box
-              sx={{
-                inlineSize: '48px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                blockSize: '48px',
-                background: (theme) => theme.palette.gradient.gradient1,
-                color: (theme) => theme.palette.secondary4.main
-              }}
-              onClick={handleGetList}
-            >
-              {type === 'liked-music' && <FavoriteIcon />}
-              {type === 'my-music' && <CloudUploadIcon />}
-            </Box>
-          )}
+        <CoverImage className='cover-image'>
+
+          <img
+            alt={initAlbum?.name}
+            src={
+              initAlbum?.image?.replace('{w}x{h}bb', '48x48bb') ||
+              'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
+            }
+            onError={(e) => {
+              e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
+            }}
+            style={{
+              inlineSize: '48px',
+              blockSize: '48px',
+              objectFit: 'cover'
+            }}
+          />
         </CoverImage>
       )}
     </Box>
