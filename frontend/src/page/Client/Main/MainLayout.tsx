@@ -7,11 +7,26 @@ import { ResizeProvider } from '~/contents/ResizeProvider'
 import { MusicProvider } from '~/contents/MusicProvider'
 import useGetTracks from '~/hooks/Tracks/useGetTracks'
 import CircularProgress from '@mui/material/CircularProgress'
+import { useEffect, useState } from 'react'
 
 export default function MainLayout() {
   const { data, isPending } = useGetTracks()
 
   const listMusic = data?.result.data
+
+  const [fullWidth, setFullWidth] = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setFullWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   return (
     <Box
@@ -29,7 +44,7 @@ export default function MainLayout() {
       <AppBar />
       {listMusic && (
         <MusicProvider initMusic={listMusic}>
-          <ResizeProvider>
+          <ResizeProvider fullWidth={fullWidth}>
             <Outlet />
             <TrackBar />
           </ResizeProvider>
