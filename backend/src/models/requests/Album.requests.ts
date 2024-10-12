@@ -12,3 +12,7 @@ export interface AlbumPagination {
 export interface AlbumArtistParams extends ParamsDictionary {
   artist_id: string
 }
+
+export interface AddTrackReqBody {
+  track_list: string
+}

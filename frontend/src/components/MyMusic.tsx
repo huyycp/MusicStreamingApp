@@ -4,30 +4,19 @@ import TextField from '@mui/material/TextField'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import SearchIcon from '@mui/icons-material/Search'
-import { SetStateAction, useCallback, useState } from 'react'
+import { useState } from 'react'
 import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import MusicTable from './MusicTable'
 import { useResize } from '~/hooks/useResize'
 import { useNavigate } from 'react-router-dom'
-import useGetTracksByArtist from '~/hooks/Tracks/useGetTracksByArtist'
+import AlbumTable from './AlbumTable'
 
 export default function MyMusic() {
-  const [searchValue, setSearchValue] = useState<null | string>('')
   const navigate = useNavigate()
   const { widths } = useResize()
-  const { data } = useGetTracksByArtist()
 
   const [selectedTab, setSelectedTab] = useState<'songs' | 'albums'>('songs')
-
-  const listMusic = data?.result.data
-
-  // Hàm xử lý tìm kiếm theo tên bài nhạc
-  const filteredMusic = listMusic?.filter((music) => music.name.toLowerCase().includes((searchValue ?? '').toLowerCase()))
-
-  const handleSearchChange = useCallback((e: { target: { value: SetStateAction<string | null> } }) => {
-    setSearchValue(e.target.value)
-  }, [])
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', pt: 2, width: '100%', gap: 2 }}>
@@ -42,8 +31,8 @@ export default function MyMusic() {
               placeholder='Tìm kiếm'
               type='text'
               size='small'
-              value={searchValue}
-              onChange={handleSearchChange}
+              value=''
+              // onChange={ }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -139,8 +128,8 @@ export default function MyMusic() {
 
       {/* Hiển thị danh sách nhạc đã lọc */}
       <Box sx={{ width: '100%', overflowY: 'auto' }}>
-        {selectedTab === 'songs' && <MusicTable listMusic={filteredMusic} />}
-        {selectedTab === 'albums' && <MusicTable listMusic={filteredMusic} />}
+        {selectedTab === 'songs' && <MusicTable />}
+        {selectedTab === 'albums' && <AlbumTable />}
       </Box>
     </Box>
   )

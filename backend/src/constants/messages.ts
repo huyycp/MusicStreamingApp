@@ -62,5 +62,13 @@ export const ALBUMS_MESSAGES = {
   GET_DETAIL_ALBUM_SUCCESS: 'Get detail album success',
   ALBUM_ID_IS_REQUIRED: 'Album id is required',
   ALBUM_ID_IS_INVALID: 'Album id is invalid',
-  ALBUM_NOT_FOUND: 'Album not found'
+  ALBUM_NOT_FOUND: 'Album not found',
+  ADD_TRACKS_TO_ALBUM_SUCCESS: 'Add tracks to album success',
+  LIST_OF_TRACKS_IS_REQUIRED: 'List of tracks is required',
+  LIST_OF_TRACKS_IS_INVALID: 'List of tracks is invalid',
+  EXISTING_TRACK_NOT_FOUND: 'Existing track not found'
+} as const
+
+export const USERS_MESSAGES = {
+  GET_ME_SUCCESS: 'Get me success'
 } as const

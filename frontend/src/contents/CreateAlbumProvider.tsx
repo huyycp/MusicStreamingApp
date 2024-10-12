@@ -7,6 +7,7 @@ export const CreateAlbumProvider = ({ children }: { children: ReactNode }) => {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [trackList, setTrackList] = useState<string[]>([])
   const [artistName, setArtistName] = useState<string[]>([])
+  const [imageUrl, setImageUrl] = useState<string>('')
 
   const clearData = () => {
     setName('')
@@ -16,7 +17,9 @@ export const CreateAlbumProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <CreateAlbumContent.Provider value={{ name, imageFile, trackList, artistName, setName, setImageFile, setTrackList, setArtistName, clearData }}>
+    <CreateAlbumContent.Provider
+      value={{ name, imageFile, trackList, artistName, setName, setImageFile, setTrackList, setArtistName, clearData, setImageUrl, imageUrl }}
+    >
       {children}
     </CreateAlbumContent.Provider>
   )

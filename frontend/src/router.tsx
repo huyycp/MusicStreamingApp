@@ -22,8 +22,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import UploadStep3 from './page/Client/UploadMusic/UploadStep3/UploadStep3'
 import CreateAlbumBody from './page/Client/UploadAlbum/CreateAlbumBody/CreateAlbumBody'
 import CreateAlbumLayout from './page/Client/UploadAlbum/CreateAlbumLayout'
-import CreateAlbumStep1 from './page/Client/UploadAlbum/CreateAlbumStep1/CreateAlbumStep1'
-import CreateAlbumStep2 from './page/Client/UploadAlbum/CreateAlbumStep2/CreateAlbumStep2'
+import AddTrackToAlbum from './page/Client/UploadAlbum/AddTrackToAlbum/AddTrackToAlbum'
+import CreateAlbumFinal from './page/Client/UploadAlbum/CreateAlbumFinal/CreateAlbumFinal'
 
 const router = createBrowserRouter([
   {
@@ -109,12 +109,12 @@ const router = createBrowserRouter([
             element: <CreateAlbumBody />
           },
           {
-            path: 'step1',
-            element: <CreateAlbumStep1 />
+            path: 'final',
+            element: <CreateAlbumFinal />
           },
           {
-            path: 'step2',
-            element: <CreateAlbumStep2 />
+            path: ':id/add-track',
+            element: <AddTrackToAlbum />
           }
         ]
       }

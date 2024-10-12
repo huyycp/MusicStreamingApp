@@ -1,28 +1,18 @@
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
-import { styled } from '@mui/material/styles'
 import { useEffect, useState } from 'react'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useNavigate } from 'react-router-dom'
 import CancelIcon from '@mui/icons-material/Cancel'
 import IconButton from '@mui/material/IconButton'
 import { useGetCreateAlbumData } from '~/hooks/useGetCreateAlbumData'
+import useCreateAlbum from '~/hooks/Album/useCreateAlbum'
+import CircularProgress from '@mui/material/CircularProgress'
+import MusicAlbum from '~/components/MusicAlbum'
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 2,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.neutral.neutral1
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: theme.palette.primary.main
-  }
-}))
-
-export default function CreateAlbumStep1() {
-  const { name, setImageFile, imageFile } = useGetCreateAlbumData()
+export default function CreateAlbumFinal() {
+  const { name, setImageFile, imageFile, clearData } = useGetCreateAlbumData()
+  const { mutate: createAlbum, isPending } = useCreateAlbum()
   const [imageUrl, setImageUrl] = useState<string>('')
   const navigate = useNavigate()
 
@@ -54,7 +44,15 @@ export default function CreateAlbumStep1() {
 
   const handleNext = () => {
     setImageFile(imageFile)
-    navigate('/create-album/step2')
+    const formData = new FormData()
+    formData.append('name', name)
+    formData.append('image', imageFile as File)
+    createAlbum(formData, {
+      onSuccess: (data) => {
+        clearData()
+        navigate(`/create-album/${data.result._id}/add-track`)
+      }
+    })
   }
 
   return (
@@ -68,7 +66,7 @@ export default function CreateAlbumStep1() {
         gap: 3
       }}
     >
-      <BorderLinearProgress variant='determinate' value={Math.floor((1 / 2) * 100)} sx={{ width: '100%', mt: 0.5 }} />
+      <MusicAlbum />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
           sx={{
@@ -83,13 +81,10 @@ export default function CreateAlbumStep1() {
           }}
           onClick={() => {
             setImageFile(null)
-            navigate('/create-album/step2')
+            navigate('/create-album')
           }}
         />
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 1/2</Box>
-          <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Tải hình ảnh cho album</Box>
-        </Box>
+        <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Tải hình ảnh cho album</Box>
       </Box>
       <Button variant='contained' component='label'>
         Upload Cover Image
@@ -111,11 +106,12 @@ export default function CreateAlbumStep1() {
           </IconButton>
         </Box>
       )}
-      {imageFile && (
+      {imageFile && !isPending && (
         <Button variant='contained' color='primary' onClick={handleNext}>
-          Tiếp theo
+          Tạo album
         </Button>
       )}
+      {isPending && <CircularProgress color='success' />}
     </Box>
   )
 }
