@@ -48,6 +48,10 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='playlist' />
       },
       {
+        path: '/album/:id',
+        element: <BodyContent viewType='album' />
+      },
+      {
         path: '/my-music',
         element: <BodyContent viewType='my-music' />
       },

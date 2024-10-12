@@ -31,7 +31,7 @@ export default function TrackBar() {
       </Box>
       <Box
         sx={{
-          flex: '0 1 605px',
+          flex: '0 1 auto',
           minInlineSize: '313px',
           maxInlineSize: '605px',
           color: 'white',
