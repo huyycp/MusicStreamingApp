@@ -1,9 +1,13 @@
 import Box from '@mui/material/Box'
 import MusicView1 from '~/components/MusicView1'
-import useGetTracks from '~/hooks/Tracks/useGetTracks'
+import MusicView2 from '~/components/MusicView2'
+import useGetAlbumByArtist from '~/hooks/Album/useGetAlbumByArtist'
+import { IAlbum } from '~/type/Album/IAlbum'
 
 export default function LibraryBody() {
-  const { data } = useGetTracks()
+  const { data } = useGetAlbumByArtist(100, 1)
+  const albums = data?.result.data as IAlbum[]
+  const listAlbums = (albums ?? []).filter((album) => album.number_of_tracks > 0)
   return (
     <Box
       sx={{
@@ -16,9 +20,9 @@ export default function LibraryBody() {
     >
       <div className='scrollable-container' style={{ blockSize: '100%', overflow: 'auto' }}>
         <Box sx={{ inlineSize: '100%', blockSize: '5px' }}></Box>
-        <MusicView1 type='liked-music' totalMusic={6} />
-        <MusicView1 type='my-music' totalMusic={4} />
-        {data?.result.data.map((music, index) => <MusicView1 key={index} initMusic={music} type='album' />)}
+        <MusicView2 type='liked-music' totalMusic={6} />
+        <MusicView2 type='my-music' totalMusic={4} />
+        {listAlbums?.map((album, index) => <MusicView1 key={index} initAlbum={album} />)}
       </div>
     </Box>
   )

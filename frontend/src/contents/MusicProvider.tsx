@@ -3,11 +3,11 @@ import MusicContext from '~/hooks/useMusic'
 import { ITrack } from '~/type/Tracks/ITrack'
 
 interface MusicProviderProps {
-  listMusic: ITrack[]
+  initMusic: ITrack[]
   children: ReactNode
 }
 
-export function MusicProvider({ children, listMusic }: MusicProviderProps) {
+export function MusicProvider({ children, initMusic }: MusicProviderProps) {
   const [pause, setPause] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(0.5)
   const [mute, setMute] = useState<boolean>(false)
@@ -16,7 +16,9 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
   const [position, setPosition] = useState(0)
   const [duration, setDuration] = useState(0)
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null)
-  const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null)
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
+  const [isNextAlbum, setIsNextAlbum] = useState<boolean>(false)
+  const [listMusic, setListMusic] = useState<ITrack[]>(initMusic)
 
   // Lấy chỉ số bài hát từ localStorage khi trang load
   useEffect(() => {
@@ -25,21 +27,27 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
       const index = parseInt(savedTrackIndex, 10)
       setCurrentTrackIndex(index)
       setMusic(listMusic[index])
-    } else {
+    } else if (savedTrackIndex === null) {
       setCurrentTrackIndex(0)
       setMusic(listMusic[0])
     }
   }, [listMusic])
 
   const handleNextTrack = () => {
-    const nextIndex = currentTrackIndex !== null && currentTrackIndex < listMusic.length - 1 ? currentTrackIndex + 1 : 0
-    setCurrentTrackIndex(nextIndex)
-    localStorage.setItem('currentTrackIndex', nextIndex.toString()) // Lưu lại chỉ số bài hát vào localStorage
-    return listMusic[nextIndex]
+    const nextIndex = currentTrackIndex + 1
+    if (nextIndex >= listMusic.length + 1) {
+      setIsNextAlbum(true)
+      setCurrentTrackIndex(listMusic.length + 1)
+      return listMusic[listMusic.length + 1]
+    } else {
+      setCurrentTrackIndex(nextIndex)
+      localStorage.setItem('currentTrackIndex', nextIndex.toString())
+      return listMusic[nextIndex]
+    }
   }
 
   const handlePreviousTrack = () => {
-    const prevIndex = currentTrackIndex !== null && currentTrackIndex > 0 ? currentTrackIndex - 1 : listMusic.length - 1
+    const prevIndex = currentTrackIndex > 0 ? currentTrackIndex - 1 : listMusic.length - 1
     setCurrentTrackIndex(prevIndex)
     localStorage.setItem('currentTrackIndex', prevIndex.toString()) // Lưu lại chỉ số bài hát vào localStorage
     return listMusic[prevIndex]
@@ -64,6 +72,19 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
     }
   }
 
+  const changeListMusic = (newList: ITrack[]) => {
+    setListMusic(newList)
+    localStorage.setItem('currentTrackIndex', '0')
+    setCurrentTrackIndex(0)
+    setMusic(newList[0])
+    if (audioElement) {
+      audioElement.src = newList[0].path_audio
+      setPosition(0)
+      audioElement.play()
+      setPause(false)
+    }
+  }
+
   // useEffect để khởi tạo và quản lý `audioElement`
   useEffect(() => {
     const audio = new Audio() // Khởi tạo một lần duy nhất
@@ -78,11 +99,25 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
     }
 
     const handleEnded = () => {
-      const nextMusic = handleNextTrack()
-      setMusic(nextMusic)
-      audio.src = nextMusic.path_audio
-      document.title = `${nextMusic.name}`
-      audio.play()
+      if (repeat) {
+        audio.play()
+      } else {
+        setCurrentTrackIndex((prevIndex) => {
+          const nextIndex = prevIndex + 1
+          if (nextIndex < listMusic.length) {
+            const nextMusic = listMusic[nextIndex]
+            setMusic(nextMusic)
+            audio.src = nextMusic.path_audio
+            document.title = `${nextMusic.name}`
+            audio.play()
+            setIsNextAlbum(false)
+          } else {
+            setIsNextAlbum(true)
+            audio.pause()
+          }
+          return nextIndex < listMusic.length ? nextIndex : prevIndex
+        })
+      }
     }
 
     audio.addEventListener('timeupdate', handleTimeUpdate)
@@ -93,7 +128,7 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
       audio.removeEventListener('timeupdate', handleTimeUpdate)
       audio.removeEventListener('ended', handleEnded)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -131,12 +166,14 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
   }, [pause, audioElement])
 
   const playNextTrack = () => {
-    const nextMusic = handleNextTrack()
-    setMusic(nextMusic)
-    if (audioElement) {
-      audioElement.src = nextMusic.path_audio
-      setPosition(0)
-      audioElement.play()
+    if (!isNextAlbum) {
+      const nextMusic = handleNextTrack()
+      setMusic(nextMusic)
+      if (audioElement) {
+        audioElement.src = nextMusic.path_audio
+        setPosition(0)
+        audioElement.play()
+      }
     }
   }
 
@@ -168,7 +205,9 @@ export function MusicProvider({ children, listMusic }: MusicProviderProps) {
         volume,
         setVolume,
         music,
-        changeMusic
+        changeMusic,
+        isNextAlbum,
+        changeListMusic
       }}
     >
       {children}

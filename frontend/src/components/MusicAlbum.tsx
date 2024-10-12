@@ -38,19 +38,21 @@ const StyledAlbumContainer = styled('div')(({ theme }) => ({
 }))
 
 const MusicAlbum = () => {
-  const { name, imageFile, artistName } = useGetCreateAlbumData()
+  const { name, imageFile, artistName, imageUrl } = useGetCreateAlbumData()
   const [image, setImage] = useState<string | null>(null)
-  //   const songName = '2123123213'
 
   useEffect(() => {
     if (imageFile) {
       const url = URL.createObjectURL(imageFile)
       setImage(url)
 
-      // Giải phóng URL khi component unmount
       return () => URL.revokeObjectURL(url)
-    } else setImage(null)
-  }, [imageFile])
+    } else if (imageUrl) {
+      setImage(imageUrl)
+    } else {
+      setImage(null)
+    }
+  }, [imageFile, imageUrl])
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center'>

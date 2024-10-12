@@ -9,13 +9,12 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
 import SortIcon from '@mui/icons-material/Sort'
-import { ITrack } from '~/type/Tracks/ITrack'
+import Skeleton from '@mui/material/Skeleton'
+import useGetTracksByArtist from '~/hooks/Tracks/useGetTracksByArtist'
 
-type Props = {
-  listMusic: ITrack[] | undefined
-}
-
-export default function MusicTable({ listMusic }: Props) {
+export default function MusicTable() {
+  const { data, isPending } = useGetTracksByArtist()
+  const listMusic = data?.result.data
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
 
@@ -44,53 +43,77 @@ export default function MusicTable({ listMusic }: Props) {
           </TableRow>
         </TableHead>
         <TableBody sx={{ bgcolor: theme.palette.neutral.neutral3 }}>
-          {listMusic?.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell
-                component='th'
-                scope='row'
-                sx={{ color: textColor, maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-              >
-                <Box display='flex' alignItems='center'>
-                  <img
-                    alt={row?.name}
-                    src={row?.image?.replace('{w}x{h}bb', '48x48bb')}
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
-                    }}
-                    style={{
-                      inlineSize: '48px',
-                      blockSize: '48px',
-                      objectFit: 'cover',
-                      borderRadius: '10px',
-                      marginRight: '10px'
-                    }}
-                  />
-                  <Typography noWrap variant='body2'>
-                    {row.name}
-                  </Typography>
-                </Box>
-              </TableCell>
-              <TableCell align='left'>
-                <Typography
-                  noWrap
-                  variant='body2'
-                  sx={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: textColor }}
+          {isPending
+            ? // Hiển thị shimmer khi dữ liệu đang tải
+            Array.from(new Array(5)).map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Box display='flex' alignItems='center'>
+                    <Skeleton variant='rectangular' width={48} height={48} sx={{ borderRadius: '10px', marginRight: '10px' }} />
+                    <Skeleton variant='text' width={150} height={24} />
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Skeleton variant='text' width={200} height={24} />
+                </TableCell>
+                <TableCell align='right'>
+                  <Skeleton variant='text' width={50} height={24} />
+                </TableCell>
+                <TableCell align='right'>
+                  <Skeleton variant='text' width={50} height={24} />
+                </TableCell>
+                <TableCell align='right'>
+                  <Skeleton variant='text' width={50} height={24} />
+                </TableCell>
+              </TableRow>
+            ))
+            : listMusic?.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell
+                  component='th'
+                  scope='row'
+                  sx={{ color: textColor, maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                 >
-                  {row.artistsName.join(', ')}
-                </Typography>
-              </TableCell>
-              <TableCell align='right' sx={{ color: textColor }}>
-                N/A
-              </TableCell>
-              <TableCell align='right' sx={{ color: textColor }}>
-                N/A
-              </TableCell>
-              <TableCell align='right' sx={{ color: textColor }}>
-                N/A
-              </TableCell>
-            </TableRow>
-          ))}
+                  <Box display='flex' alignItems='center'>
+                    <img
+                      alt={row?.name}
+                      src={row?.image?.replace('{w}x{h}bb', '48x48bb')}
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
+                      }}
+                      style={{
+                        inlineSize: '48px',
+                        blockSize: '48px',
+                        objectFit: 'cover',
+                        borderRadius: '10px',
+                        marginRight: '10px'
+                      }}
+                    />
+                    <Typography noWrap variant='body2'>
+                      {row.name}
+                    </Typography>
+                  </Box>
+                </TableCell>
+                <TableCell align='left'>
+                  <Typography
+                    noWrap
+                    variant='body2'
+                    sx={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: textColor }}
+                  >
+                    {row.artistsName.join(', ')}
+                  </Typography>
+                </TableCell>
+                <TableCell align='right' sx={{ color: textColor }}>
+                  N/A
+                </TableCell>
+                <TableCell align='right' sx={{ color: textColor }}>
+                  N/A
+                </TableCell>
+                <TableCell align='right' sx={{ color: textColor }}>
+                  N/A
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
