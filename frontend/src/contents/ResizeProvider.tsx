@@ -1,8 +1,13 @@
 import { useState, ReactNode, useEffect } from 'react'
 import ResizeContext from '~/hooks/useResize'
 
-export function ResizeProvider({ children }: { children: ReactNode }) {
-  const fullWidth = 1497
+type Props = {
+  fullWidth: number
+  children: ReactNode
+}
+
+export function ResizeProvider({ children, fullWidth }: Props) {
+  // const fullWidth = 1908
   const minWidths: [number, number, number] = [72, 500, 248]
   const maxWidths: [number, number, number] = [
     fullWidth - minWidths[1] - minWidths[2] - 250,
