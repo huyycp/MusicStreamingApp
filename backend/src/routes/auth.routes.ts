@@ -6,7 +6,7 @@ import {
   emailVerifyTokenValidator,
   forgotPasswordValidator,
   loginValidator,
-  refreshTokenMobileValidator,
+  refreshTokenBothValidator,
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator
@@ -56,13 +56,7 @@ authRouter.post(
   '/logout',
   accessTokenValidator,
   (req: Request, res: Response, next: NextFunction) => {
-    const userAgent = (req.headers['user-agent'] || '').split(' ')[0]
-    const isMobile = /mobile/i.test(userAgent)
-    if (isMobile) {
-      return refreshTokenMobileValidator(req, res, next)
-    } else {
-      return refreshTokenValidator
-    }
+    return refreshTokenBothValidator(req, res, next)
   },
   wrapRequestHandler(controller.logoutController)
 )

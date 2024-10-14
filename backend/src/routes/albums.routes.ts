@@ -7,6 +7,13 @@ import { wrapRequestHandler } from '~/utils/handlers'
 
 const albumsRouter = Router()
 /**
+ * Description. Get all albums
+ * Path: /
+ * Method: GET
+ */
+albumsRouter.get('/', wrapRequestHandler(controller.getAlbumsController))
+
+/**
  * Description. Create album (artist)
  * Path: /
  * Header: { Authorization: Bearer <access_token> }
