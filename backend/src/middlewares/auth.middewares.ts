@@ -205,8 +205,12 @@ export const accessTokenValidator = validate(
   )
 )
 
-export const refreshTokenMobileValidator = async (req: Request, res: Response, next: NextFunction) => {
-  const new_value = (req.headers['user-agent'] as string).split(' ')[1]
+export const refreshTokenBothValidator = async (req: Request, res: Response, next: NextFunction) => {
+  const userAgent = (req.headers['user-agent'] || '').split(' ')[0]
+  const isMobile = /mobile/i.test(userAgent)
+  let new_value
+  if (isMobile) new_value = (req.headers['user-agent'] as string).split(' ')[1]
+  else new_value = req.body.refresh_token
   if (!new_value) {
     throw new ErrorWithStatus({
       message: AUTH_MESSAGES.REFRESH_TOKEN_IS_REQUIRED,
