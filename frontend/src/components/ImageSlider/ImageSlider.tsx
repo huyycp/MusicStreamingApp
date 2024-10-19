@@ -3,31 +3,32 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft'
 import ChevronRight from '@mui/icons-material/ChevronRight'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
+import Skeleton from '@mui/material/Skeleton'
 import ImageSlide from './ImageSlide'
-
-const images = [
-  'https://via.placeholder.com/300/FF5733/FFFFFF?text=Image+1',
-  'https://via.placeholder.com/300/33FF57/FFFFFF?text=Image+2',
-  'https://via.placeholder.com/300/3357FF/FFFFFF?text=Image+3',
-  'https://via.placeholder.com/300/FF33A1/FFFFFF?text=Image+4',
-  'https://via.placeholder.com/300/33A1FF/FFFFFF?text=Image+5'
-]
+import { IAlbum } from '~/type/Album/IAlbum'
+import useGetAlbums from '~/hooks/Album/useGetAlbums'
 
 const ImageSlider = () => {
+  const { data, isPending } = useGetAlbums(5, 1)
+  const listAlbum = data?.result.data as IAlbum[] || []
+
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % (images.length - 2))
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % (listAlbum.length - 2))
   }
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + (images.length - 2)) % (images.length - 2))
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + (listAlbum.length - 2)) % (listAlbum.length - 2))
   }
+
+  const images = listAlbum.map(album => album.image)
 
   useEffect(() => {
     const interval = setInterval(handleNext, 5000)
     return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -54,23 +55,40 @@ const ImageSlider = () => {
       </IconButton>
 
       <Box sx={{ display: 'flex', overflow: 'hidden', width: '100%' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            transition: 'transform 0.5s ease',
-            transform: `translateX(-${(currentIndex * (100 / 3))}%)`,
-            width: `${images.length * (100 / 3)}%`
-          }}
-        >
-          {images.map((src, index) => (
-            <ImageSlide
-              key={index}
-              src={src}
-              index={index}
-              isActive={index === currentIndex}
-            />
-          ))}
-        </Box>
+        {isPending ? (
+          <Box sx={{ display: 'flex', width: '100%' }}>
+            {[...Array(3)].map((_, index) => (
+              <Skeleton
+                key={index}
+                variant="rectangular"
+                width={210}
+                height={118}
+                sx={{ flex: 1, marginRight: index !== 2 ? 2 : 0 }}
+              />
+            ))}
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              transition: 'transform 0.5s ease',
+              transform: `translateX(-${(currentIndex * (100 / 3))}%)`,
+              width: `${images.length * (100 / 3)}%`
+            }}
+          >
+            {listAlbum.map((album, index) => (
+              <ImageSlide
+                key={index}
+                src={album.image}
+                index={index}
+                artistsName={album.artistsName}
+                albumName={album.name}
+                albumId={album._id}
+                isActive={index === currentIndex}
+              />
+            ))}
+          </Box>
+        )}
       </Box>
 
       <IconButton

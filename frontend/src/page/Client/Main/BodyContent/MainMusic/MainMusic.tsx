@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box'
 import { useEffect } from 'react'
+import AlbumDetail from '~/components/AlbumDetail/AlbumDetail'
 import HomeView from '~/components/HomeView'
 import MusicAlbum from '~/components/MusicAlbum'
 import MyMusic from '~/components/MyMusic'
@@ -36,7 +37,7 @@ export default function MainMusic({ viewType }: Props) {
       {viewType === 'liked-music' && <MusicAlbum />}
       {viewType === 'playlist' && <Box>PlayList</Box>}
       {viewType === 'my-music' && <MyMusic />}
-      {viewType === 'album' && <MyMusic />}
+      {viewType === 'album' && <AlbumDetail />}
       {!viewType && <HomeView />}
     </Box>
   )
