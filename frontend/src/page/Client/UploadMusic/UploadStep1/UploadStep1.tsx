@@ -40,7 +40,6 @@ export default function UploadStep1() {
       const newAudioUrl = URL.createObjectURL(audioFile)
       setAudioUrl(newAudioUrl)
 
-      // Giải phóng URL cũ khi file mới được chọn
       return () => {
         if (audioUrl) {
           URL.revokeObjectURL(audioUrl)
@@ -52,9 +51,9 @@ export default function UploadStep1() {
 
   useEffect(() => {
     if (audioRef.current && audioUrl) {
-      audioRef.current.load() // Tải lại audio khi URL thay đổi
+      audioRef.current.load()
     }
-  }, [audioUrl]) // Chỉ phụ thuộc vào audioUrl
+  }, [audioUrl])
 
   const handleAudioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
@@ -82,7 +81,7 @@ export default function UploadStep1() {
         gap: 3
       }}
     >
-      <BorderLinearProgress variant='determinate' value={Math.floor((1 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
+      <BorderLinearProgress variant='determinate' value={Math.floor((1 / 4) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
           sx={{
@@ -101,7 +100,7 @@ export default function UploadStep1() {
           }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 1/3</Box>
+          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 1/4</Box>
           <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Điền tên bài hát và những người tham gia</Box>
         </Box>
       </Box>

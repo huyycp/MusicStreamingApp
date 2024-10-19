@@ -8,8 +8,6 @@ import { useNavigate } from 'react-router-dom'
 import CancelIcon from '@mui/icons-material/Cancel'
 import { useGetUploadData } from '~/hooks/useGetUploadData'
 import IconButton from '@mui/material/IconButton'
-import useUploadMusic from '~/hooks/Upload/useUploadMusic'
-import CircularProgress from '@mui/material/CircularProgress'
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 2,
@@ -24,8 +22,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }))
 
 export default function UploadStep3() {
-  const { setLyrics, name, audioFile, setImageFile, imageFile, lyrics, clearData } = useGetUploadData()
-  const { mutate: uploadMusic, isPending } = useUploadMusic()
+  const { setLyrics, name, audioFile, setImageFile, imageFile } = useGetUploadData()
   const [imageUrl, setImageUrl] = useState<string>('')
   const navigate = useNavigate()
 
@@ -58,18 +55,7 @@ export default function UploadStep3() {
 
   const handleNext = () => {
     setImageFile(imageFile)
-    const formData = new FormData()
-    formData.append('name', name)
-    formData.append('audio', audioFile as File)
-    formData.append('image', imageFile as File)
-    formData.append('lyrics', lyrics)
-    // navigate('/upload-music/final')
-    uploadMusic(formData, {
-      onSuccess: () => {
-        clearData()
-        navigate('/')
-      }
-    })
+    navigate('/upload-music/step4')
   }
 
   return (
@@ -83,7 +69,7 @@ export default function UploadStep3() {
         gap: 3
       }}
     >
-      <BorderLinearProgress variant='determinate' value={Math.floor((3 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
+      <BorderLinearProgress variant='determinate' value={Math.floor((3 / 4) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
           sx={{
@@ -103,7 +89,7 @@ export default function UploadStep3() {
           }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 3/3</Box>
+          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 3/4</Box>
           <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Tải hình ảnh cho bài hát</Box>
         </Box>
       </Box>
@@ -127,12 +113,11 @@ export default function UploadStep3() {
           </IconButton>
         </Box>
       )}
-      {imageFile && !isPending && (
+      {imageFile && (
         <Button variant='contained' color='primary' onClick={handleNext}>
           Tải lên
         </Button>
       )}
-      {isPending && <CircularProgress color='success' />}
     </Box>
   )
 }

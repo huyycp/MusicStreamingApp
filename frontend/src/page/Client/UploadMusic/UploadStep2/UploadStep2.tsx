@@ -67,7 +67,7 @@ export default function UploadStep2() {
         gap: 3
       }}
     >
-      <BorderLinearProgress variant='determinate' value={Math.floor((2 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
+      <BorderLinearProgress variant='determinate' value={Math.floor((2 / 4) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
           sx={{
@@ -86,7 +86,7 @@ export default function UploadStep2() {
           }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 2/3</Box>
+          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 2/4</Box>
           <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Nhập hoặc tải lên lời bài hát</Box>
         </Box>
       </Box>
