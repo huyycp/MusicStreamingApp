@@ -14,12 +14,12 @@ interface UploadContextType {
   artistName: string
   setArtistName: (data: string) => void
   clearData: () => void
+  activeGenres: string
+  setActiveGenres: React.Dispatch<React.SetStateAction<string>>
 }
 
-// Tạo context
 export const UploadContext = createContext<UploadContextType | undefined>(undefined)
 
-// Custom hook để truy cập dữ liệu từ UploadProvider
 // eslint-disable-next-line react-refresh/only-export-components
 export const useGetUploadData = () => {
   const context = useContext(UploadContext)
