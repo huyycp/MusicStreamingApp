@@ -66,7 +66,8 @@ export const ALBUMS_MESSAGES = {
   ADD_TRACKS_TO_ALBUM_SUCCESS: 'Add tracks to album success',
   LIST_OF_TRACKS_IS_REQUIRED: 'List of tracks is required',
   LIST_OF_TRACKS_IS_INVALID: 'List of tracks is invalid',
-  EXISTING_TRACK_NOT_FOUND: 'Existing track not found'
+  EXISTING_TRACK_NOT_FOUND: 'Existing track not found',
+  GET_LIST_ALBUMS_SUCCESS: 'Get list albums success'
 } as const
 
 export const USERS_MESSAGES = {

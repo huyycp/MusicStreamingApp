@@ -272,6 +272,153 @@ class AlbumService {
       }
     )
   }
+
+  async getListAlbum({ limit, page }: { limit: number; page: number }) {
+    const [albums, total] = await Promise.all([
+      databaseService.albums
+        .aggregate([
+          {
+            $lookup: {
+              from: 'releases',
+              localField: '_id',
+              foreignField: 'product_id',
+              as: 'artists'
+            }
+          },
+          {
+            $addFields: {
+              artists: {
+                $map: {
+                  input: '$artists',
+                  as: 'artist',
+                  in: '$$artist.artist_id'
+                }
+              },
+              id_string: {
+                $toString: '$_id'
+              }
+            }
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'artists',
+              foreignField: '_id',
+              as: 'artistsName'
+            }
+          },
+          {
+            $lookup: {
+              from: 'tracks',
+              localField: 'id_string',
+              foreignField: 'album_id',
+              as: 'track_list'
+            }
+          },
+          {
+            $addFields: {
+              artistsName: {
+                $map: {
+                  input: '$artistsName',
+                  as: 'artistName',
+                  in: '$$artistName.name'
+                }
+              },
+              number_of_tracks: {
+                $size: '$track_list'
+              }
+            }
+          },
+          {
+            $match: {
+              number_of_tracks: { $gt: 0 }
+            }
+          },
+          {
+            $project: {
+              artists: 0,
+              track_list: 0,
+              id_string: 0
+            }
+          },
+          {
+            $skip: limit * (page - 1)
+          },
+          {
+            $limit: limit
+          }
+        ])
+        .toArray(),
+      databaseService.albums
+        .aggregate([
+          {
+            $lookup: {
+              from: 'releases',
+              localField: '_id',
+              foreignField: 'product_id',
+              as: 'artists'
+            }
+          },
+          {
+            $addFields: {
+              artists: {
+                $map: {
+                  input: '$artists',
+                  as: 'artist',
+                  in: '$$artist.artist_id'
+                }
+              },
+              id_string: {
+                $toString: '$_id'
+              }
+            }
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'artists',
+              foreignField: '_id',
+              as: 'artistsName'
+            }
+          },
+          {
+            $lookup: {
+              from: 'tracks',
+              localField: 'id_string',
+              foreignField: 'album_id',
+              as: 'track_list'
+            }
+          },
+          {
+            $addFields: {
+              artistsName: {
+                $map: {
+                  input: '$artistsName',
+                  as: 'artistName',
+                  in: '$$artistName.name'
+                }
+              },
+              number_of_tracks: {
+                $size: '$track_list'
+              }
+            }
+          },
+          {
+            $match: {
+              number_of_tracks: { $gt: 0 }
+            }
+          },
+          {
+            $count: 'total'
+          }
+        ])
+        .toArray()
+    ])
+    return {
+      albums,
+      total: total[0]?.total || 0
+    }
+  }
 }
 
 const albumService = new AlbumService()

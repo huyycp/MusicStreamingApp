@@ -62,3 +62,28 @@ export const addTrackToAlbumController = async (
     message: ALBUMS_MESSAGES.ADD_TRACKS_TO_ALBUM_SUCCESS
   })
 }
+
+export const getAlbumsController = async (
+  req: Request<ParamsDictionary, any, any, AlbumPagination>,
+  res: Response,
+  next: NextFunction
+) => {
+  const limit = Number(req.query.limit) || 5
+  const page = Number(req.query.page) || 1
+  const result = await albumService.getListAlbum({
+    limit,
+    page
+  })
+  return res.json({
+    message: ALBUMS_MESSAGES.GET_LIST_ALBUMS_SUCCESS,
+    result: {
+      data: result.albums,
+      meta: {
+        items_per_page: limit,
+        total_items: result.total,
+        current_page: page,
+        total_pages: Math.ceil(result.total / limit)
+      }
+    }
+  })
+}
