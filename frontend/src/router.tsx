@@ -24,6 +24,7 @@ import CreateAlbumBody from './page/Client/UploadAlbum/CreateAlbumBody/CreateAlb
 import CreateAlbumLayout from './page/Client/UploadAlbum/CreateAlbumLayout'
 import AddTrackToAlbum from './page/Client/UploadAlbum/AddTrackToAlbum/AddTrackToAlbum'
 import CreateAlbumFinal from './page/Client/UploadAlbum/CreateAlbumFinal/CreateAlbumFinal'
+import UploadStep4 from './page/Client/UploadMusic/UploadStep4/UploadStep4'
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
           {
             path: 'step3',
             element: <UploadStep3 />
+          },
+          {
+            path: 'step4',
+            element: <UploadStep4 />
           }
         ]
       }

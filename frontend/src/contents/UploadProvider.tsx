@@ -8,6 +8,7 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [lyrics, setLyrics] = useState<string>('')
   const [artistName, setArtistName] = useState<string>('')
+  const [activeGenres, setActiveGenres] = useState<string>('')
 
   const clearData = () => {
     setName('')
@@ -19,7 +20,21 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <UploadContext.Provider
-      value={{ name, audioFile, imageFile, lyrics, setName, setAudioFile, setImageFile, setLyrics, artistName, setArtistName, clearData }}
+      value={{
+        name,
+        audioFile,
+        imageFile,
+        lyrics,
+        setName,
+        setAudioFile,
+        setImageFile,
+        setLyrics,
+        artistName,
+        setArtistName,
+        clearData,
+        activeGenres,
+        setActiveGenres
+      }}
     >
       {children}
     </UploadContext.Provider>
