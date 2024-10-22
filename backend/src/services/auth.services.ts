@@ -96,13 +96,19 @@ class AuthService {
 
   async register(payload: RegisterReqBody) {
     const user_id = new ObjectId()
+    let genre_arr = []
+    if (payload.genres) {
+      genre_arr = JSON.parse(payload.genres as string)
+    }
+    const genreId = genre_arr && genre_arr.length > 0 ? genre_arr.map((item: string) => new ObjectId(item)) : undefined
     await databaseService.users.insertOne(
       new User({
         ...payload,
         _id: user_id,
         verify: UserVerifyStatus.Verified,
         password: hashPassword(payload.password),
-        role: parseInt(payload.role)
+        role: parseInt(payload.role),
+        genres: genreId
       })
     )
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken({
@@ -325,7 +331,9 @@ class AuthService {
         role: '0',
         email: userInfo.email,
         name: userInfo.name,
-        password
+        password,
+        gender: 'male',
+        genres: undefined
       })
       await databaseService.verified.insertOne({
         email: userInfo.email

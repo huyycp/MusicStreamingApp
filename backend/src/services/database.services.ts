@@ -11,6 +11,7 @@ import Playlist from '~/models/schemas/Playlist.schema'
 import Album from '~/models/schemas/Album.schema'
 import Verify from '~/models/schemas/Verify.schema'
 import Verified from '~/models/schemas/Verified.schema'
+import Genre from '~/models/schemas/Genre.schema'
 config()
 const uri = envConfig.dbUri
 
@@ -78,6 +79,10 @@ class DatabaseService {
 
   get verified(): Collection<Verified> {
     return this.db.collection(envConfig.dbVerifiedColection)
+  }
+
+  get genres(): Collection<Genre> {
+    return this.db.collection(envConfig.dbGenresColection)
   }
 }
 

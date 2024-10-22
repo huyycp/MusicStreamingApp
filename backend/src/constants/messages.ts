@@ -73,3 +73,7 @@ export const ALBUMS_MESSAGES = {
 export const USERS_MESSAGES = {
   GET_ME_SUCCESS: 'Get me success'
 } as const
+
+export const GENRES_MESSAGES = {
+  GET_LIST_OF_GENRES_SUCCESS: 'Get list of genres success'
+} as const
