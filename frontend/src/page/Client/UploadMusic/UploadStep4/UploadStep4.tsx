@@ -23,7 +23,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }))
 
 export default function UploadStep4() {
-  const { setLyrics, name, audioFile, imageFile, lyrics, clearData, activeGenres, setActiveGenres } = useGetUploadData()
+  const { setLyrics, name, audioFile, imageFile, lyrics, clearData, activeGenres, setActiveGenres, setImageFile } = useGetUploadData()
   const { mutate: uploadMusic, isPending } = useUploadMusic()
   const navigate = useNavigate()
 
@@ -79,6 +79,7 @@ export default function UploadStep4() {
           onClick={() => {
             setLyrics('')
             setActiveGenres('')
+            setImageFile(null)
             navigate('/upload-music/step3')
           }}
         />

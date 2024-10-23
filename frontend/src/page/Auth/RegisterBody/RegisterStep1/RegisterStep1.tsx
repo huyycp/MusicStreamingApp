@@ -49,9 +49,9 @@ export default function RegisterStep1() {
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     setPassword(value)
-    setCheck1(/[a-zA-Z]/.test(value)) // Kiểm tra có chữ cái hay không
-    setCheck2(/[\d!?#&]/.test(value)) // Kiểm tra có chữ số hoặc ký tự đặc biệt hay không
-    setCheck3(value.length >= 10) // Kiểm tra độ dài mật khẩu tối thiểu
+    setCheck1(/[a-zA-Z]/.test(value))
+    setCheck2(/[\d!?#&]/.test(value))
+    setCheck3(value.length >= 10)
 
     try {
       await registerSchema.validate({ password: value }, { abortEarly: false })
@@ -72,7 +72,7 @@ export default function RegisterStep1() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <BorderLinearProgress variant='determinate' value={Math.floor((1 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
+      <BorderLinearProgress variant='determinate' value={Math.floor((1 / 4) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
           sx={{
@@ -90,7 +90,7 @@ export default function RegisterStep1() {
           }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 1/3</Box>
+          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 1/4</Box>
           <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Tạo Mật Khẩu</Box>
         </Box>
       </Box>
