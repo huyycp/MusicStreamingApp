@@ -13,8 +13,6 @@ import listenerGif from '~/assets/gif/listener.gif'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import FormHelperText from '@mui/material/FormHelperText'
 import Radio from '@mui/material/Radio'
-import CircularProgress from '@mui/material/CircularProgress'
-import useRegister from '~/hooks/Auth/useRegister'
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 2,
@@ -44,7 +42,6 @@ const ImageRadio = styled('div')<{ selected: boolean }>(({ theme, selected }) =>
 export default function RegisterStep3() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { getOTP, error, isPending } = useRegister()
   const email = location.state?.email as string
   const password = location.state?.password as string
   const gender = location.state?.gender as string
@@ -70,20 +67,13 @@ export default function RegisterStep3() {
     if (selectedValue === '') {
       setErrorCheck(true)
     } else if (!errorCheck) {
-      getOTP(
-        { email },
-        {
-          onSuccess: () => {
-            navigate('/register/verify-email', { state: { email, password, name, gender, role: selectedValue } })
-          }
-        }
-      )
+      navigate('/register/step4', { state: { email, password, name, gender, role: selectedValue } })
     }
   }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-      <BorderLinearProgress variant='determinate' value={Math.floor((3 / 3) * 100)} sx={{ width: '100%', mt: 0.5 }} />
+      <BorderLinearProgress variant='determinate' value={Math.floor((3 / 4) * 100)} sx={{ width: '100%', mt: 0.5 }} />
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
         <ArrowBackIosNewIcon
           sx={{
@@ -97,13 +87,11 @@ export default function RegisterStep3() {
             }
           }}
           onClick={() => {
-            if (!isPending) {
-              navigate('/register/step2', { state: { email, password } })
-            }
+            navigate('/register/step2', { state: { email, password } })
           }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 3/3</Box>
+          <Box sx={{ color: (theme) => theme.palette.neutral.neutral1 }}>Bước 3/4</Box>
           <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Giới thiệu thông tin về bản thân bạn</Box>
         </Box>
       </Box>
@@ -140,7 +128,6 @@ export default function RegisterStep3() {
               </Box>
             }
             checked={selectedValue === '1'}
-            disabled={isPending}
           />
           <FormControlLabel
             value='0'
@@ -152,7 +139,6 @@ export default function RegisterStep3() {
               </Box>
             }
             checked={selectedValue === '0'}
-            disabled={isPending}
           />
         </RadioGroup>
 
@@ -176,33 +162,9 @@ export default function RegisterStep3() {
             </FormHelperText>
           </Box>
         )}
-
-        {error && (
-          <Box sx={{ pt: 1 }}>
-            <FormHelperText
-              sx={{
-                fontSize: 12,
-                m: 'unset',
-                pb: 2,
-                color: 'red',
-                display: 'flex',
-                alignItems: 'start',
-                justifyContent: 'start',
-                gap: 0.5
-              }}
-            >
-              <ErrorOutlineIcon sx={{ fontSize: 20 }} />
-              Lỗi: {error}
-            </FormHelperText>
-          </Box>
-        )}
-
-        {!isPending && (
-          <Button sx={{ width: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
-            Đăng Ký
-          </Button>
-        )}
-        {isPending && <CircularProgress color='success' />}
+        <Button sx={{ width: '100%', fontSize: 14, fontWeight: 'bold' }} variant='contained' onClick={handleNext}>
+          Tiếp theo
+        </Button>
       </FormControl>
     </Box>
   )
