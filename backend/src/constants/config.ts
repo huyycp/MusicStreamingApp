@@ -36,6 +36,7 @@ export const envConfig = {
   dbAlbumsCollection: process.env.DB_ALBUMS_COLLECTION as string,
   dbVerifyCollection: process.env.DB_VERIFY_COLLECTION as string,
   dbVerifiedColection: process.env.DB_VERIFIED_COLLECTION as string,
+  dbGenresColection: process.env.DB_GENRES_COLLECTION as string,
   passwordSecret: process.env.PASSWORD_SECRET as string,
   jwtSecretAccessToken: process.env.JWT_SECRET_ACCESS_TOKEN as string,
   jwtSecretRefreshToken: process.env.JWT_SECRET_REFRESH_TOKEN as string,

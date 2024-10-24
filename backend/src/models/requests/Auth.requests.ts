@@ -6,7 +6,8 @@ export interface RegisterReqBody {
   name: string
   email: string
   password: string
-  gender?: string
+  gender: string
+  genres?: string
 }
 
 export interface LoginReqBody {

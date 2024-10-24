@@ -245,7 +245,8 @@ class AlbumService {
               name: 1,
               image: 1,
               path_audio: 1,
-              artistsName: 1
+              artistsName: 1,
+              created_at: 1
             }
           }
         ])

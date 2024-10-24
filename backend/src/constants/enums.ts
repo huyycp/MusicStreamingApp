@@ -9,16 +9,6 @@ export enum RoleType {
   Admin
 }
 
-export enum MusicGenre {
-  Pop,
-  Hiphop,
-  Rock,
-  Jazz,
-  Lofi,
-  Soul,
-  Electronic
-}
-
 export enum TokenType {
   AccessToken,
   RefreshToken,

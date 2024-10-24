@@ -8,6 +8,7 @@ import tracksRouter from './routes/tracks.routes'
 import { initFolder } from './utils/files'
 import albumsRouter from './routes/albums.routes'
 import usersRouter from './routes/users.routes'
+import genresRouter from './routes/genres.routes'
 
 const app = express()
 const port = envConfig.port
@@ -25,6 +26,7 @@ app.use('/auth', authRouter)
 app.use('/tracks', tracksRouter)
 app.use('/albums', albumsRouter)
 app.use('/users', usersRouter)
+app.use('/genres', genresRouter)
 
 app.use(defaultErrorHandler)
 
