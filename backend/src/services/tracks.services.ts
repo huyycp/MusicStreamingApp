@@ -130,15 +130,17 @@ class TrackService {
   async createTrack({ req, user_id }: { req: Request; user_id: string }) {
     const uploadResults = await handleUploadFiles(req)
     const { imageResults, audioResults, info } = uploadResults
-    var { name, description, lyrics } = info
+    var { name, description, lyrics, genre } = info
     name = name ? name[0] : null
     description = description ? description[0] : null
     lyrics = lyrics ? lyrics[0] : null
+    genre = genre ? genre[0] : null
     const result = await databaseService.tracks.insertOne(
       new Track({
         name,
         description,
         lyrics,
+        genre: new ObjectId(genre as string),
         image: imageResults[0]?.url || '',
         path_audio: audioResults[0].url
       })

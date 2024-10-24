@@ -9,6 +9,7 @@ interface TrackType {
   lyrics?: string
   path_audio: string
   listen?: number
+  genre: ObjectId
   created_at?: Date
   updated_at?: Date
 }
@@ -22,6 +23,7 @@ export default class Track {
   lyrics: string
   path_audio: string
   listen: number
+  genre: ObjectId
   created_at: Date
   updated_at: Date
   constructor({
@@ -34,6 +36,7 @@ export default class Track {
     description,
     image,
     lyrics,
+    genre,
     updated_at
   }: TrackType) {
     const date = new Date()
@@ -45,6 +48,7 @@ export default class Track {
     this.lyrics = lyrics || ''
     this.path_audio = path_audio
     this.listen = listen || 0
+    this.genre = genre
     this.created_at = created_at || date
     this.updated_at = updated_at || date
   }
