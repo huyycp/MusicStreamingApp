@@ -32,6 +32,8 @@ export default function UploadStep3() {
     } else if (!audioFile) {
       navigate('/upload-music/step2')
     }
+    setImageFile(null)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioFile, name, navigate])
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

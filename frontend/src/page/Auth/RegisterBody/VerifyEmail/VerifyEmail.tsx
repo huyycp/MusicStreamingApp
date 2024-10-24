@@ -21,6 +21,7 @@ export default function VerifyEmail() {
   const gender = location.state?.gender as string
   const name = location.state?.name as string
   const role = location.state?.role as string
+  const genres = JSON.stringify(location.state?.listGenres as string[])
 
   useEffect(() => {
     if (!email || !password || !name || !gender || !role) navigate('/register')
@@ -42,7 +43,7 @@ export default function VerifyEmail() {
 
   const handleSubmit = async () => {
     if (error === '') {
-      verifyEmail({ email, otp }, { email, password, gender, name, role })
+      verifyEmail({ email, otp }, { email, password, gender, name, role, genres })
     }
   }
 

@@ -54,7 +54,7 @@ export default function MusicGenres({ activeGenres, setActiveGenres }: Props) {
               imageSrc={genre.image}
               title={genre.name}
               isActive={activeGenres.includes(genre._id)}
-              onClick={() => handleClick(genre)} // Khi click sẽ chọn một tag duy nhất
+              onClick={() => handleClick(genre)}
             />
           </Grid>
         ))}
