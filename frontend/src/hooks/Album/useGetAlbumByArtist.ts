@@ -4,7 +4,7 @@ import { IResponse } from '~/type/IResponse'
 
 const useGetAlbumByArtist = (limit: number = 5, page: number = 1) => {
   return useQuery<IResponse>({
-    queryKey: ['albums', limit, page],
+    queryKey: ['albumsByArtist', limit, page],
     queryFn: () => apiGetAlbumsByArtist(limit, page)
   })
 }

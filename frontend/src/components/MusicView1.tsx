@@ -7,7 +7,6 @@ import { useResize } from '~/hooks/useResize'
 import { useMusic } from '~/hooks/useMusic'
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
 import { IAlbum } from '~/type/Album/IAlbum'
-import useGetAlbumDetail from '~/hooks/Album/useGetAlbumDetail'
 import { useNavigate } from 'react-router-dom'
 
 type Props = {
@@ -48,15 +47,16 @@ const TextFade = styled(Box)(({ theme }) => ({
 
 export default function MusicView1({ initAlbum }: Props) {
   const { widths, minWidths } = useResize()
-  const { changeListMusic, pause, music } = useMusic()
+  const { addAlbum, currentAlbumIndex, pause, setPause } = useMusic()
   const navigate = useNavigate()
 
-  const { data } = useGetAlbumDetail(initAlbum._id)
+  // const { data } = useGetAlbumDetail(initAlbum._id)
 
   const handlePlay = () => {
-    if (data?.result.list_of_tracks) {
-      changeListMusic(data.result.list_of_tracks)
-    }
+    if (initAlbum._id !== currentAlbumIndex) {
+      addAlbum(initAlbum._id, 0)
+    } else if (!pause) setPause(true)
+    else setPause(false)
   }
   const handleClick = () => {
     navigate(`/album/${initAlbum._id}`)
@@ -123,14 +123,14 @@ export default function MusicView1({ initAlbum }: Props) {
                 }}
                 onClick={handlePlay}
               >
-                {music?.album_id === initAlbum?._id && (pause === true ? <PlayArrowIcon /> : <PauseIcon />)}
-                {music?.album_id !== initAlbum?._id && <PlayArrowIcon />}
+                {currentAlbumIndex === initAlbum?._id && (pause === true ? <PlayArrowIcon /> : <PauseIcon />)}
+                {currentAlbumIndex !== initAlbum?._id && <PlayArrowIcon />}
               </IconButton>
             </CoverImage>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
               <Box
                 sx={{
-                  color: music?.album_id === initAlbum?._id ? (theme) => theme.palette.primary.main : (theme) => theme.palette.secondary4.main,
+                  color: currentAlbumIndex === initAlbum?._id ? (theme) => theme.palette.primary.main : (theme) => theme.palette.secondary4.main,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -140,24 +140,21 @@ export default function MusicView1({ initAlbum }: Props) {
                 {initAlbum?.name}
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'start', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
-                {
-                  initAlbum?.artistsName?.map((name, index) => (
-                    <TextFade key={index}>
-                      {name}
-                      {index < initAlbum.artistsName.length - 1 && ','}
-                    </TextFade>
-                  ))
-                }
+                {initAlbum?.artistsName?.map((name, index) => (
+                  <TextFade key={index}>
+                    {name}
+                    {index < initAlbum.artistsName.length - 1 && ','}
+                  </TextFade>
+                ))}
               </Box>
             </Box>
           </Box>
 
-          {music?.album_id === initAlbum?._id && <VolumeUpOutlinedIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
+          {currentAlbumIndex === initAlbum?._id && <VolumeUpOutlinedIcon sx={{ color: (theme) => theme.palette.primary.main }} />}
         </Box>
       )}
       {widths[0] === minWidths[0] && (
         <CoverImage className='cover-image'>
-
           <img
             alt={initAlbum?.name}
             src={

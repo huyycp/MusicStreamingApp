@@ -19,8 +19,8 @@ interface MusicContextProps {
   playPreviousTrack: () => void
   music: ITrack | null
   changeMusic: (music: ITrack) => void
-  isNextAlbum: boolean
-  changeListMusic: (newList: ITrack[]) => void
+  addAlbum: (albumId: string, musicIndex: number) => void
+  currentAlbumIndex: string
 }
 
 const MusicContext = createContext<MusicContextProps | undefined>(undefined)
