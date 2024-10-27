@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import FormControl from '@mui/material/FormControl'
 import Input from '@mui/material/Input'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -19,14 +19,13 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 export default function ChangePassword() {
   const location = useLocation()
-  const navigate = useNavigate()
   const email = location.state?.email as string
 
   useEffect(() => {
     if (!email) {
-      navigate('/login')
+      window.location.href = '/login'
     }
-  }, [email, navigate])
+  }, [email])
 
   useEffect(() => {
     document.title = 'Magic Music - Change Password'

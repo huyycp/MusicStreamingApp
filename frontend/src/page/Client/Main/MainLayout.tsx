@@ -5,14 +5,14 @@ import AppBar from './AppBar/AppBar'
 import TrackBar from './TrackBar/TrackBar'
 import { ResizeProvider } from '~/contents/ResizeProvider'
 import { MusicProvider } from '~/contents/MusicProvider'
-import useGetTracks from '~/hooks/Tracks/useGetTracks'
 import CircularProgress from '@mui/material/CircularProgress'
 import { useEffect, useState } from 'react'
+import useGetAlbums from '~/hooks/Album/useGetAlbums'
+import { ITrack } from '~/type/Tracks/ITrack'
 
 export default function MainLayout() {
-  const { data, isPending } = useGetTracks()
-
-  const listMusic = data?.result.data
+  const { data, isPending } = useGetAlbums(100, 1)
+  const listAlbumId = data && data.result && data.result.data ? (data?.result.data as ITrack[]).map((album) => album._id) : []
 
   const [fullWidth, setFullWidth] = useState(window.innerWidth)
 
@@ -42,8 +42,8 @@ export default function MainLayout() {
       }}
     >
       <AppBar />
-      {listMusic && (
-        <MusicProvider initMusic={listMusic}>
+      {listAlbumId && (
+        <MusicProvider listAlbumId={listAlbumId} initIndexAlbum={0}>
           <ResizeProvider fullWidth={fullWidth}>
             <Outlet />
             <TrackBar />
