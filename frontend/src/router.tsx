@@ -26,6 +26,8 @@ import AddTrackToAlbum from './page/Client/UploadAlbum/AddTrackToAlbum/AddTrackT
 import CreateAlbumFinal from './page/Client/UploadAlbum/CreateAlbumFinal/CreateAlbumFinal'
 import UploadStep4 from './page/Client/UploadMusic/UploadStep4/UploadStep4'
 import RegisterStep4 from './page/Auth/RegisterBody/RegisterStep4/RegisterStep4'
+import GenresChose from './components/GenresChose'
+import AppBar from './page/Auth/AppBar/AppBar'
 
 const router = createBrowserRouter([
   {
@@ -181,6 +183,22 @@ const router = createBrowserRouter([
           {
             path: 'verify-email',
             element: <VerifyEmail />
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/genres',
+    element: <ProtectedRoute />,
+    errorElement: <Error />,
+    children: [
+      {
+        element: <AppBar />,
+        children: [
+          {
+            index: true,
+            element: <GenresChose />
           }
         ]
       }

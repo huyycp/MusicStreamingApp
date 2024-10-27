@@ -11,11 +11,18 @@ import Tooltip from '@mui/material/Tooltip'
 import { useEffect, useRef, useState } from 'react'
 import LaunchIcon from '@mui/icons-material/Launch'
 import useLogout from '~/hooks/Auth/useLogout'
+import useGetProfile from '~/hooks/User/useGetProfile'
+import { IUser } from '~/type/User/IUser'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
+  const { data } = useGetProfile()
+  const profileData = data?.result as IUser
   const { mutate: logout } = useLogout()
+  const navigate = useNavigate()
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
   }
@@ -51,7 +58,7 @@ export default function Profile() {
   }, [open])
   return (
     <Box>
-      <Tooltip title='Lê Trương Tuấn Anh'>
+      <Tooltip title={profileData ? profileData.name : ''}>
         <Box
           ref={anchorRef}
           id='composition-button'
@@ -73,17 +80,24 @@ export default function Profile() {
             }
           }}
         >
-          <Avatar
-            alt='Lê Trương Tuấn Anh'
-            sx={{
-              '&.MuiAvatar-root': {
-                width: '32px',
-                height: '32px'
-              }
-            }}
-          >
-            {'Lê Trương Tuấn Anh'.charAt(0)}
-          </Avatar>
+          {profileData ? (
+            <Avatar
+              alt={profileData.name}
+              sx={{
+                '&.MuiAvatar-root': {
+                  width: '32px',
+                  height: '32px'
+                }
+              }}
+            >
+              {profileData.name.charAt(0)}
+            </Avatar>
+          ) : (
+            <AccountCircleIcon
+              sx={{ width: '56px', height: '56px', color: (theme) => theme.palette.primary.main }}
+              onClick={() => navigate('/login')}
+            />
+          )}
         </Box>
       </Tooltip>
       <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement='bottom-start' transition disablePortal>
@@ -99,43 +113,48 @@ export default function Profile() {
                 bgcolor: (theme) => theme.palette.secondary2.main
               }}
             >
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList
-                  autoFocusItem={open}
-                  id='composition-menu'
-                  aria-labelledby='composition-button'
-                  onKeyDown={handleListKeyDown}
-                  sx={{
-                    'padding': '4px',
-                    'color': 'white',
-                    '.MuiMenuItem-root': {
-                      'fontSize': '14px',
-                      'p': '12px 8px 12px 12px',
-                      '&:hover': {
-                        bgcolor: (theme) => theme.palette.neutral.neutral1
-                      }
-                    }
-                  }}
-                >
-                  <MenuItem onClick={handleClose}>
-                    Tài khoản <LaunchIcon sx={{ fontSize: 20, ml: 3 }} />
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>Hồ sơ</MenuItem>
-                  <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
-                  <Divider
-                    variant='middle'
-                    component='li'
+              {profileData && (
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id='composition-menu'
+                    aria-labelledby='composition-button'
+                    onKeyDown={handleListKeyDown}
                     sx={{
-                      'margin': 'unset',
-                      'bgcolor': (theme) => theme.palette.neutral.neutral1,
-                      '.MuiDivider-root': {
-                        margin: 'unset'
+                      'padding': '4px',
+                      'color': 'white',
+                      '.MuiMenuItem-root': {
+                        'fontSize': '14px',
+                        'p': '12px 8px 12px 12px',
+                        '&:hover': {
+                          bgcolor: (theme) => theme.palette.neutral.neutral1
+                        }
                       }
                     }}
-                  />
-                  <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
-                </MenuList>
-              </ClickAwayListener>
+                  >
+                    <MenuItem onClick={handleClose}>
+                      Tài khoản <LaunchIcon sx={{ fontSize: 20, ml: 3 }} />
+                    </MenuItem>
+                    <MenuItem component='a' href='/genres' target='_blank' rel='noopener noreferrer'>
+                      Sở thích của bạn
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>Hồ sơ</MenuItem>
+                    <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
+                    <Divider
+                      variant='middle'
+                      component='li'
+                      sx={{
+                        'margin': 'unset',
+                        'bgcolor': (theme) => theme.palette.neutral.neutral1,
+                        '.MuiDivider-root': {
+                          margin: 'unset'
+                        }
+                      }}
+                    />
+                    <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              )}
             </Paper>
           </Grow>
         )}
