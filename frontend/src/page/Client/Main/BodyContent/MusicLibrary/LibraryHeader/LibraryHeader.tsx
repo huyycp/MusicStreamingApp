@@ -15,8 +15,17 @@ import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import SearchIcon from '@mui/icons-material/Search'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import { IAlbum } from '~/type/Album/IAlbum'
 
-export default function LibraryHeader() {
+type Props = {
+  listAlbums: IAlbum[] | []
+  // eslint-disable-next-line no-unused-vars
+  setPlaylistSelect: (selectedAlbums: IAlbum[]) => void
+  setAlbum: React.Dispatch<React.SetStateAction<number>>
+  album: number
+}
+
+export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum, album }: Props) {
   const { widths, maxWidths, defaultWidths, setWidth, minWidths } = useResize()
   const [openPlayList, setOpenPlayList] = useState(false)
   const [currentOffset, setCurrentOffset] = useState(0)
@@ -64,10 +73,25 @@ export default function LibraryHeader() {
     } else setWidth(0, minWidths[0])
   }
   const handleOpenList = () => {
+    if (openPlayList === true) {
+      setPlaylistSelect([])
+      setAlbum(0)
+    } else {
+      const selectedAlbums = listAlbums.slice(0, 2)
+      setPlaylistSelect(selectedAlbums)
+    }
     setOpenPlayList(!openPlayList)
   }
   const handleChosePlayList = (index: string) => {
     setChosePlaylist(index)
+
+    const selectedAlbums = listAlbums.slice(0, 1)
+    setPlaylistSelect(selectedAlbums)
+  }
+
+  const handleOpenAlbum = () => {
+    if (album === 1) setAlbum(0)
+    else setAlbum(1)
   }
 
   return (
@@ -172,19 +196,51 @@ export default function LibraryHeader() {
                 {currentOffset > 0 ? <ArrowBackIcon /> : <CloseIcon />}
               </IconButton>
             )}
+            {album === 1 && (
+              <IconButton
+                sx={{
+                  'position': 'absolute',
+                  'left': 0,
+                  'zIndex': 1,
+                  'padding': '2px',
+                  'borderRadius': '100%',
+                  '&:hover': {
+                    bgcolor: (theme) => theme.palette.neutral.neutral2
+                  },
+                  'bgcolor': (theme) => theme.palette.neutral.neutral3,
+                  'color': (theme) => theme.palette.secondary4.main
+                }}
+                onClick={handleOpenAlbum}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
           </Box>
-          {!openPlayList && (
-            <Chip
-              label='Danh sách phát'
-              onClick={handleOpenList}
-              sx={{
-                'bgcolor': (theme) => theme.palette.neutral.neutral3,
-                'color': (theme) => theme.palette.secondary4.main,
-                '&:hover': {
-                  bgcolor: (theme) => theme.palette.neutral.neutral2
-                }
-              }}
-            />
+          {!openPlayList && album === 0 && (
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+              <Chip
+                label='Danh sách phát'
+                onClick={handleOpenList}
+                sx={{
+                  'bgcolor': (theme) => theme.palette.neutral.neutral3,
+                  'color': (theme) => theme.palette.secondary4.main,
+                  '&:hover': {
+                    bgcolor: (theme) => theme.palette.neutral.neutral2
+                  }
+                }}
+              />
+              <Chip
+                label='Album'
+                onClick={handleOpenAlbum}
+                sx={{
+                  'bgcolor': (theme) => theme.palette.neutral.neutral3,
+                  'color': (theme) => theme.palette.secondary4.main,
+                  '&:hover': {
+                    bgcolor: (theme) => theme.palette.neutral.neutral2
+                  }
+                }}
+              />
+            </Box>
           )}
           <Box
             sx={{
@@ -295,6 +351,37 @@ export default function LibraryHeader() {
                     onClick={() => handleChosePlayList(data)}
                   />
                 ))}
+              </Box>
+            )}
+            {album === 1 && (
+              <Box
+                sx={{
+                  'display': 'flex',
+                  'transition': 'transform 0.3s ease',
+                  'transform': `translateX(-${currentOffset}px)`,
+                  'flexGrow': 1,
+                  'whiteSpace': 'nowrap',
+                  'overflow': 'hidden',
+                  'flexShrink': 0,
+                  '& .MuiChip-root': {
+                    margin: '0 4px',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                    cursor: 'pointer'
+                  }
+                }}
+              >
+                <Chip
+                  label='Album'
+                  sx={{
+                    'bgcolor': (theme) => theme.palette.neutral.neutral1,
+                    'color': (theme) => theme.palette.secondary1.main,
+                    '&:hover': {
+                      bgcolor: (theme) => theme.palette.neutral.neutral2
+                    }
+                  }}
+                  onClick={handleOpenAlbum}
+                />
               </Box>
             )}
           </Box>

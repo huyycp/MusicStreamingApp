@@ -11,7 +11,6 @@ type Props = {
   totalMusic?: number | 0
 }
 
-// Styled component for the cover image
 const CoverImage = styled('div')({
   'position': 'relative',
   'width': 48,
@@ -21,7 +20,7 @@ const CoverImage = styled('div')({
   'flexShrink': 0,
   'borderRadius': 10,
   'padding': 1,
-  'backgroundColor': 'rgba(0,0,0,0.08)', // Default background color
+  'backgroundColor': 'rgba(0,0,0,0.08)',
   '& > img': {
     inlineSize: '100%',
     blockSize: '100%',

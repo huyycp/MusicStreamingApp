@@ -1,9 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import { apiLogout } from '~/apis/Auth/LogoutAPI'
 
 const useLogout = () => {
-  const navigate = useNavigate()
 
   return useMutation({
     mutationFn: () => {
@@ -18,7 +16,7 @@ const useLogout = () => {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
 
-      navigate('/login')
+      window.location.href = '/login'
     }
   })
 }

@@ -14,7 +14,6 @@ import useLogout from '~/hooks/Auth/useLogout'
 import useGetProfile from '~/hooks/User/useGetProfile'
 import { IUser } from '~/type/User/IUser'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
   const [open, setOpen] = useState(false)
@@ -22,7 +21,6 @@ export default function Profile() {
   const { data } = useGetProfile()
   const profileData = data?.result as IUser
   const { mutate: logout } = useLogout()
-  const navigate = useNavigate()
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
   }
@@ -95,7 +93,7 @@ export default function Profile() {
           ) : (
             <AccountCircleIcon
               sx={{ width: '56px', height: '56px', color: (theme) => theme.palette.primary.main }}
-              onClick={() => navigate('/login')}
+              onClick={() => (window.location.href = '/login')}
             />
           )}
         </Box>

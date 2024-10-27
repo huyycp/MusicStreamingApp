@@ -2,15 +2,32 @@ import Box from '@mui/material/Box'
 import AuthGenres from './MusicGenres/AuthGenres'
 import { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
 import useGetProfile from '~/hooks/User/useGetProfile'
+import useChangeGenres from '~/hooks/Genres/useChangeGenres'
+import { useNavigate } from 'react-router-dom'
+import Typography from '@mui/material/Typography'
 
 export default function GenresChose() {
   const { data } = useGetProfile()
+  const { mutate, isError, isPending } = useChangeGenres()
   const [activeGenres, setActiveGenres] = useState<string[]>([])
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (data) setActiveGenres(data.result.genres)
+    if (data) {
+      const genresIds = data.result.genres.map((genre: { _id: string }) => genre._id)
+      setActiveGenres(genresIds)
+    }
   }, [data])
+
+  const handleUpdateGenres = () => {
+    mutate(activeGenres, {
+      onSuccess: () => {
+        navigate('/')
+      }
+    })
+  }
 
   return (
     <Box
@@ -31,14 +48,25 @@ export default function GenresChose() {
         Thể loại bạn thích giúp chúng tôi cung cấp các sản phẩm phù hợp cho bạn.
       </Box>
       <AuthGenres activeGenres={activeGenres} setActiveGenres={setActiveGenres} />
-      <Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Button variant='outlined' color='primary' sx={{ mr: 2 }} onClick={() => setActiveGenres([])}>
           Làm mới
         </Button>
-        <Button variant='contained' color='primary'>
-          Cập nhật
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={handleUpdateGenres}
+          disabled={isPending}
+          startIcon={isPending ? <CircularProgress color='inherit' size={20} /> : null}
+        >
+          {isPending ? <CircularProgress color='inherit' size={20} /> : 'Cập nhật'}
         </Button>
       </Box>
+      {isError && (
+        <Typography color='error' sx={{ mt: 2 }}>
+          Đã xảy ra lỗi khi cập nhật. Vui lòng thử lại!
+        </Typography>
+      )}
     </Box>
   )
 }

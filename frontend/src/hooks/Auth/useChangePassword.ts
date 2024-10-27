@@ -1,10 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { apiResetPassword, apiVerifyPassword } from '~/apis/Auth/LoginAPI'
 
 const useChangePassword = () => {
-  const navigate = useNavigate()
 
   const [password, setPassword] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
@@ -21,7 +19,7 @@ const useChangePassword = () => {
   const changePasswordMutation = useMutation({
     mutationFn: apiResetPassword,
     onSuccess: () => {
-      navigate('/login')
+      window.location.href = '/login'
     }
   })
 

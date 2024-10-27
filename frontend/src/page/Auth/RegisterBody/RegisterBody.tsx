@@ -128,7 +128,7 @@ export default function RegisterBody() {
           <Box sx={{ color: (theme) => theme.palette.neutral.neutral2 }}>Bạn đã có tài khoản?</Box>
           <Box
             sx={{ color: (theme) => theme.palette.secondary4.main, cursor: 'pointer', textDecoration: 'underline' }}
-            onClick={() => navigate('/login')}
+            onClick={() => window.location.href = '/login'}
           >
             Đăng nhập tại đây
           </Box>

@@ -17,18 +17,29 @@ import { Fragment, useState } from 'react'
 import { ITrack } from '~/type/Tracks/ITrack'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
+import { useMusic } from '~/hooks/useMusic'
 
 type Props = {
+  albumId: string
   listTracks: ITrack[]
   isPending: boolean
 }
 
-export default function ListTracks({ listTracks, isPending }: Props) {
+export default function ListTracks({ listTracks, isPending, albumId }: Props) {
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
   const borderColor = theme.palette.neutral.neutral3
   const hoverBackgroundColor = theme.palette.neutral.neutral3
   const [hoveredRow, setHoveredRow] = useState<string | null>(null)
+  const { currentAlbumIndex, addAlbum, pause, setPause, music } = useMusic()
+
+  const handlePlay = (index: number, musicId: string) => {
+    if (albumId === currentAlbumIndex && musicId === music?._id) {
+      setPause(!pause)
+    } else {
+      addAlbum(albumId, index)
+    }
+  }
 
   return (
     <TableContainer component={Paper} sx={{ minWidth: 150, maxWidth: '100%', overflow: 'auto', bgcolor: 'transparent' }}>
@@ -70,7 +81,7 @@ export default function ListTracks({ listTracks, isPending }: Props) {
                 </TableCell>
               </TableRow>
             ))
-            : listTracks.map((row) => (
+            : listTracks.map((row, index) => (
               <TableRow
                 key={row._id}
                 onMouseEnter={() => setHoveredRow(row._id)}
@@ -104,6 +115,7 @@ export default function ListTracks({ listTracks, isPending }: Props) {
                       width='48px'
                       height='48px'
                       marginRight='10px'
+                      onClick={() => handlePlay(index, row._id)}
                     >
                       <img
                         alt={row.name}

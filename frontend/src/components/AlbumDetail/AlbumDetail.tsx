@@ -15,9 +15,7 @@ export default function AlbumDetail() {
       <Box sx={{ width: '30%' }}>
         <AlbumInfo album={album} />
       </Box>
-      <Box sx={{ width: '70%', ml: 2 }}>
-        <ListTracks listTracks={listTracks} isPending={isPending} />
-      </Box>
+      <Box sx={{ width: '70%', ml: 2 }}>{albumId && <ListTracks listTracks={listTracks} isPending={isPending} albumId={albumId} />}</Box>
     </Box>
   )
 }
