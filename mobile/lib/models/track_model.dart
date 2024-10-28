@@ -35,8 +35,8 @@ class TrackModel {
     lyrics: json['lyrics'] ?? '',
     audioLink: json['path_audio'] ?? '',
     listenCount: json['listen'] ?? 0,
-    createdAt: DateTime.parse(json['created_at'] ?? ''), 
-    updatedAt: DateTime.parse(json['updated_at'] ?? ''),
+    createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()), 
+    updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),
     artists: List.from(json['artistsName'] ?? []),
   );
 
@@ -53,6 +53,11 @@ class TrackModel {
     'updated_at': updatedAt,
     'artistsName': artists,
   };
+
+  @override
+  String toString() {
+    return '$name - $artistsName';
+  }
 }
 
 enum TrackStatus {

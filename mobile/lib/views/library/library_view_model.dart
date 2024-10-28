@@ -107,4 +107,12 @@ class LibraryViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<List<TrackModel>> getTracksByAlbum(String id) async {
+    final resp = await _albumRepo.getAlbum(id);
+    if (resp != null) {
+      return resp.tracks;
+    }
+    return [];
+  }
 }

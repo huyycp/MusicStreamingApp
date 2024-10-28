@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/utils/constants.dart';
 import 'package:mobile/views/splash/splash_view_model.dart';
 
 class SplashView extends ConsumerStatefulWidget {
@@ -32,23 +31,13 @@ class _SplashViewState extends ConsumerState<SplashView> {
 
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 100,
-              height: 100,
-              child: Image.asset(
-                'assets/images/app_image.png',
-                fit: BoxFit.contain,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              APP_NAME,
-              style: Theme.of(context).textTheme.titleLarge
-            )
-          ],
+        child: SizedBox(
+          width: 100,
+          height: 100,
+          child: Image.asset(
+            'assets/images/app_image.png',
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );

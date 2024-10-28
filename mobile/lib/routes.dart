@@ -5,6 +5,7 @@ import 'package:mobile/views/create_track/create_track_audio_view.dart';
 import 'package:mobile/views/create_track/create_track_info_view.dart';
 import 'package:mobile/views/create_track/create_track_lyrics_view.dart';
 import 'package:mobile/views/create_track/create_track_thumbnail_view.dart';
+import 'package:mobile/views/genre/genre_view.dart';
 import 'package:mobile/views/login/login_view.dart';
 import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
@@ -17,107 +18,138 @@ import 'package:mobile/views/sign_up/sign_up_step_5_view.dart';
 import 'package:mobile/views/sign_up/verify_email_view.dart';
 import 'package:mobile/views/splash/splash_view.dart';
 
-final routeConfig = GoRouter(
-  initialLocation: '/splash',
-  routes: <RouteBase>[
-    GoRoute(
-      path: '/auth',
-      name: 'auth',
-      builder: (context, state) => AuthMethodsView(),
-      routes: <RouteBase>[
-        GoRoute(
-          path: 'login',
-          name: 'login',
-          builder: (context, state) => LoginView()
-        ),
-        GoRoute(
-          path: 'sign-up',
-          name: 'sign-up',
-          builder: (context, state) => NotFoundView(),
-          routes: <RouteBase>[
-            GoRoute(
-              path: 'step-1',
-              builder: (context, state) => SignUpStep1View()
-            ),
-            GoRoute(
-              path: 'step-2',
-              builder: (context, state) => SignUpStep2View()
-            ),
-            GoRoute(
-              path: 'step-3',
-              builder: (context, state) => SignUpStep3View()
-            ),
-            GoRoute(
-              path: 'step-4',
-              builder: (context, state) => SignUpStep4View()
-            ),
-            GoRoute(
-              path: 'step-5',
-              builder: (context, state) => SignUpStep5View()
-            ),
-          ]
-        ),
-        GoRoute(
-          path: 'verify-email',
-          name: 'verify-email',
-          builder: (context, state) => VerifyEmailView()
-        ),
-      ]
-    ),
-    GoRoute(
-      path: '/main',
-      name: 'main',
-      builder: (context, state) => MainView()
-    ),
-    GoRoute(
-      path: '/splash',
-      name: 'splash',
-      builder: (context, state) => SplashView()
-    ),
-    GoRoute(
-      path: '/track',
-      builder: (context, state) => NotFoundView(),
-      routes: [
-        GoRoute(
-          path: 'create',
-          name: 'create-track',
-          builder: (context, state) => NotFoundView(),
-          routes: [
-            GoRoute(
-              path: 'track-info',
-              builder: (context, state) => CreateTrackInfoView()
-            ),
-            GoRoute(
-              path: 'audio',
-              builder: (context, state) => CreateTrackAudioView()
-            ),
-            GoRoute(
-              path: 'lyrics',
-              builder: (context, state) => CreateTrackLyricsView( )
-            ),
-            GoRoute(
-              path: 'thumbnail',
-              builder: (context, state) => CreateTrackThumbnailView()
-            ),
-          ]
-        )
-      ]
-    ),
-    GoRoute(
-      path: '/album',
-      builder: (context, state) => NotFoundView(),
-      routes: [
-        GoRoute(
-          path: 'create',
-          name: 'create-album',
-          builder: (context, state) => CreateAlbumView()
-        ),
-      ]
-    ),
-    GoRoute(
-      path: '/pick-track/:albumId',
-      name: 'pick-track',
-      builder: (context, state) => PickTrackView(albumId: state.pathParameters['albumId'] ?? '')
-    ),
-  ]
-);
+class RouteService {
+  RouteService._internal();
+
+  static final routeConfig = GoRouter(
+    initialLocation: '/splash',
+    routes: <RouteBase>[
+      _authRoute,
+      _mainRoute,
+      _splashRoute,
+      _trackRoute,
+      _albumRoute,
+      _pickTrackRoute,
+      _genreRoute,
+    ]
+  );
+
+  static final GoRoute _authRoute = GoRoute(
+    path: '/auth',
+    name: 'auth',
+    builder: (context, state) => AuthMethodsView(),
+    routes: <RouteBase>[
+      _loginRoute,
+      _signUpRoute,
+      _verifyEmailRoute,
+    ]
+  );
+
+  static final GoRoute _loginRoute = GoRoute(
+    path: 'login',
+    name: 'login',
+    builder: (context, state) => LoginView()
+  );
+
+  static final GoRoute _signUpRoute = GoRoute(
+    path: 'sign-up',
+    name: 'sign-up',
+    builder: (context, state) => NotFoundView(),
+    routes: <RouteBase>[
+      GoRoute(
+        path: 'step-1',
+        builder: (context, state) => SignUpStep1View()
+      ),
+      GoRoute(
+        path: 'step-2',
+        builder: (context, state) => SignUpStep2View()
+      ),
+      GoRoute(
+        path: 'step-3',
+        builder: (context, state) => SignUpStep3View()
+      ),
+      GoRoute(
+        path: 'step-4',
+        builder: (context, state) => SignUpStep4View()
+      ),
+      GoRoute(
+        path: 'step-5',
+        builder: (context, state) => SignUpStep5View()
+      ),
+    ]
+  );
+
+  static final GoRoute _verifyEmailRoute = GoRoute(
+    path: 'verify-email',
+    name: 'verify-email',
+    builder: (context, state) => VerifyEmailView()
+  );
+
+  static final GoRoute _mainRoute = GoRoute(
+    path: '/main',
+    name: 'main',
+    builder: (context, state) => MainView()
+  );
+
+  static final GoRoute _splashRoute = GoRoute(
+    path: '/splash',
+    name: 'splash',
+    builder: (context, state) => SplashView()
+  );
+
+  static final GoRoute _trackRoute = GoRoute(
+    path: '/track',
+    builder: (context, state) => NotFoundView(),
+    routes: [
+      _createTrackRoute,
+    ]
+  );
+
+  static final GoRoute _createTrackRoute = GoRoute(
+    path: 'create',
+    name: 'create-track',
+    builder: (context, state) => NotFoundView(),
+    routes: [
+      GoRoute(
+        path: 'track-info',
+        builder: (context, state) => CreateTrackInfoView()
+      ),
+      GoRoute(
+        path: 'audio',
+        builder: (context, state) => CreateTrackAudioView()
+      ),
+      GoRoute(
+        path: 'lyrics',
+        builder: (context, state) => CreateTrackLyricsView( )
+      ),
+      GoRoute(
+        path: 'thumbnail',
+        builder: (context, state) => CreateTrackThumbnailView()
+      ),
+    ]
+  );
+
+  static final GoRoute _albumRoute = GoRoute(
+    path: '/album',
+    builder: (context, state) => NotFoundView(),
+    routes: [
+      GoRoute(
+        path: 'create',
+        name: 'create-album',
+        builder: (context, state) => CreateAlbumView()
+      ),
+    ]
+  );
+
+  static final GoRoute _pickTrackRoute = GoRoute(
+    path: '/pick-track/:albumId',
+    name: 'pick-track',
+    builder: (context, state) => PickTrackView(albumId: state.pathParameters['albumId'] ?? '')
+  );
+
+  static final GoRoute _genreRoute = GoRoute(
+    path: '/genres',
+    name: 'gernes',
+    builder: (context, state) => GenreView(),
+  );
+}
