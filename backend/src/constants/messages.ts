@@ -75,5 +75,9 @@ export const USERS_MESSAGES = {
 } as const
 
 export const GENRES_MESSAGES = {
-  GET_LIST_OF_GENRES_SUCCESS: 'Get list of genres success'
+  GET_LIST_OF_GENRES_SUCCESS: 'Get list of genres success',
+  LIST_OF_GENRES_IS_REQUIRED: 'List of genres is required',
+  LIST_OF_GENRES_IS_INVALID: 'List of genres is invalid',
+  EXISTING_GENRE_NOT_FOUND: 'Existing genre not found',
+  ADD_GENRES_TO_FAVORITE_SUCCESS: 'Add genres to favorite success'
 } as const

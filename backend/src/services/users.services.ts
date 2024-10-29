@@ -3,15 +3,32 @@ import databaseService from './database.services'
 
 class UserService {
   async getMe(user_id: string) {
-    const user = await databaseService.users.findOne(
-      { _id: new ObjectId(user_id) },
-      {
-        projection: {
-          password: 0
+    const user = await databaseService.users
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(user_id)
+          }
+        },
+        {
+          $lookup: {
+            from: 'genres',
+            localField: 'genres',
+            foreignField: '_id',
+            as: 'genres'
+          }
+        },
+        {
+          $project: {
+            genres: {
+              created_at: 0,
+              updated_at: 0
+            }
+          }
         }
-      }
-    )
-    return user
+      ])
+      .toArray()
+    return user[0]
   }
 }
 
