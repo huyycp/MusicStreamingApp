@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/repositories/track_repository.dart';
 
 final createTrackViewModel = ChangeNotifierProvider.autoDispose<CreateTrackViewModel>(
@@ -34,6 +36,9 @@ class CreateTrackViewModel extends ChangeNotifier {
   /// Create track: Thumbnails
   XFile? thumbnail;
 
+  /// Create track: Genre
+  List<GenreModel> pickedGenres = [];  
+
   bool isTrackCreatedSuccess = false;
   
   Future<void> pickAudio() async {
@@ -62,6 +67,16 @@ class CreateTrackViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> togglePickGenre(GenreModel genre) async {
+    if (pickedGenres.contains(genre)) {
+      pickedGenres.remove(genre);
+      pickedGenres = [...pickedGenres];
+    } else {
+      pickedGenres = [...pickedGenres, genre];
+    }
+    notifyListeners();
+  }
+
   Future<void> createTrack() async {
     isTrackCreatedSuccess = await _trackRepo.createTrack(
       title: trackTitleController.text, 
@@ -69,6 +84,7 @@ class CreateTrackViewModel extends ChangeNotifier {
       audio: File(audioFile!.path!),
       lyrics: trackLyricsController.text,
       thumbnail: thumbnail!,
+      genreId: pickedGenres.first.id,
     );
     notifyListeners();
   }

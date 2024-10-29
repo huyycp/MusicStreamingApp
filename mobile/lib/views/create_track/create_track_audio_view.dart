@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
+import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
 import 'package:mobile/widgets/audio_controls/audio_controller.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -17,15 +18,9 @@ class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: createTrackAppBar(),
       body: _body(),
       bottomNavigationBar: _nextBtn(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create track'),
     );
   }
 

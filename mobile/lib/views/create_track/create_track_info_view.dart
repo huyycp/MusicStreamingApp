@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
+import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -17,15 +18,9 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: createTrackAppBar(),
       body: _body(),
       bottomNavigationBar: _nextBtn(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create track')
     );
   }
 
@@ -33,21 +28,18 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
     return BaseContainer(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: SingleChildScrollView(
-        child: Form(
-          key: ref.read(createTrackViewModel).trackInfoFormKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Track information',
-                style: Theme.of(context).textTheme.titleLarge
-              ),
-              const SizedBox(height: 24),
-              _trackTitleInput(),
-              const SizedBox(height: 24),
-              _trackDescInput(),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Track information',
+              style: Theme.of(context).textTheme.titleLarge
+            ),
+            const SizedBox(height: 24),
+            _trackTitleInput(),
+            const SizedBox(height: 24),
+            _trackDescInput(),
+          ],
         ),
       ),
     );

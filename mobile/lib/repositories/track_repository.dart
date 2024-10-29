@@ -27,6 +27,7 @@ class TrackRepository {
     required File audio,
     String lyrics = '',
     required XFile thumbnail,
+    required String genreId,
   }) async  {
     return await _trackRemote.createTrack(CreateTrackReq(
       title: title,
@@ -34,6 +35,7 @@ class TrackRepository {
       audio: audio,
       lyrics: lyrics,
       thumbnail: thumbnail,
+      genreId: genreId,
     ));
   }
 

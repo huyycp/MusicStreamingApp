@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
+import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -16,15 +17,9 @@ class _CreateTrackLyricsViewState extends ConsumerState<CreateTrackLyricsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: createTrackAppBar(),
       body: _body(),
       bottomNavigationBar: _nextBtn(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create track')
     );
   }
 
