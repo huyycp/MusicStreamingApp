@@ -34,10 +34,10 @@ class _CreateTrackLyricsViewState extends ConsumerState<CreateTrackLyricsView> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            FieldLabel('Lyrics'),
+            const FieldLabel('Lyrics'),
             const SizedBox(height: 8),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Lyrics',
               ),
               maxLines: 10,
@@ -50,6 +50,6 @@ class _CreateTrackLyricsViewState extends ConsumerState<CreateTrackLyricsView> {
   }
 
   Widget _nextBtn() {
-    return NextStepButton('/track/create/thumbnail');
+    return const NextStepButton('/track/create/thumbnail');
   }
 }

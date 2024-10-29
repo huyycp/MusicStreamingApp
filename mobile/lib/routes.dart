@@ -5,7 +5,6 @@ import 'package:mobile/views/create_track/create_track_audio_view.dart';
 import 'package:mobile/views/create_track/create_track_info_view.dart';
 import 'package:mobile/views/create_track/create_track_lyrics_view.dart';
 import 'package:mobile/views/create_track/create_track_thumbnail_view.dart';
-import 'package:mobile/views/genre/genre_view.dart';
 import 'package:mobile/views/login/login_view.dart';
 import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
@@ -30,14 +29,13 @@ class RouteService {
       _trackRoute,
       _albumRoute,
       _pickTrackRoute,
-      _genreRoute,
     ]
   );
 
   static final GoRoute _authRoute = GoRoute(
     path: '/auth',
     name: 'auth',
-    builder: (context, state) => AuthMethodsView(),
+    builder: (context, state) => const AuthMethodsView(),
     routes: <RouteBase>[
       _loginRoute,
       _signUpRoute,
@@ -48,33 +46,33 @@ class RouteService {
   static final GoRoute _loginRoute = GoRoute(
     path: 'login',
     name: 'login',
-    builder: (context, state) => LoginView()
+    builder: (context, state) => const LoginView()
   );
 
   static final GoRoute _signUpRoute = GoRoute(
     path: 'sign-up',
     name: 'sign-up',
-    builder: (context, state) => NotFoundView(),
+    builder: (context, state) => const NotFoundView(),
     routes: <RouteBase>[
       GoRoute(
         path: 'step-1',
-        builder: (context, state) => SignUpStep1View()
+        builder: (context, state) => const SignUpStep1View()
       ),
       GoRoute(
         path: 'step-2',
-        builder: (context, state) => SignUpStep2View()
+        builder: (context, state) => const SignUpStep2View()
       ),
       GoRoute(
         path: 'step-3',
-        builder: (context, state) => SignUpStep3View()
+        builder: (context, state) => const SignUpStep3View()
       ),
       GoRoute(
         path: 'step-4',
-        builder: (context, state) => SignUpStep4View()
+        builder: (context, state) => const SignUpStep4View()
       ),
       GoRoute(
         path: 'step-5',
-        builder: (context, state) => SignUpStep5View()
+        builder: (context, state) => const SignUpStep5View()
       ),
     ]
   );
@@ -82,24 +80,24 @@ class RouteService {
   static final GoRoute _verifyEmailRoute = GoRoute(
     path: 'verify-email',
     name: 'verify-email',
-    builder: (context, state) => VerifyEmailView()
+    builder: (context, state) => const VerifyEmailView()
   );
 
   static final GoRoute _mainRoute = GoRoute(
     path: '/main',
     name: 'main',
-    builder: (context, state) => MainView()
+    builder: (context, state) => const MainView()
   );
 
   static final GoRoute _splashRoute = GoRoute(
     path: '/splash',
     name: 'splash',
-    builder: (context, state) => SplashView()
+    builder: (context, state) => const SplashView()
   );
 
   static final GoRoute _trackRoute = GoRoute(
     path: '/track',
-    builder: (context, state) => NotFoundView(),
+    builder: (context, state) => const NotFoundView(),
     routes: [
       _createTrackRoute,
     ]
@@ -108,35 +106,35 @@ class RouteService {
   static final GoRoute _createTrackRoute = GoRoute(
     path: 'create',
     name: 'create-track',
-    builder: (context, state) => NotFoundView(),
+    builder: (context, state) => const NotFoundView(),
     routes: [
       GoRoute(
         path: 'track-info',
-        builder: (context, state) => CreateTrackInfoView()
+        builder: (context, state) => const CreateTrackInfoView()
       ),
       GoRoute(
         path: 'audio',
-        builder: (context, state) => CreateTrackAudioView()
+        builder: (context, state) => const CreateTrackAudioView()
       ),
       GoRoute(
         path: 'lyrics',
-        builder: (context, state) => CreateTrackLyricsView( )
+        builder: (context, state) => const CreateTrackLyricsView( )
       ),
       GoRoute(
         path: 'thumbnail',
-        builder: (context, state) => CreateTrackThumbnailView()
+        builder: (context, state) => const CreateTrackThumbnailView()
       ),
     ]
   );
 
   static final GoRoute _albumRoute = GoRoute(
     path: '/album',
-    builder: (context, state) => NotFoundView(),
+    builder: (context, state) => const NotFoundView(),
     routes: [
       GoRoute(
         path: 'create',
         name: 'create-album',
-        builder: (context, state) => CreateAlbumView()
+        builder: (context, state) => const CreateAlbumView()
       ),
     ]
   );
@@ -145,11 +143,5 @@ class RouteService {
     path: '/pick-track/:albumId',
     name: 'pick-track',
     builder: (context, state) => PickTrackView(albumId: state.pathParameters['albumId'] ?? '')
-  );
-
-  static final GoRoute _genreRoute = GoRoute(
-    path: '/genres',
-    name: 'gernes',
-    builder: (context, state) => GenreView(),
   );
 }

@@ -5,7 +5,8 @@ import 'package:mobile/views/genre/widgets/genre_widget.dart';
 import 'package:mobile/widgets/base_container.dart';
 
 class GenreView extends ConsumerStatefulWidget {
-  const GenreView({super.key});
+  final List<String> selectedGenres;
+  const GenreView(this.selectedGenres, {super.key});
 
   @override
   ConsumerState<GenreView> createState() => _GenreViewState();
@@ -20,27 +21,12 @@ class _GenreViewState extends ConsumerState<GenreView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Genres'),
-    );
+    return _body();
   }
 
   Widget _body() {
     return BaseContainer(
-      child: Column(
-        children: [
-          Text('Choose some genres'),
-          const SizedBox(height: 24),
-          Expanded(child: _genreList()),
-        ],
-      ),
+      child: _genreList(),
     );
   }
 

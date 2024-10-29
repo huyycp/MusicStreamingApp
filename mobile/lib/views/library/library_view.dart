@@ -40,7 +40,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with TickerProviderSt
 
   PreferredSize _tabBar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(24),
+      preferredSize: const Size.fromHeight(24),
       child: TabBar(
         tabs: ref.read(libraryViewModel).tabs,
         controller: ref.read(libraryViewModel).tabController,
@@ -108,11 +108,11 @@ class _LibraryViewState extends ConsumerState<LibraryView> with TickerProviderSt
     return BaseContainer(
       padding: EdgeInsets.zero,
       child: TabBarView(
-        children: [
+        controller: ref.read(libraryViewModel).tabController,
+        children: const [
           AlbumListView(),
           TrackListView(),
         ],
-        controller: ref.read(libraryViewModel).tabController,
       ),
     );
   }

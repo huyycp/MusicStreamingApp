@@ -94,15 +94,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
         if (ref.read(loginViewModel).loginFormKey.currentState!.validate()) {
           ref.read(loginViewModel).login();
           showDialog(
-            context: context, builder: (context) => StatusDialogWidget('Logging in...')
+            context: context, builder: (context) => const StatusDialogWidget('Logging in...')
           );
         }
       },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
         disabledForegroundColor: Colors.black,
-        backgroundColor: Color(0xFFFFFFFF),
-        disabledBackgroundColor: Color(0xFF535353),
+        backgroundColor: const Color(0xFFFFFFFF),
+        disabledBackgroundColor: const Color(0xFF535353),
       ),
       child: const Text('Login'),
     );

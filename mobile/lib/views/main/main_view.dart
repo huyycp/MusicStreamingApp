@@ -33,7 +33,7 @@ class _MainViewState extends ConsumerState<MainView> {
       visible: ref.watch(mainViewModel.select(
         (value) => value.tracks.isNotEmpty
       )),
-      child: TrackPlayerWidget()
+      child: const TrackPlayerWidget()
     );
   }
 
@@ -48,10 +48,10 @@ class _MainViewState extends ConsumerState<MainView> {
       ),
       child: BottomNavigationBar(
         currentIndex: ref.watch(mainViewModel).currentPage,
-        unselectedLabelStyle: TextStyle(
+        unselectedLabelStyle: const TextStyle(
           color: Colors.white
         ),
-        selectedLabelStyle: TextStyle(
+        selectedLabelStyle: const TextStyle(
           color: Colors.white
         ),  
         useLegacyColorScheme: false,

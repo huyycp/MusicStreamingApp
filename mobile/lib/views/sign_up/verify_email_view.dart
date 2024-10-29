@@ -23,7 +23,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     ref.listen(signUpViewModel.select((value) => value.registerSuccess), (prev, next) {
-      debugPrint('Register status: ${next}');
+      debugPrint('Register status: $next');
       context.pop();
       if (next) {
         context.go('/main');
@@ -86,7 +86,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
       maxLength: 6,
       fieldHeight: 50,
       fieldWidth: 0.1 * MediaQuery.sizeOf(context).width,
-      otpPinFieldStyle: OtpPinFieldStyle(
+      otpPinFieldStyle: const OtpPinFieldStyle(
         textStyle: TextStyle(
           color: Colors.white,
           fontSize: 30,
@@ -104,7 +104,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
     return ElevatedButton(
       onPressed: ref.read(signUpViewModel).getAuthOTP,
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(150, 40),
+        fixedSize: const Size(150, 40),
         padding: EdgeInsets.zero,
         foregroundColor: Colors.grey[800],
         backgroundColor: Colors.grey[600],
@@ -129,9 +129,9 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
       backgroundColor: PRIMARY_BACKGROUND,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Colors.white)
+        side: const BorderSide(color: Colors.white)
       ),
-      child: Container(
+      child: SizedBox(
         width: 0.8 * MediaQuery.sizeOf(context).width,
         height: 200,
         child: Center(

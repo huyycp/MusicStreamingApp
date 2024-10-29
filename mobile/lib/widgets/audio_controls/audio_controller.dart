@@ -54,7 +54,7 @@ class _AudioControllerState extends State<AudioController> {
             min: 0,
             max: totalDuration.inMilliseconds.toDouble(),
             onChanged: (value) {
-              print(value.toString());
+              debugPrint(value.toString());
             },
             onChangeEnd: (value) async {
               await player.seek(Duration(milliseconds: value.round()));

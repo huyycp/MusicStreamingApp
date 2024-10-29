@@ -53,7 +53,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _trackImage(track?.imageLink ?? ''),
+        _trackImage(track.imageLink),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -72,8 +72,8 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   Widget _trackImage(String trackImage) {
     return DynamicImage(
       trackImage,
-      width: 30,
-      height: 30,
+      width: 44,
+      height: 44,
       borderRadius: BorderRadius.circular(8),
     );
   }
@@ -152,7 +152,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
       backgroundColor: Colors.transparent,
       useSafeArea: true,
       isScrollControlled: true,
-      builder: (context) => TrackPlayerView()
+      builder: (context) => const TrackPlayerView()
     );
   }
 }

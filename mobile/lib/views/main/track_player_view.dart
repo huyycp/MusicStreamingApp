@@ -18,7 +18,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 12, right: 16, bottom: 32, left: 16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [ GRAY_BCK_1, PRIMARY_BACKGROUND ],
           begin: Alignment.topCenter,
@@ -110,11 +110,11 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          track?.name ?? '',
+          track.name,
           style: Theme.of(context).textTheme.titleLarge,
         ),
         Text(
-          track?.artistsName ?? '',
+          track.artistsName,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
@@ -135,6 +135,6 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
   }
 
   Widget _audioController() {
-    return AudioControllerWidget();
+    return const AudioControllerWidget();
   }
 }

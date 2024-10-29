@@ -73,6 +73,6 @@ class UserRepository {
   Future<bool> isValidRefreshToken() async {
     final refreshToken = await _userRemote.getRefreshToken();
     if (refreshToken == null) return false;
-    return JwtDecoder.isExpired(refreshToken);
+    return !JwtDecoder.isExpired(refreshToken);
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/models/view_info_model.dart';
-import 'package:mobile/repositories/album_repository.dart';
 import 'package:mobile/views/home/home_view.dart';
 import 'package:mobile/views/library/library_view.dart';
 import 'package:mobile/views/premium/premium_view.dart';
@@ -55,10 +54,10 @@ class MainViewModel extends ChangeNotifier {
   ];
 
   List<Widget> views = [
-    HomeView(),
-    SearchView(),
-    LibraryView(),
-    PremiumView(),
+    const HomeView(),
+    const SearchView(),
+    const LibraryView(),
+    const PremiumView(),
   ];
 
   final _player = AudioPlayer();
@@ -87,20 +86,22 @@ class MainViewModel extends ChangeNotifier {
       useLazyPreparation: true,
       children: _tracks.map((track) => AudioSource.uri(Uri.parse(track.audioLink))).toList()
     );
-    await _player.setAudioSource(
-      playlist,
-      initialIndex: initialIndex,
-      initialPosition: Duration.zero
-    );
-    currentIndex = initialIndex;
-    notifyListeners();
-    if (tracks.isNotEmpty) {
-      await _player.play();
-    }
+    Future.delayed(const Duration(microseconds: 500), () async {
+      await _player.setAudioSource(
+        playlist,
+        initialIndex: initialIndex,
+        initialPosition: Duration.zero
+      );
+      currentIndex = initialIndex;
+      notifyListeners();
+      if (tracks.isNotEmpty) {
+        await _player.play();
+      }
+    });
   }
 
   Future<void> selectTrackInPlaylist({required int index}) async {
-    if (_player.audioSource == null && _player.sequence!.length < 0) {
+    if (_player.audioSource == null) {
       return;
     }
     await _player.seek(Duration.zero, index: index);

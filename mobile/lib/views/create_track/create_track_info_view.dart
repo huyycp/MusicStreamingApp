@@ -58,11 +58,11 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FieldLabel('Title'),
+        const FieldLabel('Title'),
         const SizedBox(height: 8),
         TextFormField(
           validator: emptyValidator,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Title',
           ),
           controller: ref.read(createTrackViewModel).trackTitleController,
@@ -76,10 +76,10 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FieldLabel('Description'),
+        const FieldLabel('Description'),
         const SizedBox(height: 8),
         TextFormField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Description (optional)',
           ),
           maxLines: 10,
@@ -90,6 +90,6 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
   }
 
   Widget _nextBtn() {
-    return NextStepButton('/track/create/audio');
+    return const NextStepButton('/track/create/audio');
   }
 }

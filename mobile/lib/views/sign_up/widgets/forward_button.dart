@@ -13,8 +13,8 @@ class ForwardButton extends ConsumerWidget {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
         disabledForegroundColor: Colors.black,
-        backgroundColor: Color(0xFFFFFFFF),
-        disabledBackgroundColor: Color(0xFF535353),
+        backgroundColor: const Color(0xFFFFFFFF),
+        disabledBackgroundColor: const Color(0xFF535353),
       ),
       child: Text(
         'Next',

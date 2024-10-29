@@ -44,7 +44,7 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FieldLabel('Thumbnail'),
+            const FieldLabel('Thumbnail'),
             const SizedBox(height: 8),
             _thumbnailDisplay(),
             const SizedBox(height: 16),

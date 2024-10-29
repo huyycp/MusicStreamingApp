@@ -27,7 +27,7 @@ class _BaseControlsButtonState extends State<BaseControlsButton> {
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
         ),

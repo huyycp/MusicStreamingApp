@@ -45,8 +45,8 @@ class CreateTrackViewModel extends ChangeNotifier {
       if (result != null) {
         audioFile = result.files.single;
         await _player.setUrl(audioFile!.path!);
-        print(_player.duration!.inMilliseconds.toString());
-        print(audioFile!.name);
+        debugPrint(_player.duration!.inMilliseconds.toString());
+        debugPrint(audioFile!.name);
         notifyListeners();
       }
     } catch (err) {

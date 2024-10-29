@@ -12,7 +12,7 @@ void main() async {
     overrides: [
       themeProvider.overrideWith((ref) => ThemeProvider())
     ],
-    child: MyApp()
+    child: const MyApp()
   ));
 }
 

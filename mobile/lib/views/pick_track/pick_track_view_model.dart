@@ -48,7 +48,7 @@ class PickTrackViewModel extends ChangeNotifier {
     } else {
       pickedTracks = [...pickedTracks, track];
     }
-    print(pickedTracks.map((track) => track.name).toList());
+    debugPrint(pickedTracks.map((track) => track.name).toList().toString());
     notifyListeners();
   }
 

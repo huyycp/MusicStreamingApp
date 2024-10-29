@@ -14,15 +14,13 @@ class AudioControllerWidget extends ConsumerStatefulWidget {
 class _AudioControllerWidgetState extends ConsumerState<AudioControllerWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _trackSlider(),
-          const SizedBox(height: 24),
-          _trackControls(),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _trackSlider(),
+        const SizedBox(height: 24),
+        _trackControls(),
+      ],
     );
   }
 
@@ -91,7 +89,7 @@ class _AudioControllerWidgetState extends ConsumerState<AudioControllerWidget> {
       onPressed: ref.watch(mainViewModel).playOrPause,
       icon: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
         ),

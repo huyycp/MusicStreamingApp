@@ -22,8 +22,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     return Scaffold(
       appBar: _appBar(),
-      body: Center(
-        child: const Text('Home'),
+      body: const Center(
+        child: Text('Home'),
       )
     );
   }
@@ -37,7 +37,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             ref.read(homeViewModel).logout();
             showDialog(
               context: context, 
-              builder: (context) => StatusDialogWidget('Logging out...')
+              builder: (context) => const StatusDialogWidget('Logging out...')
             );
           },
         )

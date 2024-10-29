@@ -22,7 +22,7 @@ class TrackWidget extends ConsumerWidget {
             track.imageLink,
             width: 76,
             height: 76,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           ),
           const SizedBox(width: 12),
           Expanded(

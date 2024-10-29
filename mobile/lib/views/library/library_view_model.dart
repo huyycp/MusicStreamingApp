@@ -40,8 +40,8 @@ class LibraryViewModel extends ChangeNotifier {
   final UserRepository _userRepo;
 
   List<Tab> tabs = [
-    Tab(text: 'Album'),
-    Tab(text: 'Track'),
+    const Tab(text: 'Album'),
+    const Tab(text: 'Track'),
   ];
   TabController? tabController;
 

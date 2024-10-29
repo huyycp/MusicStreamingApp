@@ -100,6 +100,6 @@ class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
   }
 
   Widget _nextBtn() {
-    return NextStepButton('/track/create/lyrics');
+    return const NextStepButton('/track/create/lyrics');
   }
 }

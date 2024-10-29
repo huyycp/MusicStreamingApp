@@ -10,9 +10,9 @@ class PremiumView extends StatefulWidget {
 class _PremiumViewState extends State<PremiumView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: const Text('Premium'),
+        child: Text('Premium'),
       ),
     );
   }

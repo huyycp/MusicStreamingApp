@@ -18,7 +18,7 @@ class AuthMethodsView extends ConsumerStatefulWidget {
 class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
   @override
   Widget build(BuildContext context) {
-    final gap = const SizedBox(height: 4);
+    const gap = SizedBox(height: 4);
     return Scaffold(
       body: BaseContainer(
         padding: const EdgeInsets.symmetric(horizontal: 46, vertical: 54),
@@ -69,7 +69,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
       onPressed: ref.read(authMethodsViewModel).loginWithGoogle, 
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.white,
-        side: BorderSide(
+        side: const BorderSide(
           color: Colors.white
         ),
         padding: const EdgeInsets.all(8)
@@ -89,7 +89,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
       onPressed: ref.read(authMethodsViewModel).loginWithFacebook, 
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.white,
-        side: BorderSide(
+        side: const BorderSide(
           color: Colors.white
         ),
         padding: const EdgeInsets.all(8)

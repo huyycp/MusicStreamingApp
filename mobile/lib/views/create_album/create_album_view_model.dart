@@ -14,7 +14,7 @@ class CreateAlbumViewModel extends ChangeNotifier {
     required AlbumRepository albumRepo,
   }) : _albumRepo = albumRepo;
 
-  AlbumRepository _albumRepo;
+  final AlbumRepository _albumRepo;
   final albumNameController = TextEditingController();
   XFile? albumImage;
 

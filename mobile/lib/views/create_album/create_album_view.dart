@@ -58,11 +58,11 @@ class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        FieldLabel('Album name'),
+        const FieldLabel('Album name'),
         const SizedBox(height: 8),
         TextFormField(
           validator: emptyValidator,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Album name',
           ),
           controller: ref.read(createAlbumViewModel).albumNameController,
@@ -84,7 +84,7 @@ class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
           fit: BoxFit.cover,
           image: image != null
             ? FileImage(File(image.path))
-            : AssetImage('assets/images/default_image_placeholder.png'),
+            : const AssetImage('assets/images/default_image_placeholder.png'),
         )
       ),
       child: Center(
