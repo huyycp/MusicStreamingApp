@@ -10,34 +10,28 @@ class AlbumWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    return GestureDetector(
-      onTap: () {
-        
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: GRAY_BCK_1,
-        ),
-        child: Row(
-          children: [
-            DynamicImage(
-              album.image,
-              width: 76,
-              height: 76,
-              borderRadius: BorderRadius.circular(20),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: GRAY_BCK_1,
+      ),
+      child: Row(
+        children: [
+          DynamicImage(
+            album.image,
+            width: 76,
+            height: 76,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              album.name,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                album.name,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

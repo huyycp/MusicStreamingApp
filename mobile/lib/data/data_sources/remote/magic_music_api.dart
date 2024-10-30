@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/base_api.dart';
+import 'package:mobile/routes.dart';
+import 'package:mobile/utils/snackbar.dart';
 
 final magicMusicApiProvider = Provider<MagicMusicApi>(
   (ref) => MagicMusicApi(dotenv.env['MAGIC_MUSIC_URL']!)
@@ -16,22 +18,31 @@ class MagicMusicApi extends BaseApi {
 
   @override
   Future<({String? accessToken, String? refreshToken})> refreshToken() async {
-    Dio tempDio = Dio();
-    final response = await tempDio.post(
-      '$baseUrl/auth/refresh-token',
-      data: {
-        'refresh_token': await getRefreshToken()
+    try {
+      Dio tempDio = Dio();
+      final response = await tempDio.post(
+        '$baseUrl/auth/refresh-token',
+        data: {
+          'refresh_token': await getRefreshToken()
+        }
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        final data = response.data;
+        final accessToken = data['result']['access_token']?.toString();
+        final refreshToken = data['result']['refresh_token']?.toString();
+        await setAccessToken(accessToken);
+        await setRefreshToken(refreshToken);
+        debugPrint('Refresh token: {access_token: $accessToken, refresh_token: $refreshToken}');
+        return (accessToken: accessToken, refreshToken: refreshToken);
+      } else {
+        return (accessToken: null, refreshToken: null);
       }
-    );
-    if (response.statusCode == HttpStatus.ok) {
-      final data = response.data;
-      final accessToken = data['result']['access_token']?.toString();
-      final refreshToken = data['result']['refresh_token']?.toString();
-      await setAccessToken(accessToken);
-      await setRefreshToken(refreshToken);
-      debugPrint('Refresh token: {access_token: $accessToken, refresh_token: $refreshToken}');
-      return (accessToken: accessToken, refreshToken: refreshToken);
-    } else {
+    } catch (err) {
+      token = null;
+      await removeAccessToken();
+      await removeRefreshToken();
+      SnackBarService.showSnackBar(message: 'Session expired. Please log in!');
+      RouteService.routeConfig.go('/auth');
       return (accessToken: null, refreshToken: null);
     }
   }

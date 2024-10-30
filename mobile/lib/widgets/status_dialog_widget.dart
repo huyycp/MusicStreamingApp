@@ -12,9 +12,9 @@ class StatusDialogWidget extends StatelessWidget {
       backgroundColor: PRIMARY_BACKGROUND,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Colors.white)
+        side: const BorderSide(color: Colors.white)
       ),
-      child: Container(
+      child: SizedBox(
         width: 0.8 * MediaQuery.sizeOf(context).width,
         height: 200,
         child: Center(

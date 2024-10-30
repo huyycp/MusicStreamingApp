@@ -12,10 +12,13 @@ class BaseContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding,
-      color: PRIMARY_BACKGROUND,
-      child: child,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Container(
+        padding: padding,
+        color: PRIMARY_BACKGROUND,
+        child: child,
+      ),
     );
   }
 }

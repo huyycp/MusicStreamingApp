@@ -69,7 +69,7 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
             padding: const EdgeInsets.only(right: 8),
             child: DynamicImage('assets/icons/ic_chevron_down.svg', width: 20, height: 20),
           ),
-          suffixIconConstraints: BoxConstraints(maxHeight: 24, maxWidth: 24, minHeight: 24, minWidth: 24),
+          suffixIconConstraints: const BoxConstraints(maxHeight: 24, maxWidth: 24, minHeight: 24, minWidth: 24),
         ),
         onTap: genderOnTap,
       ),
@@ -81,17 +81,17 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
     enableDrag: true,
     useSafeArea: true,
     showDragHandle: true,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))
     ),
     builder: (context) => Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
           GenderItem('Male'),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           GenderItem('Female'),
         ],
       ),

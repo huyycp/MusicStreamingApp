@@ -10,6 +10,7 @@ class CreateTrackReq {
     required this.audio,
     this.lyrics = '',
     required this.thumbnail,
+    required this.genreId,
   });
 
   String title;
@@ -17,6 +18,7 @@ class CreateTrackReq {
   File audio;
   String lyrics;
   XFile thumbnail;
+  String genreId;
 
   Future<Map<String, dynamic>> toJson() async {
     final audioFile = await MultipartFile.fromFile(audio.path);
@@ -27,6 +29,7 @@ class CreateTrackReq {
       'audio': audioFile,
       'lyrics': lyrics,
       'image': thumbnailFile,
+      'genre': genreId,
     };
   }
 }

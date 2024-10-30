@@ -1,9 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
+import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
+import 'package:mobile/views/create_track/widgets/next_step_button.dart';
 import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -18,22 +19,10 @@ class CreateTrackThumbnailView extends ConsumerStatefulWidget {
 class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailView> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(createTrackViewModel.select((value) => value.isTrackCreatedSuccess), (prev, next) {
-      if (next) {
-        Navigator.popUntil(context, ModalRoute.withName('main'));
-      }
-    });
-
     return Scaffold(
-      appBar: _appBar(),
+      appBar: createTrackAppBar(),
       body: _body(),
       bottomNavigationBar: _nextBtn(),
-    );
-  }
-
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Create track')
     );
   }
 
@@ -44,7 +33,7 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FieldLabel('Thumbnail'),
+            const FieldLabel('Thumbnail'),
             const SizedBox(height: 8),
             _thumbnailDisplay(),
             const SizedBox(height: 16),
@@ -75,7 +64,6 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
   }
 
   Widget _thumbnailPicker() {
-    
     return ElevatedButton(
       onPressed: () {
         ref.read(createTrackViewModel).pickThumbnail();
@@ -96,14 +84,6 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
   }
 
   Widget _nextBtn() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      child: ElevatedButton(
-        onPressed: () {
-          ref.read(createTrackViewModel).createTrack();
-        },
-        child: const Text('Create'),
-      ),
-    );
+    return const NextStepButton('/track/create/genre');
   }
 }

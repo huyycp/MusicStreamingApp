@@ -20,7 +20,7 @@ abstract class BaseApi {
       onError: onError
     ));
     
-    storage = FlutterSecureStorage(
+    storage = const FlutterSecureStorage(
       aOptions: AndroidOptions(
         encryptedSharedPreferences: true
       ),
@@ -32,9 +32,9 @@ abstract class BaseApi {
 
   late Dio dio;
   late final FlutterSecureStorage storage;
-  final connectTimeOut = Duration(milliseconds: 3 * 60000);
-  final sendTimeOut = Duration(milliseconds: 3 * 60000);
-  final receiveTimeOut = Duration(milliseconds: 3 * 60000);
+  final connectTimeOut = const Duration(milliseconds: 3 * 60000);
+  final sendTimeOut = const Duration(milliseconds: 3 * 60000);
+  final receiveTimeOut = const Duration(milliseconds: 3 * 60000);
 
   set token(String? value) {
     String? bearerToken;
@@ -119,11 +119,11 @@ abstract class BaseApi {
       case DioExceptionType.receiveTimeout:
         throw DioException.receiveTimeout(timeout: receiveTimeOut, requestOptions: err.requestOptions, error: err.error);
       case DioExceptionType.badResponse:
-        print("STATUS CODE : ${err.response?.statusCode}");
-        print("${err.response?.data}");
+        debugPrint("STATUS CODE : ${err.response?.statusCode}");
+        debugPrint("${err.response?.data}");
         throw DioException(requestOptions: err.requestOptions, error: err.error, type: err.type);
       default:
-        print(err.message);
+        debugPrint(err.message);
     }
     return handler.next(err);
   }

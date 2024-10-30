@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mobile/data/data_sources/remote/user_remote_data_source.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
 import 'package:mobile/data/dto/req/register_req.dart';
@@ -67,5 +68,11 @@ class UserRepository {
 
   Future<bool> loadAccessToken() async {
     return await _userRemote.loadAccessToken();
+  }
+
+  Future<bool> isValidRefreshToken() async {
+    final refreshToken = await _userRemote.getRefreshToken();
+    if (refreshToken == null) return false;
+    return !JwtDecoder.isExpired(refreshToken);
   }
 }

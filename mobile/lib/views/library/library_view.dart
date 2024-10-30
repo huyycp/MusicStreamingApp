@@ -40,7 +40,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with TickerProviderSt
 
   PreferredSize _tabBar() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(24),
+      preferredSize: const Size.fromHeight(24),
       child: TabBar(
         tabs: ref.read(libraryViewModel).tabs,
         controller: ref.read(libraryViewModel).tabController,
@@ -59,9 +59,23 @@ class _LibraryViewState extends ConsumerState<LibraryView> with TickerProviderSt
   
   List<Widget> _appBarActions() {
     return [
+      _genresNavBtn(),
       _createAlbumNavBtn(),
       _createProductBtn(),
     ];
+  }
+
+  Widget _genresNavBtn() {
+    return IconButton(
+      onPressed: () {
+        context.push('/genres');
+      },
+      icon: DynamicImage(
+        'assets/icons/ic_folder.svg',
+        width: 24,
+        height: 24,
+      ),
+    );
   }
 
   Widget _createAlbumNavBtn() {
@@ -94,11 +108,11 @@ class _LibraryViewState extends ConsumerState<LibraryView> with TickerProviderSt
     return BaseContainer(
       padding: EdgeInsets.zero,
       child: TabBarView(
-        children: [
+        controller: ref.read(libraryViewModel).tabController,
+        children: const [
           AlbumListView(),
           TrackListView(),
         ],
-        controller: ref.read(libraryViewModel).tabController,
       ),
     );
   }

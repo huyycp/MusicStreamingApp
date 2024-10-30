@@ -12,7 +12,7 @@ class GenderItem extends ConsumerWidget {
     return OutlinedButton.icon(
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.all(8),
-        side: BorderSide(
+        side: const BorderSide(
           color: Colors.white,
         ),
         foregroundColor: Colors.white,
@@ -25,7 +25,7 @@ class GenderItem extends ConsumerWidget {
         context.pop();
       },
       icon: Icon(genderName == 'Male' ? Icons.man : Icons.woman),
-      label: Text(genderName, style: TextStyle(fontSize: 20))
+      label: Text(genderName, style: const TextStyle(fontSize: 20))
     );
   }
 }

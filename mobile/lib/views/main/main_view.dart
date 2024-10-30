@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/views/audio_controls/audio_controls_view_model.dart';
-import 'package:mobile/views/audio_controls/widgets/audio_widget.dart';
+import 'package:mobile/views/main/widgets/track_player_widget.dart';
 import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
@@ -31,10 +30,10 @@ class _MainViewState extends ConsumerState<MainView> {
 
   Widget _trackPlayer() {
     return Visibility(
-      visible: ref.watch(audioControlsViewModel.select(
-        (value) => value.track != null
+      visible: ref.watch(mainViewModel.select(
+        (value) => value.tracks.isNotEmpty
       )),
-      child: AudioWidget()
+      child: const TrackPlayerWidget()
     );
   }
 
@@ -49,10 +48,10 @@ class _MainViewState extends ConsumerState<MainView> {
       ),
       child: BottomNavigationBar(
         currentIndex: ref.watch(mainViewModel).currentPage,
-        unselectedLabelStyle: TextStyle(
+        unselectedLabelStyle: const TextStyle(
           color: Colors.white
         ),
-        selectedLabelStyle: TextStyle(
+        selectedLabelStyle: const TextStyle(
           color: Colors.white
         ),  
         useLegacyColorScheme: false,

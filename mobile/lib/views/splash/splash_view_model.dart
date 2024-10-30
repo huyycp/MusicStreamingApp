@@ -15,9 +15,10 @@ class SplashViewModel extends ChangeNotifier {
 
   bool isInitialized = false;
   bool isValidSession = false;
+  bool isEpxiredRefreshToken = false;
 
   Future<void> init() async {
-    isValidSession = await _userRepo.loadAccessToken();
+    isValidSession = (await _userRepo.loadAccessToken()) && (await _userRepo.isValidRefreshToken());
     isInitialized = true;
     debugPrint('Initialized');
     notifyListeners();

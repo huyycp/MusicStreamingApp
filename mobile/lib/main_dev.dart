@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/routes.dart';
 import 'package:mobile/theme/theme_provider.dart';
+import 'package:mobile/utils/snackbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +12,7 @@ void main() async {
     overrides: [
       themeProvider.overrideWith((ref) => ThemeProvider())
     ],
-    child: MyApp() 
+    child: const MyApp() 
   ));
 }
 
@@ -21,9 +22,10 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      scaffoldMessengerKey: SnackBarService.scaffoldMessengerKey,
       title: 'Music Streaming App',
       theme: ref.read(themeProvider).themeData,
-      routerConfig: routeConfig,
+      routerConfig: RouteService.routeConfig,
       debugShowCheckedModeBanner: false,
     );
   }

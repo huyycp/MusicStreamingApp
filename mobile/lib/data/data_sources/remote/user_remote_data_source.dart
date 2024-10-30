@@ -126,4 +126,8 @@ class UserRemoteDataSource {
     _magicMusicApi.token = accessToken;
     return accessToken != null;
   }
+
+  Future<String?> getRefreshToken() async {
+    return await _magicMusicApi.getRefreshToken();
+  }
 }

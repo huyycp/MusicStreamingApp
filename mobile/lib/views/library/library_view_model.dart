@@ -40,8 +40,8 @@ class LibraryViewModel extends ChangeNotifier {
   final UserRepository _userRepo;
 
   List<Tab> tabs = [
-    Tab(text: 'Album'),
-    Tab(text: 'Track'),
+    const Tab(text: 'Album'),
+    const Tab(text: 'Track'),
   ];
   TabController? tabController;
 
@@ -106,5 +106,13 @@ class LibraryViewModel extends ChangeNotifier {
       }
       notifyListeners();
     }
+  }
+
+  Future<List<TrackModel>> getTracksByAlbum(String id) async {
+    final resp = await _albumRepo.getAlbum(id);
+    if (resp != null) {
+      return resp.tracks;
+    }
+    return [];
   }
 }
