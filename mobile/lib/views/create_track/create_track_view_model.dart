@@ -79,14 +79,24 @@ class CreateTrackViewModel extends ChangeNotifier {
 
   Future<void> createTrack() async {
     debugPrint(trackTitleController.text);
-    // isTrackCreatedSuccess = await _trackRepo.createTrack(
-    //   title: trackTitleController.text, 
-    //   description: trackDescController.text,
-    //   audio: File(audioFile!.path!),
-    //   lyrics: trackLyricsController.text,
-    //   thumbnail: thumbnail!,
-    //   genreId: pickedGenres.first.id,
-    // );
+    isTrackCreatedSuccess = await _trackRepo.createTrack(
+      title: trackTitleController.text, 
+      description: trackDescController.text,
+      audio: File(audioFile!.path!),
+      lyrics: trackLyricsController.text,
+      thumbnail: thumbnail!,
+      genreId: pickedGenres.first.id,
+    );
     notifyListeners();
+  }
+
+  void clear() {
+    trackTitleController.clear();
+    trackDescController.clear();
+    audioFile = null;
+    trackLyricsController.clear();
+    thumbnail = null;
+    pickedGenres.clear();
+    isTrackCreatedSuccess = false;
   }
 }

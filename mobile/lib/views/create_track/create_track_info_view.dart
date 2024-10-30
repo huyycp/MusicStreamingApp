@@ -17,10 +17,13 @@ class CreateTrackInfoView extends ConsumerStatefulWidget {
 class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: createTrackAppBar(),
-      body: _body(),
-      bottomNavigationBar: _nextBtn(),
+    return PopScope(
+      onPopInvoked: (_) => ref.read(createTrackViewModel).clear(),
+      child: Scaffold(
+        appBar: createTrackAppBar(),
+        body: _body(),
+        bottomNavigationBar: _nextBtn(),
+      ),
     );
   }
 
