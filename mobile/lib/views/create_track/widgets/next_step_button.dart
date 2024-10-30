@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes.dart';
 
 class NextStepButton extends ConsumerWidget {
   final String destination;
@@ -12,7 +13,8 @@ class NextStepButton extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       child: ElevatedButton(
         onPressed: () {
-          context.push(destination);
+          // context.push(destination);
+          RouteService.routeConfig.push(destination);
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

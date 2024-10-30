@@ -8,7 +8,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/repositories/track_repository.dart';
 
-final createTrackViewModel = ChangeNotifierProvider.autoDispose<CreateTrackViewModel>(
+final createTrackViewModel = ChangeNotifierProvider<CreateTrackViewModel>(
   (ref) => CreateTrackViewModel(
     trackRepo: ref.read(trackRepoProvider)
   )
@@ -78,14 +78,15 @@ class CreateTrackViewModel extends ChangeNotifier {
   }
 
   Future<void> createTrack() async {
-    isTrackCreatedSuccess = await _trackRepo.createTrack(
-      title: trackTitleController.text, 
-      description: trackDescController.text,
-      audio: File(audioFile!.path!),
-      lyrics: trackLyricsController.text,
-      thumbnail: thumbnail!,
-      genreId: pickedGenres.first.id,
-    );
+    debugPrint(trackTitleController.text);
+    // isTrackCreatedSuccess = await _trackRepo.createTrack(
+    //   title: trackTitleController.text, 
+    //   description: trackDescController.text,
+    //   audio: File(audioFile!.path!),
+    //   lyrics: trackLyricsController.text,
+    //   thumbnail: thumbnail!,
+    //   genreId: pickedGenres.first.id,
+    // );
     notifyListeners();
   }
 }
