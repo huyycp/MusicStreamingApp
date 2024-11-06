@@ -11,10 +11,29 @@ import useGetAlbums from '~/hooks/Album/useGetAlbums'
 import { ITrack } from '~/type/Tracks/ITrack'
 
 export default function MainLayout() {
-  const { data, isPending } = useGetAlbums(100, 1)
-  const listAlbumId = data && data.result && data.result.data ? (data?.result.data as ITrack[]).map((album) => album._id) : []
-
+  const { data, isPending } = useGetAlbums(3, 1)
+  const [listAlbumId, setListAlbumId] = useState<string[]>([])
   const [fullWidth, setFullWidth] = useState(window.innerWidth)
+  const [albumIndex, setAlbumIndex] = useState(0)
+  const [trackIndex, setTrackIndex] = useState(0)
+
+  useEffect(() => {
+    if (data && data.result && data.result.data) {
+      const initialAlbumIds = (data.result.data as ITrack[]).map((album) => album._id)
+      setListAlbumId(initialAlbumIds)
+    }
+  }, [data])
+
+  const addAlbumToList = (albumId: string, currentAlbumIndex: number, currentTrackIndex: number) => {
+    setListAlbumId((prevList) => {
+      const updatedList = [...prevList]
+      updatedList.splice(currentAlbumIndex, 0, albumId)
+
+      return updatedList
+    })
+    setAlbumIndex(currentAlbumIndex)
+    setTrackIndex(currentTrackIndex)
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,7 +62,7 @@ export default function MainLayout() {
     >
       <AppBar />
       {listAlbumId && (
-        <MusicProvider listAlbumId={listAlbumId} initIndexAlbum={0}>
+        <MusicProvider listAlbumId={listAlbumId} initIndexAlbum={albumIndex} addAlbumToList={addAlbumToList} trackIndex={trackIndex}>
           <ResizeProvider fullWidth={fullWidth}>
             <Outlet />
             <TrackBar />
