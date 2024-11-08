@@ -10,7 +10,7 @@ import useGetAlbums from '~/hooks/Album/useGetAlbums'
 
 const ImageSlider = () => {
   const { data, isPending } = useGetAlbums(5, 1)
-  const listAlbum = data?.result.data as IAlbum[] || []
+  const listAlbum = (data?.result.data as IAlbum[]) || []
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
@@ -23,7 +23,7 @@ const ImageSlider = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + (listAlbum.length - 2)) % (listAlbum.length - 2))
   }
 
-  const images = listAlbum.map(album => album.image)
+  const images = listAlbum.map((album) => album.image)
 
   useEffect(() => {
     const interval = setInterval(handleNext, 5000)
@@ -33,19 +33,19 @@ const ImageSlider = () => {
 
   return (
     <Box
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3, position: 'relative' }}
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3, position: 'relative', width: '100%' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <IconButton
         onClick={handlePrev}
         sx={{
-          position: 'absolute',
-          left: 15,
-          zIndex: 1,
-          opacity: isHovered ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          'position': 'absolute',
+          'left': 15,
+          'zIndex': 1,
+          'opacity': isHovered ? 1 : 0,
+          'transition': 'opacity 0.3s ease',
+          'backgroundColor': 'rgba(0, 0, 0, 0.5)',
           '&:hover': {
             backgroundColor: 'rgba(0, 0, 0, 0.7)'
           }
@@ -58,13 +58,7 @@ const ImageSlider = () => {
         {isPending ? (
           <Box sx={{ display: 'flex', width: '100%' }}>
             {[...Array(3)].map((_, index) => (
-              <Skeleton
-                key={index}
-                variant="rectangular"
-                width={210}
-                height={118}
-                sx={{ flex: 1, marginRight: index !== 2 ? 2 : 0 }}
-              />
+              <Skeleton key={index} variant='rectangular' width={210} height={118} sx={{ flex: 1, marginRight: index !== 2 ? 2 : 0 }} />
             ))}
           </Box>
         ) : (
@@ -72,7 +66,7 @@ const ImageSlider = () => {
             sx={{
               display: 'flex',
               transition: 'transform 0.5s ease',
-              transform: `translateX(-${(currentIndex * (100 / 3))}%)`,
+              transform: `translateX(-${currentIndex * (100 / 3)}%)`,
               width: `${images.length * (100 / 3)}%`
             }}
           >
@@ -94,12 +88,12 @@ const ImageSlider = () => {
       <IconButton
         onClick={handleNext}
         sx={{
-          position: 'absolute',
-          right: 15,
-          zIndex: 1,
-          opacity: isHovered ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          'position': 'absolute',
+          'right': 15,
+          'zIndex': 1,
+          'opacity': isHovered ? 1 : 0,
+          'transition': 'opacity 0.3s ease',
+          'backgroundColor': 'rgba(0, 0, 0, 0.5)',
           '&:hover': {
             backgroundColor: 'rgba(0, 0, 0, 0.7)'
           }

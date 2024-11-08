@@ -7,9 +7,12 @@ interface MusicProviderProps {
   children: ReactNode
   listAlbumId: string[]
   initIndexAlbum: number
+  // eslint-disable-next-line no-unused-vars
+  addAlbumToList: (albumId: string, currentAlbumIndex: number, currentTrackIndex: number) => void
+  trackIndex: number
 }
 
-export function MusicProvider({ children, listAlbumId, initIndexAlbum }: MusicProviderProps) {
+export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumToList, trackIndex }: MusicProviderProps) {
   const [pause, setPause] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(0.5)
   const [mute, setMute] = useState<boolean>(false)
@@ -21,7 +24,7 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum }: MusicPr
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
   const [currentAlbumIndex, setCurrentAlbumIndex] = useState<number>(initIndexAlbum)
   const [listMusic, setListMusic] = useState<ITrack[]>([])
-  const [defaultIndex, setDefaultIndex] = useState<number>(0)
+  const [defaultIndex, setDefaultIndex] = useState<number>(trackIndex)
 
   const { data, isPending } = useGetAlbumDetail(listAlbumId[currentAlbumIndex])
 
@@ -119,7 +122,6 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum }: MusicPr
   useEffect(() => {
     if (!isPending && listMusic.length > 0) {
       const initialMusic = listMusic[currentTrackIndex]
-      // setCurrentTrackIndex(0)
       changeMusic(initialMusic)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,11 +174,7 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum }: MusicPr
         }
       }
     } else {
-      setCurrentAlbumIndex((prevIndex) => {
-        const updatedAlbums = [...listAlbumId]
-        updatedAlbums.splice(prevIndex + 1, 0, albumId)
-        return prevIndex + 1
-      })
+      addAlbumToList(albumId, currentAlbumIndex + 1, musicIndex)
 
       if (data) {
         const tracks = data.result.list_of_tracks as ITrack[]

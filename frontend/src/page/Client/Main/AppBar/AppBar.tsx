@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip'
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded'
 import Divider from '@mui/material/Divider'
 import Profile from './Profile/Profile'
+import AudioRecorder from '~/components/Microphone/AudioRecorder'
 
 export default function AppBar() {
   const [searchValue, setSearchValue] = useState<null | string>('')
@@ -21,6 +22,10 @@ export default function AppBar() {
   const navigate = useNavigate()
   const location = useLocation()
   const textFieldRef = useRef<HTMLInputElement>(null)
+
+  const handleTranscriptChange = (newTranscript: string) => {
+    setSearchValue(newTranscript)
+  }
 
   useEffect(() => {
     if (isSearch && textFieldRef.current) {
@@ -135,6 +140,7 @@ export default function AppBar() {
                   )}
                   {!searchValue && isSearch && (
                     <Box sx={{ display: 'flex', gap: 1 }}>
+                      <AudioRecorder mode='transcribe' onTranscriptChange={handleTranscriptChange} />
                       <Divider
                         orientation='vertical'
                         flexItem
@@ -155,6 +161,7 @@ export default function AppBar() {
                   )}
                   {!searchValue && !isSearch && (
                     <Box sx={{ display: 'flex', gap: 1 }}>
+                      <AudioRecorder mode='transcribe' onTranscriptChange={handleTranscriptChange} />
                       <Divider
                         orientation='vertical'
                         flexItem

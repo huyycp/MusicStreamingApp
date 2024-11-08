@@ -60,6 +60,10 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='my-music' />
       },
       {
+        path: '/artist/:artistId',
+        element: <BodyContent viewType='artist' />
+      },
+      {
         path: '/test',
         element: <TestUI /> // Element cho trang TestUI
       }
