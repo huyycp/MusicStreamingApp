@@ -5,12 +5,12 @@ import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Skeleton from '@mui/material/Skeleton'
 import ImageSlide from './ImageSlide'
-import { IAlbum } from '~/type/Album/IAlbum'
 import useGetAlbums from '~/hooks/Album/useGetAlbums'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 const ImageSlider = () => {
   const { data, isPending } = useGetAlbums(5, 1)
-  const listAlbum = (data?.result.data as IAlbum[]) || []
+  const listAlbum = (data?.result.data as ILibrary[]) || []
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
@@ -75,7 +75,7 @@ const ImageSlider = () => {
                 key={index}
                 src={album.image}
                 index={index}
-                artistsName={album.artistsName}
+                artistsName={album.owners ? album.owners.map((artist) => artist.name) : []}
                 albumName={album.name}
                 albumId={album._id}
                 isActive={index === currentIndex}

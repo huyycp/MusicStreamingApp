@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
-import { apiAddTrackToAlbum } from '~/apis/Album/AlbumAPI'
+import { apiAddTrackToLibrary } from '~/apis/Album/AlbumAPI'
 
 const useAddTrackToAlbum = () => {
   return useMutation({
-    mutationFn: apiAddTrackToAlbum
+    mutationFn: apiAddTrackToLibrary
   })
 }
 export default useAddTrackToAlbum

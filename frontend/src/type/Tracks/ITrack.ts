@@ -1,3 +1,5 @@
+import { IArtist } from '../Artist/IArtist'
+
 export interface ITrack {
   _id: string
   album_id: string
@@ -7,7 +9,7 @@ export interface ITrack {
   lyrics: string
   path_audio: string
   listen: number
-  artistsName: string[]
+  owners: IArtist[]
   created_at: string
   updated_at: string
 }

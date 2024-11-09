@@ -1,4 +1,3 @@
-// MainLayout.tsx
 import { Outlet } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import AppBar from './AppBar/AppBar'
@@ -6,16 +5,20 @@ import TrackBar from './TrackBar/TrackBar'
 import { ResizeProvider } from '~/contents/ResizeProvider'
 import { MusicProvider } from '~/contents/MusicProvider'
 import CircularProgress from '@mui/material/CircularProgress'
-import { useEffect, useState } from 'react'
-import useGetAlbums from '~/hooks/Album/useGetAlbums'
+import { useEffect, useRef, useState } from 'react'
 import { ITrack } from '~/type/Tracks/ITrack'
+import useGetMyLibrary from '~/hooks/Library/useGetMyLibrary'
 
 export default function MainLayout() {
-  const { data, isPending } = useGetAlbums(3, 1)
+  const { data, isPending } = useGetMyLibrary(10, 1)
   const [listAlbumId, setListAlbumId] = useState<string[]>([])
   const [fullWidth, setFullWidth] = useState(window.innerWidth)
   const [albumIndex, setAlbumIndex] = useState(0)
   const [trackIndex, setTrackIndex] = useState(0)
+
+  // useRef lưu trữ albumIndex và trackIndex hiện tại để cập nhật nhanh chóng
+  const albumIndexRef = useRef(0)
+  const trackIndexRef = useRef(0)
 
   useEffect(() => {
     if (data && data.result && data.result.data) {
@@ -28,9 +31,16 @@ export default function MainLayout() {
     setListAlbumId((prevList) => {
       const updatedList = [...prevList]
       updatedList.splice(currentAlbumIndex, 0, albumId)
-
+      const firstAlbum = updatedList.shift()
+      if (firstAlbum) updatedList.push(firstAlbum)
       return updatedList
     })
+
+    // Cập nhật giá trị useRef ngay lập tức
+    albumIndexRef.current = currentAlbumIndex
+    trackIndexRef.current = currentTrackIndex
+
+    // Sử dụng useState để kích hoạt re-render
     setAlbumIndex(currentAlbumIndex)
     setTrackIndex(currentTrackIndex)
   }

@@ -150,36 +150,38 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
                       <Typography noWrap variant='body2'>
                         {row.name}
                       </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: 12,
-                          cursor: 'pointer',
-                          color: (theme) => theme.palette.neutral.neutral1,
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: 0.3
-                        }}
-                      >
-                        {row.artistsName.map((artist, index) => (
-                          <Fragment key={artist}>
-                            <Typography
-                              component='span'
-                              sx={{
-                                'fontSize': 12,
-                                'cursor': 'pointer',
-                                'color': (theme) => theme.palette.neutral.neutral1,
-                                '&:hover': {
-                                  color: (theme) => theme.palette.secondary4.main,
-                                  textDecoration: 'underline'
-                                }
-                              }}
-                            >
-                              {artist}
-                            </Typography>
-                            {index < row.artistsName.length - 1 && ','}
-                          </Fragment>
-                        ))}
-                      </Typography>
+                      {row.owners && (
+                        <Typography
+                          sx={{
+                            fontSize: 12,
+                            cursor: 'pointer',
+                            color: (theme) => theme.palette.neutral.neutral1,
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: 0.3
+                          }}
+                        >
+                          {row.owners.map((artist, index) => (
+                            <Fragment key={artist._id}>
+                              <Typography
+                                component='span'
+                                sx={{
+                                  'fontSize': 12,
+                                  'cursor': 'pointer',
+                                  'color': (theme) => theme.palette.neutral.neutral1,
+                                  '&:hover': {
+                                    color: (theme) => theme.palette.secondary4.main,
+                                    textDecoration: 'underline'
+                                  }
+                                }}
+                              >
+                                {artist.name}
+                              </Typography>
+                              {index < row.owners.length - 1 && ','}
+                            </Fragment>
+                          ))}
+                        </Typography>
+                      )}
                     </Box>
                   </Box>
                 </TableCell>

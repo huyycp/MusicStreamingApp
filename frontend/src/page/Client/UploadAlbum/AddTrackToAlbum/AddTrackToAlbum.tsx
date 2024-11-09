@@ -45,7 +45,7 @@ export default function AddTrackToAlbum() {
   const handleNext = () => {
     if (id) {
       addTrackToAlbum(
-        { tracks: selectedTracks, album_id: id },
+        { tracks: selectedTracks, library_id: id },
         {
           onSuccess: () => navigate('/my-music'),
           onError: () => navigate('/404')
@@ -134,7 +134,7 @@ export default function AddTrackToAlbum() {
                       variant='body2'
                       sx={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: textColor }}
                     >
-                      {track.artistsName.join(', ')}
+                      {track.owners.map((artist) => artist.name).join(', ')}
                     </Typography>
                   </TableCell>
                 </TableRow>

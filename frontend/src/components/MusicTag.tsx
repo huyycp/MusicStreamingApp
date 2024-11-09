@@ -81,10 +81,10 @@ export default function MusicTag({ music }: Props) {
           overflow: 'hidden'
         }}
       >
-        {music.artistsName.map((name, index) => (
+        {(music.owners ?? []).map((owner, index) => (
           <TextFade key={index}>
-            {name}
-            {index < music.artistsName.length - 1 && ','}
+            {typeof owner === 'string' ? owner : owner.name}
+            {index < (music.owners ?? []).length - 1 && ','}
           </TextFade>
         ))}
       </Box>

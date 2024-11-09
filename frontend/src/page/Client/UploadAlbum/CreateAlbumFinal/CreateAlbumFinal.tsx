@@ -49,8 +49,8 @@ export default function CreateAlbumFinal() {
     formData.append('image', imageFile as File)
     createAlbum(formData, {
       onSuccess: (data) => {
-        clearData()
         navigate(`/create-album/${data.result._id}/add-track`)
+        clearData()
       }
     })
   }
