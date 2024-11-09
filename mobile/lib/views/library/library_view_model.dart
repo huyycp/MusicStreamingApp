@@ -1,81 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/dto/req/pagination_list_req.dart';
-import 'package:mobile/models/album_model.dart';
+import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
-import 'package:mobile/repositories/album_repository.dart';
-import 'package:mobile/repositories/track_repository.dart';
+import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
 
 final libraryViewModel = ChangeNotifierProvider<LibraryViewModel>(
   (ref) => LibraryViewModel(
-    albumRepo: ref.read(albumRepoProvider),
-    trackRepo: ref.read(trackRepoProvider),
+    libraryRepo: ref.read(libraryRepoProvider),
     userRepo: ref.read(userRepoProvider),
   )
 );
 
 class LibraryViewModel extends ChangeNotifier {
   LibraryViewModel({
-    required AlbumRepository albumRepo,
-    required TrackRepository trackRepo,
+    required LibraryRepository libraryRepo,
     required UserRepository userRepo,
-  }) : _albumRepo = albumRepo,
-       _trackRepo = trackRepo,
+  }) : _libraryRepo = libraryRepo,
        _userRepo = userRepo {
     albumScrollController.addListener(() {
       if (albumScrollController.position.pixels == albumScrollController.position.maxScrollExtent && canLoadAlbums) {
         getAlbums();
       }
     });
-    trackScrollController.addListener(() {
-      if (trackScrollController.position.pixels == trackScrollController.position.maxScrollExtent && canLoadTracks) {
-        getTracks();
-      }
-    });
   }
 
-  final AlbumRepository _albumRepo;
-  final TrackRepository _trackRepo;
+  final LibraryRepository _libraryRepo;
   final UserRepository _userRepo;
 
-  List<Tab> tabs = [
-    const Tab(text: 'Album'),
-    const Tab(text: 'Track'),
-  ];
-  TabController? tabController;
+  LibraryTabs currentTab = LibraryTabs.none;
 
-  List<AlbumModel> albums = [];
+  void selectTab(LibraryTabs tab) {
+    if ((tab == LibraryTabs.none) || (tab != LibraryTabs.none && currentTab == LibraryTabs.none)) {
+      currentTab = tab;
+      notifyListeners();
+    }
+  }
+
+  List<LibraryModel> albums = [];
   int albumPage = 1;
   int albumLimit = 10;
   bool canLoadAlbums = false;
   final albumScrollController = ScrollController();
 
-  List<TrackModel> tracks = [];
-  int trackPage = 1;
-  int trackLimit = 10;
-  bool canLoadTracks = false;
-  final trackScrollController = ScrollController();
-
-  void initTabBar(TickerProviderStateMixin tickerProviderStateMixin) {
-    tabController ??= TabController(
-      length: tabs.length,
-      vsync: tickerProviderStateMixin
-    );
-  }
+  List<LibraryModel> playlists = [];
+  int playlistPage = 1;
+  int playlistLimit = 10;
+  bool canLoadPlaylists = false;
+  final playlistScrollController = ScrollController();
   
   Future<void> getAlbums({bool refresh = false}) async {
     if (refresh) {
       albums.clear();
     }
-    final resp = await _albumRepo.getAlbums(
+    final resp = await _libraryRepo.getLibraries(
       pagination: PaginationListReq(
         page: albumPage,
         limit: albumLimit,
-      )
+      ),
+      type: LibraryType.album,
     );
     if (resp != null) {
-      albums = [...albums, ...resp.albums];
+      albums = [...albums, ...resp.libraries];
       if (resp.meta.currentPage < resp.meta.totalPages) {
         albumPage += 1;
         canLoadAlbums = true;
@@ -86,33 +73,41 @@ class LibraryViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getTracks({bool refresh = false}) async {
+  Future<void> getPlaylists({bool refresh = false}) async {
     if (refresh) {
-      tracks.clear();
+      playlists.clear();
     }
-    final resp = await _trackRepo.getTracksByUser(
+    final resp = await _libraryRepo.getLibraries(
       pagination: PaginationListReq(
-        page: trackPage,
-        limit: trackLimit,
+        page: albumPage,
+        limit: albumLimit,
       ),
+      type: LibraryType.playlist,
     );
     if (resp != null) {
-      tracks = [...tracks, ...resp.tracks];
+      playlists = [...playlists, ...resp.libraries];
       if (resp.meta.currentPage < resp.meta.totalPages) {
-        trackPage += 1;
-        canLoadTracks = true;
+        playlistPage += 1;
+        canLoadPlaylists = true;
       } else {
-        canLoadTracks = false;
+        canLoadPlaylists = false;
       }
       notifyListeners();
     }
   }
 
-  Future<List<TrackModel>> getTracksByAlbum(String id) async {
-    final resp = await _albumRepo.getAlbum(id);
-    if (resp != null) {
-      return resp.tracks;
+  Future<List<TrackModel>> getTracksByLibrary(String id) async {
+    final library = await _libraryRepo.getLibrary(id);
+    if (library != null) {
+      return library.tracks;
     }
     return [];
   }
+}
+
+enum LibraryTabs {
+  albums,
+  playlists,
+  artists,
+  none,
 }

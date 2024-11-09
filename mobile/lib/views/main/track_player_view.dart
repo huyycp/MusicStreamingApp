@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/main/main_view_model.dart';
-import 'package:mobile/views/main/widgets/audio_controller_widget.dart';
+import 'package:mobile/widgets/audio_controller_widget.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class TrackPlayerView extends ConsumerStatefulWidget {
@@ -92,7 +92,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
 
   Widget _trackImage() {
     final imageLink = ref.watch(mainViewModel.select(
-      (value) => value.tracks[value.currentIndex]
+      (value) => value.audioController.tracks[value.audioController.currentIndex]
     )).imageLink;
     return DynamicImage(
       imageLink,
@@ -103,7 +103,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
 
   Widget  _trackInfo() {
     final track = ref.watch(mainViewModel.select(
-      (value) => value.tracks[value.currentIndex]
+      (value) => value.audioController.tracks[value.audioController.currentIndex]
     ));
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -114,7 +114,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         Text(
-          track.artistsName,
+          track.owwnerNames,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
@@ -135,6 +135,8 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
   }
 
   Widget _audioController() {
-    return const AudioControllerWidget();
+    return AudioPlayerWidget(
+      controller: ref.read(mainViewModel).audioController,
+    );
   }
 }

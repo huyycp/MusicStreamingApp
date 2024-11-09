@@ -20,7 +20,7 @@ class BaseTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: RefreshIndicator(
         onRefresh: onRefresh ?? () async {},
         child: ListView.separated(
@@ -29,7 +29,7 @@ class BaseTabView extends ConsumerWidget {
             onTap: () async {
               final trackList = items is List<TrackModel>
                 ? List<TrackModel>.from(items)
-                : await ref.read(libraryViewModel).getTracksByAlbum(items[index].id);
+                : await ref.read(libraryViewModel).getTracksByLibrary(items[index].id);
               int initialIndex = items is List<TrackModel>
                 ? index
                 : 0;

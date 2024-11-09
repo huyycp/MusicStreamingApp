@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class AddTrackToAlbumReq {
-  AddTrackToAlbumReq({
-    required this.albumId,
+class AddTrackToLibraryReq {
+  AddTrackToLibraryReq({
+    required this.libraryId,
     required this.tracksId,
   });
 
-  String albumId;
+  String libraryId;
   List<String> tracksId;
 
   Map<String, dynamic> toJson() => {

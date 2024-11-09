@@ -15,6 +15,7 @@ class _MainViewState extends ConsumerState<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: _body(),
       floatingActionButton: _trackPlayer(),
       bottomNavigationBar: _bottomNavBar(),
@@ -31,7 +32,7 @@ class _MainViewState extends ConsumerState<MainView> {
   Widget _trackPlayer() {
     return Visibility(
       visible: ref.watch(mainViewModel.select(
-        (value) => value.tracks.isNotEmpty
+        (value) => value.audioController.tracks.isNotEmpty
       )),
       child: const TrackPlayerWidget()
     );

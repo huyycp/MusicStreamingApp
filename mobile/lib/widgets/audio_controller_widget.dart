@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/views/main/main_view_model.dart';
+import 'package:mobile/utils/audio_player_controller.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class AudioControllerWidget extends ConsumerStatefulWidget {
-  const AudioControllerWidget({super.key});
+class AudioPlayerWidget extends ConsumerStatefulWidget {
+  final ChangeNotifierProvider<AudioPlayerController> notifier;
+  final bool isShuffingEnabled;
+  final bool isRepeatEnabled;
+  AudioPlayerWidget({
+    required AudioPlayerController controller,
+    this.isRepeatEnabled = true,
+    this.isShuffingEnabled = true,
+    super.key,
+  }) : notifier = ChangeNotifierProvider<AudioPlayerController>(
+        (ref) => controller
+      );
 
   @override
-  ConsumerState<AudioControllerWidget> createState() => _AudioControllerWidgetState();
+  ConsumerState<AudioPlayerWidget> createState() => _AudioPlayerWidgetState();
 }
 
-class _AudioControllerWidgetState extends ConsumerState<AudioControllerWidget> {
+class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _trackSlider(),
         const SizedBox(height: 24),
@@ -25,15 +36,12 @@ class _AudioControllerWidgetState extends ConsumerState<AudioControllerWidget> {
   }
 
   Widget _trackSlider() {
-    double progress = ref.watch(mainViewModel.select(
-      (value) => value.progress
-    ));
     return Slider(
-      value: progress,
+      value: ref.watch(widget.notifier.select((value) => value.progress)),
       thumbColor: Colors.white,
       activeColor: Colors.white,
       allowedInteraction: SliderInteraction.tapAndSlide,
-      onChanged: ref.read(mainViewModel).handleTrackSlider
+      onChanged: ref.read(widget.notifier).handleTrackSlider
     );
   }
 
@@ -51,42 +59,39 @@ class _AudioControllerWidgetState extends ConsumerState<AudioControllerWidget> {
   }
 
   Widget _shuffleBtn() {
-    final shuffling = ref.watch(mainViewModel.select(
-      (value) => value.shuffing
-    ));
     return IconButton(
-      onPressed: ref.read(mainViewModel).toggleShuffle,
+      onPressed: widget.isShuffingEnabled
+        ? ref.read(widget.notifier).toggleShuffle
+        : null,
       icon: DynamicImage(
-        shuffling
+        ref.watch(widget.notifier.select((value) => value.shuffing))
           ? 'assets/icons/ic_shuffle_active.svg'
           : 'assets/icons/ic_shuffle.svg',
         width: 24,
         height: 24,
+        color: widget.isShuffingEnabled ? Colors.white : GRAY_BCK_2,
       ),
     );
   }
 
   Widget _prevTrackBtn() {
+    bool hasPrev = ref.watch(widget.notifier.select((value) => value.hasPrev));
     return IconButton(
-      onPressed: ref.watch(mainViewModel.select(
-        (value) => value.hasPrev
-      ))
-        ? ref.read(mainViewModel).playPrevTrack
+      onPressed: hasPrev
+        ? ref.read(widget.notifier).playPrevTrack
         : null,
       icon: DynamicImage(
         'assets/icons/ic_prev.svg',
         width: 30,
         height: 30,
+        color: hasPrev ? Colors.white : GRAY_BCK_2,
       ),
     );
   }
 
   Widget _playBtn() {
-    bool playing = ref.watch(mainViewModel.select(
-      (value) => value.playing
-    ));
     return IconButton(
-      onPressed: ref.watch(mainViewModel).playOrPause,
+      onPressed: ref.read(widget.notifier).playOrPause,
       icon: Container(
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
@@ -94,7 +99,7 @@ class _AudioControllerWidgetState extends ConsumerState<AudioControllerWidget> {
           color: Colors.white,
         ),
         child: DynamicImage(
-          playing 
+          ref.watch(widget.notifier.select((value) => value.playing)) 
             ? 'assets/icons/ic_pause.svg'
             : 'assets/icons/ic_play.svg',
           width: 24,
@@ -106,32 +111,32 @@ class _AudioControllerWidgetState extends ConsumerState<AudioControllerWidget> {
   }
 
   Widget _nextTrackBtn() {
+    bool hasNext = ref.watch(widget.notifier.select((value) => value.hasNext));
     return IconButton(
-      onPressed: ref.watch(mainViewModel.select(
-        (value) => value.hasNext
-      ))
-        ? ref.read(mainViewModel).playNextTrack
+      onPressed: hasNext
+        ? ref.read(widget.notifier).playNextTrack
         : null,
       icon: DynamicImage(
         'assets/icons/ic_next.svg',
         width: 30,
         height: 30,
+        color: hasNext ? Colors.white : GRAY_BCK_2,
       ),
     );
   }
 
   Widget _repeatBtn() {
-    final repeating = ref.watch(mainViewModel.select(
-      (value) => value.repeating
-    ));
     return IconButton(
-      onPressed: ref.read(mainViewModel).toggleRepeatTrack,
+      onPressed: widget.isRepeatEnabled
+        ? ref.read(widget.notifier).toggleRepeatTrack
+        : null,
       icon: DynamicImage(
-        repeating
+        ref.watch(widget.notifier.select((value) => value.repeating))
           ? 'assets/icons/ic_repeat_active.svg'
           : 'assets/icons/ic_repeat.svg',
         width: 24,
         height: 24,
+        color: widget.isRepeatEnabled ? Colors.white : GRAY_BCK_2,
       ),
     );
   }

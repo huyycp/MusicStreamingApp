@@ -1,12 +1,12 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:mobile/models/genre_model.dart';
+import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/track_repository.dart';
+import 'package:mobile/utils/audio_player_controller.dart';
 
 final createTrackViewModel = ChangeNotifierProvider<CreateTrackViewModel>(
   (ref) => CreateTrackViewModel(
@@ -17,7 +17,9 @@ final createTrackViewModel = ChangeNotifierProvider<CreateTrackViewModel>(
 class CreateTrackViewModel extends ChangeNotifier {
   CreateTrackViewModel({
     required TrackRepository trackRepo
-  }) : _trackRepo = trackRepo;
+  }) : _trackRepo = trackRepo {
+    trackTitleController.addListener(checkValidTrackInfo);
+  }
 
   final TrackRepository _trackRepo;
 
@@ -27,54 +29,60 @@ class CreateTrackViewModel extends ChangeNotifier {
   final trackDescController = TextEditingController();
 
   /// Create track: Track audio
-  PlatformFile? audioFile;
-  final AudioPlayer _player = AudioPlayer();
+  PlatformFile? trackAudio;
+  final audioController = AudioPlayerController();
 
   /// Create track: Lyrics
   final trackLyricsController = TextEditingController();
 
   /// Create track: Thumbnails
-  XFile? thumbnail;
+  XFile? trackThumbnail;
 
   /// Create track: Genre
-  List<GenreModel> pickedGenres = [];  
+  List<GenreModel> trackGenres = const [];
 
+  bool isValidTrackInfo = false;
+  bool isValidTrackAudio = false;
+  bool isValidTrackThumbnail = false;
+  bool isValidTrackGenre = false;
   bool isTrackCreatedSuccess = false;
   
-  Future<void> pickAudio() async {
+  Future<void> selectAudio() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.any,
         // allowedExtensions: ['m4a', 'mp3', 'wav'],
       );
       if (result != null) {
-        audioFile = result.files.single;
-        await _player.setUrl(audioFile!.path!);
-        debugPrint(_player.duration!.inMilliseconds.toString());
-        debugPrint(audioFile!.name);
-        notifyListeners();
+        trackAudio = result.files.single;
+        await audioController.setPlaylist(tracks: [
+          TrackModel(
+            id: '',
+            albumId: '',
+            name: trackTitleController.text,
+            imageLink: '', 
+            audioLink: trackAudio!.path!
+          )
+        ]);
+        checkValidTrackAudio();
       }
     } catch (err) {
       debugPrint(err.toString());
     }
   }
 
-  Future<void> pickThumbnail() async {
+  Future<void> selectThumbnail() async {
     final ImagePicker picker = ImagePicker();
-    thumbnail = await picker.pickImage(source: ImageSource.gallery);
-    if (thumbnail != null) {
-      notifyListeners();
+    final result = await picker.pickImage(source: ImageSource.gallery);
+    if (result != null) {
+      trackThumbnail = result;
+      checkValidThumbnail();
     }
   }
 
-  Future<void> togglePickGenre(GenreModel genre) async {
-    if (pickedGenres.contains(genre)) {
-      pickedGenres.remove(genre);
-      pickedGenres = [...pickedGenres];
-    } else {
-      pickedGenres = [...pickedGenres, genre];
-    }
-    notifyListeners();
+  Future<void> selectGenres(GenreModel genre) async {
+    trackGenres = [ genre ];
+    checkValidTrackGenre();
   }
 
   Future<void> createTrack() async {
@@ -82,21 +90,41 @@ class CreateTrackViewModel extends ChangeNotifier {
     isTrackCreatedSuccess = await _trackRepo.createTrack(
       title: trackTitleController.text, 
       description: trackDescController.text,
-      audio: File(audioFile!.path!),
+      audio: File(trackAudio!.path!),
       lyrics: trackLyricsController.text,
-      thumbnail: thumbnail!,
-      genreId: pickedGenres.first.id,
+      thumbnail: trackThumbnail!,
+      genreId: trackGenres.first.id,
     );
+    notifyListeners();
+  }
+
+  void checkValidTrackInfo() {
+    isValidTrackInfo = trackTitleController.text.isNotEmpty;
+    notifyListeners();
+  }
+
+  void checkValidTrackAudio() {
+    isValidTrackAudio = (trackAudio != null);
+    notifyListeners();
+  }
+
+  void checkValidThumbnail() {
+    isValidTrackThumbnail = (trackThumbnail != null);
+    notifyListeners();
+  }
+
+  void checkValidTrackGenre() {
+    isValidTrackGenre = trackGenres.isNotEmpty;
     notifyListeners();
   }
 
   void clear() {
     trackTitleController.clear();
     trackDescController.clear();
-    audioFile = null;
+    trackAudio = null;
     trackLyricsController.clear();
-    thumbnail = null;
-    pickedGenres.clear();
+    trackThumbnail = null;
+    trackGenres.clear();
     isTrackCreatedSuccess = false;
   }
 }

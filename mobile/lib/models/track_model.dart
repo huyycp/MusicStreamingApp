@@ -1,3 +1,5 @@
+import 'package:mobile/models/user_model.dart';
+
 class TrackModel {
   TrackModel ({
     required this.id,
@@ -10,7 +12,7 @@ class TrackModel {
     this.listenCount = 0,
     this.createdAt,
     this.updatedAt,
-    this.artists = const [],
+    this.owners = const [],
   });
 
   String id;
@@ -23,9 +25,9 @@ class TrackModel {
   int listenCount;
   DateTime? createdAt;
   DateTime? updatedAt;
-  List<String> artists;
+  List<UserModel> owners;
 
-  String get artistsName => artists.join(', ');
+  String get owwnerNames => owners.map((owner) => owner.name).join(', ');
 
   factory TrackModel.fromJson(Map<String, dynamic> json) => TrackModel(
     id: json['_id'] ?? '',
@@ -37,7 +39,9 @@ class TrackModel {
     listenCount: json['listen'] ?? 0,
     createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()), 
     updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),
-    artists: List.from(json['artistsName'] ?? []),
+    owners: List.from(json['owners']?.map(
+      (ownerJson) => UserModel.fromJson(ownerJson)
+    ) ?? []),
   );
 
   Map<String, dynamic> toJson() => {
@@ -51,12 +55,12 @@ class TrackModel {
     'listen': listenCount,
     'created_at': createdAt,
     'updated_at': updatedAt,
-    'artistsName': artists,
+    'owners': owners.map((owner) => owner.toJson()),
   };
 
   @override
   String toString() {
-    return '$name - $artistsName';
+    return '$name - $owwnerNames';
   }
 }
 

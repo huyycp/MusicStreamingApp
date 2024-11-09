@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/data/dto/req/register_req.dart';
-import 'package:mobile/utils/capitalize.dart';
+import 'package:mobile/models/user_model.dart';
+import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -52,7 +52,7 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
       mainAxisSize: MainAxisSize.min,
       children: UserRole.values.map((value) => RadioListTile<UserRole>(
         title: Text(
-          capitalize(value.name),
+          value.name.capitalize(),
           style: Theme.of(context).textTheme.bodyLarge
         ),
         value: value,

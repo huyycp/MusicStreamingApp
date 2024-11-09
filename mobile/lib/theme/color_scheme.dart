@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 const PRIMARY_COLOR         = Color(0xFF1ED760);
-const PRIMARY_BACKGROUND    = Color(0xFF121212);
+const PRIMARY_BACKGROUND    = Color(0XFF0E0E0E);
 const BODY_TEXT             = Color(0xFFB8B8B8);
 const LABEL_COLOR           = Color(0xFFB3B3B3);
 const GRAY_BUTTON           = Color(0xFF2A2A2A);

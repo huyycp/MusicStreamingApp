@@ -55,7 +55,7 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
         image: DecorationImage(
           image: FileImage(
             File(ref.watch(createTrackViewModel.select(
-              (value) => value.thumbnail
+              (value) => value.trackThumbnail
             ))?.path ?? '')
           )
         )
@@ -66,7 +66,7 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
   Widget _thumbnailPicker() {
     return ElevatedButton(
       onPressed: () {
-        ref.read(createTrackViewModel).pickThumbnail();
+        ref.read(createTrackViewModel).selectThumbnail();
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -84,6 +84,9 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
   }
 
   Widget _nextBtn() {
-    return const NextStepButton('/track/create/genre');
+    return NextStepButton(
+      destination: '/track/create/genre',
+      enabled: ref.watch(createTrackViewModel.select((value) => value.isValidTrackThumbnail)),
+    );
   }
 }
