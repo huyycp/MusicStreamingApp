@@ -6,6 +6,7 @@ import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
 import 'package:mobile/data/dto/req/register_req.dart';
 import 'package:mobile/data/dto/req/verify_email_req.dart';
+import 'package:mobile/models/user_model.dart';
 
 final userRemoteProvider = Provider<UserRemoteDataSource>(
   (ref) => UserRemoteDataSource(ref.read(magicMusicApiProvider))
@@ -23,6 +24,7 @@ class UserRemoteDataSource {
   final String _getAvailableEmailsPath = '/auth/get-list-email';
   final String _loginPath = '/auth/login';
   final String _logoutPath = '/auth/logout';
+  final String _userPath = '/users';
 
   Future<bool> registerWithEmail(RegisterReq dto) async {
     final response = await _magicMusicApi.request(
@@ -129,5 +131,19 @@ class UserRemoteDataSource {
 
   Future<String?> getRefreshToken() async {
     return await _magicMusicApi.getRefreshToken();
+  }
+
+  Future<UserModel?> getCurrentUser() async {
+    final response = await _magicMusicApi.request(
+      '$_userPath/me',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return UserModel.fromJson(data);
+      }
+    }
+    return null;
   }
 }

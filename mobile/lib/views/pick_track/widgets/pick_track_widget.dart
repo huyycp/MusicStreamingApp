@@ -11,37 +11,48 @@ class PickTrackWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool isPicked = ref.watch(pickTrackViewModel.select(
-      (value) => value.pickedTracks,
-    )).contains(track);
-
-    return GestureDetector(
-      onTap: () {
-        ref.read(pickTrackViewModel).togglePickTrack(track);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: isPicked ? GRAY_BCK_2 : GRAY_BCK_1,
-        ),
-        child: Row(
-          children: [
-            DynamicImage(
-              track.imageLink,
-              width: 76,
-              height: 76,
-              borderRadius: BorderRadius.circular(20),
+    return Container(
+      decoration: const BoxDecoration(
+        color: GRAY_BCK_1,
+      ),
+      child: Row(
+        children: [
+          DynamicImage(
+            track.imageLink,
+            width: 64,
+            height: 64,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  track.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  track.owwnerNames,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium
+                )
+              ],
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                track.name,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            )
-          ],
-        ),
+          ),
+          IconButton(
+            onPressed: () {
+              ref.read(pickTrackViewModel).addTrackToPlaylist(track);
+            },
+            icon: DynamicImage(
+              'assets/icons/ic_add_song.svg',
+              width: 24,
+              height: 24,
+            ),
+          )
+        ],
       ),
     );
   }

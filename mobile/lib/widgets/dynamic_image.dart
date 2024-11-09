@@ -26,6 +26,9 @@ class DynamicImage extends StatelessWidget {
     final imageType = url.substring(url.lastIndexOf('.') + 1);
     Widget image = Container(color: Colors.grey);
     switch (imageType) {
+      case '':
+        image = Container(color: Colors.grey);
+        break;
       case 'svg':
         {
           if (url.startsWith('http')) {

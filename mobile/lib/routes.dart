@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view.dart';
 import 'package:mobile/views/create_album/create_album_view.dart';
+import 'package:mobile/views/create_playlist/create_playlist_view.dart';
 import 'package:mobile/views/create_track/create_track_audio_view.dart';
 import 'package:mobile/views/create_track/create_track_genre_view.dart';
 import 'package:mobile/views/create_track/create_track_info_view.dart';
@@ -10,6 +11,7 @@ import 'package:mobile/views/login/login_view.dart';
 import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
 import 'package:mobile/views/pick_track/pick_track_view.dart';
+import 'package:mobile/views/playlist/playlist_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_1_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_2_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_3_view.dart';
@@ -30,6 +32,7 @@ class RouteService {
       _trackRoute,
       _albumRoute,
       _pickTrackRoute,
+      _playlistRoute,
     ]
   );
 
@@ -147,6 +150,21 @@ class RouteService {
   static final GoRoute _pickTrackRoute = GoRoute(
     path: '/pick-track/:albumId',
     name: 'pick-track',
-    builder: (context, state) => PickTrackView(albumId: state.pathParameters['albumId'] ?? '')
+    builder: (context, state) => PickTrackView(libraryId: state.pathParameters['albumId'] ?? '')
+  );
+
+  static final GoRoute _playlistRoute = GoRoute(
+    path: '/playlist',
+    builder: (context, state) => const NotFoundView(),
+    routes: [
+      GoRoute(
+        path: 'create',
+        builder: (context, state) => const CreatePlaylistView(),
+      ),
+      GoRoute(
+        path: ':id',
+        builder: (context, state) => PlaylistView(id: state.pathParameters['id']! ),
+      ),
+    ]
   );
 }

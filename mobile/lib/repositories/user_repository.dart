@@ -4,6 +4,7 @@ import 'package:mobile/data/data_sources/remote/user_remote_data_source.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
 import 'package:mobile/data/dto/req/register_req.dart';
 import 'package:mobile/data/dto/req/verify_email_req.dart';
+import 'package:mobile/models/user_model.dart';
 
 final userRepoProvider = Provider<UserRepository>(
   (ref) => UserRepository(
@@ -74,5 +75,9 @@ class UserRepository {
     final refreshToken = await _userRemote.getRefreshToken();
     if (refreshToken == null) return false;
     return !JwtDecoder.isExpired(refreshToken);
+  }
+
+  Future<UserModel?> getCurrentUser() async {
+    return await _userRemote.getCurrentUser();
   }
 }

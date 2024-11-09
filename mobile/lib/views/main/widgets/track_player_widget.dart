@@ -48,7 +48,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
 
   Widget _trackInfo() {
     final track = ref.read(mainViewModel.select(
-      (value) => value.tracks[value.currentIndex]
+      (value) => value.audioController.tracks[value.audioController.currentIndex]
     ));
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -61,7 +61,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _trackTitle(track.name),
-              _trackAuthors(track.artistsName),
+              _trackAuthors(track.owwnerNames),
             ],
           ),
         )
@@ -104,11 +104,11 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
 
   Widget _playOrPauseBtn() {
     bool playing = ref.watch(mainViewModel.select(
-      (value) => value.playing
+      (value) => value.audioController.playing
     ));
     return IconButton(
       onPressed: () {
-        ref.watch(mainViewModel).playOrPause();
+        ref.watch(mainViewModel).audioController.playOrPause();
       },
       icon: DynamicImage(
         playing 
@@ -123,7 +123,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   Widget _stopBtn() {
     return IconButton(
       onPressed: () {
-        ref.read(mainViewModel).stop();
+        ref.read(mainViewModel).audioController.stop();
       },
       icon: DynamicImage(
         'assets/icons/ic_stop.svg',
@@ -136,7 +136,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
 
   Widget _trackProgress() {
     double progress = ref.watch(mainViewModel.select(
-      (value) => value.progress
+      (value) => value.audioController.progress
     ));
     return LinearProgressIndicator(
       value: progress,

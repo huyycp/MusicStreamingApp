@@ -30,20 +30,18 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
   Widget _body() {
     return BaseContainer(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Track information',
-              style: Theme.of(context).textTheme.titleLarge
-            ),
-            const SizedBox(height: 24),
-            _trackTitleInput(),
-            const SizedBox(height: 24),
-            _trackDescInput(),
-          ],
-        ),
+      child: ListView(
+        children: [
+          Text(
+            'Track information',
+            style: Theme.of(context).textTheme.titleLarge
+          ),
+          const SizedBox(height: 24),
+          _trackTitleInput(),
+          const SizedBox(height: 24),
+          _trackDescInput(),
+          const SizedBox(height: 24),
+        ],
       ),
     );
   }
@@ -85,6 +83,9 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
   }
 
   Widget _nextBtn() {
-    return const NextStepButton('/track/create/audio');
+    return NextStepButton(
+      destination: '/track/create/audio',
+      enabled: ref.watch(createTrackViewModel.select((value) => value.isValidTrackInfo)),
+    );
   }
 }

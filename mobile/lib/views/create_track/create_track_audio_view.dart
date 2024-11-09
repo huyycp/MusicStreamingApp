@@ -4,7 +4,7 @@ import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
 import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
-import 'package:mobile/widgets/audio_controls/audio_controller.dart';
+import 'package:mobile/widgets/audio_controller_widget.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class CreateTrackAudioView extends ConsumerStatefulWidget {
@@ -50,7 +50,7 @@ class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
   Widget _audioPicker() {
     return GestureDetector(
       onTap: () {
-        ref.read(createTrackViewModel).pickAudio();
+        ref.read(createTrackViewModel).selectAudio();
       },
       child: Container(
         padding: const EdgeInsets.all(24),
@@ -80,21 +80,25 @@ class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
   Widget _audioName() {
     return Text(
       ref.watch(createTrackViewModel.select(
-        (value) => value.audioFile?.name  ?? 'No audio'
+        (value) => value.trackAudio?.name  ?? 'No audio'
       )), 
       textAlign: TextAlign.center,
     );
   }
 
   Widget _audioPlayer() {
-    return Container(
-      child: AudioController(
-        url: 'https://soundcloud.com/lengocbaogia12/he-n-ga-p-em-o-cuo-c-o-i-kha-c',
-      ),
+    return  AudioPlayerWidget(
+      controller: ref.read(createTrackViewModel).audioController,
+      isRepeatEnabled: false,
+      isShuffingEnabled: false,
     );
   }
 
   Widget _nextBtn() {
-    return const NextStepButton('/track/create/lyrics');
+    return NextStepButton(
+      destination: '/track/create/lyrics',
+      extraAction: () => ref.read(createTrackViewModel).audioController.pause(),
+      enabled: ref.watch(createTrackViewModel.select((value) => value.isValidTrackAudio)),
+    );
   }
 }

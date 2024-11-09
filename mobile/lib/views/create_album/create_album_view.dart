@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/create_album/create_album_view_model.dart';
@@ -18,9 +17,10 @@ class CreateAlbumView extends ConsumerStatefulWidget {
 class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(createAlbumViewModel, (prev, next) {
-      if (next.isAlbumCreated == true) {
-        context.push('/pick-track/${next.albumId}');
+    ref.listen(createAlbumViewModel.select((value) => value.isAlbumCreated), (prev, next) {
+      if (next == true) {
+        Navigator.popAndPushNamed(context, 'pick-track', arguments: {
+        });
       }
     });
 

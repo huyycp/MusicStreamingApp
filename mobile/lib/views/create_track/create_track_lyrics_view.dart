@@ -45,6 +45,9 @@ class _CreateTrackLyricsViewState extends ConsumerState<CreateTrackLyricsView> {
   }
 
   Widget _nextBtn() {
-    return const NextStepButton('/track/create/thumbnail');
+    return const NextStepButton(
+      destination: '/track/create/thumbnail',
+      enabled: true,
+    );
   }
 }

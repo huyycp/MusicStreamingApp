@@ -31,10 +31,8 @@ class _CreateTrackGenreViewState extends ConsumerState<CreateTrackGenreView> {
   Widget _body() {
     return BaseContainer(
       child: GenreView(
-        selectedGenres: ref.watch(createTrackViewModel.select(
-          (value) => value.pickedGenres
-        )),
-        onTap: ref.read(createTrackViewModel).togglePickGenre,
+        selectedGenres: ref.watch(createTrackViewModel.select((value) => value.trackGenres)),
+        onTap: ref.read(createTrackViewModel).selectGenres,
       ),
     );
   }
@@ -43,9 +41,19 @@ class _CreateTrackGenreViewState extends ConsumerState<CreateTrackGenreView> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       child: ElevatedButton(
-        onPressed: () {
-          ref.read(createTrackViewModel).createTrack();
-        },
+        onPressed: ref.watch(createTrackViewModel.select((value) => value.isValidTrackGenre)) 
+          ? () {
+            ref.read(createTrackViewModel).createTrack();
+          }
+          : null,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w500
+          )
+        ),
         child: const Text('Create Track'),
       ),
     ); 

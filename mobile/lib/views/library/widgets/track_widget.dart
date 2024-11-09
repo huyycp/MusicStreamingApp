@@ -34,7 +34,7 @@ class TrackWidget extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  track.artistsName,
+                  track.owwnerNames,
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
