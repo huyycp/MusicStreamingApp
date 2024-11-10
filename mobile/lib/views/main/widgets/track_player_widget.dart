@@ -20,25 +20,26 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         _showTrackPlayerView();
       },
       child: Container(
-        height: 60,
-        width: 0.90 * MediaQuery.sizeOf(context).width,
-        padding: const EdgeInsets.only(right: 8, left: 8),
+        height: 66,
+        width: 380,
+        padding: const EdgeInsets.only(right: 12, left: 12, top: 12),
         decoration: BoxDecoration(
-          color: GRAY_BCK_2,
-          borderRadius: BorderRadius.circular(12),
+          color: GRAY_BCK_1,
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(child: _trackInfo()),
                   _trackControls(),
                 ],
               ),
             ),
+            const SizedBox(height: 8),
             _trackProgress(),
           ],
         ),
@@ -47,8 +48,8 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   }
 
   Widget _trackInfo() {
-    final track = ref.read(mainViewModel.select(
-      (value) => value.audioController.tracks[value.audioController.currentIndex]
+    final track = ref.watch(mainAudioController.select(
+      (value) => value.tracks[value.currentIndex]
     ));
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -72,15 +73,17 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   Widget _trackImage(String trackImage) {
     return DynamicImage(
       trackImage,
-      width: 44,
-      height: 44,
-      borderRadius: BorderRadius.circular(8),
+      width: 40,
+      height: 40,
+      borderRadius: BorderRadius.circular(4),
     );
   }
 
   Widget _trackTitle(String title) {
     return Text(
       title,
+      style: Theme.of(context).textTheme.titleMedium,
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -88,6 +91,8 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   Widget _trackAuthors(String authors) {
     return Text(
       authors,
+      style: Theme.of(context).textTheme.bodyMedium,
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -95,6 +100,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   Widget _trackControls() {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _stopBtn(),
         _playOrPauseBtn(),
@@ -103,12 +109,12 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   }
 
   Widget _playOrPauseBtn() {
-    bool playing = ref.watch(mainViewModel.select(
-      (value) => value.audioController.playing
+    bool playing = ref.watch(mainAudioController.select(
+      (value) => value.playing
     ));
     return IconButton(
       onPressed: () {
-        ref.watch(mainViewModel).audioController.playOrPause();
+        ref.watch(mainAudioController).playOrPause();
       },
       icon: DynamicImage(
         playing 
@@ -123,7 +129,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   Widget _stopBtn() {
     return IconButton(
       onPressed: () {
-        ref.read(mainViewModel).audioController.stop();
+        ref.read(mainAudioController).stop();
       },
       icon: DynamicImage(
         'assets/icons/ic_stop.svg',
@@ -135,12 +141,13 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   }
 
   Widget _trackProgress() {
-    double progress = ref.watch(mainViewModel.select(
-      (value) => value.audioController.progress
+    double progress = ref.watch(mainAudioController.select(
+      (value) => value.progress
     ));
     return LinearProgressIndicator(
       value: progress,
       color: Colors.white,
+      minHeight: 2,
       backgroundColor: Colors.grey[300]?.withOpacity(0.5),
     );
   }

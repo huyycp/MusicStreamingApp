@@ -26,6 +26,7 @@ class LibraryModel {
   List<UserModel> owners;
   int numOfTracks;
   List<TrackModel> tracks;
+  String get ownersName => owners.map((owner) => owner.name).join(' ,');
 
   factory LibraryModel.fromJson(Map<String, dynamic> json) => LibraryModel(
     id: json['_id'] ?? '',
@@ -38,7 +39,7 @@ class LibraryModel {
     owners: List.from(json['owners']?.map(
       (ownerJson) => UserModel.fromJson(ownerJson)
     ) ?? []),
-    numOfTracks: json['num_of_tracks'] ?? 0,
+    numOfTracks: json['number_of_tracks'] ?? 0,
     tracks: List.from(json['list_of_tracks']?.map(
       (trackJson) => TrackModel.fromJson(trackJson)
     ) ?? []),
@@ -53,7 +54,7 @@ class LibraryModel {
     'created_at': createdAt.toIso8601String(),
     'updated_at': updatedAt.toIso8601String(),
     'owners': owners.map((owner) => owner.toJson()),
-    'num_of_tracks': numOfTracks,
+    'number_of_tracks': numOfTracks,
     'list_of_tracks': tracks.map((track) => track.toJson()),
   };
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/models/track_model.dart';
 import 'package:mobile/models/view_info_model.dart';
 import 'package:mobile/utils/audio_player_controller.dart';
 import 'package:mobile/views/home/home_view.dart';
@@ -10,6 +9,10 @@ import 'package:mobile/views/search/search_view.dart';
 
 final mainViewModel = ChangeNotifierProvider<MainViewModel>(
   (ref) => MainViewModel()
+);
+
+final mainAudioController = ChangeNotifierProvider<AudioPlayerController>(
+  (ref) => ref.read(mainViewModel).audioController
 );
 
 class MainViewModel extends ChangeNotifier {
@@ -51,16 +54,4 @@ class MainViewModel extends ChangeNotifier {
     currentPage = index;
     notifyListeners();
   }
-
-  Future<void> setPlaylist({
-    required List<TrackModel> tracks,
-    int initialIndex = 0,
-  }) async {
-    await audioController.setPlaylist(
-      tracks: tracks,
-      initialIndex: 0,
-    );
-  }
-
-
 }

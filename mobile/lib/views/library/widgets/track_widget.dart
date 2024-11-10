@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/track_model.dart';
-import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class TrackWidget extends ConsumerWidget {
@@ -10,32 +10,34 @@ class TrackWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: GRAY_BCK_1,
-      ),
+    return GestureDetector(
+      onTap: () => ref.read(mainAudioController).setPlaylist(tracks: [ track ]),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           DynamicImage(
             track.imageLink,
-            width: 76,
-            height: 76,
-            borderRadius: BorderRadius.circular(10),
+            width: 64,
+            height: 64,
+            borderRadius: BorderRadius.circular(4),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   track.name,
                   style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   track.owwnerNames,
                   style: Theme.of(context).textTheme.labelLarge,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

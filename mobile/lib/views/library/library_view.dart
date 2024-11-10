@@ -6,6 +6,7 @@ import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/library/album_list_view.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/views/library/playlist_list_view.dart';
+import 'package:mobile/views/library/track_list_view.dart';
 import 'package:mobile/views/library/widgets/bottom_sheet_item.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -21,6 +22,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
   List<Widget> views = [
     const AlbumListView(),
     const PlaylistListView(),
+    const TrackListView(),
     Container(),
     Container(),
   ];
@@ -185,7 +187,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
                   subtitle: 'Build a playlist with songs, or episodes',
                   onPressed: () {
                     context.pop();
-                    context.push('/playlist/create');
+                    context.push('/library/create-playlist');
                   },
                 ),
                 BottomSheetItem(
@@ -194,7 +196,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
                   subtitle: 'Build your album and release to everyone',
                   onPressed: () {
                     context.pop();
-                    context.push('/album/create');
+                    context.push('/library/create-album');
                   },
                 ),
               ],

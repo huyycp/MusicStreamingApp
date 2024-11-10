@@ -12,6 +12,7 @@ final themeProvider = ChangeNotifierProvider<ThemeProvider>((ref) {
 
 class ThemeProvider extends ChangeNotifier{
   ThemeData get themeData => ThemeData(
+    primaryColor: PRIMARY_COLOR,
     brightness: Brightness.dark,
     scaffoldBackgroundColor: PRIMARY_BACKGROUND,
     textTheme: BaseTextTheme.textTheme,

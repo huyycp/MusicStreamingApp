@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/models/library_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/views/library/widgets/bottom_sheet_item.dart';
-import 'package:mobile/views/playlist/playlist_view_model.dart';
+import 'package:mobile/views/detail_library/detail_library_view_model.dart';
+import 'package:mobile/views/library/widgets/track_widget.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class PlaylistView extends ConsumerStatefulWidget {
+class DetailLibraryView extends ConsumerStatefulWidget {
   final String id;
-  const PlaylistView({required this.id, super.key});
+  const DetailLibraryView({required this.id, super.key});
 
   @override
-  ConsumerState<PlaylistView> createState() => _PlaylistViewState();
+  ConsumerState<DetailLibraryView> createState() => _DetailLibraryViewState();
 }
 
-class _PlaylistViewState extends ConsumerState<PlaylistView> {
+class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
   @override
   void initState() {
     super.initState();
-    ref.read(playlistViewModel).getPlaylist(widget.id);
+    ref.read(detailLibraryViewModel).getLibrary(widget.id);
   }
 
   @override
@@ -29,7 +31,7 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
   }
 
   Widget _body() {
-    return ref.watch(playlistViewModel.select((value) => !value.isLoading))
+    return ref.watch(detailLibraryViewModel.select((value) => !value.isLoading))
       ? Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
         decoration: BoxDecoration(
@@ -92,25 +94,43 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
   }
 
   Widget _playlistImage() {
+    final library = ref.watch(detailLibraryViewModel.select(
+      (value) => value.library
+    ));
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
-        padding: const EdgeInsets.all(100),
+        padding: (library!.type == LibraryType.album || (library.type == LibraryType.playlist && library.tracks.isNotEmpty)) ? EdgeInsets.zero : const EdgeInsets.all(100),
         decoration: BoxDecoration(
           color: GRAY_BCK_1.withOpacity(0.60),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: DynamicImage(
-          'assets/icons/ic_music_note.svg',
-          width: 80,
-          height: 80,
-        ),
+        child: library.type == LibraryType.album 
+          ? DynamicImage(
+              library.imageLink,
+              width: 280,
+              height: 280,
+              borderRadius: BorderRadius.circular(4),
+            )
+          : library.tracks.isNotEmpty
+            ? DynamicImage(
+                library.tracks.first.imageLink,
+                width: 280,
+                height: 280,
+                borderRadius: BorderRadius.circular(4),
+              )
+            : DynamicImage(
+              'assets/icons/ic_music_note.svg',
+              width: 80,
+              height: 80,
+              borderRadius: BorderRadius.circular(4),
+            ),
       ),
     );
   }
 
   Widget _playlistInfo() {
-    final playlist = ref.watch(playlistViewModel.select((value) => value.playlist));
+    final playlist = ref.watch(detailLibraryViewModel.select((value) => value.library));
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -119,7 +139,7 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
         const SizedBox(height: 16),
         _playlistOwner(),
         const SizedBox(height: 16),
-        _playlistListeningTime(),
+        // _playlistListeningTime(),
       ],
     );
   }
@@ -132,7 +152,7 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
   }
 
   Widget _playlistOwner() {
-    final owner = ref.watch(playlistViewModel.select(
+    final owner = ref.watch(detailLibraryViewModel.select(
       (value) => value.user
     ));
     return Row(
@@ -179,7 +199,7 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
 
   Widget _downloadBtn() {
     return Visibility(
-      visible: ref.watch(playlistViewModel.select((value) => value.playlist?.tracks.isNotEmpty ?? false)),
+      visible: ref.watch(detailLibraryViewModel.select((value) => value.library?.tracks.isNotEmpty ?? false)),
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {},
@@ -216,7 +236,7 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
 
   Widget _shuffleBtn() {
     return Visibility(
-      visible: ref.watch(playlistViewModel.select((value) => value.playlist?.tracks.isNotEmpty ?? false)),
+      visible: ref.watch(detailLibraryViewModel.select((value) => value.library?.tracks.isNotEmpty ?? false)),
       child: IconButton(
         onPressed: () {},
         icon: DynamicImage(
@@ -230,9 +250,13 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
 
   Widget _playBtn() {
     return Visibility(
-      visible: ref.watch(playlistViewModel.select((value) => value.playlist?.tracks.isNotEmpty ?? false)),
+      visible: ref.watch(detailLibraryViewModel.select((value) => value.library?.tracks.isNotEmpty ?? false)),
       child: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          ref.read(mainAudioController).setPlaylist(
+            tracks: ref.watch(detailLibraryViewModel.select((value) => value.library!.tracks))
+          );
+        },
         icon: Container(
           padding: const EdgeInsets.all(16),
           decoration: const BoxDecoration(
@@ -251,8 +275,8 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
   }
 
   Widget _tracks() {
-    final tracks = ref.watch(playlistViewModel.select(
-      (value) => value.playlist?.tracks ?? []
+    final tracks = ref.watch(detailLibraryViewModel.select(
+      (value) => value.library?.tracks ?? []
     ));
     return Expanded(
       child: tracks.isNotEmpty
@@ -262,10 +286,7 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
             onTap: () {
               context.push('/track/${tracks[index].id}');
             },
-            child: BottomSheetItem(
-              iconData: tracks[index].imageLink,
-              title: tracks[index].name,
-            ),
+            child: TrackWidget(tracks[index]),
           ),
           separatorBuilder: (context, state) => const SizedBox(height: 8),
         )
@@ -284,7 +305,7 @@ class _PlaylistViewState extends ConsumerState<PlaylistView> {
         const SizedBox(height: 24),
         ElevatedButton(
           onPressed: () {
-            context.push('/pick-track/${ref.watch(playlistViewModel.select((value) => value.playlist?.id ?? ''))}');
+            context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library?.id ?? ''))}');
           },
           child: const Text('Add to this playlist'),
         )

@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/login/login_view_model.dart';
-import 'package:mobile/widgets/status_dialog_widget.dart';
+import 'package:mobile/widgets/loading_widget.dart';
 import 'package:password_text_field/password_text_field.dart';
 
 class LoginView extends ConsumerStatefulWidget {
@@ -17,12 +17,6 @@ class LoginView extends ConsumerStatefulWidget {
 class _LoginViewState extends ConsumerState<LoginView> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(loginViewModel.select((value) => value.loginSuccess), (prev, next) {
-      if (next) {
-        context.go('/main');
-      }
-    });
-
     return PopScope(
       onPopInvokedWithResult: (_, __) => ref.read(loginViewModel).clear(),
       child: Scaffold(
@@ -90,21 +84,28 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   Widget _loginBtn() {
     return ElevatedButton(
-      onPressed: () {
-        if (ref.read(loginViewModel).loginFormKey.currentState!.validate()) {
-          ref.read(loginViewModel).login();
-          showDialog(
-            context: context, builder: (context) => const StatusDialogWidget('Logging in...')
-          );
-        }
-      },
+      onPressed: ref.watch(loginViewModel.select((value) => value.isLoginSuccess == false)) 
+        ? () {
+            if (ref.read(loginViewModel).loginFormKey.currentState!.validate()) {
+              ref.read(loginViewModel).login();
+            }
+          }
+        : null,
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
         disabledForegroundColor: Colors.black,
         backgroundColor: const Color(0xFFFFFFFF),
         disabledBackgroundColor: const Color(0xFF535353),
       ),
-      child: const Text('Login'),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LoadingWidget(
+            visible: ref.watch(loginViewModel.select((value) => value.isLoginSuccess == null))
+          ),
+          const Text('Login'),
+        ],
+      ),
     );
   }
 }

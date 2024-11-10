@@ -1,11 +1,12 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/create_album/create_album_view_model.dart';
+import 'package:mobile/widgets/dynamic_image.dart';
 import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/widgets/base_container.dart';
+import 'package:mobile/widgets/loading_widget.dart';
 
 class CreateAlbumView extends ConsumerStatefulWidget {
   const CreateAlbumView({super.key});
@@ -73,32 +74,31 @@ class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
 
   Widget _albumImageInput() {
     final image = ref.watch(createAlbumViewModel.select((value) => value.albumImage));
-    return Container(
-      height: MediaQuery.sizeOf(context).width,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: BUTTON_STROKE,
+    return GestureDetector(
+      onTap: () => ref.read(createAlbumViewModel).pickImage(),
+      child: Container(
+        padding: image != null ? EdgeInsets.zero : const EdgeInsets.all(60),
+        height: MediaQuery.sizeOf(context).width,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: BUTTON_STROKE,
+          ),
+          borderRadius: BorderRadius.circular(20),
         ),
-        borderRadius: BorderRadius.circular(20),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: image != null
-            ? FileImage(File(image.path))
-            : const AssetImage('assets/images/default_image_placeholder.png'),
-        )
+        child: image != null
+          ? DynamicImage(
+              image.path,
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).width,
+              borderRadius: BorderRadius.circular(20),
+            )
+          : DynamicImage(
+            'assets/images/default_image_placeholder.png',
+            width: 32,
+            height: 32,
+            color: GRAY_BCK_2,
+          ),
       ),
-      child: Center(
-        child: _uploadImageBtn(),
-      ),
-    );
-  }
-
-  Widget _uploadImageBtn() {
-    return OutlinedButton(
-      onPressed: () {
-        ref.read(createAlbumViewModel).pickImage();
-      },
-      child: const Text('Upload'),
     );
   }
 
@@ -111,10 +111,17 @@ class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
             borderRadius: BorderRadius.circular(8)
           )
         ),
-        onPressed: () {
-          ref.read(createAlbumViewModel).createAlbum();
-        },
-        child: const Text('Create'),
+        onPressed: ref.watch(createAlbumViewModel.select((value) => value.isAlbumCreated == false)) 
+          ? () {
+            ref.read(createAlbumViewModel).createAlbum();
+          }
+          : null,
+        child: Row(
+          children: [
+            LoadingWidget(visible: ref.watch(createAlbumViewModel.select((value) => value.isAlbumCreated == null))),
+            const Text('Create'),
+          ],
+        ),
       ),
     );
   }

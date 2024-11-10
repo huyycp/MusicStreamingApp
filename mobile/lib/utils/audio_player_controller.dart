@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mobile/models/track_model.dart';
-
-final a = ChangeNotifierProvider<AudioPlayerController>(
-  (ref) => AudioPlayerController()
-);
 
 class AudioPlayerController extends ChangeNotifier {
   AudioPlayerController() {
