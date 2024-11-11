@@ -8,7 +8,7 @@ import useGetMyLibrary from '~/hooks/Library/useGetMyLibrary'
 export default function MusicLibrary() {
   const { data } = useGetMyLibrary(100, 1)
   const albums = data?.result.data as ILibrary[]
-  const listAlbums = (albums ?? []).filter((album) => album.number_of_tracks > 0)
+  const listAlbums = (albums ?? []).filter((album) => album.number_of_tracks > 0 && album.type === 'album' || album.type === 'playlist')
   const [playlistSelect, setPlaylistSelect] = useState<ILibrary[] | []>(listAlbums)
   const [album, setAlbum] = useState<number>(0)
 

@@ -11,15 +11,14 @@ import Tooltip from '@mui/material/Tooltip'
 import { useEffect, useRef, useState } from 'react'
 import LaunchIcon from '@mui/icons-material/Launch'
 import useLogout from '~/hooks/Auth/useLogout'
-import useGetProfile from '~/hooks/User/useGetProfile'
-import { IUser } from '~/type/User/IUser'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { useUser } from '~/hooks/useUser'
 
 export default function Profile() {
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
-  const { data } = useGetProfile()
-  const profileData = data?.result as IUser
+  const { user } = useUser()
+  const profileData = user
   const { mutate: logout } = useLogout()
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -88,7 +87,7 @@ export default function Profile() {
                 }
               }}
             >
-              {profileData.name.charAt(0)}
+              {profileData?.name.charAt(0)}
             </Avatar>
           ) : (
             <AccountCircleIcon

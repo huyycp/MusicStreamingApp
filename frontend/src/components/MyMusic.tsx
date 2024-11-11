@@ -22,7 +22,7 @@ export default function MyMusic() {
     <Box sx={{ display: 'flex', flexDirection: 'column', pt: 2, width: '100%', gap: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant='h3' noWrap>
-          {selectedTab === 'songs' ? 'My Music' : 'My Album'}
+          {selectedTab === 'songs' ? 'Bài hát của tôi' : 'Album của tôi'}
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'end', gap: 1 }}>
           {widths[1] > 650 && (
@@ -32,7 +32,6 @@ export default function MyMusic() {
               type='text'
               size='small'
               value=''
-              // onChange={ }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -75,7 +74,6 @@ export default function MyMusic() {
         </Box>
       </Box>
 
-      {/* Thêm phần nút Songs và Albums */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 2, pt: 2 }}>
         <Button
           onClick={() => setSelectedTab('songs')}
@@ -89,7 +87,7 @@ export default function MyMusic() {
             }
           }}
         >
-          Songs
+          Bài hát
         </Button>
         <Button
           onClick={() => setSelectedTab('albums')}
@@ -103,7 +101,7 @@ export default function MyMusic() {
             }
           }}
         >
-          Albums
+          Album
         </Button>
         {selectedTab === 'albums' && (
           <Button

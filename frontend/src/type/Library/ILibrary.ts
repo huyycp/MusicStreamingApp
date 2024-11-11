@@ -4,6 +4,7 @@ export interface ILibrary {
   _id: string
   name: string
   image: string
+  user_id?: string
   type: 'album' | 'playlist'
   number_of_tracks: number
   owners?: IArtist[]
