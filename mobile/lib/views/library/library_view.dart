@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/library/album_list_view.dart';
+import 'package:mobile/views/library/library_list_view.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/views/library/playlist_list_view.dart';
 import 'package:mobile/views/library/track_list_view.dart';
@@ -46,9 +47,12 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
   }
 
   Widget _body() {
+    final LibraryTabs currentTab = ref.watch(libraryViewModel.select((value) => value.currentTab));
     return BaseContainer(
       padding: EdgeInsets.zero,
-      child: views[ref.watch(libraryViewModel.select((value) => value.currentTab.index))],
+      child: currentTab == LibraryTabs.none
+        ? const LibraryListView()
+        : views[ref.watch(libraryViewModel.select((value) => value.currentTab.index))],
     );
   }
 

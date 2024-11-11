@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/dto/req/get_library_req.dart';
 import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
@@ -23,6 +24,11 @@ class LibraryViewModel extends ChangeNotifier {
   }) : _libraryRepo = libraryRepo,
        _userRepo = userRepo,
        _trackRepo = trackRepo {
+    libraryScrollController.addListener(() {
+      if (libraryScrollController.position.pixels == libraryScrollController.position.maxScrollExtent && canLoadLibraries) {
+        getLibraries();
+      }
+    });
     albumScrollController.addListener(() {
       if (albumScrollController.position.pixels == albumScrollController.position.maxScrollExtent && canLoadAlbums) {
         getAlbums();
@@ -53,6 +59,12 @@ class LibraryViewModel extends ChangeNotifier {
     }
   }
 
+  List<LibraryModel> libraries = [];
+  int libraryPage = 1;
+  int libraryLimit = 10;
+  bool canLoadLibraries = false;
+  final libraryScrollController = ScrollController();
+
   List<LibraryModel> albums = [];
   int albumPage = 1;
   int albumLimit = 10;
@@ -70,6 +82,31 @@ class LibraryViewModel extends ChangeNotifier {
   int trackLimit = 10;
   bool canLoadTracks = false;
   final trackScrollController = ScrollController();
+
+  Future<void> getLibraries({ bool refresh  = false }) async {
+    if (refresh) {
+      libraries.clear();
+      libraryPage = 1;
+    }
+    final resp = await _libraryRepo.getLibraries(
+      pagination: PaginationListReq(
+        page: libraryPage,
+        limit: libraryLimit,
+      ),
+      sortBy: 'updated_at',
+      direction: SortDirection.desc,
+    );
+    if (resp != null) {
+      libraries = [...libraries, ...resp.libraries];
+      if (resp.meta.currentPage < resp.meta.totalPages) {
+        libraryPage += 1;
+        canLoadLibraries = true;
+      } else {
+        canLoadLibraries = false;
+      }
+      notifyListeners();
+    }
+  }
   
   Future<void> getAlbums({bool refresh = false}) async {
     if (refresh) {
@@ -82,6 +119,8 @@ class LibraryViewModel extends ChangeNotifier {
         limit: albumLimit,
       ),
       type: LibraryType.album,
+      sortBy: 'updated_at',
+      direction: SortDirection.desc,
     );
     if (resp != null) {
       albums = [...albums, ...resp.libraries];
@@ -106,6 +145,8 @@ class LibraryViewModel extends ChangeNotifier {
         limit: albumLimit,
       ),
       type: LibraryType.playlist,
+      sortBy: 'updated_at',
+      direction: SortDirection.desc,
     );
     if (resp != null) {
       playlists = [...playlists, ...resp.libraries];

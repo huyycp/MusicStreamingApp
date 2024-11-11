@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes.dart';
 import 'package:mobile/utils/snackbar.dart';
+import 'package:string_validator/string_validator.dart';
 
 final loginViewModel = ChangeNotifierProvider.autoDispose<LoginViewModel>(
   (ref) => LoginViewModel(ref.read(userRepoProvider))
@@ -11,6 +12,8 @@ final loginViewModel = ChangeNotifierProvider.autoDispose<LoginViewModel>(
 class LoginViewModel extends ChangeNotifier{
   LoginViewModel(UserRepository userRepo) {
     _userRepo = userRepo;
+    emailController.addListener(checkValidInfor);
+    passwordController.addListener(checkValidInfor);
   }
 
   late final UserRepository _userRepo;
@@ -19,6 +22,7 @@ class LoginViewModel extends ChangeNotifier{
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool? isLoginSuccess = false;
+  bool isValidInfor = false;
 
   Future<void> login() async {
     try {
@@ -46,9 +50,18 @@ class LoginViewModel extends ChangeNotifier{
       notifyListeners();
       SnackBarService.showSnackBar(
         message: 'Magic Music takes too long to respond',
-        status: MessageTypes.success,
+        status: MessageTypes.info,
       );
     }
+  }
+
+  void checkValidInfor() {
+    isValidInfor = (
+      emailController.text.isNotEmpty &&
+      emailController.text.isEmail &&
+      passwordController.text.isNotEmpty
+    );
+    notifyListeners();
   }
 
   void clear() {
