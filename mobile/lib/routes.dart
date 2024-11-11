@@ -11,7 +11,7 @@ import 'package:mobile/views/login/login_view.dart';
 import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
 import 'package:mobile/views/pick_track/pick_track_view.dart';
-import 'package:mobile/views/playlist/playlist_view.dart';
+import 'package:mobile/views/detail_library/detail_library_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_1_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_2_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_3_view.dart';
@@ -30,9 +30,8 @@ class RouteService {
       _mainRoute,
       _splashRoute,
       _trackRoute,
-      _albumRoute,
       _pickTrackRoute,
-      _playlistRoute,
+      _libraryRoute,
     ]
   );
 
@@ -135,36 +134,32 @@ class RouteService {
     ]
   );
 
-  static final GoRoute _albumRoute = GoRoute(
-    path: '/album',
-    builder: (context, state) => const NotFoundView(),
-    routes: [
-      GoRoute(
-        path: 'create',
-        name: 'create-album',
-        builder: (context, state) => const CreateAlbumView()
-      ),
-    ]
-  );
-
   static final GoRoute _pickTrackRoute = GoRoute(
     path: '/pick-track/:albumId',
     name: 'pick-track',
     builder: (context, state) => PickTrackView(libraryId: state.pathParameters['albumId'] ?? '')
   );
 
-  static final GoRoute _playlistRoute = GoRoute(
-    path: '/playlist',
+  static final GoRoute _libraryRoute = GoRoute(
+    path: '/library',
     builder: (context, state) => const NotFoundView(),
     routes: [
       GoRoute(
-        path: 'create',
+        path: 'create-album',
+        name: 'create-album',
+        builder: (context, state) => const CreateAlbumView(),
+      ),
+      GoRoute(
+        path: 'create-playlist',
+        name: 'create-playlist',
         builder: (context, state) => const CreatePlaylistView(),
       ),
       GoRoute(
         path: ':id',
-        builder: (context, state) => PlaylistView(id: state.pathParameters['id']! ),
-      ),
+        name: 'library',
+        builder: (context, state) => DetailLibraryView(id: state.pathParameters['id']!)
+      )
     ]
   );
+
 }

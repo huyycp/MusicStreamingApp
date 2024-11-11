@@ -7,6 +7,7 @@ import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/utils/audio_player_controller.dart';
+import 'package:mobile/utils/snackbar.dart';
 
 final createTrackViewModel = ChangeNotifierProvider<CreateTrackViewModel>(
   (ref) => CreateTrackViewModel(
@@ -45,7 +46,7 @@ class CreateTrackViewModel extends ChangeNotifier {
   bool isValidTrackAudio = false;
   bool isValidTrackThumbnail = false;
   bool isValidTrackGenre = false;
-  bool isTrackCreatedSuccess = false;
+  bool? isTrackCreatedSuccess = false;
   
   Future<void> selectAudio() async {
     try {
@@ -86,16 +87,28 @@ class CreateTrackViewModel extends ChangeNotifier {
   }
 
   Future<void> createTrack() async {
-    debugPrint(trackTitleController.text);
-    isTrackCreatedSuccess = await _trackRepo.createTrack(
-      title: trackTitleController.text, 
-      description: trackDescController.text,
-      audio: File(trackAudio!.path!),
-      lyrics: trackLyricsController.text,
-      thumbnail: trackThumbnail!,
-      genreId: trackGenres.first.id,
-    );
-    notifyListeners();
+    try {
+      isTrackCreatedSuccess = null;
+      notifyListeners();
+      isTrackCreatedSuccess = await _trackRepo.createTrack(
+        title: trackTitleController.text, 
+        description: trackDescController.text,
+        audio: File(trackAudio!.path!),
+        lyrics: trackLyricsController.text,
+        thumbnail: trackThumbnail!,
+        genreId: trackGenres.first.id,
+      ).timeout(const Duration(seconds: 30));
+      if (isTrackCreatedSuccess == true) {
+        SnackBarService.showSnackBar(message: 'Create track successfully', status: MessageTypes.success);
+      } else {
+        SnackBarService.showSnackBar(message: 'Create track failed', status:  MessageTypes.error);
+      }
+      notifyListeners();
+    } catch (err) {
+      isTrackCreatedSuccess = false;
+      notifyListeners();
+      SnackBarService.showSnackBar(message: 'Server takes too long to response');
+    }
   }
 
   void checkValidTrackInfo() {

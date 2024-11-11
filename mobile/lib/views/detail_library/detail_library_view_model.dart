@@ -5,15 +5,15 @@ import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
 
-final playlistViewModel = ChangeNotifierProvider.autoDispose<PlaylistViewModel>(
-  (ref) => PlaylistViewModel(
+final detailLibraryViewModel = ChangeNotifierProvider.autoDispose<DetailLibraryViewModel>(
+  (ref) => DetailLibraryViewModel(
     libraryRepo: ref.read(libraryRepoProvider),
     userRepo: ref.read(userRepoProvider),
   ),
 );
 
-class PlaylistViewModel extends ChangeNotifier {
-  PlaylistViewModel({
+class DetailLibraryViewModel extends ChangeNotifier {
+  DetailLibraryViewModel({
     required LibraryRepository libraryRepo,
     required UserRepository userRepo,
   }) : _libraryRepo = libraryRepo,
@@ -21,12 +21,12 @@ class PlaylistViewModel extends ChangeNotifier {
 
   final LibraryRepository _libraryRepo;
   final UserRepository _userRepo;
-  LibraryModel? playlist;
+  LibraryModel? library;
   UserModel? user;
   bool isLoading = true;
 
-  Future<void> getPlaylist(String playlistId) async {
-    playlist = await _libraryRepo.getLibrary(playlistId);
+  Future<void> getLibrary(String libraryId) async {
+    library = await _libraryRepo.getLibrary(libraryId);
     user = await _userRepo.getCurrentUser();
     isLoading = false;
     notifyListeners();

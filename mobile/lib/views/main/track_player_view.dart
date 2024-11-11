@@ -14,6 +14,7 @@ class TrackPlayerView extends ConsumerStatefulWidget {
 }
 
 class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -91,8 +92,8 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
   }
 
   Widget _trackImage() {
-    final imageLink = ref.watch(mainViewModel.select(
-      (value) => value.audioController.tracks[value.audioController.currentIndex]
+    final imageLink = ref.watch(mainAudioController.select(
+      (value) => value.tracks[value.currentIndex]
     )).imageLink;
     return DynamicImage(
       imageLink,
@@ -102,8 +103,8 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
   }
 
   Widget  _trackInfo() {
-    final track = ref.watch(mainViewModel.select(
-      (value) => value.audioController.tracks[value.audioController.currentIndex]
+    final track = ref.watch(mainAudioController.select(
+      (value) => value.tracks[value.currentIndex]
     ));
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -136,7 +137,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
 
   Widget _audioController() {
     return AudioPlayerWidget(
-      controller: ref.read(mainViewModel).audioController,
+      controller: ref.read(mainAudioController),
     );
   }
 }

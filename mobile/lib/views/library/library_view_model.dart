@@ -4,12 +4,14 @@ import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
+import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
 
 final libraryViewModel = ChangeNotifierProvider<LibraryViewModel>(
   (ref) => LibraryViewModel(
     libraryRepo: ref.read(libraryRepoProvider),
     userRepo: ref.read(userRepoProvider),
+    trackRepo: ref.read(trackRepoProvider),
   )
 );
 
@@ -17,16 +19,29 @@ class LibraryViewModel extends ChangeNotifier {
   LibraryViewModel({
     required LibraryRepository libraryRepo,
     required UserRepository userRepo,
+    required TrackRepository trackRepo,
   }) : _libraryRepo = libraryRepo,
-       _userRepo = userRepo {
+       _userRepo = userRepo,
+       _trackRepo = trackRepo {
     albumScrollController.addListener(() {
       if (albumScrollController.position.pixels == albumScrollController.position.maxScrollExtent && canLoadAlbums) {
         getAlbums();
       }
     });
+    playlistScrollController.addListener(() {
+      if (playlistScrollController.position.pixels == playlistScrollController.position.maxScrollExtent && canLoadPlaylists) {
+        getPlaylists();
+      }
+    });
+    trackScrollController.addListener(() {
+      if (trackScrollController.position.pixels == trackScrollController.position.maxScrollExtent && canLoadTracks) {
+        getMyTracks();
+      }
+    });
   }
 
   final LibraryRepository _libraryRepo;
+  final TrackRepository _trackRepo;
   final UserRepository _userRepo;
 
   LibraryTabs currentTab = LibraryTabs.none;
@@ -49,10 +64,17 @@ class LibraryViewModel extends ChangeNotifier {
   int playlistLimit = 10;
   bool canLoadPlaylists = false;
   final playlistScrollController = ScrollController();
+
+  List<TrackModel> tracks = [];
+  int trackPage = 1;
+  int trackLimit = 10;
+  bool canLoadTracks = false;
+  final trackScrollController = ScrollController();
   
   Future<void> getAlbums({bool refresh = false}) async {
     if (refresh) {
       albums.clear();
+      albumPage = 1;
     }
     final resp = await _libraryRepo.getLibraries(
       pagination: PaginationListReq(
@@ -76,6 +98,7 @@ class LibraryViewModel extends ChangeNotifier {
   Future<void> getPlaylists({bool refresh = false}) async {
     if (refresh) {
       playlists.clear();
+      playlistPage = 1;
     }
     final resp = await _libraryRepo.getLibraries(
       pagination: PaginationListReq(
@@ -96,6 +119,29 @@ class LibraryViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> getMyTracks({bool refresh = false}) async {
+    if (refresh) {
+      tracks.clear();
+      trackPage = 1;
+    }
+    final resp = await _trackRepo.getTracksByUser(
+      pagination: PaginationListReq(
+        page: trackPage,
+        limit: trackLimit,
+      ),
+    );
+    if (resp != null) {
+      tracks = [...tracks, ...resp.tracks];
+      if (resp.meta.currentPage < resp.meta.totalPages) {
+        trackPage += 1;
+        canLoadTracks = true;
+      } else {
+        canLoadTracks = false;
+      }
+      notifyListeners();
+    }
+  }
+
   Future<List<TrackModel>> getTracksByLibrary(String id) async {
     final library = await _libraryRepo.getLibrary(id);
     if (library != null) {
@@ -108,6 +154,7 @@ class LibraryViewModel extends ChangeNotifier {
 enum LibraryTabs {
   albums,
   playlists,
+  tracks,
   artists,
   none,
 }

@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 class DynamicImage extends StatelessWidget {
   final String url;
@@ -26,9 +28,6 @@ class DynamicImage extends StatelessWidget {
     final imageType = url.substring(url.lastIndexOf('.') + 1);
     Widget image = Container(color: Colors.grey);
     switch (imageType) {
-      case '':
-        image = Container(color: Colors.grey);
-        break;
       case 'svg':
         {
           if (url.startsWith('http')) {
@@ -59,7 +58,17 @@ class DynamicImage extends StatelessWidget {
               fit: BoxFit.cover,
               color: color,
               errorBuilder: (context, error, stackTrace) =>
-                  Container(color: Colors.grey),
+                Container(color: Colors.grey),
+            );
+          } else if (url.startsWith('/')) {
+            image = Image.file(
+              File(url),
+              width: width,
+              height: height,
+              fit: BoxFit.cover,
+              color: color,
+              errorBuilder: (context, error, stackTrace) => 
+                Container(color: Colors.grey),
             );
           } else {
             image = Image.asset(
@@ -69,26 +78,26 @@ class DynamicImage extends StatelessWidget {
               fit: BoxFit.cover,
               color: color,
               errorBuilder: (context, error, stackTrace) =>
-                  Container(color: Colors.grey),
+                Container(color: Colors.grey),
             );
           }
         }
     }
     return isCircle
-      ? SizedBox(
-          width: width,
-          height: height,
-          child: ClipOval(
-            child: image,
-          ),
-        )
-      : SizedBox(
-          width: width,
-          height: height,
-          child: ClipRRect(
-            borderRadius: borderRadius,
-            child: image,
-          ),
-        );
+        ? SizedBox(
+            width: width,
+            height: height,
+            child: ClipOval(
+              child: image,
+            ),
+          )
+        : SizedBox(
+            width: width,
+            height: height,
+            child: ClipRRect(
+              borderRadius: borderRadius,
+              child: image,
+            ),
+          );
   }
 }

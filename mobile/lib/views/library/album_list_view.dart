@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/views/library/base_tab_view.dart';
 import 'package:mobile/views/library/library_view_model.dart';
-import 'package:mobile/views/library/widgets/album_widget.dart';
+import 'package:mobile/views/library/widgets/library_widget.dart';
 
 class AlbumListView extends ConsumerStatefulWidget {
   const AlbumListView({super.key});
@@ -18,7 +18,7 @@ class _AlbumListViewState extends ConsumerState<AlbumListView> {
     ref.read(libraryViewModel).getAlbums(refresh: true);
   }
 
-  Widget itemWidget(dynamic album) => AlbumWidget(album);
+  Widget itemWidget(dynamic album) => LibraryWidget(album);
   
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ class _MainViewState extends ConsumerState<MainView> {
       body: _body(),
       floatingActionButton: _trackPlayer(),
       bottomNavigationBar: _bottomNavBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -31,8 +31,8 @@ class _MainViewState extends ConsumerState<MainView> {
 
   Widget _trackPlayer() {
     return Visibility(
-      visible: ref.watch(mainViewModel.select(
-        (value) => value.audioController.tracks.isNotEmpty
+      visible: ref.watch(mainAudioController.select(
+        (value) => value.tracks.isNotEmpty
       )),
       child: const TrackPlayerWidget()
     );
