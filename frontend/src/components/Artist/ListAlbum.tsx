@@ -15,11 +15,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { Fragment, useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import { IAlbum } from '~/type/Album/IAlbum'
 import { useNavigate } from 'react-router-dom'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 type Props = {
-  listAlbums: IAlbum[]
+  listAlbums: ILibrary[]
   isPending: boolean
 }
 
@@ -144,8 +144,8 @@ export default function ListTracks({ listAlbums, isPending }: Props) {
                           gap: 0.3
                         }}
                       >
-                        {row.artistsName.map((artist, index) => (
-                          <Fragment key={artist}>
+                        {row.owners?.map((artist, index) => (
+                          <Fragment key={artist._id}>
                             <Typography
                               component='span'
                               sx={{
@@ -158,9 +158,9 @@ export default function ListTracks({ listAlbums, isPending }: Props) {
                                 }
                               }}
                             >
-                              {artist}
+                              {artist.name}
                             </Typography>
-                            {index < row.artistsName.length - 1 && ','}
+                            {index < (row.owners?.length ?? 0) - 1 && ','}
                           </Fragment>
                         ))}
                       </Typography>

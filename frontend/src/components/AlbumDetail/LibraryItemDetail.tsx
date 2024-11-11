@@ -1,13 +1,13 @@
 import Box from '@mui/material/Box'
 import AlbumInfo from './AlbumInfo/AlbumInfo'
 import { Params, useParams } from 'react-router-dom'
-import useGetAlbumDetail from '~/hooks/Album/useGetAlbumDetail'
+import useGetAlbumDetail from '~/hooks/Album/useGetLibraryDetail'
 import ListTracks from './ListTracks/ListTracks'
 
-export default function AlbumDetail() {
+export default function LibraryItemDetail() {
   const { albumId } = useParams<Params>()
   const { data, isPending } = useGetAlbumDetail(albumId || null)
-  const album = data?.result.album_info
+  const album = data?.result
   const listTracks = data?.result.list_of_tracks
 
   return (

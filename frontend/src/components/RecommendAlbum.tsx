@@ -2,18 +2,18 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useResize } from '~/hooks/useResize'
 import { useEffect, useState, useMemo } from 'react'
-import { IAlbum } from '~/type/Album/IAlbum'
 import AlbumTag from './AlbumTag'
 import useGetAlbums from '~/hooks/Album/useGetAlbums'
 import Skeleton from '@mui/material/Skeleton'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 export default function RecommendAlbum() {
-  const { data, isPending } = useGetAlbums(5, 1)
+  const { data, isPending } = useGetAlbums(10, 1)
 
-  const listAlbum = useMemo(() => (data?.result?.data as IAlbum[]) || [], [data])
+  const listAlbum = useMemo(() => (data?.result?.data as ILibrary[]) || [], [data])
 
   const { widths } = useResize()
-  const [albumList, setAlbumList] = useState<IAlbum[]>([])
+  const [albumList, setAlbumList] = useState<ILibrary[]>([])
 
   useEffect(() => {
     const numberOfVisibleItems = Math.floor((widths[1] || 0) / 185)

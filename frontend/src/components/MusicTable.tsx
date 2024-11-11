@@ -100,17 +100,17 @@ export default function MusicTable() {
                     variant='body2'
                     sx={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: textColor }}
                   >
-                    {row.artistsName.join(', ')}
+                    {row.owners.map((artist) => artist.name).join(', ')}
                   </Typography>
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor }}>
-                  N/A
+                    N/A
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor }}>
-                  N/A
+                    N/A
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor }}>
-                  N/A
+                    N/A
                 </TableCell>
               </TableRow>
             ))}

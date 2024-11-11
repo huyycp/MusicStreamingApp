@@ -9,12 +9,12 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
 import useGetAlbumByArtist from '~/hooks/Album/useGetAlbumByArtist'
-import { IAlbum } from '~/type/Album/IAlbum'
 import Skeleton from '@mui/material/Skeleton'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 export default function AlbumTable() {
   const { data, isPending } = useGetAlbumByArtist()
-  const listAlbum = data?.result.data as IAlbum[]
+  const listAlbum = data?.result.data as ILibrary[]
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
 
@@ -95,17 +95,17 @@ export default function AlbumTable() {
                     variant='body2'
                     sx={{ maxWidth: 250, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: textColor }}
                   >
-                    {row.artistsName.join(', ')}
+                    {row.owners?.map((artist) => artist.name).join(', ') || 'Unknown Artist'}
                   </Typography>
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor }}>
                   {row.number_of_tracks}
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor }}>
-                  N/A
+                    N/A
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor }}>
-                  N/A
+                    N/A
                 </TableCell>
               </TableRow>
             ))}

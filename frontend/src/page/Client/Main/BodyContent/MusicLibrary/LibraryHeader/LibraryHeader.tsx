@@ -15,12 +15,12 @@ import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import SearchIcon from '@mui/icons-material/Search'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import { IAlbum } from '~/type/Album/IAlbum'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 type Props = {
-  listAlbums: IAlbum[] | []
+  listAlbums: ILibrary[] | []
   // eslint-disable-next-line no-unused-vars
-  setPlaylistSelect: (selectedAlbums: IAlbum[]) => void
+  setPlaylistSelect: (selectedAlbums: ILibrary[]) => void
   setAlbum: React.Dispatch<React.SetStateAction<number>>
   album: number
 }
@@ -35,7 +35,6 @@ export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum,
   const [totalWidth, setTotalWidth] = useState(0)
   const [chosePlaylist, setChosePlaylist] = useState<string | ''>('')
 
-  // Sample chip data
   const chipData = useMemo(() => ['Do MagicMusic tạo', 'Của bạn'], [])
 
   useLayoutEffect(() => {
@@ -77,7 +76,7 @@ export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum,
       setPlaylistSelect([])
       setAlbum(0)
     } else {
-      const selectedAlbums = listAlbums.slice(0, 2)
+      const selectedAlbums = listAlbums.filter((album) => album.type === 'playlist')
       setPlaylistSelect(selectedAlbums)
     }
     setOpenPlayList(!openPlayList)
@@ -85,13 +84,18 @@ export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum,
   const handleChosePlayList = (index: string) => {
     setChosePlaylist(index)
 
-    const selectedAlbums = listAlbums.slice(0, 1)
+    setAlbum(1)
+    const selectedAlbums = listAlbums.filter((album) => album.type === 'playlist')
     setPlaylistSelect(selectedAlbums)
   }
 
   const handleOpenAlbum = () => {
     if (album === 1) setAlbum(0)
-    else setAlbum(1)
+    else {
+      const selectedAlbums = listAlbums.filter((album) => album.type === 'playlist')
+      setPlaylistSelect(selectedAlbums)
+      setAlbum(1)
+    }
   }
 
   return (

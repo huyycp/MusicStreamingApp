@@ -5,11 +5,11 @@ import { keyframes } from '@emotion/react'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import { capitalizeFirstLetterOfEachWord } from '~/utils/capitalizeFirstLetterOfEachWord'
-import { IAlbum } from '~/type/Album/IAlbum'
 import { useNavigate } from 'react-router-dom'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 type Props = {
-  album: IAlbum
+  album: ILibrary
 }
 const TextFade = styled(Box)(({ theme }) => ({
   'whiteSpace': 'nowrap',
@@ -85,10 +85,10 @@ export default function AlbumTag({ album }: Props) {
           overflow: 'hidden'
         }}
       >
-        {album.artistsName.map((name, index) => (
+        {(album.owners ?? []).map((owner, index) => (
           <TextFade key={index}>
-            {name}
-            {index < album.artistsName.length - 1 && ','}
+            {typeof owner === 'string' ? owner : owner.name}
+            {index < (album.owners ?? []).length - 1 && ','}
           </TextFade>
         ))}
       </Box>

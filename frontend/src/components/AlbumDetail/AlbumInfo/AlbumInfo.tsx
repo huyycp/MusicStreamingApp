@@ -2,7 +2,6 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
 import { Fragment, useState } from 'react'
-import { IAlbum } from '~/type/Album/IAlbum'
 import { formatDate } from '~/utils/formatDate'
 import Button from '@mui/material/Button'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
@@ -12,9 +11,10 @@ import Tooltip from '@mui/material/Tooltip'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useMusic } from '~/hooks/useMusic'
 import PauseIcon from '@mui/icons-material/Pause'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 type Props = {
-  album: IAlbum
+  album: ILibrary
 }
 
 export default function AlbumInfo({ album }: Props) {
@@ -103,8 +103,8 @@ export default function AlbumInfo({ album }: Props) {
                 gap: 0.3
               }}
             >
-              {album.artistsName.map((artist, index) => (
-                <Fragment key={artist}>
+              {album.owners?.map((artist, index) => (
+                <Fragment key={artist._id}>
                   <Typography
                     component='span'
                     sx={{
@@ -117,24 +117,30 @@ export default function AlbumInfo({ album }: Props) {
                       }
                     }}
                   >
-                    {artist}
+                    {artist.name}
                   </Typography>
-                  {index < album.artistsName.length - 1 && ','}
+                  {index < (album.owners?.length ?? 0) - 1 && ','}
                 </Fragment>
               ))}
             </Typography>
             <Typography noWrap sx={{ fontSize: 12, color: (theme) => theme.palette.neutral.neutral1, mb: 2 }}>
               99 người yêu thích
             </Typography>
-            {currentAlbumIndex !== album._id && <Button variant='contained' startIcon={<PlayArrowIcon />} onClick={handlePlay}>
-              PHÁT TẤT CẢ
-            </Button>}
-            {currentAlbumIndex === album._id && !pause && <Button variant='contained' startIcon={<PauseIcon />} onClick={handlePlay}>
-              TẠM DỪNG
-            </Button>}
-            {currentAlbumIndex === album._id && pause && <Button variant='contained' startIcon={<PlayArrowIcon />} onClick={handlePlay}>
-              TIẾP TỤC PHÁT
-            </Button>}
+            {currentAlbumIndex !== album._id && (
+              <Button variant='contained' startIcon={<PlayArrowIcon />} onClick={handlePlay}>
+                PHÁT TẤT CẢ
+              </Button>
+            )}
+            {currentAlbumIndex === album._id && !pause && (
+              <Button variant='contained' startIcon={<PauseIcon />} onClick={handlePlay}>
+                TẠM DỪNG
+              </Button>
+            )}
+            {currentAlbumIndex === album._id && pause && (
+              <Button variant='contained' startIcon={<PlayArrowIcon />} onClick={handlePlay}>
+                TIẾP TỤC PHÁT
+              </Button>
+            )}
             <Box sx={{ pt: 1, display: 'flex', flexDirection: 'row', gap: 2 }}>
               <Tooltip title='Thêm vào thư viên' placement='top'>
                 <IconButton sx={{ backgroundColor: (theme) => theme.palette.neutral.neutral3 }}>

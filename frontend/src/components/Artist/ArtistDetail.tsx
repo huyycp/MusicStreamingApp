@@ -11,7 +11,7 @@ import { useResize } from '~/hooks/useResize'
 import ListTracks from './ListAlbum'
 import useGetAlbumWithArtist from '~/hooks/Artist/useGetAlbumWithArtist'
 import { Params, useParams } from 'react-router-dom'
-import { IAlbum } from '~/type/Album/IAlbum'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 export default function ArtistDetail() {
   const [isSticky, setIsSticky] = useState(false)
@@ -20,7 +20,7 @@ export default function ArtistDetail() {
   const triggerRef = useRef<HTMLDivElement>(null)
   const { widths } = useResize()
 
-  const albums = data?.result.data as IAlbum[]
+  const albums = data?.result.data as ILibrary[]
 
   useEffect(() => {
     const handleScroll = () => {

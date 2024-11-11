@@ -6,11 +6,11 @@ import PauseIcon from '@mui/icons-material/Pause'
 import { useResize } from '~/hooks/useResize'
 import { useMusic } from '~/hooks/useMusic'
 import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined'
-import { IAlbum } from '~/type/Album/IAlbum'
 import { useNavigate } from 'react-router-dom'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 type Props = {
-  initAlbum: IAlbum
+  initAlbum: ILibrary
 }
 
 // Styled component for the cover image
@@ -49,8 +49,6 @@ export default function MusicView1({ initAlbum }: Props) {
   const { widths, minWidths } = useResize()
   const { addAlbum, currentAlbumIndex, pause, setPause } = useMusic()
   const navigate = useNavigate()
-
-  // const { data } = useGetAlbumDetail(initAlbum._id)
 
   const handlePlay = () => {
     if (initAlbum._id !== currentAlbumIndex) {
@@ -94,10 +92,10 @@ export default function MusicView1({ initAlbum }: Props) {
             <CoverImage className='cover-image'>
               <img
                 alt={initAlbum?.name}
-                src={initAlbum?.image?.replace('{w}x{h}bb', '48x48bb')}
-                onError={(e) => {
-                  e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
-                }}
+                src={
+                  initAlbum?.image?.replace('{w}x{h}bb', '48x48bb') ||
+                  'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
+                }
                 style={{
                   inlineSize: '48px',
                   blockSize: '48px',
@@ -140,10 +138,10 @@ export default function MusicView1({ initAlbum }: Props) {
                 {initAlbum?.name}
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'start', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
-                {initAlbum?.artistsName?.map((name, index) => (
+                {(initAlbum.owners ?? []).map((owner, index) => (
                   <TextFade key={index}>
-                    {name}
-                    {index < initAlbum.artistsName.length - 1 && ','}
+                    {typeof owner === 'string' ? owner : owner.name}
+                    {index < (initAlbum.owners ?? []).length - 1 && ','}
                   </TextFade>
                 ))}
               </Box>
@@ -161,9 +159,6 @@ export default function MusicView1({ initAlbum }: Props) {
               initAlbum?.image?.replace('{w}x{h}bb', '48x48bb') ||
               'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
             }
-            onError={(e) => {
-              e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
-            }}
             style={{
               inlineSize: '48px',
               blockSize: '48px',

@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box'
 import MusicView1 from '~/components/MusicView1'
 import MusicView2 from '~/components/MusicView2'
-import { IAlbum } from '~/type/Album/IAlbum'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 type Props = {
-  listAlbums: IAlbum[] | []
+  listAlbums: ILibrary[] | []
   album: number
 }
 

@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
 import { useEffect } from 'react'
-import AlbumDetail from '~/components/AlbumDetail/AlbumDetail'
+import AlbumDetail from '~/components/AlbumDetail/LibraryItemDetail'
 import ArtistDetail from '~/components/Artist/ArtistDetail'
 import HomeView from '~/components/HomeView'
 import MusicAlbum from '~/components/MusicAlbum'
