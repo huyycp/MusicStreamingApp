@@ -99,15 +99,15 @@ class CreateTrackViewModel extends ChangeNotifier {
         genreId: trackGenres.first.id,
       ).timeout(const Duration(seconds: 30));
       if (isTrackCreatedSuccess == true) {
-        SnackBarService.showSnackBar(message: 'Create track successfully', status: MessageTypes.success);
+        SnackBarUtils.showSnackBar(message: 'Create track successfully', status: MessageTypes.success);
       } else {
-        SnackBarService.showSnackBar(message: 'Create track failed', status:  MessageTypes.error);
+        SnackBarUtils.showSnackBar(message: 'Create track failed', status:  MessageTypes.error);
       }
       notifyListeners();
     } catch (err) {
       isTrackCreatedSuccess = false;
       notifyListeners();
-      SnackBarService.showSnackBar(message: 'Server takes too long to response');
+      SnackBarUtils.showSnackBar(message: 'Server takes too long to response');
     }
   }
 

@@ -1,18 +1,24 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/user_model.dart';
+import 'package:mobile/repositories/genre_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
+import 'package:mobile/routes.dart';
+import 'package:mobile/utils/snackbar.dart';
 
 final signUpViewModel = ChangeNotifierProvider.autoDispose<SignUpViewModel>(
-  (ref) => SignUpViewModel(ref.read(userRepoProvider))
+  (ref) => SignUpViewModel(ref.read(userRepoProvider), ref.read(genreRepoProvider))
 );
 
 class SignUpViewModel extends ChangeNotifier{
-  SignUpViewModel(UserRepository userRepo) {
+  SignUpViewModel(UserRepository userRepo, GenreRepository genreRepo) {
     _userRepo = userRepo;
+    _genreRepo = genreRepo;
   }
 
   late final UserRepository _userRepo;
+  late final GenreRepository _genreRepo;
 
   final emailFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
@@ -23,9 +29,11 @@ class SignUpViewModel extends ChangeNotifier{
   final genderController = TextEditingController(text: 'Male');
   final nameController = TextEditingController();
   UserRole userRole = UserRole.listener;
+  List<GenreModel> favoriteGenres = [];
 
   bool verifySuccess = false;
   bool registerSuccess = false;
+  bool? isGenresAdded = false;
   List<String> availableEmails = [''];
 
   void changeUserRole(UserRole? value) {
@@ -70,5 +78,33 @@ class SignUpViewModel extends ChangeNotifier{
     userRole = UserRole.listener;
     verifySuccess = false;
     registerSuccess = false;
+  }
+
+  void selectFavoriteGenres(GenreModel genre) {
+    if (favoriteGenres.contains(genre)) {
+      favoriteGenres.remove(genre);
+      favoriteGenres = [...favoriteGenres];
+    } else {
+      favoriteGenres = [...favoriteGenres, genre];
+    }
+    notifyListeners();
+  }
+
+  Future<void> addGenresToFavorite() async {
+    try {
+      isGenresAdded = null;
+      notifyListeners();
+      isGenresAdded = await _genreRepo.addGenresToFavorite(favoriteGenres: favoriteGenres);
+      if (isGenresAdded == true) {
+        RouteConfig.instance.go('/main');
+      } else if (isGenresAdded == false) {
+        SnackBarUtils.showSnackBar(message: 'Add favorite genres failed');
+      }
+      notifyListeners();
+    } catch (err) {
+      debugPrint(err.toString());
+      isGenresAdded = false;
+      notifyListeners();
+    }
   }
 }

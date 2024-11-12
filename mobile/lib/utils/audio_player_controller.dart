@@ -112,16 +112,16 @@ class AudioPlayerController extends ChangeNotifier {
   Future<void> playNextTrack() async {
     if (_player.hasNext) {
       currentIndex += 1;
-      await _player.seekToNext();
       notifyListeners();
+      await _player.seekToNext();
     }
   }
 
   Future<void> playPrevTrack() async {
     if (_player.hasPrevious) {
       currentIndex -= 1;
-      await _player.seekToPrevious();
       notifyListeners();
+      await _player.seekToPrevious();
     }
   }
 }

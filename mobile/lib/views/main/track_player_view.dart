@@ -106,19 +106,25 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
     final track = ref.watch(mainAudioController.select(
       (value) => value.tracks[value.currentIndex]
     ));
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          track.name,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        Text(
-          track.owwnerNames,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-      ],
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            track.name,
+            style: Theme.of(context).textTheme.titleLarge,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            track.owwnerNames,
+            style: Theme.of(context).textTheme.bodyMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 

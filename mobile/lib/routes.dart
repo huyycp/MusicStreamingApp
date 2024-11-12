@@ -12,6 +12,7 @@ import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
 import 'package:mobile/views/pick_track/pick_track_view.dart';
 import 'package:mobile/views/detail_library/detail_library_view.dart';
+import 'package:mobile/views/sign_up/select_favorite_genre_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_1_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_2_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_3_view.dart';
@@ -20,10 +21,10 @@ import 'package:mobile/views/sign_up/sign_up_step_5_view.dart';
 import 'package:mobile/views/sign_up/verify_email_view.dart';
 import 'package:mobile/views/splash/splash_view.dart';
 
-class RouteService {
-  RouteService._internal();
+class RouteConfig {
+  RouteConfig._internal();
 
-  static final routeConfig = GoRouter(
+  static final _routeConfig = GoRouter(
     initialLocation: '/splash',
     routes: <RouteBase>[
       _authRoute,
@@ -35,6 +36,8 @@ class RouteService {
     ]
   );
 
+  static GoRouter get instance => _routeConfig;
+
   static final GoRoute _authRoute = GoRoute(
     path: '/auth',
     name: 'auth',
@@ -43,6 +46,7 @@ class RouteService {
       _loginRoute,
       _signUpRoute,
       _verifyEmailRoute,
+      _selectFavoriteGenreRoute,
     ]
   );
 
@@ -84,6 +88,11 @@ class RouteService {
     path: 'verify-email',
     name: 'verify-email',
     builder: (context, state) => const VerifyEmailView()
+  );
+
+  static final GoRoute _selectFavoriteGenreRoute = GoRoute(
+    path: 'select-genre',
+    builder: (context, state) => const SelectFavoriteGenreView(),
   );
 
   static final GoRoute _mainRoute = GoRoute(

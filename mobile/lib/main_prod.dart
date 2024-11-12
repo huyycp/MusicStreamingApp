@@ -22,10 +22,10 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      scaffoldMessengerKey: SnackBarService.scaffoldMessengerKey,
+      scaffoldMessengerKey: SnackBarUtils.scaffoldMessengerKey,
       title: 'Music Streaming App',
       theme: ref.read(themeProvider).themeData,
-      routerConfig: RouteService.routeConfig,
+      routerConfig: RouteConfig.instance,
       debugShowCheckedModeBanner: false,
     );
   }

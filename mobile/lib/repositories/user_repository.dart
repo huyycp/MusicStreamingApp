@@ -18,6 +18,7 @@ class UserRepository {
   }
   
   late final UserRemoteDataSource _userRemote;
+  UserModel? user;
 
   Future<bool> registerWithEmail({
     required String email,
@@ -26,13 +27,17 @@ class UserRepository {
     required String name, 
     required UserRole role, 
   }) async {
-    return await _userRemote.registerWithEmail(RegisterReq(
+    final result = await _userRemote.registerWithEmail(RegisterReq(
       email: email, 
       password: password, 
       gender: gender, 
       name: name, 
       role: role
     ));
+    if (result) {
+       await getCurrentUser();
+    }
+    return result;
   }
 
   Future<void> getAuthOTP(String email) async {
@@ -57,13 +62,18 @@ class UserRepository {
     required String email,
     required String password
   }) async {
-    return await _userRemote.loginWithEmail(LoginReq(
+    final result = await _userRemote.loginWithEmail(LoginReq(
       email: email,
       password: password
     ));
+    if (result) {
+       await getCurrentUser();
+    }
+    return result;
   }
 
   Future<bool> logout() async {
+    user = null;
     return await _userRemote.logout();
   }
 
@@ -77,7 +87,11 @@ class UserRepository {
     return !JwtDecoder.isExpired(refreshToken);
   }
 
-  Future<UserModel?> getCurrentUser() async {
-    return await _userRemote.getCurrentUser();
+  Future<void> getCurrentUser() async {
+    try {
+      user = await _userRemote.getCurrentUser();
+    } catch (err) {
+      user = null;
+    }
   }
 }

@@ -30,6 +30,7 @@ class _LibraryListViewState extends ConsumerState<LibraryListView> {
       itemWidget: itemWidget,
       onRefresh: () => ref.read(libraryViewModel).getLibraries(refresh: true),
       scrollController: ref.read(libraryViewModel).libraryScrollController,
+      isLoading: ref.watch(libraryViewModel.select((value) => value.isLoadingLibraries)),
     );
   }
 }

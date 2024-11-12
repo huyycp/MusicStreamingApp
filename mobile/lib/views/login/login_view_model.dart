@@ -33,13 +33,13 @@ class LoginViewModel extends ChangeNotifier{
         password: passwordController.text
       ).timeout(const Duration(seconds: 30));
       if (isLoginSuccess == true) {
-        SnackBarService.showSnackBar(
+        SnackBarUtils.showSnackBar(
           message: 'Login successfully',
           status: MessageTypes.success,
         );
-        RouteService.routeConfig.go('/main') ;
+        RouteConfig.instance.go('/main') ;
       } else if (isLoginSuccess == false) {
-        SnackBarService.showSnackBar(
+        SnackBarUtils.showSnackBar(
           message: 'Login failed',
           status: MessageTypes.success,
         );
@@ -48,7 +48,7 @@ class LoginViewModel extends ChangeNotifier{
     } catch (err) {
       isLoginSuccess = false;
       notifyListeners();
-      SnackBarService.showSnackBar(
+      SnackBarUtils.showSnackBar(
         message: 'Magic Music takes too long to respond',
         status: MessageTypes.info,
       );

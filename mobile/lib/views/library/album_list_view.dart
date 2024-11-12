@@ -30,6 +30,7 @@ class _AlbumListViewState extends ConsumerState<AlbumListView> {
       itemWidget: itemWidget,
       onRefresh: () => ref.read(libraryViewModel).getAlbums(refresh: true),
       scrollController: ref.read(libraryViewModel).albumScrollController,
+      isLoading: ref.watch(libraryViewModel.select((value) => value.isLoadingAlbums)),
     );
   }
 }

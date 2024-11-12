@@ -30,6 +30,7 @@ class _PlaylistListViewState extends ConsumerState<PlaylistListView> {
       itemWidget: itemWidget,
       onRefresh: () => ref.read(libraryViewModel).getPlaylists(refresh: true),
       scrollController: ref.read(libraryViewModel).playlistScrollController,
+      isLoading: ref.watch(libraryViewModel.select((value) => value.isLoadingPlaylist)),
     );
   }
 }

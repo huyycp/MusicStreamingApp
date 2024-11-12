@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/theme/text_theme.dart';
 
-class SnackBarService {
+class SnackBarUtils {
   static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-  SnackBarService._internal();
+  SnackBarUtils._internal();
 
   static void showSnackBar({
     required String message,

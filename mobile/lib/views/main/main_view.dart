@@ -40,11 +40,12 @@ class _MainViewState extends ConsumerState<MainView> {
 
   Widget _bottomNavBar() {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [Colors.black, Colors.black.withOpacity(0.75)]
+          colors: [Colors.black, Colors.black.withOpacity(0.5)]
         ),
       ),
       child: BottomNavigationBar(

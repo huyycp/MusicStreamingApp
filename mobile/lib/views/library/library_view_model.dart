@@ -4,9 +4,11 @@ import 'package:mobile/data/dto/req/get_library_req.dart';
 import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
+import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
+import 'package:mobile/utils/snackbar.dart';
 
 final libraryViewModel = ChangeNotifierProvider<LibraryViewModel>(
   (ref) => LibraryViewModel(
@@ -51,6 +53,35 @@ class LibraryViewModel extends ChangeNotifier {
   final UserRepository _userRepo;
 
   LibraryTabs currentTab = LibraryTabs.none;
+  UserModel? get user => _userRepo.user;
+
+  List<LibraryModel> libraries = [];
+  int libraryPage = 1;
+  int libraryLimit = 10;
+  bool canLoadLibraries = false;
+  bool isLoadingLibraries = true;
+  final libraryScrollController = ScrollController();
+
+  List<LibraryModel> albums = [];
+  int albumPage = 1;
+  int albumLimit = 10;
+  bool canLoadAlbums = false;
+  bool isLoadingAlbums = true;
+  final albumScrollController = ScrollController();
+
+  List<LibraryModel> playlists = [];
+  int playlistPage = 1;
+  int playlistLimit = 10;
+  bool canLoadPlaylists = false;
+  bool isLoadingPlaylist = true;
+  final playlistScrollController = ScrollController();
+
+  List<TrackModel> tracks = [];
+  int trackPage = 1;
+  int trackLimit = 10;
+  bool canLoadTracks = false;
+  bool isLoadingTracks = true;
+  final trackScrollController = ScrollController();
 
   void selectTab(LibraryTabs tab) {
     if ((tab == LibraryTabs.none) || (tab != LibraryTabs.none && currentTab == LibraryTabs.none)) {
@@ -59,34 +90,15 @@ class LibraryViewModel extends ChangeNotifier {
     }
   }
 
-  List<LibraryModel> libraries = [];
-  int libraryPage = 1;
-  int libraryLimit = 10;
-  bool canLoadLibraries = false;
-  final libraryScrollController = ScrollController();
-
-  List<LibraryModel> albums = [];
-  int albumPage = 1;
-  int albumLimit = 10;
-  bool canLoadAlbums = false;
-  final albumScrollController = ScrollController();
-
-  List<LibraryModel> playlists = [];
-  int playlistPage = 1;
-  int playlistLimit = 10;
-  bool canLoadPlaylists = false;
-  final playlistScrollController = ScrollController();
-
-  List<TrackModel> tracks = [];
-  int trackPage = 1;
-  int trackLimit = 10;
-  bool canLoadTracks = false;
-  final trackScrollController = ScrollController();
-
   Future<void> getLibraries({ bool refresh  = false }) async {
+    isLoadingLibraries = true;
+    notifyListeners();
     if (refresh) {
-      libraries.clear();
       libraryPage = 1;
+      if (libraries.isNotEmpty) {
+        libraryScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      }
+      libraries.clear();
     }
     final resp = await _libraryRepo.getLibraries(
       pagination: PaginationListReq(
@@ -104,14 +116,22 @@ class LibraryViewModel extends ChangeNotifier {
       } else {
         canLoadLibraries = false;
       }
-      notifyListeners();
+    } else {
+      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection.');
     }
+    isLoadingLibraries = false;
+    notifyListeners();
   }
   
   Future<void> getAlbums({bool refresh = false}) async {
+    isLoadingAlbums = true;
+    notifyListeners();
     if (refresh) {
-      albums.clear();
       albumPage = 1;
+      if (albums.isNotEmpty) {
+        albumScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      }
+      albums.clear();
     }
     final resp = await _libraryRepo.getLibraries(
       pagination: PaginationListReq(
@@ -130,14 +150,22 @@ class LibraryViewModel extends ChangeNotifier {
       } else {
         canLoadAlbums = false;
       }
-      notifyListeners();
+    } else {
+      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again.');
     }
+    isLoadingAlbums = false;
+    notifyListeners();
   }
 
   Future<void> getPlaylists({bool refresh = false}) async {
+    isLoadingPlaylist = true;
+    notifyListeners();
     if (refresh) {
-      playlists.clear();
       playlistPage = 1;
+      if (playlists.isNotEmpty) {
+        playlistScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      }
+      playlists.clear();
     }
     final resp = await _libraryRepo.getLibraries(
       pagination: PaginationListReq(
@@ -156,14 +184,22 @@ class LibraryViewModel extends ChangeNotifier {
       } else {
         canLoadPlaylists = false;
       }
-      notifyListeners();
+    } else {
+      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again');
     }
+    isLoadingPlaylist = false;
+    notifyListeners();
   }
 
   Future<void> getMyTracks({bool refresh = false}) async {
+    isLoadingTracks = true;
+    notifyListeners();
     if (refresh) {
-      tracks.clear();
       trackPage = 1;
+      if (tracks.isNotEmpty) {
+        trackScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      }
+      tracks.clear();
     }
     final resp = await _trackRepo.getTracksByUser(
       pagination: PaginationListReq(
@@ -179,8 +215,11 @@ class LibraryViewModel extends ChangeNotifier {
       } else {
         canLoadTracks = false;
       }
-      notifyListeners();
+    } else {
+      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again.');
     }
+    isLoadingTracks = false;
+    notifyListeners();
   }
 
   Future<List<TrackModel>> getTracksByLibrary(String id) async {
