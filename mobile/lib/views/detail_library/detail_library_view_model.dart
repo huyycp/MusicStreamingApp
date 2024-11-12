@@ -22,12 +22,11 @@ class DetailLibraryViewModel extends ChangeNotifier {
   final LibraryRepository _libraryRepo;
   final UserRepository _userRepo;
   LibraryModel? library;
-  UserModel? user;
+  UserModel? get user => _userRepo.user;
   bool isLoading = true;
 
   Future<void> getLibrary(String libraryId) async {
     library = await _libraryRepo.getLibrary(libraryId);
-    user = await _userRepo.getCurrentUser();
     isLoading = false;
     notifyListeners();
   }

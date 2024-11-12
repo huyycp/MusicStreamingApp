@@ -172,18 +172,6 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
     );
   }
 
-  Widget _playlistListeningTime() {
-    return Row(
-      children: [
-        DynamicImage(
-          'assets/icons/ic_global_disabled.svg',
-          width: 20,
-          height: 20,
-        ),
-      ],
-    );
-  }
-
   Widget _playlistActions() {
     return Row(
       children: [

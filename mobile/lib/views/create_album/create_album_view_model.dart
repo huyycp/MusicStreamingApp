@@ -40,9 +40,9 @@ class CreateAlbumViewModel extends ChangeNotifier {
       type: LibraryType.album,
     );
     if (isAlbumCreated == true) {
-      SnackBarService.showSnackBar(message: 'Create album successfully', status: MessageTypes.success);
+      SnackBarUtils.showSnackBar(message: 'Create album successfully', status: MessageTypes.success);
     } else {
-      SnackBarService.showSnackBar(message: 'Create album failed', status: MessageTypes.error);
+      SnackBarUtils.showSnackBar(message: 'Create album failed', status: MessageTypes.error);
     }
     notifyListeners();
   }

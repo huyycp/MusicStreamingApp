@@ -84,7 +84,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   Widget _loginBtn() {
     return ElevatedButton(
-      onPressed: ref.watch(loginViewModel.select((value) => value.isLoginSuccess == false)) 
+      onPressed: ref.watch(loginViewModel.select((value) => value.isLoginSuccess == false && value.isValidInfor)) 
         ? () {
             if (ref.read(loginViewModel).loginFormKey.currentState!.validate()) {
               ref.read(loginViewModel).login();
@@ -96,6 +96,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
         disabledForegroundColor: Colors.black,
         backgroundColor: const Color(0xFFFFFFFF),
         disabledBackgroundColor: const Color(0xFF535353),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8)
+        )
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -4,15 +4,26 @@ import 'package:mobile/models/library_model.dart';
 class GetLibraryReq {
   GetLibraryReq({
     required this.pagination,
-    required this.type,
+    this.type,
+    this.sortBy = 'created_at',
+    this.direction = SortDirection.desc,
   });
 
-  PaginationListReq pagination;
-  LibraryType type;
+  final PaginationListReq pagination;
+  final LibraryType? type;
+  final String sortBy;
+  final SortDirection direction;
 
   Map<String, dynamic> toJson() => {
     'page': pagination.page,
     'limit': pagination.limit,
-    'type': type.name,
+    if (type != null) 'type': type!.name,
+    'sortBy': sortBy,
+    'order': direction.name,
   };
+}
+
+enum SortDirection {
+  asc,
+  desc,
 }

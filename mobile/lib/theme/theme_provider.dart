@@ -11,10 +11,11 @@ final themeProvider = ChangeNotifierProvider<ThemeProvider>((ref) {
 });
 
 class ThemeProvider extends ChangeNotifier{
+  bool isDarkmode = true;
+  static BaseColorScheme colorScheme = DarkColorScheme.instance;
+
   ThemeData get themeData => ThemeData(
-    primaryColor: PRIMARY_COLOR,
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: PRIMARY_BACKGROUND,
+    colorScheme: colorScheme.getColorScheme(),
     textTheme: BaseTextTheme.textTheme,
     inputDecorationTheme: BaseInputTheme.inputTheme,
     elevatedButtonTheme: BaseButtonTheme.elevatedButtonTheme,

@@ -38,11 +38,15 @@ class LibraryRepository {
 
   Future<GetLibraryResp?> getLibraries({
     required PaginationListReq pagination,
-    required LibraryType type,
+    LibraryType? type,
+    String sortBy = 'created_at',
+    SortDirection direction = SortDirection.desc,
   }) async {
     final req = GetLibraryReq(
       pagination: pagination,
       type: type,
+      sortBy: sortBy,
+      direction: direction,
     );
     return await _libraryRemote.getLibraries(req);
   }

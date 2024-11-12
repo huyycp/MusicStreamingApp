@@ -23,10 +23,9 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
     ref.listen(signUpViewModel.select((value) => value.registerSuccess), (prev, next) {
-      debugPrint('Register status: $next');
       context.pop();
       if (next) {
-        context.go('/main');
+        context.go('/auth/select-genre');
       } else {
         debugPrint('Register failed');
       }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
+import 'package:mobile/data/dto/req/add_genres_to_favorite_req.dart';
 import 'package:mobile/models/genre_model.dart';
 
 final genreRemoteProvider = Provider<GenreRemoteDataSource>(
@@ -33,5 +34,14 @@ class GenreRemoteDataSource {
       }
     }
     return List.empty();
+  }
+
+  Future<bool> addGenresToFavorite(AddGenresToFavoriteReq req) async {
+    final response = await _magicMusicApi.request(
+      '$_genrePath/favorite',
+      method: HttpMethods.PATCH,
+      data: req.toJson(),
+    );
+    return response.statusCode == HttpStatus.ok;
   }
 }

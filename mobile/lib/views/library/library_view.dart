@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/library/album_list_view.dart';
+import 'package:mobile/views/library/library_list_view.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/views/library/playlist_list_view.dart';
 import 'package:mobile/views/library/track_list_view.dart';
@@ -35,20 +36,30 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
     );
   }
 
-  AppBar _appBar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      title: const Text('Your Library'),
-      leading: _userAvatar(),
-      actions: _appBarActions(),
-      bottom: _tabBar(),
+  PreferredSize _appBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(124),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          title: const Text('Your Library'),
+          leading: _userAvatar(),
+          actions: _appBarActions(),
+          bottom: _tabBar(),
+          forceMaterialTransparency: true,
+        ),
+      ),
     );
   }
 
   Widget _body() {
+    final LibraryTabs currentTab = ref.watch(libraryViewModel.select((value) => value.currentTab));
     return BaseContainer(
       padding: EdgeInsets.zero,
-      child: views[ref.watch(libraryViewModel.select((value) => value.currentTab.index))],
+      child: currentTab == LibraryTabs.none
+        ? const LibraryListView()
+        : views[ref.watch(libraryViewModel.select((value) => value.currentTab.index))],
     );
   }
 
@@ -61,39 +72,37 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
-          children: [
-            if (currentTab != LibraryTabs.none)
-              IconButton(
-                onPressed: () => ref.read(libraryViewModel).selectTab(LibraryTabs.none),
-                icon: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: GRAY_BCK_1,
-                  ),
-                  child: const Icon(Icons.close)),
-              ),
-            Expanded(
-              child: SizedBox(
-                height: 48,  // Ensures ListView gets a fixed height
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: currentTabsList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () => ref.read(libraryViewModel).selectTab(currentTabsList[index]),
-                      child: _tab(currentTabsList[index], currentTab == currentTabsList[index]),
-                    );
-                  },
-                  separatorBuilder: (context, index) => const SizedBox(width: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (currentTab != LibraryTabs.none)
+            IconButton(
+              onPressed: () => ref.read(libraryViewModel).selectTab(LibraryTabs.none),
+              icon: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: GRAY_BCK_1,
                 ),
+                child: const Icon(Icons.close)),
+            ),
+          Expanded(
+            child: SizedBox(
+              height: 48,  // Ensures ListView gets a fixed height
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: currentTabsList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => ref.read(libraryViewModel).selectTab(currentTabsList[index]),
+                    child: _tab(currentTabsList[index], currentTab == currentTabsList[index]),
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(width: 4),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -115,11 +124,14 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
   }
 
   Widget _userAvatar() {
-    return DynamicImage(
-      'assets/images/app_image.png',
-      width: 36,
-      height: 36,
-      isCircle: true,
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: DynamicImage(
+        ref.watch(libraryViewModel.select((value) => value.user?.avatarLink ?? '')),
+        width: 10,
+        height: 20,
+        isCircle: true,
+      ),
     );
   }
   

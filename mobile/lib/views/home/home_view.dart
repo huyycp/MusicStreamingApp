@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/views/home/home_view_model.dart';
+import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/status_dialog_widget.dart';
 
 class HomeView extends ConsumerStatefulWidget {
@@ -22,9 +23,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
     return Scaffold(
       appBar: _appBar(),
-      body: const Center(
-        child: Text('Home'),
-      )
+      body: _body(),
     );
   }
 
@@ -35,13 +34,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
           icon: const Icon(Icons.logout),
           onPressed: () {
             ref.read(homeViewModel).logout();
-            showDialog(
-              context: context, 
-              builder: (context) => const StatusDialogWidget('Logging out...')
-            );
           },
         )
       ],
+    );
+  }
+
+  Widget _body() {
+    return BaseContainer(
+      
     );
   }
 }

@@ -30,6 +30,7 @@ class _TrackListViewState extends ConsumerState<TrackListView> {
       itemWidget: itemWidget,
       onRefresh: () => ref.read(libraryViewModel).getMyTracks(refresh: true),
       scrollController: ref.read(libraryViewModel).trackScrollController,
+      isLoading: ref.watch(libraryViewModel.select((value) => value.isLoadingTracks)),
     );
   }
 }
