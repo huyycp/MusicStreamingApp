@@ -13,11 +13,14 @@ import MicExternalOnOutlinedIcon from '@mui/icons-material/MicExternalOnOutlined
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { ITrack } from '~/type/Tracks/ITrack'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import { useMusic } from '~/hooks/useMusic'
+import MenuTrack from '~/components/MenuMore/MenuTrack'
+import { getAudioDuration } from '~/utils/getAudioDuration'
+import { formatDuration } from '~/utils/formatDuration'
 
 type Props = {
   albumId: string
@@ -32,6 +35,20 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
   const hoverBackgroundColor = theme.palette.neutral.neutral3
   const [hoveredRow, setHoveredRow] = useState<string | null>(null)
   const { currentAlbumIndex, addAlbum, pause, setPause, music } = useMusic()
+  const [trackDurations, setTrackDurations] = useState<{ [key: string]: number }>({})
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [open, setOpen] = useState(false)
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+    setOpen(false)
+  }
 
   const handlePlay = (index: number, musicId: string) => {
     if (albumId === currentAlbumIndex && musicId === music?._id) {
@@ -40,6 +57,18 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
       addAlbum(albumId, index)
     }
   }
+
+  useEffect(() => {
+    const fetchDurations = async () => {
+      const durations: { [key: string]: number } = {}
+      for (const track of listTracks) {
+        const duration = await getAudioDuration(track.path_audio)
+        durations[track._id] = duration
+      }
+      setTrackDurations(durations)
+    }
+    fetchDurations()
+  }, [listTracks])
 
   return (
     <TableContainer component={Paper} sx={{ minWidth: 150, maxWidth: '100%', overflow: 'auto', bgcolor: 'transparent' }}>
@@ -187,7 +216,7 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor, borderColor: borderColor }}>
                   {hoveredRow !== row._id ? (
-                    'N/A'
+                    formatDuration(trackDurations[row._id] || 0)
                   ) : (
                     <Box
                       className='icon-actions'
@@ -220,7 +249,7 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
                           <FavoriteBorderOutlinedIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title='Khác' placement='top'>
+                      <Tooltip title='Khác' placement='top' onClick={handleClick}>
                         <IconButton
                           sx={{
                             '&:hover': {
@@ -231,6 +260,7 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
                           <MoreHorizIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
                         </IconButton>
                       </Tooltip>
+                      {open && anchorEl && <MenuTrack track={row} open={open} anchorEl={anchorEl} onClose={handleClose} />}
                     </Box>
                   )}
                 </TableCell>

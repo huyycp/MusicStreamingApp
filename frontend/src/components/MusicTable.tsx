@@ -25,27 +25,26 @@ export default function MusicTable() {
           <TableRow>
             <TableCell sx={{ color: textColor }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                Song <SortIcon sx={{ fontSize: 16 }} />
+                Bài hát <SortIcon sx={{ fontSize: 16 }} />
               </Box>
             </TableCell>
             <TableCell align='left' sx={{ color: textColor }}>
-              Artist
+              Nghệ sĩ
             </TableCell>
-            <TableCell align='right' sx={{ color: textColor, width: '60px' }}>
-              Views
+            <TableCell align='right' sx={{ color: textColor, width: '100px' }}>
+              Lượt nghe
             </TableCell>
-            <TableCell align='right' sx={{ color: textColor, width: '60px' }}>
-              Release
+            <TableCell align='right' sx={{ color: textColor, width: '80px' }}>
+              Ra mắt
             </TableCell>
-            <TableCell align='right' sx={{ color: textColor, width: '60px' }}>
-              Likes
+            <TableCell align='right' sx={{ color: textColor, width: '100px' }}>
+              Lượt thích
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody sx={{ bgcolor: theme.palette.neutral.neutral3 }}>
           {isPending
-            ? // Hiển thị shimmer khi dữ liệu đang tải
-            Array.from(new Array(5)).map((_, index) => (
+            ? Array.from(new Array(5)).map((_, index) => (
               <TableRow key={index}>
                 <TableCell>
                   <Box display='flex' alignItems='center'>

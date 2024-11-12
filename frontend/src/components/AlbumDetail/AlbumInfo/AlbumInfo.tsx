@@ -12,13 +12,18 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useMusic } from '~/hooks/useMusic'
 import PauseIcon from '@mui/icons-material/Pause'
 import { ILibrary } from '~/type/Library/ILibrary'
+import { useUser } from '~/hooks/useUser'
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
+import UpdatePlayListModal from '~/components/UpdatePlayListModal/UpdatePlayListModal'
 
 type Props = {
   album: ILibrary
 }
 
 export default function AlbumInfo({ album }: Props) {
+  const { user } = useUser()
   const [hover, setHover] = useState(false)
+  const [openPlayListModal, setOpenPlayListModal] = useState(false)
   const { addAlbum, currentAlbumIndex, pause, setPause } = useMusic()
 
   const handlePlay = () => {
@@ -49,7 +54,7 @@ export default function AlbumInfo({ album }: Props) {
           >
             <img
               alt={album?.name}
-              src={album?.image}
+              src={album?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
               onError={(e) => {
                 e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
               }}
@@ -87,9 +92,21 @@ export default function AlbumInfo({ album }: Props) {
             )}
           </Box>
           <Box display='flex' alignItems='center' justifyContent='center' flexDirection='column' sx={{ mt: 1 }}>
-            <Typography noWrap sx={{ fontSize: 18, fontWeight: 'bold' }}>
-              {album?.name}
-            </Typography>
+            {user?._id !== album.user_id && (
+              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>{album?.name}</Typography>
+                <IconButton onClick={() => setOpenPlayListModal(true)}>
+                  <CreateOutlinedIcon sx={{ color: (theme) => theme.palette.secondary4.main }} />
+                </IconButton>
+              </Box>
+            )}
+            {user?._id === album.user_id && (
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography noWrap sx={{ fontSize: 18, fontWeight: 'bold' }}>
+                  {album?.name}
+                </Typography>
+              </Box>
+            )}
             <Typography noWrap sx={{ fontSize: 12, color: (theme) => theme.palette.neutral.neutral1 }}>
               Cập nhật: {formatDate(album?.created_at)}
             </Typography>
@@ -156,6 +173,7 @@ export default function AlbumInfo({ album }: Props) {
           </Box>
         </Box>
       )}
+      {album?.type === 'playlist' && <UpdatePlayListModal open={openPlayListModal} setOpen={setOpenPlayListModal} playList={album} />}
     </Box>
   )
 }

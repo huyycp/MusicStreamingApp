@@ -3,23 +3,23 @@ import AuthGenres from './MusicGenres/AuthGenres'
 import { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
-import useGetProfile from '~/hooks/User/useGetProfile'
 import useChangeGenres from '~/hooks/Genres/useChangeGenres'
 import { useNavigate } from 'react-router-dom'
 import Typography from '@mui/material/Typography'
+import { useUser } from '~/hooks/useUser'
 
 export default function GenresChose() {
-  const { data } = useGetProfile()
+  const { user } = useUser()
   const { mutate, isError, isPending } = useChangeGenres()
   const [activeGenres, setActiveGenres] = useState<string[]>([])
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (data) {
-      const genresIds = data.result.genres.map((genre: { _id: string }) => genre._id)
+    if (user) {
+      const genresIds = user.genres.map((genre) => genre._id)
       setActiveGenres(genresIds)
     }
-  }, [data])
+  }, [user])
 
   const handleUpdateGenres = () => {
     mutate(activeGenres, {

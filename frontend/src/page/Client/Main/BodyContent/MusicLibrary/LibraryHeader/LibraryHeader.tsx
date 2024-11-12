@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import SearchIcon from '@mui/icons-material/Search'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import { ILibrary } from '~/type/Library/ILibrary'
+import PlayListModal from '~/components/PlayListModal/PlayListModal'
 
 type Props = {
   listAlbums: ILibrary[] | []
@@ -34,6 +35,7 @@ export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum,
   const [containerWidth, setContainerWidth] = useState(0)
   const [totalWidth, setTotalWidth] = useState(0)
   const [chosePlaylist, setChosePlaylist] = useState<string | ''>('')
+  const [openPlayListModal, setOpenPlayListModal] = useState(false)
 
   const chipData = useMemo(() => ['Do MagicMusic tạo', 'Của bạn'], [])
 
@@ -138,7 +140,7 @@ export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum,
         </Tooltip>
         {widths[0] !== minWidths[0] && (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Tooltip title='Tạo danh sách phát hoạt thư mục' placement='top'>
+            <Tooltip title='Tạo danh sách phát' placement='top' onClick={() => setOpenPlayListModal(true)}>
               <IconButton
                 sx={{
                   'padding': '8px',
@@ -151,6 +153,7 @@ export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum,
                 <AddIcon />
               </IconButton>
             </Tooltip>
+            <PlayListModal open={openPlayListModal} setOpen={setOpenPlayListModal} />
             <Tooltip title={widths[0] !== maxWidths[0] ? 'Xem thêm' : 'Ẩn bớt'} placement='top'>
               <IconButton
                 sx={{
