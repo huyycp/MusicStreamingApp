@@ -7,6 +7,7 @@ import 'package:mobile/views/home/widgets/favorite_genre_widget.dart';
 import 'package:mobile/views/home/widgets/recommended_album_widget.dart';
 import 'package:mobile/views/home/widgets/suggested_artist_widget.dart';
 import 'package:mobile/widgets/base_container.dart';
+import 'package:mobile/widgets/dynamic_image.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -39,18 +40,42 @@ class _HomeViewState extends ConsumerState<HomeView> {
     );
   }
 
-  AppBar _appBar() {
-    return AppBar(
-      forceMaterialTransparency: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () {
-            ref.read(homeViewModel).logout();
-          },
-        )
-      ],
+  PreferredSize _appBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(56),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: AppBar(
+          title: const Text('Home'),
+          leading: _userAvatar(),
+          actions: _appBarActions(),
+          forceMaterialTransparency: true,
+        ),
+      ),
     );
+  }
+
+  Widget _userAvatar() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: DynamicImage(
+        ref.watch(homeViewModel.select((value) => value.user?.avatarLink ?? '')),
+        width: 10,
+        height: 20,
+        isCircle: true,
+      ),
+    );
+  }
+  
+  List<Widget> _appBarActions() {
+    return [
+      IconButton(
+        icon: const Icon(Icons.logout),
+        onPressed: () {
+          ref.read(homeViewModel).logout();
+        },
+      )
+    ];
   }
 
   Widget _body() {
