@@ -27,7 +27,7 @@ class TrackModel {
   DateTime? updatedAt;
   List<UserModel> owners;
 
-  String get owwnerNames => owners.map((owner) => owner.name).join(', ');
+  String get ownerNames => owners.map((owner) => owner.name).join(', ');
 
   factory TrackModel.fromJson(Map<String, dynamic> json) => TrackModel(
     id: json['_id'] ?? '',
@@ -60,7 +60,7 @@ class TrackModel {
 
   @override
   String toString() {
-    return '$name - $owwnerNames';
+    return '$name - $ownerNames';
   }
 }
 

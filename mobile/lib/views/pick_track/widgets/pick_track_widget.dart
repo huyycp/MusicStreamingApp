@@ -35,7 +35,7 @@ class PickTrackWidget extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  track.owwnerNames,
+                  track.ownerNames,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium
                 )

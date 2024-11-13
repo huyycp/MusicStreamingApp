@@ -34,7 +34,7 @@ class TrackWidget extends ConsumerWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  track.owwnerNames,
+                  track.ownerNames,
                   style: Theme.of(context).textTheme.labelLarge,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

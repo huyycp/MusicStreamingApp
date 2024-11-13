@@ -31,6 +31,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: _appBar(),
       body: _body(),
     );
