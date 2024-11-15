@@ -45,7 +45,7 @@ export default function AddTrackToAlbum() {
   const handleNext = () => {
     if (id) {
       addTrackToAlbum(
-        { tracks: selectedTracks, library_id: id },
+        { tracks: selectedTracks, library_id: id, type: 'add' },
         {
           onSuccess: () => navigate('/my-music'),
           onError: () => navigate('/404')

@@ -18,9 +18,17 @@ export default function ArtistDetail() {
   const { artistId } = useParams<Params>()
   const { data, isPending } = useGetAlbumWithArtist(artistId || null, 10, 0)
   const triggerRef = useRef<HTMLDivElement>(null)
+  const [owner, setOwner] = useState<string>('')
   const { widths } = useResize()
 
   const albums = data?.result.data as ILibrary[]
+
+  useEffect(() => {
+    if (albums && albums[0]) {
+      const ownerData = albums[0].owners?.find((owner) => owner._id === artistId)
+      setOwner(ownerData ? ownerData.name : '')
+    }
+  }, [albums, artistId])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,7 +75,7 @@ export default function ArtistDetail() {
             </Typography>
           </Box>
           <Typography variant='h1' sx={{ color: 'white', mt: 'auto', mb: 'auto', fontWeight: '1000' }}>
-            Artist Name
+            {owner || 'Tên nghệ sĩ'}
           </Typography>
         </Box>
       </Box>

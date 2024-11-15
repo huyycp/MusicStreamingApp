@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createContext, useContext } from 'react'
+import { ILibrary } from '~/type/Library/ILibrary'
 import { ITrack } from '~/type/Tracks/ITrack'
 
 interface MusicContextProps {
@@ -18,9 +19,12 @@ interface MusicContextProps {
   playNextTrack: () => void
   playPreviousTrack: () => void
   music: ITrack | null
+  nextMusic: ITrack | null
   changeMusic: (music: ITrack) => void
-  addAlbum: (albumId: string, musicIndex: number) => void
+  addAlbum: (albumId: string, musicIndex: number, trackId?: string) => void
   currentAlbumIndex: string
+  currentTrackIndex: number
+  album: ILibrary
 }
 
 const MusicContext = createContext<MusicContextProps | undefined>(undefined)

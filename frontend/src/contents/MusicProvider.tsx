@@ -7,12 +7,13 @@ interface MusicProviderProps {
   children: ReactNode
   listAlbumId: string[]
   initIndexAlbum: number
+  initTrackId: string
   // eslint-disable-next-line no-unused-vars
-  addAlbumToList: (albumId: string, currentAlbumIndex: number, currentTrackIndex: number) => void
+  addAlbumToList: (albumId: string, currentAlbumIndex: number, currentTrackIndex: number, trackId?: string) => void
   trackIndex: number
 }
 
-export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumToList, trackIndex }: MusicProviderProps) {
+export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumToList, trackIndex, initTrackId }: MusicProviderProps) {
   const [pause, setPause] = useState<boolean>(true)
   const [volume, setVolume] = useState<number>(0.5)
   const [mute, setMute] = useState<boolean>(false)
@@ -23,6 +24,7 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null)
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0)
   const [currentAlbumIndex, setCurrentAlbumIndex] = useState<number>(0 + initIndexAlbum)
+  const [trackId, setTrackId] = useState<string>(initTrackId)
   const [listMusic, setListMusic] = useState<ITrack[]>([])
   const [defaultIndex, setDefaultIndex] = useState<number>(trackIndex)
 
@@ -32,10 +34,17 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
     if (data) {
       const tracks = data.result.list_of_tracks as ITrack[]
       setListMusic(tracks)
-      setCurrentTrackIndex(defaultIndex)
-      setMusic(tracks[defaultIndex] || null)
+      if (trackId !== '') {
+        const index = tracks.findIndex((track) => track._id === trackId)
+        setTrackId('')
+        setCurrentTrackIndex(index)
+        setMusic(tracks[index] || null)
+      } else {
+        setCurrentTrackIndex(defaultIndex)
+        setMusic(tracks[defaultIndex] || null)
+      }
     }
-  }, [data, defaultIndex])
+  }, [data, defaultIndex, trackId])
 
   const handleNextTrack = () => {
     const nextIndex = currentTrackIndex + 1
@@ -77,7 +86,7 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
       audioElement.load()
     }
 
-    const newAudio = new Audio(song.path_audio)
+    const newAudio = new Audio(song?.path_audio)
     setMusic(song)
     setPosition(0)
     setAudioElement(newAudio)
@@ -162,13 +171,16 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
     }
   }
 
-  const addAlbum = (albumId: string, musicIndex: number) => {
+  const addAlbum = (albumId: string, musicIndex: number, trackId?: string) => {
     const existingIndex = listAlbumId.indexOf(albumId)
     setDefaultIndex(musicIndex)
     if (existingIndex !== -1) {
+      if (trackId) {
+        setTrackId(trackId)
+      }
       setCurrentAlbumIndex(existingIndex)
     } else {
-      addAlbumToList(albumId, currentAlbumIndex + 1, musicIndex)
+      addAlbumToList(albumId, currentAlbumIndex + 1, musicIndex, trackId)
     }
   }
 
@@ -190,9 +202,12 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
         volume,
         setVolume,
         music,
+        nextMusic: listMusic[currentTrackIndex + 1],
+        currentTrackIndex,
         changeMusic,
         addAlbum,
-        currentAlbumIndex: listAlbumId[currentAlbumIndex]
+        currentAlbumIndex: listAlbumId[currentAlbumIndex],
+        album: data?.result || null
       }}
     >
       {children}

@@ -72,7 +72,7 @@ export default function ListTracks({ listAlbums, isPending }: Props) {
                   },
                   'cursor': 'pointer'
                 }}
-                onClick={() => navigate(`/album/${row._id}`)}
+                onClick={() => navigate(`/library/${row._id}`)}
               >
                 <TableCell
                   component='th'

@@ -159,7 +159,7 @@ export default function AlbumInfo({ album }: Props) {
               </Button>
             )}
             <Box sx={{ pt: 1, display: 'flex', flexDirection: 'row', gap: 2 }}>
-              <Tooltip title='Thêm vào thư viên' placement='top'>
+              <Tooltip title='Thêm vào thư viện' placement='top'>
                 <IconButton sx={{ backgroundColor: (theme) => theme.palette.neutral.neutral3 }}>
                   <FavoriteBorderIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
                 </IconButton>

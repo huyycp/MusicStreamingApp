@@ -25,8 +25,8 @@ export const getAlbumDetail = async (albumId: string): Promise<IResponse> => {
   return response.data
 }
 
-export const apiAddTrackToLibrary = async (data: { tracks: string[]; library_id: string }): Promise<IResponse> => {
-  const response = await instance.patch<IResponse>(`/libraries/${data.library_id}/tracks`, { track_list: JSON.stringify(data.tracks) })
+export const apiAddTrackToLibrary = async (data: { tracks: string[]; library_id: string; type: 'add' | 'del' }): Promise<IResponse> => {
+  const response = await instance.patch<IResponse>(`/libraries/${data.library_id}/tracks?type=${data.type}`, { track_list: JSON.stringify(data.tracks) })
   return response.data
 }
 

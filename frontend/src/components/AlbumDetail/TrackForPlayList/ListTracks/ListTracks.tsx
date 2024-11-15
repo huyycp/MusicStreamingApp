@@ -11,7 +11,6 @@ import { Fragment, useState } from 'react'
 import { ITrack } from '~/type/Tracks/ITrack'
 import Button from '@mui/material/Button'
 import useAddTrackToAlbum from '~/hooks/Album/useAddTrackToAlbum'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useSnackbar } from 'notistack'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { IResponse } from '~/type/IResponse'
@@ -32,16 +31,16 @@ export default function ListTracks({ listTracks, listTrackIds, playlistId, refet
   const { enqueueSnackbar } = useSnackbar()
   const { mutate } = useAddTrackToAlbum()
 
-  const handleAddTrack = (playlistId: string, trackId: string) => {
+  const handleAddTrack = (playlistId: string, trackId: string, type: 'add' | 'del') => {
     mutate(
-      { library_id: playlistId, tracks: [trackId] },
+      { library_id: playlistId, tracks: [trackId], type: type },
       {
         onSuccess: () => {
           refetchAlbum()
-          enqueueSnackbar('Add track to playlist successfully!', { variant: 'success' })
+          enqueueSnackbar('Thêm vào danh sách phát thành công!', { variant: 'success' })
         },
         onError: () => {
-          enqueueSnackbar('Failed to add track to playlist!', { variant: 'error' })
+          enqueueSnackbar('Thêm vào danh sách phát thất bại', { variant: 'error' })
         }
       }
     )
@@ -135,9 +134,11 @@ export default function ListTracks({ listTracks, listTrackIds, playlistId, refet
               </TableCell>
               <TableCell align='right' sx={{ color: textColor, borderColor: borderColor }}>
                 {listTrackIds?.includes(row._id) ? (
-                  <ArrowForwardIosIcon sx={{ color: (theme) => theme.palette.secondary4.main, mr: '25px' }} />
+                  <Button variant='outlined' onClick={() => handleAddTrack(playlistId, row._id, 'del')}>
+                    Xóa
+                  </Button>
                 ) : (
-                  <Button variant='outlined' onClick={() => handleAddTrack(playlistId, row._id)}>
+                  <Button variant='outlined' onClick={() => handleAddTrack(playlistId, row._id, 'add')}>
                     Thêm
                   </Button>
                 )}

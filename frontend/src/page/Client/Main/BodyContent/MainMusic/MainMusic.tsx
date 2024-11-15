@@ -5,6 +5,7 @@ import ArtistDetail from '~/components/Artist/ArtistDetail'
 import HomeView from '~/components/HomeView'
 import MusicAlbum from '~/components/MusicAlbum'
 import MyMusic from '~/components/MyMusic'
+import TrackDetail from '~/components/TrackDetail/TrackDetail'
 
 type Props = {
   viewType?: string | ''
@@ -18,6 +19,7 @@ export default function MainMusic({ viewType }: Props) {
     if (viewType === 'liked-music') document.title = 'Magic Music - Collection'
     if (viewType === 'album') document.title = 'Magic Music - Album'
     if (viewType === 'artist') document.title = 'Magic Music - Artist'
+    if (viewType === 'track') document.title = 'Magic Music - Track'
     if (!viewType) document.title = 'Magic Music - Web Player'
   }, [viewType])
 
@@ -41,6 +43,7 @@ export default function MainMusic({ viewType }: Props) {
       {viewType === 'playlist' && <Box>PlayList</Box>}
       {viewType === 'my-music' && <MyMusic />}
       {viewType === 'album' && <AlbumDetail />}
+      {viewType === 'track' && <TrackDetail />}
       {viewType === 'artist' && <ArtistDetail />}
       {!viewType && <HomeView />}
     </Box>
