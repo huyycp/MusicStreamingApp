@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/req/create_track_req.dart';
 import 'package:mobile/data/dto/req/get_track_req.dart';
+import 'package:mobile/data/dto/resp/get_playlist_with_track_resp.dart';
 import 'package:mobile/data/dto/resp/get_track_resp.dart';
 import 'package:mobile/models/track_model.dart';
 
@@ -87,5 +88,19 @@ class TrackRemoteDataSource {
     } else {
       return null;
     }
+  }
+
+  Future<GetPlaylistWithTrackResp?> getPlaylistWithTrack(String trackId) async {
+    final response  = await _magicMusicApi.request(
+      '$_trackPath/$trackId/my-libraries',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return GetPlaylistWithTrackResp.fromJson(data);
+      }
+    }
+    return null;
   }
 }

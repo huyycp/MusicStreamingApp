@@ -118,7 +118,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
             overflow: TextOverflow.ellipsis,
           ),
           Text(
-            track.owwnerNames,
+            track.ownerNames,
             style: Theme.of(context).textTheme.bodyMedium,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

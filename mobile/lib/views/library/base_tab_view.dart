@@ -19,7 +19,7 @@ class BaseTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: isLoading
         ? const Center(child: CircularProgressIndicator())
         : items.isNotEmpty

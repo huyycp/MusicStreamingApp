@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:mobile/models/genre_model.dart';
 
 class UserModel {
@@ -32,8 +31,8 @@ class UserModel {
     role: UserRole.values.firstWhere((role) => role.index == (json['role'] ?? 0)),
     email: json['email'] ?? '',
     gender: json['gender'] ?? '',
-    createdAt: DateTime.parse(json['created_at'] ?? DateTime.now()),
-    updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now()),
+    createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),
     status: UserStatus.values.firstWhere((status) => status.index == (json['verify'] ?? UserStatus.banned.index)),
     avatarLink: json['avatar'] ?? '',
     favoriteGenres: List.from(json['genres']?.map(

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/library_model.dart';
+import 'package:mobile/models/track_model.dart';
 import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/artist_repository.dart';
 import 'package:mobile/repositories/library_repository.dart';
@@ -27,7 +28,9 @@ class HomeViewModel extends ChangeNotifier {
     }) : _userRepo = userRepo,
          _libraryRepo = libraryRepo,
          _trackRepo = trackRepo,
-         _artistRepo = artistRepo;
+         _artistRepo = artistRepo {
+    getFavoriteGenre();
+  }
   
   final UserRepository _userRepo;
   final LibraryRepository _libraryRepo;
@@ -36,13 +39,20 @@ class HomeViewModel extends ChangeNotifier {
 
   List<GenreModel> favoriteGenres = [];
   List<LibraryModel> recommededAlbums = [];
+  List<TrackModel> bighitTracks = [];
   List<UserModel> suggestedArtists = [];
   
+  UserModel? get user => _userRepo.user;
+
   bool sessionValid = true;
 
   Future<void> logout() async {
-    sessionValid = !(await _userRepo.logout());
-    notifyListeners();
+    try {
+      sessionValid = !(await _userRepo.logout());
+      notifyListeners();
+    } catch (err) {
+      debugPrint(err.toString());
+    }
   }
 
   Future<void> getFavoriteGenre() async {
@@ -51,28 +61,53 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<void> getRecommendAlbums() async {
-    final resp = await _libraryRepo.getAlbums(
-      pagination: PaginationListReq(
-        page: 1,
-        limit: 10,
-      )
-    );
-    if (resp != null) {
-      recommededAlbums = resp.libraries;
-      notifyListeners();
+    try {
+      final resp = await _libraryRepo.getAlbums(
+        pagination: PaginationListReq(
+          page: 1,
+          limit: 10,
+        )
+      );
+      if (resp != null) {
+        recommededAlbums = resp.libraries;
+        notifyListeners();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+  }
+
+  Future<void> getBighitTracks() async {
+    try {
+      final resp = await _trackRepo.getTracks(
+        pagination: PaginationListReq(
+          page: 1,
+          limit: 10,
+        )
+      );
+      if (resp != null) {
+        bighitTracks = resp.tracks;
+        notifyListeners();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
     }
   }
 
   Future<void> getSuggestedArtists() async {
-    final resp = await _artistRepo.getArtists(
-      pagination: PaginationListReq(
-        page: 1,
-        limit: 10,
-      )
-    );
-    if (resp != null) {
-      suggestedArtists = resp.artists;
-      notifyListeners();
+    try {
+      final resp = await _artistRepo.getArtists(
+        pagination: PaginationListReq(
+          page: 1,
+          limit: 10,
+        )
+      );
+      if (resp != null) {
+        suggestedArtists = resp.artists;
+        notifyListeners();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
     }
   }
 }

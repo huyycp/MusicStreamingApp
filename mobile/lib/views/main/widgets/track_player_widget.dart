@@ -62,7 +62,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _trackTitle(track.name),
-              _trackAuthors(track.owwnerNames),
+              _trackAuthors(track.ownerNames),
             ],
           ),
         )

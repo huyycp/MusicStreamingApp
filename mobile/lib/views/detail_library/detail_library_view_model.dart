@@ -26,8 +26,12 @@ class DetailLibraryViewModel extends ChangeNotifier {
   bool isLoading = true;
 
   Future<void> getLibrary(String libraryId) async {
-    library = await _libraryRepo.getLibrary(libraryId);
-    isLoading = false;
-    notifyListeners();
+    try {
+      library = await _libraryRepo.getLibrary(libraryId);
+      isLoading = false;
+      notifyListeners();
+    } catch (err) {
+      debugPrint(err.toString());
+    }
   }
 }

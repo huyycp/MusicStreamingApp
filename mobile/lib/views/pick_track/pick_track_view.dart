@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/views/detail_library/detail_library_view_model.dart';
 import 'package:mobile/views/pick_track/pick_track_view_model.dart';
 import 'package:mobile/views/pick_track/widgets/pick_track_widget.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -18,21 +19,18 @@ class _PickTrackViewState extends ConsumerState<PickTrackView> {
   @override
   void initState() {
     super.initState();
-    ref.read(pickTrackViewModel).setLibraryId(widget.libraryId);
-    ref.read(pickTrackViewModel).getPendingTracks();
+    ref.read(pickTrackViewModel).getLibrary(widget.libraryId);
   }
   
   @override
   Widget build(BuildContext context) {
-    ref.listen(pickTrackViewModel.select((value) => value.addTrackSuccess), (prev, next) {
-      if (next) {
-        Navigator.popUntil(context, ModalRoute.withName('main'));
-      }
-    });
 
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body(),
+    return PopScope(
+      onPopInvoked: (_) => ref.read(detailLibraryViewModel).getLibrary(widget.libraryId),
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _body(),
+      ),
     );
   }
   
@@ -119,7 +117,9 @@ class _PickTrackViewState extends ConsumerState<PickTrackView> {
       (value) => value.pendingTracks
     ));
     return Expanded(
-      child: ListView.separated(
+      child: ref.watch(pickTrackViewModel.select((value) => value.isLoading))
+        ? const Center(child: CircularProgressIndicator())
+        : ListView.separated(
         itemCount: pendingTracks.length,
         itemBuilder: (context, index) => Container(
           margin: const EdgeInsets.symmetric(vertical: 4),

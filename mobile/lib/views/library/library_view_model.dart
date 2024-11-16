@@ -91,143 +91,159 @@ class LibraryViewModel extends ChangeNotifier {
   }
 
   Future<void> getLibraries({ bool refresh  = false }) async {
-    isLoadingLibraries = true;
-    notifyListeners();
-    if (refresh) {
-      libraryPage = 1;
-      if (libraries.isNotEmpty) {
-        libraryScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    try {
+      isLoadingLibraries = true;
+      notifyListeners();
+      if (refresh) {
+        libraryPage = 1;
+        if (libraries.isNotEmpty) {
+          libraryScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        }
+        libraries.clear();
       }
-      libraries.clear();
-    }
-    final resp = await _libraryRepo.getLibraries(
-      pagination: PaginationListReq(
-        page: libraryPage,
-        limit: libraryLimit,
-      ),
-      sortBy: 'updated_at',
-      direction: SortDirection.desc,
-    );
-    if (resp != null) {
-      libraries = [...libraries, ...resp.libraries];
-      if (resp.meta.currentPage < resp.meta.totalPages) {
-        libraryPage += 1;
-        canLoadLibraries = true;
+      final resp = await _libraryRepo.getLibraries(
+        pagination: PaginationListReq(
+          page: libraryPage,
+          limit: libraryLimit,
+        ),
+        sortBy: 'updated_at',
+        direction: SortDirection.desc,
+      );
+      if (resp != null) {
+        libraries = [...libraries, ...resp.libraries];
+        if (resp.meta.currentPage < resp.meta.totalPages) {
+          libraryPage += 1;
+          canLoadLibraries = true;
+        } else {
+          canLoadLibraries = false;
+        }
       } else {
-        canLoadLibraries = false;
+        SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection.');
       }
-    } else {
-      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection.');
+      isLoadingLibraries = false;
+      notifyListeners();
+    } catch (err) {
+      isLoadingLibraries = false;
+      notifyListeners();
+      debugPrint(err.toString());
     }
-    isLoadingLibraries = false;
-    notifyListeners();
   }
   
   Future<void> getAlbums({bool refresh = false}) async {
-    isLoadingAlbums = true;
-    notifyListeners();
-    if (refresh) {
-      albumPage = 1;
-      if (albums.isNotEmpty) {
-        albumScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    try {
+      isLoadingAlbums = true;
+      notifyListeners();
+      if (refresh) {
+        albumPage = 1;
+        if (albums.isNotEmpty) {
+          albumScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        }
+        albums.clear();
       }
-      albums.clear();
-    }
-    final resp = await _libraryRepo.getLibraries(
-      pagination: PaginationListReq(
-        page: albumPage,
-        limit: albumLimit,
-      ),
-      type: LibraryType.album,
-      sortBy: 'updated_at',
-      direction: SortDirection.desc,
-    );
-    if (resp != null) {
-      albums = [...albums, ...resp.libraries];
-      if (resp.meta.currentPage < resp.meta.totalPages) {
-        albumPage += 1;
-        canLoadAlbums = true;
+      final resp = await _libraryRepo.getLibraries(
+        pagination: PaginationListReq(
+          page: albumPage,
+          limit: albumLimit,
+        ),
+        type: LibraryType.album,
+        sortBy: 'updated_at',
+        direction: SortDirection.desc,
+      );
+      if (resp != null) {
+        albums = [...albums, ...resp.libraries];
+        if (resp.meta.currentPage < resp.meta.totalPages) {
+          albumPage += 1;
+          canLoadAlbums = true;
+        } else {
+          canLoadAlbums = false;
+        }
       } else {
-        canLoadAlbums = false;
+        SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again.');
       }
-    } else {
-      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again.');
+      isLoadingAlbums = false;
+      notifyListeners();
+    } catch (err) {
+      isLoadingAlbums = false;
+      notifyListeners();
+      debugPrint(err.toString());
     }
-    isLoadingAlbums = false;
-    notifyListeners();
   }
 
   Future<void> getPlaylists({bool refresh = false}) async {
-    isLoadingPlaylist = true;
-    notifyListeners();
-    if (refresh) {
-      playlistPage = 1;
-      if (playlists.isNotEmpty) {
-        playlistScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    try {
+      isLoadingPlaylist = true;
+      notifyListeners();
+      if (refresh) {
+        playlistPage = 1;
+        if (playlists.isNotEmpty) {
+          playlistScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        }
+        playlists.clear();
       }
-      playlists.clear();
-    }
-    final resp = await _libraryRepo.getLibraries(
-      pagination: PaginationListReq(
-        page: albumPage,
-        limit: albumLimit,
-      ),
-      type: LibraryType.playlist,
-      sortBy: 'updated_at',
-      direction: SortDirection.desc,
-    );
-    if (resp != null) {
-      playlists = [...playlists, ...resp.libraries];
-      if (resp.meta.currentPage < resp.meta.totalPages) {
-        playlistPage += 1;
-        canLoadPlaylists = true;
+      final resp = await _libraryRepo.getLibraries(
+        pagination: PaginationListReq(
+          page: albumPage,
+          limit: albumLimit,
+        ),
+        type: LibraryType.playlist,
+        sortBy: 'updated_at',
+        direction: SortDirection.desc,
+      );
+      if (resp != null) {
+        playlists = [...playlists, ...resp.libraries];
+        if (resp.meta.currentPage < resp.meta.totalPages) {
+          playlistPage += 1;
+          canLoadPlaylists = true;
+        } else {
+          canLoadPlaylists = false;
+        }
       } else {
-        canLoadPlaylists = false;
+        SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again');
       }
-    } else {
-      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again');
+      isLoadingPlaylist = false;
+      notifyListeners();
+    } catch (err) {
+      isLoadingPlaylist = false;
+      notifyListeners();
+      debugPrint(err.toString());
     }
-    isLoadingPlaylist = false;
-    notifyListeners();
   }
 
   Future<void> getMyTracks({bool refresh = false}) async {
-    isLoadingTracks = true;
-    notifyListeners();
-    if (refresh) {
-      trackPage = 1;
-      if (tracks.isNotEmpty) {
-        trackScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    try {
+      isLoadingTracks = true;
+      notifyListeners();
+      if (refresh) {
+        trackPage = 1;
+        if (tracks.isNotEmpty) {
+          trackScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        }
+        tracks.clear();
       }
-      tracks.clear();
-    }
-    final resp = await _trackRepo.getTracksByUser(
-      pagination: PaginationListReq(
-        page: trackPage,
-        limit: trackLimit,
-      ),
-    );
-    if (resp != null) {
-      tracks = [...tracks, ...resp.tracks];
-      if (resp.meta.currentPage < resp.meta.totalPages) {
-        trackPage += 1;
-        canLoadTracks = true;
+      final resp = await _trackRepo.getTracksByUser(
+        pagination: PaginationListReq(
+          page: trackPage,
+          limit: trackLimit,
+        ),
+      );
+      if (resp != null) {
+        tracks = [...tracks, ...resp.tracks];
+        if (resp.meta.currentPage < resp.meta.totalPages) {
+          trackPage += 1;
+          canLoadTracks = true;
+        } else {
+          canLoadTracks = false;
+        }
       } else {
-        canLoadTracks = false;
+        SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again.');
       }
-    } else {
-      SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again.');
+      isLoadingTracks = false;
+      notifyListeners();
+    } catch (err) {
+      isLoadingTracks = false;
+      notifyListeners();
+      debugPrint(err.toString());
     }
-    isLoadingTracks = false;
-    notifyListeners();
-  }
-
-  Future<List<TrackModel>> getTracksByLibrary(String id) async {
-    final library = await _libraryRepo.getLibrary(id);
-    if (library != null) {
-      return library.tracks;
-    }
-    return [];
   }
 }
 

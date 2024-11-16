@@ -5,6 +5,7 @@ import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
 import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
+import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -19,27 +20,26 @@ class CreateTrackThumbnailView extends ConsumerStatefulWidget {
 class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: createTrackAppBar(),
-      body: _body(),
-      bottomNavigationBar: _nextBtn(),
+    return BaseContainer(
+      child: Scaffold(
+        appBar: createTrackAppBar(),
+        body: _body(),
+        bottomNavigationBar: _nextBtn(),
+      ),
     );
   }
 
   Widget _body() {
-    return BaseContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const FieldLabel('Thumbnail'),
-            const SizedBox(height: 8),
-            _thumbnailDisplay(),
-            const SizedBox(height: 16),
-            _thumbnailPicker(),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const FieldLabel('Thumbnail'),
+          const SizedBox(height: 8),
+          _thumbnailDisplay(),
+          const SizedBox(height: 16),
+          _thumbnailPicker(),
+        ],
       ),
     );
   }
@@ -64,7 +64,7 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
   }
 
   Widget _thumbnailPicker() {
-    return ElevatedButton(
+    return BaseButton(
       onPressed: () {
         ref.read(createTrackViewModel).selectThumbnail();
       },

@@ -16,30 +16,29 @@ class CreateTrackLyricsView extends ConsumerStatefulWidget {
 class _CreateTrackLyricsViewState extends ConsumerState<CreateTrackLyricsView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: createTrackAppBar(),
-      body: _body(),
-      bottomNavigationBar: _nextBtn(),
+    return BaseContainer(
+      child: Scaffold(
+        appBar: createTrackAppBar(),
+        body: _body(),
+        bottomNavigationBar: _nextBtn(),
+      ),
     );
   }
 
   Widget _body() {
-    return BaseContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const FieldLabel('Lyrics'),
-            const SizedBox(height: 8),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Lyrics',
-              ),
-              maxLines: 10,
-              controller: ref.read(createTrackViewModel).trackLyricsController,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const FieldLabel('Lyrics'),
+          const SizedBox(height: 8),
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Lyrics',
             ),
-          ],
-        ),
+            maxLines: 10,
+            controller: ref.read(createTrackViewModel).trackLyricsController,
+          ),
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/utils/modal_bottom_sheet.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/library/album_list_view.dart';
 import 'package:mobile/views/library/library_list_view.dart';
@@ -30,37 +31,33 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body(),
+    return BaseContainer(
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _body(),
+      ),
     );
   }
 
   PreferredSize _appBar() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(124),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: AppBar(
-          backgroundColor: Colors.transparent,
-          title: const Text('Your Library'),
-          leading: _userAvatar(),
-          actions: _appBarActions(),
-          bottom: _tabBar(),
-          forceMaterialTransparency: true,
-        ),
+      child: AppBar(
+        backgroundColor: Colors.transparent,
+        title: const Text('Your Library'),
+        leading: _userAvatar(),
+        actions: _appBarActions(),
+        bottom: _tabBar(),
+        forceMaterialTransparency: true,
       ),
     );
   }
 
   Widget _body() {
     final LibraryTabs currentTab = ref.watch(libraryViewModel.select((value) => value.currentTab));
-    return BaseContainer(
-      padding: EdgeInsets.zero,
-      child: currentTab == LibraryTabs.none
-        ? const LibraryListView()
-        : views[ref.watch(libraryViewModel.select((value) => value.currentTab.index))],
-    );
+    return currentTab == LibraryTabs.none
+      ? const LibraryListView()
+      : views[ref.watch(libraryViewModel.select((value) => value.currentTab.index))];
   }
 
   PreferredSize _tabBar() {
@@ -165,17 +162,8 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
   }
 
   void _openAddSheet() {
-    showModalBottomSheet(
+    showAppModalBottomSheet(
       context: context,
-      showDragHandle: true,
-      backgroundColor: GRAY_BCK_1,
-      enableDrag: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        )
-      ),
       builder: (context) {
         return SafeArea(
           child: Container(

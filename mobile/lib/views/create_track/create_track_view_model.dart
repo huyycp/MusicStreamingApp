@@ -59,7 +59,6 @@ class CreateTrackViewModel extends ChangeNotifier {
         await audioController.setPlaylist(tracks: [
           TrackModel(
             id: '',
-            albumId: '',
             name: trackTitleController.text,
             imageLink: '', 
             audioLink: trackAudio!.path!
@@ -73,11 +72,15 @@ class CreateTrackViewModel extends ChangeNotifier {
   }
 
   Future<void> selectThumbnail() async {
-    final ImagePicker picker = ImagePicker();
-    final result = await picker.pickImage(source: ImageSource.gallery);
-    if (result != null) {
-      trackThumbnail = result;
-      checkValidThumbnail();
+    try {
+      final ImagePicker picker = ImagePicker();
+      final result = await picker.pickImage(source: ImageSource.gallery);
+      if (result != null) {
+        trackThumbnail = result;
+        checkValidThumbnail();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
     }
   }
 

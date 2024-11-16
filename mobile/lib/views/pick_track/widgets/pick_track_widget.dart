@@ -31,11 +31,11 @@ class PickTrackWidget extends ConsumerWidget {
                 Text(
                   track.name,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
                 ),
-                const SizedBox(height: 8),
                 Text(
-                  track.owwnerNames,
+                  track.ownerNames,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium
                 )
@@ -44,7 +44,7 @@ class PickTrackWidget extends ConsumerWidget {
           ),
           IconButton(
             onPressed: () {
-              ref.read(pickTrackViewModel).addTrackToPlaylist(track);
+              ref.read(pickTrackViewModel).addTrackToLibrary(track);
             },
             icon: DynamicImage(
               'assets/icons/ic_add_song.svg',
