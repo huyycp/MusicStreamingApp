@@ -11,7 +11,7 @@ class TrackWidget extends ConsumerWidget {
   final bool isMenuVisible;
   const TrackWidget(
     this.track, {
-    this.isMenuVisible = true,
+    this.isMenuVisible = false,
     super.key
   });
 
@@ -69,17 +69,20 @@ class TrackWidget extends ConsumerWidget {
   }
 
   Widget _openMenuBtn(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        showAppModalBottomSheet(
-          context: context,
-          builder: (context) => TrackActionSheet(track),
-        );
-      },
-      icon: DynamicImage(
-        'assets/icons/ic_menu.svg',
-        width: 16,
-        height: 16,
+    return Visibility(
+      visible: isMenuVisible,
+      child: IconButton(
+        onPressed: () {
+          showAppModalBottomSheet(
+            context: context,
+            builder: (context) => TrackActionSheet(track),
+          );
+        },
+        icon: DynamicImage(
+          'assets/icons/ic_menu.svg',
+          width: 16,
+          height: 16,
+        ),
       ),
     );
   }

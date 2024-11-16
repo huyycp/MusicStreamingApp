@@ -55,7 +55,16 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getFavoriteGenre() async {
+  Future<void> getCurrentUser() async {
+    try {
+      await _userRepo.getCurrentUser();
+      getFavoriteGenre();
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+  }
+
+  void getFavoriteGenre() {
     favoriteGenres = _userRepo.user?.favoriteGenres ?? [];
     notifyListeners();
   }

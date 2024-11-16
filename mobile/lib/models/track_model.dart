@@ -1,3 +1,4 @@
+import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/user_model.dart';
 
@@ -27,12 +28,13 @@ class TrackModel {
   DateTime? createdAt;
   DateTime? updatedAt;
   List<UserModel> owners;
+  GenreModel? genre;
 
   String get ownerNames => owners.map((owner) => owner.name).join(', ');
 
   factory TrackModel.fromJson(Map<String, dynamic> json) => TrackModel(
     id: json['_id'] ?? '',
-    album: LibraryModel.fromJson(json['album_id']),
+    album: LibraryModel.fromJson(json['album'] ?? {}),
     name: json['name'] ?? '',
     imageLink: json['image'] ?? '',
     lyrics: json['lyrics'] ?? '',

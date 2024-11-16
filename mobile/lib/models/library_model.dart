@@ -34,8 +34,8 @@ class LibraryModel {
     type: LibraryType.values.firstWhere((type) => type.name == (json['type'] ?? LibraryType.album.name)),
     imageLink: json['image'] ?? '',
     isFavorite: json['favorite'] ?? false,
-    createdAt: DateTime.parse(json['created_at'] ?? DateTime.now()),
-    updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now()),
+    createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
+    updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),
     owners: List.from(json['owners']?.map(
       (ownerJson) => UserModel.fromJson(ownerJson)
     ) ?? []),

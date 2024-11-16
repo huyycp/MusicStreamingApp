@@ -9,14 +9,12 @@ class SuggestedArtistWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          _artistImage(),
-          const SizedBox(height: 8),
-          _artistName(context),
-        ],
-      ),
+    return Column(
+      children: [
+        _artistImage(),
+        const SizedBox(height: 8),
+        _artistName(context),
+      ],
     );
   }
 
