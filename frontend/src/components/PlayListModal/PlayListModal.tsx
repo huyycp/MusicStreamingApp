@@ -11,6 +11,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import useCreatePlayList from '~/hooks/Album/useCreatePlayList'
 import { useState } from 'react'
 import { VariantType, useSnackbar } from 'notistack'
+import { useQueryClient } from '@tanstack/react-query'
 
 type Props = {
   open: boolean
@@ -20,6 +21,7 @@ type Props = {
 
 export default function PlayListModal({ open, setOpen }: Props) {
   const { mutate, isPending } = useCreatePlayList()
+  const queryClient = useQueryClient()
 
   const handleClose = () => setOpen(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -42,11 +44,13 @@ export default function PlayListModal({ open, setOpen }: Props) {
         { name },
         {
           onSuccess: () => {
-            enqueueSnackbar('Create playlist successfully!', { variant: 'success' as VariantType })
+            setName('')
+            enqueueSnackbar('Tạo danh sách phát thành công', { variant: 'success' as VariantType })
+            queryClient.invalidateQueries({ queryKey: ['myLibrary'] })
             handleClose()
           },
           onError: () => {
-            enqueueSnackbar('Failed to create playlist!', { variant: 'error' as VariantType })
+            enqueueSnackbar('Tạo danh sách phát thất bại', { variant: 'error' as VariantType })
           }
         }
       )
@@ -61,7 +65,7 @@ export default function PlayListModal({ open, setOpen }: Props) {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 400,
+          width: 700,
           bgcolor: (theme) => theme.palette.neutral.neutral3,
           color: (theme) => theme.palette.secondary4.main,
           borderRadius: 2,

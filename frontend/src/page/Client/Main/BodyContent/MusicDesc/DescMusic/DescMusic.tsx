@@ -1,28 +1,38 @@
 import Box from '@mui/material/Box'
 import DescTitle from './DescTitle/DescTitle'
+import DescBody from './DescBody/DescBody'
+import DescArtist from './DescArtist/DescArtist'
+import DescNext from './DescNext/DescNext'
+import { useMusic } from '~/hooks/useMusic'
 
 export default function DescMusic() {
+  const { nextMusic } = useMusic()
+
   return (
     <Box
       sx={{
         width: '100%',
-        height: '100%',
-        maxHeight: 'auto',
+        height: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        overflowY: 'scroll'
+        overflowY: 'auto'
       }}
     >
       <Box
         sx={{
+          width: '100%',
           position: 'sticky',
-          top: 0, // Giữ ở vị trí đầu tiên
-          backgroundColor: 'white', // Thêm màu nền nếu cần
-          zIndex: 1 // Đảm bảo không bị che khuất
+          top: 0,
+          backgroundColor: 'white',
+          zIndex: 1
         }}
       >
         <DescTitle />
+      </Box>
+      <Box>
+        <DescBody />
+        <DescArtist />
+        {nextMusic && <DescNext nextMusic={nextMusic} />}
       </Box>
     </Box>
   )

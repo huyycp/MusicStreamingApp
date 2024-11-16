@@ -1,4 +1,5 @@
 import instance from '~/axiosConfig'
+import { IResponse } from '~/type/IResponse'
 import { ITrack } from '~/type/Tracks/ITrack'
 
 export interface ITrackResponse {
@@ -17,5 +18,10 @@ export const apiGetTracks = async (limit: number, page: number): Promise<ITrackR
 
 export const apiGetTracksByArtist = async (limit: number, page: number, status: TrackStatus) => {
   const response = await instance.get<ITrackResponse>(`/tracks/my-tracks?limit=${limit}&page=${page}&status=${status}`)
+  return response.data
+}
+
+export const apiGetTrackDetail = async (trackId: string) => {
+  const response = await instance.get<IResponse>(`/tracks/${trackId}`)
   return response.data
 }

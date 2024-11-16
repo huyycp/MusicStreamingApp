@@ -54,7 +54,7 @@ export default function AlbumTag({ album }: Props) {
           }
         }
       }}
-      onClick={() => navigate(`/album/${album._id}`)}
+      onClick={() => navigate(`/library/${album._id}`)}
     >
       <img
         alt={album?.name}

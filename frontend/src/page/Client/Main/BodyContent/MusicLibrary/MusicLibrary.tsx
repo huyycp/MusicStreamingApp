@@ -7,16 +7,18 @@ import useGetMyLibrary from '~/hooks/Library/useGetMyLibrary'
 
 export default function MusicLibrary() {
   const { data } = useGetMyLibrary(100, 1)
-  const albums = data?.result.data as ILibrary[]
-  const listAlbums = (albums ?? []).filter((album) => album.number_of_tracks > 0 && album.type === 'album' || album.type === 'playlist')
-  const [playlistSelect, setPlaylistSelect] = useState<ILibrary[] | []>(listAlbums)
+  const [playlistSelect, setPlaylistSelect] = useState<ILibrary[] | []>([])
   const [album, setAlbum] = useState<number>(0)
 
   useEffect(() => {
-    if (listAlbums.length > 0 && playlistSelect.length === 0) {
+    if (data) {
+      const listAlbums = (data?.result.data as ILibrary[]).filter(
+        (album) => (album.number_of_tracks > 0 && album.type === 'album') || album.type === 'playlist'
+      )
+
       setPlaylistSelect(listAlbums)
     }
-  }, [listAlbums, playlistSelect.length])
+  }, [data, playlistSelect.length])
 
   return (
     <Box
@@ -31,7 +33,7 @@ export default function MusicLibrary() {
         overflow: 'hidden'
       }}
     >
-      <LibraryHeader listAlbums={listAlbums} setPlaylistSelect={setPlaylistSelect} setAlbum={setAlbum} album={album} />
+      <LibraryHeader listAlbums={playlistSelect} setPlaylistSelect={setPlaylistSelect} setAlbum={setAlbum} album={album} />
       <LibraryBody listAlbums={playlistSelect} album={album} />
     </Box>
   )

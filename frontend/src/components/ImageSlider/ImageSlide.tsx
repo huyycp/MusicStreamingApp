@@ -30,7 +30,7 @@ const ImageSlide = ({ src, index, isActive, artistsName, albumName, albumId }: I
           opacity: 1
         }
       }}
-      onClick={() => navigate(`/album/${albumId}`)}
+      onClick={() => navigate(`/library/${albumId}`)}
     >
       <Tooltip title={albumName}>
         <img src={src} alt={`Slide ${index + 1}`} style={{ width: '100%', height: '190px', borderRadius: '10px' }} />

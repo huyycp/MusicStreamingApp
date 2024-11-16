@@ -6,28 +6,29 @@ import { ResizeProvider } from '~/contents/ResizeProvider'
 import { MusicProvider } from '~/contents/MusicProvider'
 import CircularProgress from '@mui/material/CircularProgress'
 import { useEffect, useRef, useState } from 'react'
-import { ITrack } from '~/type/Tracks/ITrack'
 import useGetMyLibrary from '~/hooks/Library/useGetMyLibrary'
+import { ILibrary } from '~/type/Library/ILibrary'
 
 export default function MainLayout() {
-  const { data, isPending } = useGetMyLibrary(10, 1)
+  const { data, isPending } = useGetMyLibrary(100, 1)
   const [listAlbumId, setListAlbumId] = useState<string[]>([])
   const [fullWidth, setFullWidth] = useState(window.innerWidth)
   const [albumIndex, setAlbumIndex] = useState(0)
   const [trackIndex, setTrackIndex] = useState(0)
+  let trackId = ''
 
-  // useRef lưu trữ albumIndex và trackIndex hiện tại để cập nhật nhanh chóng
   const albumIndexRef = useRef(0)
   const trackIndexRef = useRef(0)
 
   useEffect(() => {
     if (data && data.result && data.result.data) {
-      const initialAlbumIds = (data.result.data as ITrack[]).map((album) => album._id)
+      const listAlbums = (data.result.data as ILibrary[]).filter((album) => album.number_of_tracks > 0)
+      const initialAlbumIds = listAlbums.map((album) => album._id)
       setListAlbumId(initialAlbumIds)
     }
   }, [data])
 
-  const addAlbumToList = (albumId: string, currentAlbumIndex: number, currentTrackIndex: number) => {
+  const addAlbumToList = (albumId: string, currentAlbumIndex: number, currentTrackIndex: number, initTrackId?: string) => {
     setListAlbumId((prevList) => {
       const updatedList = [...prevList]
       updatedList.splice(currentAlbumIndex, 0, albumId)
@@ -43,6 +44,7 @@ export default function MainLayout() {
     // Sử dụng useState để kích hoạt re-render
     setAlbumIndex(currentAlbumIndex)
     setTrackIndex(currentTrackIndex)
+    if (trackId) trackId = initTrackId || ''
   }
 
   useEffect(() => {
@@ -71,8 +73,14 @@ export default function MainLayout() {
       }}
     >
       <AppBar />
-      {listAlbumId && (
-        <MusicProvider listAlbumId={listAlbumId} initIndexAlbum={albumIndex} addAlbumToList={addAlbumToList} trackIndex={trackIndex}>
+      {!isPending && listAlbumId && (
+        <MusicProvider
+          listAlbumId={listAlbumId}
+          initIndexAlbum={albumIndex}
+          addAlbumToList={addAlbumToList}
+          trackIndex={trackIndex}
+          initTrackId={trackId}
+        >
           <ResizeProvider fullWidth={fullWidth}>
             <Outlet />
             <TrackBar />

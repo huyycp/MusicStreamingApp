@@ -153,8 +153,8 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
                           e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
                         }}
                         style={{
-                          width: '100%',
-                          height: '100%',
+                          width: '48px',
+                          height: '48px',
                           objectFit: 'cover',
                           borderRadius: '10px',
                           opacity: hoveredRow === row._id ? 0.5 : 1,

@@ -57,7 +57,7 @@ export default function MusicView1({ initAlbum }: Props) {
     else setPause(false)
   }
   const handleClick = () => {
-    navigate(`/album/${initAlbum._id}`)
+    navigate(`/library/${initAlbum._id}`)
   }
 
   return (
