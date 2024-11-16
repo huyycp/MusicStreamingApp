@@ -33,24 +33,22 @@ class _HomeViewState extends ConsumerState<HomeView> {
       }
     });
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: _appBar(),
-      body: _body(),
+    return BaseContainer(
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _body(),
+      ),
     );
   }
 
   PreferredSize _appBar() {
     return PreferredSize(
-      preferredSize: const Size.fromHeight(56),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: AppBar(
-          title: const Text('Home'),
-          leading: _userAvatar(),
-          actions: _appBarActions(),
-          forceMaterialTransparency: true,
-        ),
+      preferredSize: const Size.fromHeight(80),
+      child: AppBar(
+        title: const Text('Home'),
+        leading: _userAvatar(),
+        actions: _appBarActions(),
+        forceMaterialTransparency: true,
       ),
     );
   }
@@ -85,12 +83,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
       _bighitTracks(),
       _suggestedArtists(),
     ];
-    return BaseContainer(
-      child: ListView.separated(
-        itemCount: sections.length,
-        itemBuilder: (context, index) => sections[index],
-        separatorBuilder: (context, index) => const SizedBox(height: 40),
-      ),
+    return ListView.separated(
+      itemCount: sections.length,
+      itemBuilder: (context, index) => sections[index],
+      separatorBuilder: (context, index) => const SizedBox(height: 40),
     );
   }
 

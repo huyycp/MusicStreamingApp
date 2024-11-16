@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/utils/modal_bottom_sheet.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
@@ -76,14 +77,8 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
     );
   }
 
-  void genderOnTap() => showModalBottomSheet(
+  void genderOnTap() => showAppModalBottomSheet(
     context: context, 
-    enableDrag: true,
-    useSafeArea: true,
-    showDragHandle: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))
-    ),
     builder: (context) => Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
       child: const Column(

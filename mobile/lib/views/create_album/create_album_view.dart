@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/create_album/create_album_view_model.dart';
+import 'package:mobile/views/library/library_view_model.dart';
+import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 import 'package:mobile/widgets/field_label.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -18,17 +20,17 @@ class CreateAlbumView extends ConsumerStatefulWidget {
 class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(createAlbumViewModel.select((value) => value.isAlbumCreated), (prev, next) {
-      if (next == true) {
-        Navigator.popAndPushNamed(context, 'pick-track', arguments: {
-        });
-      }
-    });
-
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body(),
-      bottomNavigationBar: _createAlbumBtn(),
+    return PopScope(
+      onPopInvoked: (_) {
+        ref.read(libraryViewModel)
+          ..getLibraries(refresh: true)
+          ..getAlbums(refresh: true);
+      },
+      child: Scaffold(
+        appBar: _appBar(),
+        body: _body(),
+        bottomNavigationBar: _createAlbumBtn(),
+      ),
     );
   }
 
@@ -105,18 +107,16 @@ class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
   Widget _createAlbumBtn() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8)
-          )
-        ),
-        onPressed: ref.watch(createAlbumViewModel.select((value) => value.isAlbumCreated == false)) 
+      child: BaseButton(
+        type: ButtonType.elevated,
+        border: ButtonBorder.square,
+        onPressed: ref.watch(createAlbumViewModel.select((value) => value.isAlbumCreated == false & value.isValidInfor)) 
           ? () {
             ref.read(createAlbumViewModel).createAlbum();
           }
           : null,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LoadingWidget(visible: ref.watch(createAlbumViewModel.select((value) => value.isAlbumCreated == null))),
             const Text('Create'),

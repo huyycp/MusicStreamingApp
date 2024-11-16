@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_playlist/create_playlist_view_model.dart';
 import 'package:mobile/views/library/library_view_model.dart';
+import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 
 class CreatePlaylistView extends ConsumerStatefulWidget {
@@ -16,15 +17,15 @@ class CreatePlaylistView extends ConsumerStatefulWidget {
 class _CreatePlaylistViewState extends ConsumerState<CreatePlaylistView> {
   @override
   Widget build(BuildContext context) {
-    ref.listen(createPlaylistViewModel.select((value) => value.isPlaylistCreated), (prev, next) {
-      if (next) {
-        context.pop();
-        ref.read(libraryViewModel).getPlaylists(refresh: true);
-      }
-    });
-
-    return Scaffold(
-      body: _body(),
+    return PopScope(
+      onPopInvoked: (_) {
+        ref.read(libraryViewModel)
+          ..getLibraries(refresh: true)
+          ..getPlaylists(refresh: true);
+      },
+      child: Scaffold(
+        body: _body(),
+      ),
     );
   }
 
@@ -97,19 +98,25 @@ class _CreatePlaylistViewState extends ConsumerState<CreatePlaylistView> {
   }
 
   Widget _cancelBtn() {
-    return OutlinedButton(
+    return BaseButton(
       onPressed: () {
         context.pop();
       },
+      type: ButtonType.outlined,
+      border: ButtonBorder.round,
+      isPrimary: false,
       child: const Text('Cancel')
     );
   }
 
   Widget _createPlaylistBtn() {
-    return ElevatedButton(
+    return BaseButton(
       onPressed: ref.watch(createPlaylistViewModel.select((value) => value.isValidName)) 
         ? () => ref.read(createPlaylistViewModel).createPlaylist()
         : null,
+      isPrimary: true,
+      border: ButtonBorder.round,
+      type: ButtonType.elevated,
       child: const Text('Create'),
     );
   }

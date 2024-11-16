@@ -56,18 +56,14 @@ class MagicMusicApi extends BaseApi {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    try {
-      final response = await dio.request(
-        path, 
-        data: data,
-        queryParameters: queryParameters,
-        options: (options?..method=method.name) ?? Options(method: method.name),
-        cancelToken: cancelToken,
-      );
-      return response;
-    } catch(err) {
-      rethrow;
-    }
+    final response = await dio.request(
+      path, 
+      data: data,
+      queryParameters: queryParameters,
+      options: (options?..method=method.name) ?? Options(method: method.name),
+      cancelToken: cancelToken,
+    );
+    return response;
   }
 }
 

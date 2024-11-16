@@ -19,30 +19,29 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (_) => ref.read(createTrackViewModel).clear(),
-      child: Scaffold(
-        appBar: createTrackAppBar(),
-        body: _body(),
-        bottomNavigationBar: _nextBtn(),
+      child: BaseContainer(
+        child: Scaffold(
+          appBar: createTrackAppBar(),
+          body: _body(),
+          bottomNavigationBar: _nextBtn(),
+        ),
       ),
     );
   }
 
   Widget _body() {
-    return BaseContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: ListView(
-        children: [
-          Text(
-            'Track information',
-            style: Theme.of(context).textTheme.titleLarge
-          ),
-          const SizedBox(height: 24),
-          _trackTitleInput(),
-          const SizedBox(height: 24),
-          _trackDescInput(),
-          const SizedBox(height: 24),
-        ],
-      ),
+    return ListView(
+      children: [
+        Text(
+          'Track information',
+          style: Theme.of(context).textTheme.titleLarge
+        ),
+        const SizedBox(height: 24),
+        _trackTitleInput(),
+        const SizedBox(height: 24),
+        _trackDescInput(),
+        const SizedBox(height: 24),
+      ],
     );
   }
 

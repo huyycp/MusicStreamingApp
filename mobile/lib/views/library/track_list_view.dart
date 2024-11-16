@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/views/library/base_tab_view.dart';
 import 'package:mobile/views/library/library_view_model.dart';
-import 'package:mobile/views/library/widgets/track_widget.dart';
+import 'package:mobile/widgets/track/track_widget.dart';
 
 class TrackListView extends ConsumerStatefulWidget {
   const TrackListView({super.key});

@@ -5,6 +5,7 @@ import 'package:mobile/data/data_sources/remote/track_remote_data_source.dart';
 import 'package:mobile/data/dto/req/create_track_req.dart';
 import 'package:mobile/data/dto/req/get_track_req.dart';
 import 'package:mobile/data/dto/req/pagination_list_req.dart';
+import 'package:mobile/data/dto/resp/get_playlist_with_track_resp.dart';
 import 'package:mobile/data/dto/resp/get_track_resp.dart';
 import 'package:mobile/models/track_model.dart';
 
@@ -40,10 +41,12 @@ class TrackRepository {
   }
 
   Future<GetTrackResp?> getTracks({
-    required PaginationListReq pagination
+    required PaginationListReq pagination,
+    String genreId = '',
   }) async {
     final req = GetTrackReq(
-      pagination: pagination
+      pagination: pagination,
+      genreId: genreId,
     );
     return await _trackRemote.getTracks(req);
   }
@@ -56,14 +59,20 @@ class TrackRepository {
 
   Future<GetTrackResp?> getTracksByUser({
     required PaginationListReq pagination,
+    String genreId = '',
     TrackStatus status = TrackStatus.all,
   }) async {
     final req = GetTrackReq(
-      pagination: pagination
+      pagination: pagination,
+      genreId: genreId,
     );
     return await _trackRemote.getTracksByUser(
       req: req,
       status: status,
     );
+  }
+
+  Future<GetPlaylistWithTrackResp?> getPlaylistWithTrack(String trackId) async {
+    return await _trackRemote.getPlaylistWithTrack(trackId);
   }
 }

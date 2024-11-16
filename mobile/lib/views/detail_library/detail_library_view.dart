@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
-import 'package:mobile/views/library/widgets/track_widget.dart';
+import 'package:mobile/views/library/library_view_model.dart';
+import 'package:mobile/widgets/track/track_widget.dart';
 import 'package:mobile/views/main/main_view_model.dart';
+import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class DetailLibraryView extends ConsumerStatefulWidget {
@@ -25,14 +27,31 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _body(),
+    return PopScope(
+      onPopInvoked: (_) {
+        ref.read(libraryViewModel)
+          ..getLibraries(refresh: true)
+          ..getAlbums(refresh: true)
+          ..getPlaylists(refresh: true);
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: _appBar(),
+        body: _body(),
+      ),
+    );
+  }
+
+  AppBar _appBar() {
+    return AppBar(
+      forceMaterialTransparency: true,
     );
   }
 
   Widget _body() {
     return ref.watch(detailLibraryViewModel.select((value) => !value.isLoading))
       ? Container(
+        height: MediaQuery.sizeOf(context).height,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -46,86 +65,55 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
             end: Alignment.bottomCenter,
           )
         ),
-        child: Column(
-          children: [
-            _appBar(),
-            const SizedBox(height: 24),
-            Expanded(
-              child: Column(
-                children: [
-                  _playlistInfo(),
-                  _playlistActions(),
-                  _tracks(),
-                ],
-              ),
-            )
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _playlistImage(),
+              const SizedBox(height: 24),
+              _playlistInfo(),
+              _playlistActions(),
+              _addTrackBtn(),
+              const SizedBox(height: 16),
+              _tracks(),
+            ],
+          ),
         ),
       )
     : const Center(child: CircularProgressIndicator());
-  }
-
-  Widget _appBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _backBtn(),
-        const SizedBox(width: 24),
-        Expanded(child: _playlistImage()),
-        const SizedBox(width: 24),
-        const SizedBox(width: 48),
-      ],
-    );
-  }
-
-  Widget _backBtn() {
-    return IconButton(
-      padding: EdgeInsets.zero,
-      onPressed: () {
-        context.pop();
-      },
-      icon: DynamicImage(
-        'assets/icons/ic_chevron_left.svg',
-        width: 24,
-        height: 24,
-      ),
-    );
   }
 
   Widget _playlistImage() {
     final library = ref.watch(detailLibraryViewModel.select(
       (value) => value.library
     ));
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        padding: (library!.type == LibraryType.album || (library.type == LibraryType.playlist && library.tracks.isNotEmpty)) ? EdgeInsets.zero : const EdgeInsets.all(100),
-        decoration: BoxDecoration(
-          color: GRAY_BCK_1.withOpacity(0.60),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: library.type == LibraryType.album 
+    return Container(
+      width: 250,
+      height: 250,
+      padding: (library!.type == LibraryType.album || (library.type == LibraryType.playlist && library.tracks.isNotEmpty)) ? EdgeInsets.zero : const EdgeInsets.all(100),
+      decoration: BoxDecoration(
+        color: GRAY_BCK_1.withOpacity(0.60),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: library.type == LibraryType.album 
+        ? DynamicImage(
+            library.imageLink,
+            width: 280,
+            height: 280,
+            borderRadius: BorderRadius.circular(4),
+          )
+        : library.tracks.isNotEmpty
           ? DynamicImage(
-              library.imageLink,
+              library.tracks.first.imageLink,
               width: 280,
               height: 280,
               borderRadius: BorderRadius.circular(4),
             )
-          : library.tracks.isNotEmpty
-            ? DynamicImage(
-                library.tracks.first.imageLink,
-                width: 280,
-                height: 280,
-                borderRadius: BorderRadius.circular(4),
-              )
-            : DynamicImage(
-              'assets/icons/ic_music_note.svg',
-              width: 80,
-              height: 80,
-              borderRadius: BorderRadius.circular(4),
-            ),
-      ),
+          : DynamicImage(
+            'assets/icons/ic_music_note.svg',
+            width: 80,
+            height: 80,
+            borderRadius: BorderRadius.circular(4),
+          ),
     );
   }
 
@@ -138,7 +126,6 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
         _playlistName(playlist?.name ?? ''),
         const SizedBox(height: 16),
         _playlistOwner(),
-        const SizedBox(height: 16),
         // _playlistListeningTime(),
       ],
     );
@@ -262,13 +249,54 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
     );
   }
 
+  Widget _addTrackBtn() {
+    final tracks = ref.watch(detailLibraryViewModel.select(
+      (value) => value.library?.tracks ?? []
+    ));
+    return Visibility(
+      visible: tracks.isNotEmpty,
+      child: GestureDetector(
+        onTap: () {
+          context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library!.id))}');
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              color: GRAY_BCK_1,
+              padding: const EdgeInsets.all(16),
+              child: DynamicImage(
+                'assets/icons/ic_add.svg',
+                width: 24,
+                height: 24,
+                color: BUTTON_STROKE,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'Add to this playlist',
+                style: Theme.of(context).textTheme.titleMedium,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _tracks() {
     final tracks = ref.watch(detailLibraryViewModel.select(
       (value) => value.library?.tracks ?? []
     ));
-    return Expanded(
-      child: tracks.isNotEmpty
-        ? ListView.separated(
+    return tracks.isNotEmpty
+      ? ListView.separated(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: tracks.length,    
           itemBuilder: (context, index) => GestureDetector(
             onTap: () {
@@ -276,14 +304,14 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
             },
             child: TrackWidget(tracks[index]),
           ),
-          separatorBuilder: (context, state) => const SizedBox(height: 8),
+          separatorBuilder: (context, state) => const SizedBox(height: 16),
         )
-        : _noTracks(),
-    );
+      : _noTracks();
   }
 
   Widget _noTracks() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
@@ -291,7 +319,8 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 24),
-        ElevatedButton(
+        BaseButton(
+          border: ButtonBorder.round,
           onPressed: () {
             context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library?.id ?? ''))}');
           },

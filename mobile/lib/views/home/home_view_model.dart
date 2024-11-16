@@ -47,8 +47,12 @@ class HomeViewModel extends ChangeNotifier {
   bool sessionValid = true;
 
   Future<void> logout() async {
-    sessionValid = !(await _userRepo.logout());
-    notifyListeners();
+    try {
+      sessionValid = !(await _userRepo.logout());
+      notifyListeners();
+    } catch (err) {
+      debugPrint(err.toString());
+    }
   }
 
   Future<void> getFavoriteGenre() async {
@@ -57,41 +61,53 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<void> getRecommendAlbums() async {
-    final resp = await _libraryRepo.getAlbums(
-      pagination: PaginationListReq(
-        page: 1,
-        limit: 10,
-      )
-    );
-    if (resp != null) {
-      recommededAlbums = resp.libraries;
-      notifyListeners();
+    try {
+      final resp = await _libraryRepo.getAlbums(
+        pagination: PaginationListReq(
+          page: 1,
+          limit: 10,
+        )
+      );
+      if (resp != null) {
+        recommededAlbums = resp.libraries;
+        notifyListeners();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
     }
   }
 
   Future<void> getBighitTracks() async {
-    final resp = await _trackRepo.getTracks(
-      pagination: PaginationListReq(
-        page: 1,
-        limit: 10,
-      )
-    );
-    if (resp != null) {
-      bighitTracks = resp.tracks;
-      notifyListeners();
+    try {
+      final resp = await _trackRepo.getTracks(
+        pagination: PaginationListReq(
+          page: 1,
+          limit: 10,
+        )
+      );
+      if (resp != null) {
+        bighitTracks = resp.tracks;
+        notifyListeners();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
     }
   }
 
   Future<void> getSuggestedArtists() async {
-    final resp = await _artistRepo.getArtists(
-      pagination: PaginationListReq(
-        page: 1,
-        limit: 10,
-      )
-    );
-    if (resp != null) {
-      suggestedArtists = resp.artists;
-      notifyListeners();
+    try {
+      final resp = await _artistRepo.getArtists(
+        pagination: PaginationListReq(
+          page: 1,
+          limit: 10,
+        )
+      );
+      if (resp != null) {
+        suggestedArtists = resp.artists;
+        notifyListeners();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
     }
   }
 }

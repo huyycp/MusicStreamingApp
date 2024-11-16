@@ -245,14 +245,6 @@ class LibraryViewModel extends ChangeNotifier {
       debugPrint(err.toString());
     }
   }
-
-  Future<List<TrackModel>> getTracksByLibrary(String id) async {
-    final library = await _libraryRepo.getLibrary(id);
-    if (library != null) {
-      return library.tracks;
-    }
-    return [];
-  }
 }
 
 enum LibraryTabs {

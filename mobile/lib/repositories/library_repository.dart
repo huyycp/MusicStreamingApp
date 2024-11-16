@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/data/data_sources/remote/library_remote_data_source.dart';
-import 'package:mobile/data/dto/req/add_track_to_library_req.dart';
+import 'package:mobile/data/dto/req/manage_tracks_in_library_req.dart';
 import 'package:mobile/data/dto/req/create_library_req.dart';
 import 'package:mobile/data/dto/req/get_library_req.dart';
+import 'package:mobile/data/dto/req/get_track_req.dart';
 import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/data/dto/resp/get_library_resp.dart';
+import 'package:mobile/data/dto/resp/get_track_resp.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
 
@@ -22,7 +24,7 @@ class LibraryRepository {
 
   final LibraryRemoteDataSource _libraryRemote;
 
-  Future<bool> createLibrary({
+  Future<LibraryModel?> createLibrary({
     required String name,
     XFile? image,
     required LibraryType type,
@@ -55,15 +57,17 @@ class LibraryRepository {
     return await _libraryRemote.getLibrary(libraryId);
   }
 
-  Future<bool> addTracksToLibrary({
+  Future<bool> manageTracksInLibrary({
     required String libraryId,
     required List<TrackModel> tracks,
+    ManageTrackActions action = ManageTrackActions.add,
   }) async {
-    final req = AddTrackToLibraryReq(
+    final req = ManageTracksInLibraryReq(
       libraryId: libraryId,
-      tracksId: tracks.map((track) => track.id).toList()
+      tracksId: tracks.map((track) => track.id).toList(),
+      action: action,
     );
-    return await _libraryRemote.addTracksToLibrary(req);
+    return await _libraryRemote.manageTracksInLibrary(req);
   }
 
   Future<GetLibraryResp?> getAlbums({
@@ -74,5 +78,17 @@ class LibraryRepository {
       type: LibraryType.album,
     );
     return await _libraryRemote.getAlbums(req);
+  }
+
+  Future<GetTrackResp?> getTracksNotInLibrary({
+    required PaginationListReq pagination,
+    String genreId = '',
+    required String libraryId,
+  }) async {
+    final req = GetTrackReq(
+      pagination: pagination,
+      genreId: genreId,
+    );
+    return await _libraryRemote.getTracksNotInLibrary(libraryId, req);
   }
 }

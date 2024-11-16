@@ -1,9 +1,10 @@
+import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/user_model.dart';
 
 class TrackModel {
   TrackModel ({
     required this.id,
-    required this.albumId,
+    this.album,
     required this.name,
     this.description = '',
     required this.imageLink,
@@ -16,7 +17,7 @@ class TrackModel {
   });
 
   String id;
-  String albumId;
+  LibraryModel? album;
   String name;
   String imageLink;
   String description;
@@ -31,7 +32,7 @@ class TrackModel {
 
   factory TrackModel.fromJson(Map<String, dynamic> json) => TrackModel(
     id: json['_id'] ?? '',
-    albumId: json['album_id'] ?? '',
+    album: LibraryModel.fromJson(json['album_id']),
     name: json['name'] ?? '',
     imageLink: json['image'] ?? '',
     lyrics: json['lyrics'] ?? '',
@@ -46,7 +47,7 @@ class TrackModel {
 
   Map<String, dynamic> toJson() => {
     '_id': id,
-    'album_id': albumId,
+    'album': album?.toJson(),
     'name': name,
     'image': imageLink,
     'description': description,

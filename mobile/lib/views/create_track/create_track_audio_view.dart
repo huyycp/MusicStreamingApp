@@ -5,6 +5,7 @@ import 'package:mobile/views/create_track/create_track_view_model.dart';
 import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/views/create_track/widgets/next_step_button.dart';
 import 'package:mobile/widgets/audio_controller_widget.dart';
+import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class CreateTrackAudioView extends ConsumerStatefulWidget {
@@ -17,32 +18,31 @@ class CreateTrackAudioView extends ConsumerStatefulWidget {
 class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: createTrackAppBar(),
-      body: _body(),
-      bottomNavigationBar: _nextBtn(),
+    return BaseContainer(
+      child: Scaffold(
+        appBar: createTrackAppBar(),
+        body: _body(),
+        bottomNavigationBar: _nextBtn(),
+      ),
     );
   }
 
   Widget _body() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: Form(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Track audio',
-              style: Theme.of(context).textTheme.titleLarge
-            ),
-            const SizedBox(height: 24),
-            _audioPicker(),
-            const SizedBox(height: 24),
-            _audioName(),
-            const SizedBox(height: 36),
-            _audioPlayer(),
-          ],
-        ),
+    return Form(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Track audio',
+            style: Theme.of(context).textTheme.titleLarge
+          ),
+          const SizedBox(height: 24),
+          _audioPicker(),
+          const SizedBox(height: 24),
+          _audioName(),
+          const SizedBox(height: 36),
+          _audioPlayer(),
+        ],
       ),
     );
   }

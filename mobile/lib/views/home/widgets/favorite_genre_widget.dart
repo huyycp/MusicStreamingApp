@@ -6,46 +6,35 @@ import 'package:mobile/widgets/dynamic_image.dart';
 class FavoriteGenreWidget extends StatelessWidget {
   final GenreModel genre;
   const FavoriteGenreWidget(this.genre, {super.key});
-  final double size = 120;
+  final double size = 150;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size,
-      height: size + 20,
+      height: size,
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: GRAY_BCK_2,
-            width: 5,
+            width: 8,
           )
         )
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Stack(
         children: [
-          Stack(
-            children: [
-              Positioned.fill(
-                child: _genreImage(),
-              ),
-              Positioned.fill(child: _overlay()),
-              Positioned(
-                top: 10,
-                left: 10,
-                child: _icSpotify(),
-              ),
-              Positioned(
-                bottom: 20,
-                child: _genreName(context),
-              )
-            ],
+          Positioned.fill(
+            child: _genreImage(),
           ),
-          const SizedBox(height: 8),
-          Text(
-            'artists...',
-            style: Theme.of(context).textTheme.bodyMedium,
+          Positioned.fill(child: _overlay()),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: _icSpotify(),
+          ),
+          Positioned(
+            bottom: 20,
+            child: _genreName(context),
           )
         ],
       ),
@@ -85,7 +74,7 @@ class FavoriteGenreWidget extends StatelessWidget {
       ),
       child: Text(
         genre.name,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: Theme.of(context).textTheme.titleLarge,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

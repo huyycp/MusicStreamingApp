@@ -144,9 +144,9 @@ class RouteConfig {
   );
 
   static final GoRoute _pickTrackRoute = GoRoute(
-    path: '/pick-track/:albumId',
+    path: '/pick-track/:libraryId',
     name: 'pick-track',
-    builder: (context, state) => PickTrackView(libraryId: state.pathParameters['albumId'] ?? '')
+    builder: (context, state) => PickTrackView(libraryId: state.pathParameters['libraryId'] ?? '')
   );
 
   static final GoRoute _libraryRoute = GoRoute(

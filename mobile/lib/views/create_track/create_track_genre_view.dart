@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
 import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/views/genre/genre_view.dart';
+import 'package:mobile/views/library/library_view_model.dart';
+import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/loading_widget.dart';
 
@@ -19,49 +21,40 @@ class _CreateTrackGenreViewState extends ConsumerState<CreateTrackGenreView> {
     ref.listen(createTrackViewModel.select((value) => value.isTrackCreatedSuccess), (prev, next) {
       if (next == true) {
         Navigator.popUntil(context, ModalRoute.withName('main'));
+        ref.read(libraryViewModel).getMyTracks(refresh: true);
       }
     });
 
-    return Scaffold(
-      appBar: createTrackAppBar(),
-      body: _body(),
-      bottomNavigationBar: _createTrackBtn(),
-    );
-  }
-
-  Widget _body() {
     return BaseContainer(
-      child: GenreView(
-        selectedGenres: ref.watch(createTrackViewModel.select((value) => value.trackGenres)),
-        onTap: ref.read(createTrackViewModel).selectGenres,
+      child: Scaffold(
+        appBar: createTrackAppBar(),
+        body: _body(),
+        bottomNavigationBar: _createTrackBtn(),
+        extendBody: true,
       ),
     );
   }
 
+  Widget _body() {
+    return GenreView(
+      selectedGenres: ref.watch(createTrackViewModel.select((value) => value.trackGenres)),
+      onTap: ref.read(createTrackViewModel).selectGenres,
+    );
+  }
+
   Widget _createTrackBtn() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      child: ElevatedButton(
-        onPressed: ref.watch(createTrackViewModel.select((value) => value.isValidTrackGenre && value.isTrackCreatedSuccess == false)) 
-          ? () {
-            ref.read(createTrackViewModel).createTrack();
-          }
-          : null,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          textStyle: const TextStyle(
-            fontWeight: FontWeight.w500
-          )
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LoadingWidget(visible: ref.watch(createTrackViewModel.select((value) => value.isTrackCreatedSuccess == null))),
-            const Text('Create Track'),
-          ],
-        ),
+    return BaseButton(
+      onPressed: ref.watch(createTrackViewModel.select((value) => value.isValidTrackGenre && value.isTrackCreatedSuccess == false)) 
+        ? () {
+          ref.read(createTrackViewModel).createTrack();
+        }
+        : null,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LoadingWidget(visible: ref.watch(createTrackViewModel.select((value) => value.isTrackCreatedSuccess == null))),
+          const Text('Create Track'),
+        ],
       ),
     ); 
   }
