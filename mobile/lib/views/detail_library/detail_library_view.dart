@@ -302,7 +302,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
             onTap: () {
               context.push('/track/${tracks[index].id}');
             },
-            child: TrackWidget(tracks[index]),
+            child: TrackWidget(tracks[index], isMenuVisible: true),
           ),
           separatorBuilder: (context, state) => const SizedBox(height: 16),
         )

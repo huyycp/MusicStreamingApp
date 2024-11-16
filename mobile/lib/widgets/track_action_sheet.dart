@@ -56,7 +56,7 @@ class _TrackActionSheetState extends ConsumerState<TrackActionSheet> {
       child: Row(
         children: [
           DynamicImage(
-            'assets/icons/ic_odd_circle.svg',
+            'assets/icons/ic_add_circle.svg',
             width: 24,
             height: 24,
           ),

@@ -20,6 +20,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     super.initState();
+    ref.read(homeViewModel).getCurrentUser();
     ref.read(homeViewModel).getRecommendAlbums();
     ref.read(homeViewModel).getBighitTracks();
     ref.read(homeViewModel).getSuggestedArtists();

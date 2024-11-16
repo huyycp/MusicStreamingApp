@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Circle outline -->
+  <circle cx="256" cy="256" r="248" stroke="white" stroke-width="16" fill="none" />
+  
+  <!-- Minus symbol outline -->
+  <rect x="184" y="244" width="144" height="24" fill="none" stroke="white" stroke-width="16" />
+</svg>
