@@ -12,6 +12,7 @@ import 'package:mobile/views/main/main_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
 import 'package:mobile/views/pick_track/pick_track_view.dart';
 import 'package:mobile/views/detail_library/detail_library_view.dart';
+import 'package:mobile/views/report/report_view.dart';
 import 'package:mobile/views/sign_up/select_favorite_genre_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_1_view.dart';
 import 'package:mobile/views/sign_up/sign_up_step_2_view.dart';
@@ -33,6 +34,7 @@ class RouteConfig {
       _trackRoute,
       _pickTrackRoute,
       _libraryRoute,
+      _reportRoute,
     ]
   );
 
@@ -168,6 +170,18 @@ class RouteConfig {
         name: 'library',
         builder: (context, state) => DetailLibraryView(id: state.pathParameters['id']!)
       )
+    ]
+  );
+
+  static final GoRoute _reportRoute = GoRoute(
+    path: '/report',
+    builder: (context, state) => const NotFoundView(),
+    routes: [
+      GoRoute(
+        path: ':id',
+        name: 'create-report',
+        builder: (context, state) => ReportView(trackId: state.pathParameters['id']!),
+      ),
     ]
   );
 

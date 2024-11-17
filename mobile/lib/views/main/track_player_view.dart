@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/utils/modal_bottom_sheet.dart';
 import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/audio_controller_widget.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
+import 'package:mobile/widgets/track/track_action_sheet.dart';
 
 class TrackPlayerView extends ConsumerStatefulWidget {
   const TrackPlayerView({super.key});
@@ -81,7 +83,12 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
   Widget _menuActionsBtn() {
     return IconButton(
       onPressed: () {
-
+        showAppModalBottomSheet(
+          context: context,
+          builder: (context) => TrackActionSheet(
+            ref.watch(mainAudioController.select(
+              (value) => value.tracks[value.currentIndex]
+        ))));
       },
       icon: DynamicImage(
         'assets/icons/ic_menu.svg',
