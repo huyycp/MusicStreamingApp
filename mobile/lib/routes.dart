@@ -168,7 +168,10 @@ class RouteConfig {
       GoRoute(
         path: ':id',
         name: 'library',
-        builder: (context, state) => DetailLibraryView(id: state.pathParameters['id']!)
+        builder: (context, state) => DetailLibraryView(
+          id: state.pathParameters['id']!,
+          isGenre:  bool.parse(state.uri.queryParameters['isGenre'] ?? 'false'),
+        )
       )
     ]
   );

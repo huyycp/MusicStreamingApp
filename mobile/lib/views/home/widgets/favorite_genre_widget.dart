@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -10,33 +11,38 @@ class FavoriteGenreWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: GRAY_BCK_2,
-            width: 8,
+    return GestureDetector(
+      onTap: () {
+        context.push('/library/${genre.id}?isGenre=true');
+      },
+      child: Container(
+        width: size,
+        height: size,
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: GRAY_BCK_2,
+              width: 8,
+            )
           )
-        )
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: _genreImage(),
-          ),
-          Positioned.fill(child: _overlay()),
-          Positioned(
-            top: 10,
-            left: 10,
-            child: _icSpotify(),
-          ),
-          Positioned(
-            bottom: 20,
-            child: _genreName(context),
-          )
-        ],
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: _genreImage(),
+            ),
+            Positioned.fill(child: _overlay()),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: _icSpotify(),
+            ),
+            Positioned(
+              bottom: 20,
+              child: _genreName(context),
+            )
+          ],
+        ),
       ),
     );
   }
