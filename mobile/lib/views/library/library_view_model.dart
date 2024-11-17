@@ -92,9 +92,9 @@ class LibraryViewModel extends ChangeNotifier {
 
   Future<void> getLibraries({ bool refresh  = false }) async {
     try {
-      isLoadingLibraries = true;
-      notifyListeners();
       if (refresh) {
+        isLoadingLibraries = true;
+        notifyListeners();
         libraryPage = 1;
         if (libraries.isNotEmpty) {
           libraryScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
@@ -131,9 +131,9 @@ class LibraryViewModel extends ChangeNotifier {
   
   Future<void> getAlbums({bool refresh = false}) async {
     try {
-      isLoadingAlbums = true;
-      notifyListeners();
       if (refresh) {
+        isLoadingAlbums = true;
+        notifyListeners();
         albumPage = 1;
         if (albums.isNotEmpty) {
           albumScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
@@ -171,9 +171,9 @@ class LibraryViewModel extends ChangeNotifier {
 
   Future<void> getPlaylists({bool refresh = false}) async {
     try {
-      isLoadingPlaylist = true;
-      notifyListeners();
       if (refresh) {
+        isLoadingPlaylist = true;
+        notifyListeners();
         playlistPage = 1;
         if (playlists.isNotEmpty) {
           playlistScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
@@ -211,9 +211,9 @@ class LibraryViewModel extends ChangeNotifier {
 
   Future<void> getMyTracks({bool refresh = false}) async {
     try {
-      isLoadingTracks = true;
-      notifyListeners();
       if (refresh) {
+        isLoadingTracks = true;
+        notifyListeners();
         trackPage = 1;
         if (tracks.isNotEmpty) {
           trackScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
