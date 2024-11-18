@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile/models/user_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
@@ -9,12 +10,17 @@ class SuggestedArtistWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _artistImage(),
-        const SizedBox(height: 8),
-        _artistName(context),
-      ],
+    return GestureDetector(
+      onTap: () {
+        context.push('/artist/${artist.id}');
+      },
+      child: Column(
+        children: [
+          _artistImage(),
+          const SizedBox(height: 8),
+          _artistName(context),
+        ],
+      ),
     );
   }
 

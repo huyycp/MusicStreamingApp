@@ -16,6 +16,10 @@ class AudioPlayerController extends ChangeNotifier {
         notifyListeners();
       }
     });
+    _player.currentIndexStream.listen((value) {
+      currentIndex = value ?? 0;
+      notifyListeners();
+    });
   }
 
   final _player = AudioPlayer();

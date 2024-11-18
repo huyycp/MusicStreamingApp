@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:mobile/views/artist/artist_view.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view.dart';
 import 'package:mobile/views/create_album/create_album_view.dart';
 import 'package:mobile/views/create_playlist/create_playlist_view.dart';
@@ -35,6 +36,7 @@ class RouteConfig {
       _pickTrackRoute,
       _libraryRoute,
       _reportRoute,
+      _artistRoute,
     ]
   );
 
@@ -168,7 +170,10 @@ class RouteConfig {
       GoRoute(
         path: ':id',
         name: 'library',
-        builder: (context, state) => DetailLibraryView(id: state.pathParameters['id']!)
+        builder: (context, state) => DetailLibraryView(
+          id: state.pathParameters['id']!,
+          isGenre: bool.parse(state.uri.queryParameters['isGenre'] ?? 'false'),
+        )
       )
     ]
   );
@@ -183,6 +188,11 @@ class RouteConfig {
         builder: (context, state) => ReportView(trackId: state.pathParameters['id']!),
       ),
     ]
+  );
+
+  static final GoRoute _artistRoute = GoRoute(
+    path: '/artist/:id',
+    builder: (context, state) => ArtistView(id: state.pathParameters['id']!)
   );
 
 }

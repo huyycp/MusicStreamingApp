@@ -44,4 +44,18 @@ class GenreRemoteDataSource {
     );
     return response.statusCode == HttpStatus.ok;
   }
+
+  Future<GenreModel?> getGenre(String genreId) async {
+    final response = await _magicMusicApi.request(
+      '$_genrePath/$genreId',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return GenreModel.fromJson(data);
+      }
+    }
+    return null;
+  }
 }

@@ -12,7 +12,12 @@ import 'package:mobile/widgets/dynamic_image.dart';
 
 class DetailLibraryView extends ConsumerStatefulWidget {
   final String id;
-  const DetailLibraryView({required this.id, super.key});
+  final bool isGenre;
+  const DetailLibraryView({
+    required this.id,
+    this.isGenre = false,
+    super.key,
+  });
 
   @override
   ConsumerState<DetailLibraryView> createState() => _DetailLibraryViewState();
@@ -22,7 +27,11 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
   @override
   void initState() {
     super.initState();
-    ref.read(detailLibraryViewModel).getLibrary(widget.id);
+    if (widget.isGenre) {
+      ref.read(detailLibraryViewModel).getTrackByGenre(widget.id);
+    } else {
+      ref.read(detailLibraryViewModel).getLibrary(widget.id);
+    }
   }
 
   @override

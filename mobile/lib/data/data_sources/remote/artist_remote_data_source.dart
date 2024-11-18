@@ -42,7 +42,7 @@ class ArtistRemoteDataSource {
       queryParameters: req.toJson(),
     );
     if (response.statusCode == HttpStatus.ok) {
-      final data = response.data['data'];
+      final data = response.data['result'];
       if (data != null) {
         return GetLibraryResp.fromJson(data);
       }
