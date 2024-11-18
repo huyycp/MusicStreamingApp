@@ -146,4 +146,18 @@ class UserRemoteDataSource {
     }
     return null;
   }
+
+  Future<UserModel?> getUser(String userId) async {
+    final response = await _magicMusicApi.request(
+      '/admin/$_userPath/$userId',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return UserModel.fromJson(data);
+      }
+    }
+    return null;
+  }
 }

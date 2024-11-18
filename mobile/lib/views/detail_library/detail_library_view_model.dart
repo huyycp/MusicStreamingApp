@@ -5,6 +5,7 @@ import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/models/user_model.dart';
+import 'package:mobile/repositories/genre_repository.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
@@ -16,6 +17,7 @@ final detailLibraryViewModel = ChangeNotifierProvider.autoDispose<DetailLibraryV
     libraryRepo: ref.read(libraryRepoProvider),
     userRepo: ref.read(userRepoProvider),
     trackRepo: ref.read(trackRepoProvider),
+    genreRepo: ref.read(genreRepoProvider),
   ),
 );
 
@@ -24,15 +26,19 @@ class DetailLibraryViewModel extends ChangeNotifier {
     required LibraryRepository libraryRepo,
     required UserRepository userRepo,
     required TrackRepository trackRepo,
+    required GenreRepository genreRepo,
   }) : _libraryRepo = libraryRepo,
        _userRepo = userRepo,
-       _trackRepo = trackRepo;
+       _trackRepo = trackRepo,
+       _genreRepo = genreRepo;
 
   final LibraryRepository _libraryRepo;
   final UserRepository _userRepo;
   final TrackRepository _trackRepo;
+  final GenreRepository _genreRepo;
 
   LibraryModel? library;
+  
   UserModel? get user => _userRepo.user;
   bool isLoading = true;
 
@@ -42,12 +48,14 @@ class DetailLibraryViewModel extends ChangeNotifier {
         pagination: PaginationListReq(limit: 10),
         genreId: genreId,
       );
-      if (resp != null) {
+      final genre = await _genreRepo.getGenre(genreId);
+      if (resp != null && genre != null) {
         final tracks = resp.tracks;
         library = LibraryModel(
           id:  genreId,
-          name: 'Genre',
-          type: LibraryType.playlist,
+          name: genre.name,
+          imageLink: genre.imageLink,
+          type: LibraryType.album,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           tracks: tracks,

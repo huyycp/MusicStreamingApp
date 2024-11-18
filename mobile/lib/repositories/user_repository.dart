@@ -94,4 +94,8 @@ class UserRepository {
       user = null;
     }
   }
+
+  Future<UserModel?> getUser(String userId) async {
+    return await _userRemote.getUser(userId);
+  }
 }

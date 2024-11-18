@@ -26,4 +26,8 @@ class GenreRepository {
     final req = AddGenresToFavoriteReq(favoriteGenres: favoriteGenres);
     return await _genreRemote.addGenresToFavorite(req);
   }
+
+  Future<GenreModel?> getGenre(String genreId) async {
+    return await _genreRemote.getGenre(genreId);
+  }
 }

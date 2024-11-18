@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
-import 'package:mobile/views/home/home_view.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 import 'package:mobile/widgets/track/track_widget.dart';
 

@@ -31,6 +31,10 @@ class MyApp extends ConsumerWidget {
       theme: ref.read(themeProvider).themeData,
       routerConfig: RouteConfig.instance,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1), 
+        child: child!,
+      ),
     );
   }
 }
