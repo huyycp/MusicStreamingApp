@@ -15,6 +15,8 @@ import PlaylistPopover from './PlayListPopover/PlayListPopover'
 import ArtistIcon from '~/assets/icon/ArtistIcon.svg?react'
 import SvgIcon from '@mui/material/SvgIcon'
 import ArtistPopover from './ArtistPopover/ArtistPopover'
+import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred'
+import ReportTrack from '../ReportModal/ReportTrack/ReportTrack'
 
 type Props = {
   track: ITrack
@@ -24,6 +26,7 @@ type Props = {
 }
 
 export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
+  const [openReportModal, setOpenReportModal] = useState(false)
   const [playlistPopoverAnchorEl, setPlaylistPopoverAnchorEl] = useState<HTMLElement | null>(null)
   const [artistPopoverAnchorEl, setArtistPopoverAnchorEl] = useState<HTMLElement | null>(null)
   const { enqueueSnackbar } = useSnackbar()
@@ -39,6 +42,10 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
   const handlePopoverClose = () => {
     setPlaylistPopoverAnchorEl(null)
     setArtistPopoverAnchorEl(null)
+  }
+
+  const handleReportModalClose = () => {
+    setOpenReportModal(false)
   }
 
   const handleCopyLink = () => {
@@ -168,8 +175,18 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
               <ArrowForwardIosIcon fontSize='small' />
             </ListItemIcon>
           </MenuItem>
+          <MenuItem
+            sx={{ borderTop: '1px solid', borderTopColor: (theme) => theme.palette.neutral.neutral2 }}
+            onClick={() => setOpenReportModal(true)}
+          >
+            <ListItemIcon sx={{ gap: 1 }}>
+              <ReportGmailerrorredIcon fontSize='small' />
+              <Box>Báo cáo</Box>
+            </ListItemIcon>
+          </MenuItem>
         </MenuList>
 
+        <ReportTrack open={openReportModal} setOpen={handleReportModalClose} track={track} />
         <PlaylistPopover anchorEl={playlistPopoverAnchorEl} onClose={handlePopoverClose} track={track} />
         <ArtistPopover anchorEl={artistPopoverAnchorEl} onClose={handlePopoverClose} track={track} />
       </Popover>
