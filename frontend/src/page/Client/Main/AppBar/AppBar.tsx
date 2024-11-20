@@ -2,8 +2,6 @@ import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import HomeIcon from '@mui/icons-material/Home'
 import MusicIcon from '~/assets/icon/MusicIcon2.svg?react'
-import Stack2Icon from '~/assets/icon/Stack2.svg?react'
-import StackIcon from '~/assets/icon/Stack.svg?react'
 import SvgIcon from '@mui/material/SvgIcon'
 import TextField from '@mui/material/TextField'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -14,6 +12,7 @@ import Tooltip from '@mui/material/Tooltip'
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded'
 import Divider from '@mui/material/Divider'
 import Profile from './Profile/Profile'
+import AudioRecognition from '~/components/Microphone/AudioRecognition'
 import AudioRecorder from '~/components/Microphone/AudioRecorder'
 
 export default function AppBar() {
@@ -140,7 +139,7 @@ export default function AppBar() {
                   )}
                   {!searchValue && isSearch && (
                     <Box sx={{ display: 'flex', gap: 1 }}>
-                      <AudioRecorder mode='transcribe' onTranscriptChange={handleTranscriptChange} />
+                      <AudioRecognition mode='transcribe' onTranscriptChange={handleTranscriptChange} />
                       <Divider
                         orientation='vertical'
                         flexItem
@@ -148,20 +147,12 @@ export default function AppBar() {
                           bgcolor: (theme) => theme.palette.secondary4.main
                         }}
                       />
-                      <SvgIcon
-                        component={StackIcon}
-                        inheritViewBox
-                        sx={{
-                          fontSize: 27,
-                          cursor: 'pointer',
-                          color: (theme) => theme.palette.secondary4.main
-                        }}
-                      />
+                      <AudioRecorder />
                     </Box>
                   )}
                   {!searchValue && !isSearch && (
                     <Box sx={{ display: 'flex', gap: 1 }}>
-                      <AudioRecorder mode='transcribe' onTranscriptChange={handleTranscriptChange} />
+                      <AudioRecognition mode='transcribe' onTranscriptChange={handleTranscriptChange} />
                       <Divider
                         orientation='vertical'
                         flexItem
@@ -169,19 +160,7 @@ export default function AppBar() {
                           bgcolor: (theme) => theme.palette.secondary4.main
                         }}
                       />
-                      <SvgIcon
-                        component={Stack2Icon}
-                        inheritViewBox
-                        sx={{
-                          'fontSize': 27,
-                          'cursor': 'pointer',
-                          'color': (theme) => theme.palette.neutral.neutral1,
-                          '&:hover': {
-                            color: (theme) => theme.palette.secondary4.main
-                          }
-                        }}
-                        onClick={() => navigate('/search')}
-                      />
+                      <AudioRecorder />
                     </Box>
                   )}
                 </InputAdornment>

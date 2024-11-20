@@ -97,7 +97,30 @@ export default function Profile() {
           )}
         </Box>
       </Tooltip>
-      <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement='bottom-start' transition disablePortal>
+      <Popper
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        placement='bottom-start'
+        transition
+        sx={{
+          zIndex: 9999
+        }}
+        modifiers={[
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 8] // Điều chỉnh khoảng cách từ anchorEl đến Popper
+            }
+          },
+          {
+            name: 'preventOverflow',
+            options: {
+              boundary: 'viewport'
+            }
+          }
+        ]}
+      >
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}

@@ -1,87 +1,44 @@
+import { IconButton } from '@mui/material'
 import { useState, useRef } from 'react'
-import MicNoneIcon from '@mui/icons-material/MicNone'
-import IconButton from '@mui/material/IconButton'
-import MicIcon from '@mui/icons-material/Mic'
+import MusicNoteIcon from '@mui/icons-material/MusicNote'
 
-type Props = {
-  mode: 'record' | 'transcribe'
-  // eslint-disable-next-line no-unused-vars
-  onTranscriptChange?: (transcript: string) => void
-}
-
-const AudioRecorder = ({ mode, onTranscriptChange }: Props) => {
+const AudioRecorder = () => {
   const [isRecording, setIsRecording] = useState(false)
+  const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
-  const audioChunks = useRef<Blob[]>([])
-
-  const silenceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const startSpeechRecognition = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    const recognition = new SpeechRecognition()
-
-    recognition.lang = 'vi-VN'
-
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const result = event.results[event.resultIndex]
-      if (result.isFinal) {
-        const transcript = result[0].transcript
-        onTranscriptChange?.(transcript)
-        resetSilenceTimer()
-      }
-    }
-
-    recognition.onend = () => {
-      if (isRecording) {
-        recognition.start()
-      }
-    }
-
-    recognition.start()
-    return recognition
-  }
-
-  const resetSilenceTimer = () => {
-    if (silenceTimeoutRef.current) {
-      clearTimeout(silenceTimeoutRef.current)
-    }
-
-    silenceTimeoutRef.current = setTimeout(() => {
-      stopRecording()
-    }, 3000)
-  }
+  const audioChunksRef = useRef<Blob[]>([])
 
   const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    mediaRecorderRef.current = new MediaRecorder(stream)
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
 
-    mediaRecorderRef.current.ondataavailable = (event) => {
-      audioChunks.current.push(event.data)
-      resetSilenceTimer()
-    }
-
-    mediaRecorderRef.current.onstop = () => {
-      audioChunks.current = []
-      if (silenceTimeoutRef.current) {
-        clearTimeout(silenceTimeoutRef.current)
+      mediaRecorderRef.current = new MediaRecorder(stream)
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data)
       }
+
+      mediaRecorderRef.current.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' })
+        const audioUrl = URL.createObjectURL(audioBlob)
+        setAudioUrl(audioUrl)
+        audioChunksRef.current = []
+      }
+
+      mediaRecorderRef.current.start()
+      setIsRecording(true)
+    } catch {
+      //
     }
-
-    mediaRecorderRef.current.start()
-    setIsRecording(true)
-
-    if (mode === 'transcribe') {
-      startSpeechRecognition()
-    }
-
-    resetSilenceTimer()
   }
 
   const stopRecording = () => {
-    mediaRecorderRef.current?.stop()
-    setIsRecording(false)
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      mediaRecorderRef.current.stop()
+      setIsRecording(false)
+    }
   }
 
+  // Toggle between start and stop recording
   const handleToggleRecording = () => {
     if (isRecording) {
       stopRecording()
@@ -97,11 +54,11 @@ const AudioRecorder = ({ mode, onTranscriptChange }: Props) => {
         sx={{
           width: '27px',
           height: '27px',
-          fontSize: '27',
+          fontSize: '27px',
           color: (theme) => (!isRecording ? theme.palette.secondary4.main : theme.palette.primary.main)
         }}
       >
-        {isRecording ? <MicIcon /> : <MicNoneIcon />}
+        <MusicNoteIcon />
       </IconButton>
     </div>
   )

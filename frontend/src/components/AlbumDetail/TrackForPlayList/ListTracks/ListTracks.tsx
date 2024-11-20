@@ -37,7 +37,8 @@ export default function ListTracks({ listTracks, listTrackIds, playlistId, refet
       {
         onSuccess: () => {
           refetchAlbum()
-          enqueueSnackbar('Thêm vào danh sách phát thành công!', { variant: 'success' })
+          if (type === 'add') enqueueSnackbar('Thêm vào danh sách phát thành công!', { variant: 'success' })
+          if (type === 'del') enqueueSnackbar('Xóa khỏi danh sách phát thành công!', { variant: 'success' })
         },
         onError: () => {
           enqueueSnackbar('Thêm vào danh sách phát thất bại', { variant: 'error' })
