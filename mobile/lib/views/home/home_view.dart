@@ -6,6 +6,7 @@ import 'package:mobile/views/home/widgets/bighit_track_widget.dart';
 import 'package:mobile/views/home/widgets/favorite_genre_widget.dart';
 import 'package:mobile/views/home/widgets/recommended_album_widget.dart';
 import 'package:mobile/views/home/widgets/suggested_artist_widget.dart';
+import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
@@ -45,11 +46,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
   PreferredSize _appBar() {
     return PreferredSize(
       preferredSize: const Size.fromHeight(80),
-      child: AppBar(
+      child: AppAppbar(
         title: const Text('Home'),
         leading: _userAvatar(),
         actions: _appBarActions(),
-        forceMaterialTransparency: true,
       ),
     );
   }
