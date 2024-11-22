@@ -103,4 +103,25 @@ class TrackRemoteDataSource {
     }
     return null;
   }
+
+  Future<List<TrackModel>> getTrackByAudio(String path) async {
+    final file = await MultipartFile.fromFile(path);
+    final data = FormData.fromMap({
+      'audioFile': file
+    });
+    final response = await _magicMusicApi.request(
+      '/recognize',
+      method: HttpMethods.POST,
+      data: data,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return List.from(data?.map(
+          (trackJson) => TrackModel.fromJson(trackJson),
+        ) ?? []);
+      }
+    }
+    return [];
+  }
 }
