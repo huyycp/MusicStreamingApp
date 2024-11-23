@@ -39,7 +39,7 @@ class TrackModel {
     imageLink: json['image'] ?? '',
     lyrics: json['lyrics'] ?? '',
     audioLink: json['path_audio'] ?? '',
-    listenCount: json['listen'] ?? 0,
+    listenCount: int.parse(json['listen']?.toString() ?? '0'),
     createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()), 
     updatedAt: DateTime.parse(json['updated_at'] ?? DateTime.now().toIso8601String()),
     owners: List.from(json['owners']?.map(

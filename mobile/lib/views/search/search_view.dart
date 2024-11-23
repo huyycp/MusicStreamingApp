@@ -7,6 +7,7 @@ import 'package:mobile/views/search/search_view_model.dart';
 import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
+import 'package:mobile/widgets/track/track_widget.dart';
 import 'package:record/record.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
@@ -55,6 +56,7 @@ class _SearchViewState extends ConsumerState<SearchView> {
       children: [
         _searchBar(),
         const SizedBox(height: 24),
+        _tracks(),
       ],
     );
   }
@@ -81,6 +83,24 @@ class _SearchViewState extends ConsumerState<SearchView> {
         width: 16,
         height: 24,
       ),
+    );
+  }
+
+  Widget _tracks() {
+    final tracks = ref.watch(searchViewModel.select(
+      (value) => value.tracks
+    ));
+    final isLoading = ref.watch(searchViewModel.select(
+      (value) => value.isLoading
+    ));
+    return Expanded(
+      child: isLoading 
+        ? const Center(child: CircularProgressIndicator())
+        : ListView.separated(
+            itemCount: tracks.length,
+            itemBuilder: (context, index) => TrackWidget(tracks[index]),
+            separatorBuilder: (context, index) => const SizedBox(height: 8),
+          ),
     );
   }
 
