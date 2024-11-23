@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/track_repository.dart';
+import 'package:mobile/utils/snackbar.dart';
 import 'package:mobile/views/search/search_view.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
-final searchViewModel = ChangeNotifierProvider<SearchViewModel>(
+final searchViewModel = ChangeNotifierProvider.autoDispose<SearchViewModel>(
   (ref) => SearchViewModel(
     trackRepo: ref.read(trackRepoProvider)
   )
@@ -49,15 +50,17 @@ class SearchViewModel extends ChangeNotifier {
           searchByAudio(path);
         } else {
           const config = RecordConfig(
-            encoder: AudioEncoder.wav,
+            encoder: AudioEncoder.aacLc,
             numChannels: 1,
           );
-          final path = join((await getApplicationDocumentsDirectory()).path, 'audio_${DateTime.now().toIso8601String()}.wav');
+          final path = join((await getApplicationDocumentsDirectory()).path, 'audio_${DateTime.now().millisecondsSinceEpoch}.m4a');
           audioRecorder.start(
             config,
             path: path,
           ).timeout(Duration(milliseconds: maxRecordingDuration));
           startTimer();
+          tracks = [];
+          notifyListeners();
         }
       }
     } catch (err) {
@@ -90,11 +93,17 @@ class SearchViewModel extends ChangeNotifier {
       debugPrint(path);
       isLoading = true;
       notifyListeners();
-      tracks = await _trackRepo.getTrackByAudio(path);
+      tracks = await _trackRepo.getTrackByAudio(path).timeout(const Duration(seconds: 30));
       isLoading = false;
       notifyListeners();
+      if (tracks.isEmpty) {
+        SnackBarUtils.showSnackBar(message: 'Nothing match');
+      }
     } catch (err) {
       debugPrint(err.toString());
+      isLoading = false;
+      notifyListeners();
+      SnackBarUtils.showSnackBar(message: 'Cannot recognize, please try again');
     }
   }
 }
