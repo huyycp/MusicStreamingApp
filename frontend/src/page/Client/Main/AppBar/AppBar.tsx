@@ -2,8 +2,6 @@ import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import HomeIcon from '@mui/icons-material/Home'
 import MusicIcon from '~/assets/icon/MusicIcon2.svg?react'
-import Stack2Icon from '~/assets/icon/Stack2.svg?react'
-import StackIcon from '~/assets/icon/Stack.svg?react'
 import SvgIcon from '@mui/material/SvgIcon'
 import TextField from '@mui/material/TextField'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -14,7 +12,9 @@ import Tooltip from '@mui/material/Tooltip'
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded'
 import Divider from '@mui/material/Divider'
 import Profile from './Profile/Profile'
+import AudioRecognition from '~/components/Microphone/AudioRecognition'
 import AudioRecorder from '~/components/Microphone/AudioRecorder'
+import Button from '@mui/material/Button'
 
 export default function AppBar() {
   const [searchValue, setSearchValue] = useState<null | string>('')
@@ -63,11 +63,10 @@ export default function AppBar() {
       <Tooltip title='Magic Music'>
         <Box
           sx={{
-            width: '72px',
-            height: '72px',
+            flex: 1,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             pr: 2,
             pl: 2
           }}
@@ -75,8 +74,10 @@ export default function AppBar() {
           <SvgIcon component={MusicIcon} inheritViewBox sx={{ height: '32px', width: '32px', cursor: 'pointer' }} onClick={() => navigate('/')} />
         </Box>
       </Tooltip>
+
       <Box
         sx={{
+          flex: 1,
           color: (theme) => theme.palette.secondary4.main,
           display: 'flex',
           alignItems: 'center',
@@ -140,7 +141,7 @@ export default function AppBar() {
                   )}
                   {!searchValue && isSearch && (
                     <Box sx={{ display: 'flex', gap: 1 }}>
-                      <AudioRecorder mode='transcribe' onTranscriptChange={handleTranscriptChange} />
+                      <AudioRecognition mode='transcribe' onTranscriptChange={handleTranscriptChange} />
                       <Divider
                         orientation='vertical'
                         flexItem
@@ -148,20 +149,12 @@ export default function AppBar() {
                           bgcolor: (theme) => theme.palette.secondary4.main
                         }}
                       />
-                      <SvgIcon
-                        component={StackIcon}
-                        inheritViewBox
-                        sx={{
-                          fontSize: 27,
-                          cursor: 'pointer',
-                          color: (theme) => theme.palette.secondary4.main
-                        }}
-                      />
+                      <AudioRecorder />
                     </Box>
                   )}
                   {!searchValue && !isSearch && (
                     <Box sx={{ display: 'flex', gap: 1 }}>
-                      <AudioRecorder mode='transcribe' onTranscriptChange={handleTranscriptChange} />
+                      <AudioRecognition mode='transcribe' onTranscriptChange={handleTranscriptChange} />
                       <Divider
                         orientation='vertical'
                         flexItem
@@ -169,19 +162,7 @@ export default function AppBar() {
                           bgcolor: (theme) => theme.palette.secondary4.main
                         }}
                       />
-                      <SvgIcon
-                        component={Stack2Icon}
-                        inheritViewBox
-                        sx={{
-                          'fontSize': 27,
-                          'cursor': 'pointer',
-                          'color': (theme) => theme.palette.neutral.neutral1,
-                          '&:hover': {
-                            color: (theme) => theme.palette.secondary4.main
-                          }
-                        }}
-                        onClick={() => navigate('/search')}
-                      />
+                      <AudioRecorder />
                     </Box>
                   )}
                 </InputAdornment>
@@ -206,7 +187,21 @@ export default function AppBar() {
           }}
         />
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: 1
+        }}
+      >
+        <Tooltip title='Premium'>
+          <Button variant='contained' color='secondary' sx={{ fontWeight: 'bold' }} onClick={() => navigate('/payment')}>
+            Khám phá Premium
+          </Button>
+        </Tooltip>
         <Tooltip title='Thông tin mới'>
           <NotificationsNoneRoundedIcon
             sx={{

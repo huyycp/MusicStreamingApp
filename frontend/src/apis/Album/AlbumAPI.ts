@@ -11,7 +11,12 @@ export const apiCreateAlbum = async (formData: FormData): Promise<IResponse> => 
 }
 
 export const apiGetMyLibrary = async (limit: number, page: number): Promise<IResponse> => {
-  const response = await instance.get<IResponse>(`/libraries/my-libraries?limit=${limit}&page=${page}`)
+  const response = await instance.get<IResponse>('/libraries/my-libraries', {
+    params: {
+      limit,
+      page
+    }
+  })
   return response.data
 }
 
@@ -26,12 +31,20 @@ export const getAlbumDetail = async (albumId: string): Promise<IResponse> => {
 }
 
 export const apiAddTrackToLibrary = async (data: { tracks: string[]; library_id: string; type: 'add' | 'del' }): Promise<IResponse> => {
-  const response = await instance.patch<IResponse>(`/libraries/${data.library_id}/tracks?type=${data.type}`, { track_list: JSON.stringify(data.tracks) })
+  const response = await instance.patch<IResponse>(`/libraries/${data.library_id}/tracks?type=${data.type}`, {
+    track_list: JSON.stringify(data.tracks)
+  })
   return response.data
 }
 
 export const apiGetAlbumsByArtist = async (limit: number, page: number): Promise<IResponse> => {
-  const response = await instance.get<IResponse>(`/libraries/my-libraries?type=album&limit=${limit}&page=${page}`)
+  const response = await instance.get<IResponse>('/libraries/my-libraries', {
+    params: {
+      limit,
+      page,
+      type: 'album'
+    }
+  })
   return response.data
 }
 

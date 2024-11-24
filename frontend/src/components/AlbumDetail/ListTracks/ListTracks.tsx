@@ -26,9 +26,10 @@ type Props = {
   albumId: string
   listTracks: ITrack[]
   isPending: boolean
+  hiddenTitle?: boolean
 }
 
-export default function ListTracks({ listTracks, isPending, albumId }: Props) {
+export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle }: Props) {
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
   const borderColor = theme.palette.neutral.neutral3
@@ -73,16 +74,18 @@ export default function ListTracks({ listTracks, isPending, albumId }: Props) {
   return (
     <TableContainer component={Paper} sx={{ minWidth: 150, maxWidth: '100%', overflow: 'auto', bgcolor: 'transparent' }}>
       <Table aria-label='music table' sx={{ tableLayout: 'fixed' }}>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ color: textColor, borderColor: borderColor }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>Bài hát</Box>
-            </TableCell>
-            <TableCell align='right' sx={{ color: textColor, width: '100px', borderColor: borderColor }}>
-              Thời gian
-            </TableCell>
-          </TableRow>
-        </TableHead>
+        {!hiddenTitle && (
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ color: textColor, borderColor: borderColor }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>Bài hát</Box>
+              </TableCell>
+              <TableCell align='right' sx={{ color: textColor, width: '100px', borderColor: borderColor }}>
+                Thời gian
+              </TableCell>
+            </TableRow>
+          </TableHead>
+        )}
         <TableBody>
           {isPending
             ? Array.from(new Array(5)).map((_, index) => (
