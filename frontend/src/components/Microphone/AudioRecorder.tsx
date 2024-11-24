@@ -45,7 +45,6 @@ const AudioRecorder = () => {
 
         audioChunksRef.current = []
       }
-
       mediaRecorderRef.current.start()
       setIsRecording(true)
     } catch {
@@ -65,6 +64,7 @@ const AudioRecorder = () => {
     }
   }
 
+  // Toggle between start and stop recording
   const handleToggleRecording = () => {
     if (isRecording) {
       stopRecording()

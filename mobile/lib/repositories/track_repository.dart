@@ -75,4 +75,8 @@ class TrackRepository {
   Future<GetPlaylistWithTrackResp?> getPlaylistWithTrack(String trackId) async {
     return await _trackRemote.getPlaylistWithTrack(trackId);
   }
+
+  Future<List<TrackModel>> getTrackByAudio(String path) async {
+    return await _trackRemote.getTrackByAudio(path);
+  }
 }

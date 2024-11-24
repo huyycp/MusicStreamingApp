@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/data_sources/remote/audio_recognizer_api.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/req/create_track_req.dart';
 import 'package:mobile/data/dto/req/get_track_req.dart';
@@ -12,15 +13,19 @@ import 'package:mobile/models/track_model.dart';
 final trackRemoteProvider = Provider<TrackRemoteDataSource>(
   (ref) => TrackRemoteDataSource(
     magicMusicApi: ref.read(magicMusicApiProvider),
+    audioRecognizerApi: ref.read(audioRecognizerProvider),
   )
 );
 
 class TrackRemoteDataSource {
   TrackRemoteDataSource({
-    required MagicMusicApi magicMusicApi
-  }) : _magicMusicApi = magicMusicApi;
+    required MagicMusicApi magicMusicApi,
+    required AudioRecognizerApi audioRecognizerApi
+  }) : _magicMusicApi = magicMusicApi,
+       _audioRecognizerApi = audioRecognizerApi;
 
   final MagicMusicApi _magicMusicApi;
+  final AudioRecognizerApi _audioRecognizerApi;
   final String _trackPath = '/tracks';
 
   Future<bool> createTrack(CreateTrackReq req) async {
@@ -102,5 +107,28 @@ class TrackRemoteDataSource {
       }
     }
     return null;
+  }
+
+  Future<List<TrackModel>> getTrackByAudio(String path) async {
+    final file = await MultipartFile.fromFile(path);
+    final data = FormData.fromMap({
+      'audioFile': file
+    });
+    final response = await _audioRecognizerApi.request(
+      '/recognize',
+      method: HttpMethods.POST,
+      data: data,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return List.from(data?.map(
+          (trackJson) => TrackModel.fromJson(trackJson),
+        ) ?? []);
+      }
+    } else if(response.statusCode! ~/ 100 == 5) {
+      throw Exception();
+    }
+    return [];
   }
 }
