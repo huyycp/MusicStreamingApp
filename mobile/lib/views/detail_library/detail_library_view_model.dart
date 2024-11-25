@@ -9,7 +9,7 @@ import 'package:mobile/repositories/genre_repository.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
-import 'package:mobile/routes.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/snackbar.dart';
 
 final detailLibraryViewModel = ChangeNotifierProvider.autoDispose<DetailLibraryViewModel>(

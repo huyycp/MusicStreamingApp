@@ -149,7 +149,7 @@ class UserRemoteDataSource {
 
   Future<UserModel?> getUser(String userId) async {
     final response = await _magicMusicApi.request(
-      '/admin/$_userPath/$userId',
+      '$_userPath/$userId',
       method: HttpMethods.GET,
     );
     if (response.statusCode == HttpStatus.ok) {

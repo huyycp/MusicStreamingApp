@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
-import 'package:mobile/routes.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/snackbar.dart';
 
 final createPlaylistViewModel = ChangeNotifierProvider.autoDispose<CreatePlaylistViewModel>(

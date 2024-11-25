@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/report_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
-import 'package:mobile/routes.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/snackbar.dart';
 
 final reportViewModel = ChangeNotifierProvider.autoDispose<ReportViewModel>(

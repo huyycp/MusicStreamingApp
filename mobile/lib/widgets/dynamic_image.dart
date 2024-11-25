@@ -48,6 +48,10 @@ class DynamicImage extends StatelessWidget {
             );
           }
         }
+        break;
+      case '': 
+        image = Container(color: Colors.grey);
+        break;
       default:
         {
           if (url.startsWith('http')) {

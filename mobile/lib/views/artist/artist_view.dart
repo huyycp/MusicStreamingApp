@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/models/library_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/artist/artist_view_model.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
-import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/views/library/widgets/library_widget.dart';
-import 'package:mobile/widgets/track/track_widget.dart';
 import 'package:mobile/views/main/main_view_model.dart';
-import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class ArtistView extends ConsumerStatefulWidget {

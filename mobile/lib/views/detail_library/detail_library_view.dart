@@ -233,14 +233,13 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
   }
 
   Widget _playBtn() {
+    final isPlaying = ref.watch(mainAudioController.select(
+      (value) => value.playing && value.currentPlaylist == widget.id)
+    );
     return Visibility(
       visible: ref.watch(detailLibraryViewModel.select((value) => value.library?.tracks.isNotEmpty ?? false)),
       child: IconButton(
-        onPressed: () {
-          ref.read(mainAudioController).setPlaylist(
-            tracks: ref.watch(detailLibraryViewModel.select((value) => value.library!.tracks))
-          );
-        },
+        onPressed: () => isPlaying ? _pauseLibrary() : _playLibrary(isLibraryPlaying: true),
         icon: Container(
           padding: const EdgeInsets.all(16),
           decoration: const BoxDecoration(
@@ -248,7 +247,9 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
             color: PRIMARY_COLOR,
           ),
           child: DynamicImage(
-            'assets/icons/ic_play.svg',
+            isPlaying
+              ? 'assets/icons/ic_pause.svg'
+              : 'assets/icons/ic_play.svg',
             width: 20,
             height: 20,
             color: PRIMARY_BACKGROUND,
@@ -311,7 +312,11 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
             onTap: () {
               context.push('/track/${tracks[index].id}');
             },
-            child: TrackWidget(tracks[index], isMenuVisible: true),
+            child: TrackWidget(
+              tracks[index],
+              isMenuVisible: true,
+              onPressed: () => _playLibrary(index: index),
+            ),
           ),
           separatorBuilder: (context, state) => const SizedBox(height: 16),
         )
@@ -337,5 +342,18 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
         )
       ],
     );
+  }
+
+  void _playLibrary({int index = 0, bool isLibraryPlaying = false}) {
+    ref.read(mainAudioController).setPlaylist(
+      tracks: ref.watch(detailLibraryViewModel.select((value) => value.library!.tracks)),
+      initialIndex: index,
+      playlistId: ref.watch(detailLibraryViewModel.select((value) => value.library!.id)),
+      isLibraryPlaying: isLibraryPlaying,
+    );
+  }
+
+  void _pauseLibrary() {
+    ref.read(mainAudioController).pause();
   }
 }
