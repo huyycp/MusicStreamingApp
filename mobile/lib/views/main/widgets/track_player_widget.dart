@@ -15,9 +15,8 @@ class TrackPlayerWidget extends ConsumerStatefulWidget {
 class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   @override
   Widget build(BuildContext context) {
-    return ref.watch(mainAudioController).tracks.isEmpty
-      ? const SizedBox.shrink()
-      : GestureDetector(
+    return ref.watch(mainAudioController).available
+      ? GestureDetector(
           onTap: () {
             _showTrackPlayerView();
           },
@@ -46,7 +45,8 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
               ],
             ),
           ),
-        );
+        )
+      : const SizedBox.shrink();
   }
 
   Widget _trackInfo() {
