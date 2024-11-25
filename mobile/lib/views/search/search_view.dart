@@ -8,7 +8,6 @@ import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 import 'package:mobile/widgets/track/track_widget.dart';
-import 'package:record/record.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
 class SearchView extends ConsumerStatefulWidget {

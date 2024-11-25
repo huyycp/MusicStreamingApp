@@ -12,7 +12,7 @@ class BighitTrackWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => ref.read(mainAudioController).setPlaylist(tracks: [track]),
+      onTap: () => ref.read(mainAudioController).setPlaylist(tracks: [track], playlistId: track.id),
       child: SizedBox(
         width: size,
         height: size + 20,

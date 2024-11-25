@@ -15,36 +15,38 @@ class TrackPlayerWidget extends ConsumerStatefulWidget {
 class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _showTrackPlayerView();
-      },
-      child: Container(
-        height: 66,
-        width: 380,
-        padding: const EdgeInsets.only(right: 12, left: 12, top: 12),
-        decoration: BoxDecoration(
-          color: GRAY_BCK_1,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(child: _trackInfo()),
-                  _trackControls(),
-                ],
-              ),
+    return ref.watch(mainAudioController).tracks.isEmpty
+      ? const SizedBox.shrink()
+      : GestureDetector(
+          onTap: () {
+            _showTrackPlayerView();
+          },
+          child: Container(
+            height: 66,
+            width: 380,
+            padding: const EdgeInsets.only(right: 12, left: 12, top: 12),
+            decoration: BoxDecoration(
+              color: GRAY_BCK_1,
+              borderRadius: BorderRadius.circular(8),
             ),
-            const SizedBox(height: 8),
-            _trackProgress(),
-          ],
-        ),
-      ),
-    );
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(child: _trackInfo()),
+                      _trackControls(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                _trackProgress(),
+              ],
+            ),
+          ),
+        );
   }
 
   Widget _trackInfo() {

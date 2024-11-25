@@ -59,16 +59,17 @@ class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
   }
 
   Widget _shuffleBtn() {
+    final isShuffing = ref.watch(widget.notifier.select((value) => value.shuffing));
     return IconButton(
       onPressed: widget.isShuffingEnabled
         ? ref.read(widget.notifier).toggleShuffle
         : null,
       icon: DynamicImage(
-        ref.watch(widget.notifier.select((value) => value.shuffing))
+        isShuffing
           ? 'assets/icons/ic_shuffle_active.svg'
           : 'assets/icons/ic_shuffle.svg',
         width: 24,
-        height: 24,
+        height: isShuffing ? 30 : 24,
         color: widget.isShuffingEnabled ? Colors.white : GRAY_BCK_2,
       ),
     );
@@ -126,16 +127,17 @@ class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
   }
 
   Widget _repeatBtn() {
+    final isRepeating = ref.watch(widget.notifier.select((value) => value.repeating));
     return IconButton(
       onPressed: widget.isRepeatEnabled
         ? ref.read(widget.notifier).toggleRepeatTrack
         : null,
       icon: DynamicImage(
-        ref.watch(widget.notifier.select((value) => value.repeating))
+        isRepeating
           ? 'assets/icons/ic_repeat_active.svg'
           : 'assets/icons/ic_repeat.svg',
         width: 24,
-        height: 24,
+        height: isRepeating ? 30 : 24,
         color: widget.isRepeatEnabled ? Colors.white : GRAY_BCK_2,
       ),
     );

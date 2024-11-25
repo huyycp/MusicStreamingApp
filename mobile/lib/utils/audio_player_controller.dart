@@ -20,50 +20,57 @@ class AudioPlayerController extends ChangeNotifier {
       currentIndex = value ?? 0;
       notifyListeners();
     });
+    _player.playerStateStream.listen((state) {
+
+    });
   }
 
   final _player = AudioPlayer();
   List<TrackModel> _tracks = [];
+  String? currentPlaylist;
+  int currentIndex = -1;
   double progress = 0;
-  int currentIndex = 0;
 
   List<TrackModel> get tracks => _tracks;
+  TrackModel get currentTrack => tracks[currentIndex];
   bool get playing => _player.playing;
   bool get shuffing => _player.shuffleModeEnabled;
   bool get repeating => _player.loopMode == LoopMode.one;
   bool get hasNext => _player.hasNext;
   bool get hasPrev => _player.hasPrevious;
 
+
   Future<void> setPlaylist({
     required List<TrackModel> tracks,
-    int initialIndex = 0
+    String? playlistId,
+    int initialIndex = 0,
+    bool isLibraryPlaying = false,
   }) async {
-    _tracks = tracks;
-    final playlist = ConcatenatingAudioSource(
-      useLazyPreparation: true,
-      children: _tracks.map((track) => AudioSource.uri(Uri.parse(track.audioLink))).toList()
-    );
-    Future.delayed(const Duration(microseconds: 500), () async {
+    if (currentPlaylist == playlistId) {
+      if (!isLibraryPlaying) {
+        currentIndex = initialIndex;
+        notifyListeners();
+        await _player.seek(const Duration(seconds: 0), index: currentIndex);
+      }
+      await _player.play();
+    } else {
+      _tracks = tracks;
+      currentPlaylist = playlistId;
+      currentIndex = initialIndex;
+      notifyListeners();
+      final playlist = ConcatenatingAudioSource(
+        useLazyPreparation: true,
+        children: _tracks.map((track) => AudioSource.uri(Uri.parse(track.audioLink))).toList()
+      );
       await _player.setAudioSource(
         playlist,
         initialIndex: initialIndex,
         initialPosition: Duration.zero
       );
-      currentIndex = initialIndex;
       if (tracks.isNotEmpty) {
         await _player.play();
       }
-      notifyListeners();
-    });
-  }
-
-  Future<void> selectTrackInPlaylist({required int index}) async {
-    if (_player.audioSource == null) {
-      return;
     }
-    await _player.seek(Duration.zero, index: index);
-    currentIndex = index;
-    await _player.play();
     notifyListeners();
   }
 
@@ -80,16 +87,17 @@ class AudioPlayerController extends ChangeNotifier {
   }
 
   Future<void> pause() async {
-    await _player.pause();
+    await _player.pause(); 
+    debugPrint('pause');
     notifyListeners();
   }
 
   Future<void> stop() async {
-    _tracks.clear();
     _player.stop();
-    currentIndex = 0;
+    tracks.clear();
     progress = 0;
     notifyListeners();
+    currentIndex = 0;
   }
 
   Future<void> handleTrackSlider(double value) async {

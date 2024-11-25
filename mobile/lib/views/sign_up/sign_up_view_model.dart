@@ -4,7 +4,7 @@ import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/genre_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
-import 'package:mobile/routes.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/snackbar.dart';
 
 final signUpViewModel = ChangeNotifierProvider.autoDispose<SignUpViewModel>(

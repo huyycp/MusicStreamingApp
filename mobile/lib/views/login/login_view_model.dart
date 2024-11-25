@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/repositories/user_repository.dart';
-import 'package:mobile/routes.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/snackbar.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -37,7 +37,7 @@ class LoginViewModel extends ChangeNotifier{
           message: 'Login successfully',
           status: MessageTypes.success,
         );
-        RouteConfig.instance.go('/main') ;
+        RouteConfig.instance.go('/home') ;
       } else if (isLoginSuccess == false) {
         SnackBarUtils.showSnackBar(
           message: 'Login failed',

@@ -7,18 +7,21 @@ import 'package:mobile/widgets/dynamic_image.dart';
 import 'package:mobile/widgets/track/track_action_sheet.dart';
 
 class TrackWidget extends ConsumerWidget {
-  final TrackModel track;
-  final bool isMenuVisible;
   const TrackWidget(
     this.track, {
     this.isMenuVisible = false,
-    super.key
+    this.onPressed,
+    super.key,
   });
+
+  final TrackModel track;
+  final bool isMenuVisible;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => ref.read(mainAudioController).setPlaylist(tracks: [ track ]),
+      onTap: onPressed ?? () => _playTrack(ref),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -85,5 +88,9 @@ class TrackWidget extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _playTrack(WidgetRef ref) {
+    ref.read(mainAudioController).setPlaylist(tracks: [ track ], playlistId: track.id);
   }
 }
