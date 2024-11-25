@@ -28,6 +28,10 @@ import UploadStep4 from './page/Client/UploadMusic/UploadStep4/UploadStep4'
 import RegisterStep4 from './page/Auth/RegisterBody/RegisterStep4/RegisterStep4'
 import GenresChose from './components/GenresChose'
 import AppBar from './page/Auth/AppBar/AppBar'
+import VnPayForm from './components/VnPay/VnPayForm/VnPayForm'
+import VnPayReturn from './components/VnPay/VnPayReturn/VnPayReturn'
+import PayOSForm from './components/PayOS/PayOSForm/PayOSForm'
+import PayOSCancel from './components/PayOS/PayOSCancel/PayOSCancel'
 
 const router = createBrowserRouter([
   {
@@ -66,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: '/artist/:artistId',
         element: <BodyContent viewType='artist' />
+      },
+      {
+        path: '/section',
+        element: <BodyContent viewType='section' />
       },
       {
         path: '/test',
@@ -191,6 +199,46 @@ const router = createBrowserRouter([
           {
             path: 'verify-email',
             element: <VerifyEmail />
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/payment',
+    element: <ProtectedRoute />,
+    errorElement: <Error />,
+    children: [
+      {
+        element: <AppBar />,
+        children: [
+          {
+            index: true,
+            element: <PayOSForm />
+          },
+          {
+            path: 'cancel',
+            element: <PayOSCancel />
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/paymentVnPay',
+    element: <ProtectedRoute />,
+    errorElement: <Error />,
+    children: [
+      {
+        element: <AppBar />,
+        children: [
+          {
+            index: true,
+            element: <VnPayForm />
+          },
+          {
+            path: 'return',
+            element: <VnPayReturn />
           }
         ]
       }

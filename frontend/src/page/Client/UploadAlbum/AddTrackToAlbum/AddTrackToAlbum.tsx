@@ -17,14 +17,14 @@ import Typography from '@mui/material/Typography'
 import useAddTrackToAlbum from '~/hooks/Album/useAddTrackToAlbum'
 
 export default function AddTrackToAlbum() {
-  const { data: myTrackListResponse, isPending } = useGetTracksByArtist(5, 1, 'pending')
+  const { data: myTrackListResponse, isPending } = useGetTracksByArtist(5, 'pending')
   const { mutate: addTrackToAlbum, isPending: addTrackPending } = useAddTrackToAlbum()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
 
-  const myTrackList = myTrackListResponse?.result?.data ?? []
+  const myTrackList = myTrackListResponse?.pages?.flatMap((page) => page.result.data) ?? []
 
   useEffect(() => {
     if (!id) {
@@ -66,12 +66,11 @@ export default function AddTrackToAlbum() {
       }}
     >
       <Box sx={{ width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 1 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 14, pb: 3 }}>
-          <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Chọn các bài hát</Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, fontSize: 22, pb: 3, width: '100%', alignItems: 'center' }}>
+          <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Chọn các bài hát để thêm vào album</Box>
         </Box>
       </Box>
 
-      {/* Bảng hiển thị bài hát */}
       {myTrackList && (
         <TableContainer component={Paper} sx={{ minWidth: 150, maxWidth: '300%', overflow: 'auto', bgcolor: 'transparent', width: '1000px' }}>
           <Table aria-label='music table' sx={{ tableLayout: 'fixed' }}>

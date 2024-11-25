@@ -14,6 +14,7 @@ import Divider from '@mui/material/Divider'
 import Profile from './Profile/Profile'
 import AudioRecognition from '~/components/Microphone/AudioRecognition'
 import AudioRecorder from '~/components/Microphone/AudioRecorder'
+import Button from '@mui/material/Button'
 
 export default function AppBar() {
   const [searchValue, setSearchValue] = useState<null | string>('')
@@ -62,11 +63,10 @@ export default function AppBar() {
       <Tooltip title='Magic Music'>
         <Box
           sx={{
-            width: '72px',
-            height: '72px',
+            flex: 1,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             pr: 2,
             pl: 2
           }}
@@ -74,8 +74,10 @@ export default function AppBar() {
           <SvgIcon component={MusicIcon} inheritViewBox sx={{ height: '32px', width: '32px', cursor: 'pointer' }} onClick={() => navigate('/')} />
         </Box>
       </Tooltip>
+
       <Box
         sx={{
+          flex: 1,
           color: (theme) => theme.palette.secondary4.main,
           display: 'flex',
           alignItems: 'center',
@@ -185,7 +187,21 @@ export default function AppBar() {
           }}
         />
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: 1
+        }}
+      >
+        <Tooltip title='Premium'>
+          <Button variant='contained' color='secondary' sx={{ fontWeight: 'bold' }} onClick={() => navigate('/payment')}>
+            Khám phá Premium
+          </Button>
+        </Tooltip>
         <Tooltip title='Thông tin mới'>
           <NotificationsNoneRoundedIcon
             sx={{

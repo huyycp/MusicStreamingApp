@@ -186,7 +186,7 @@ export default function ReportTrack({ open, setOpen, track }: Props) {
         </Box>
 
         <Box sx={{ fontSize: 14, fontWeight: 'bold' }}>Lý do</Box>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'space-between' }}>
           {ReportData.map((item, index) => (
             <Box key={index} sx={{ display: 'flex', alignItems: 'center', width: '48%' }}>
               <Checkbox
@@ -238,7 +238,7 @@ export default function ReportTrack({ open, setOpen, track }: Props) {
               onChange={handleChangeDesc}
               variant='outlined'
               multiline
-              rows={4}
+              rows={2}
               fullWidth
               error={!!errorDesc}
               helperText={errorDesc}

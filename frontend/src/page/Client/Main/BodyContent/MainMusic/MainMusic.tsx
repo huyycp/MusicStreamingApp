@@ -5,6 +5,8 @@ import ArtistDetail from '~/components/Artist/ArtistDetail'
 import HomeView from '~/components/HomeView'
 import MusicAlbum from '~/components/MusicAlbum'
 import MyMusic from '~/components/MyMusic'
+import AudioSearchResutl from '~/components/SearchResult/AudioSearchResult/AudioSearchResult'
+import SectionAlbum from '~/components/Section/SectionAlbum/SectionAlbum'
 import TrackDetail from '~/components/TrackDetail/TrackDetail'
 
 type Props = {
@@ -12,7 +14,6 @@ type Props = {
 }
 
 export default function MainMusic({ viewType }: Props) {
-  // const musicList = mockData.listMusics
   useEffect(() => {
     if (viewType === 'search') document.title = 'Magic Music - Search'
     if (viewType === 'my-music') document.title = 'Magic Music - My Music'
@@ -38,14 +39,17 @@ export default function MainMusic({ viewType }: Props) {
         color: (theme) => theme.palette.secondary4.main
       }}
     >
-      {viewType === 'search' && <Box>Search</Box>}
-      {viewType === 'liked-music' && <MusicAlbum />}
-      {viewType === 'playlist' && <Box>PlayList</Box>}
-      {viewType === 'my-music' && <MyMusic />}
-      {viewType === 'album' && <AlbumDetail />}
-      {viewType === 'track' && <TrackDetail />}
-      {viewType === 'artist' && <ArtistDetail />}
-      {!viewType && <HomeView />}
+      <>
+        {viewType === 'search' && <AudioSearchResutl />}
+        {viewType === 'liked-music' && <MusicAlbum />}
+        {viewType === 'playlist' && <Box>PlayList</Box>}
+        {viewType === 'my-music' && <MyMusic />}
+        {viewType === 'album' && <AlbumDetail />}
+        {viewType === 'track' && <TrackDetail />}
+        {viewType === 'artist' && <ArtistDetail />}
+        {viewType === 'section' && <SectionAlbum />}
+        {!viewType && <HomeView />}
+      </>
     </Box>
   )
 }

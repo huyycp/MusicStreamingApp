@@ -3,10 +3,9 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined'
 import IconButton from '@mui/material/IconButton'
-import Button from '@mui/material/Button'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useResize } from '~/hooks/useResize'
-import { Params, useParams } from 'react-router-dom'
+import { Params, useNavigate, useParams } from 'react-router-dom'
 import useGetTrackDetail from '~/hooks/Tracks/useGetTrackDetail'
 import { ITrack } from '~/type/Tracks/ITrack'
 import { formatDuration } from '~/utils/formatDuration'
@@ -15,6 +14,10 @@ import { CircularProgress, Tooltip } from '@mui/material'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import PauseCircleFilledIcon from '@mui/icons-material/PauseCircleFilled'
 import { useMusic } from '~/hooks/useMusic'
+import ArtistTrack from '../Artist/ArtistTrack'
+import ArtistAlbum from '../Artist/ArtistAlbum/ArtistAlbum'
+import useGetAlbumDetail from '~/hooks/Album/useGetLibraryDetail'
+import ListTracks from '../AlbumDetail/ListTracks/ListTracks'
 
 export default function TrackDetail() {
   const [isSticky, setIsSticky] = useState(false)
@@ -24,11 +27,15 @@ export default function TrackDetail() {
   const { widths } = useResize()
   const [trackDurations, setTrackDurations] = useState<number>(0)
   const track = data?.result as ITrack
+  const { data: albumDetail, isPending: albumPending } = useGetAlbumDetail(track?.album._id || null)
   const { addAlbum, music, pause, setPause } = useMusic()
+  const listTracks = albumDetail?.result.list_of_tracks as ITrack[]
+  const navigate = useNavigate()
 
   const handlePlay = () => {
     if (music?._id !== trackId) {
-      addAlbum(track.album._id, 0, track._id)
+      const index = listTracks.findIndex((item) => item._id === trackId)
+      addAlbum(track.album._id, index)
     } else if (!pause) setPause(true)
     else setPause(false)
   }
@@ -222,9 +229,20 @@ export default function TrackDetail() {
               }}
             />
           </IconButton>
-          <Button variant='outlined' sx={{ p: '3px 15px', mr: '24px', ml: '16px', height: '32px' }}>
-            Theo dõi
-          </Button>
+          <Tooltip title='Thêm vào Bài hát yêu thích' placement='top'>
+            <IconButton>
+              <ControlPointIcon
+                sx={{
+                  'color': (theme) => theme.palette.neutral.neutral1,
+                  'cursor': 'pointer',
+                  'fontSize': 36,
+                  '&:hover': {
+                    color: (theme) => theme.palette.secondary4.main
+                  }
+                }}
+              />
+            </IconButton>
+          </Tooltip>
           <IconButton>
             <MoreHorizIcon
               sx={{
@@ -239,11 +257,85 @@ export default function TrackDetail() {
           </IconButton>
         </Box>
       )}
-      <Box>
-        <Typography variant='h6' fontWeight='bold'>
-          Phổ biến
-        </Typography>
+      {track?.lyrics && (
+        <Box sx={{ paddingBottom: 2 }}>
+          <Typography variant='h6' fontWeight='bold'>
+            Lời bài hát
+          </Typography>
+          <Typography variant='body2' fontWeight='bold' sx={{ color: (theme) => theme.palette.neutral.neutral2 }}>
+            {track?.lyrics}
+          </Typography>
+        </Box>
+      )}
+      <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
+        {track?.owners.map((artist) => <ArtistTrack key={artist._id} artist={artist} />)}
       </Box>
+      <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1, paddingBottom: 2 }}>
+        {track?.owners.map((artist) => <ArtistAlbum key={artist._id} artist={artist} />)}
+      </Box>
+
+      {track.album._id && (
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1 }} onClick={() => navigate(`/library/${track.album._id}`)}>
+          <Box
+            sx={{
+              'width': '100%',
+              'cursor': 'pointer',
+              'height': '80px',
+              'display': 'flex',
+              'flexDirection': 'row',
+              'borderRadius': '10px',
+              'bgcolor': (theme) => theme.palette.neutral.neutral3,
+              '&:hover': {
+                bgcolor: (theme) => theme.palette.neutral.neutral2
+              }
+            }}
+          >
+            <img
+              alt={track.album.name}
+              src={track.album.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
+              onError={(e) => {
+                e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
+              }}
+              style={{
+                inlineSize: '80px',
+                blockSize: '80px',
+                objectFit: 'cover',
+                borderTopLeftRadius: '10px',
+                borderBottomLeftRadius: '10px',
+                marginRight: '10px'
+              }}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'start',
+                justifyContent: 'center',
+                paddingLeft: 1
+              }}
+            >
+              <Typography variant='body2'>Từ album</Typography>
+              <Typography
+                variant='body1'
+                fontWeight='bold'
+                sx={{
+                  '&:hover': {
+                    textDecoration: 'underline'
+                  }
+                }}
+              >
+                {track.album.name}
+              </Typography>
+            </Box>
+          </Box>
+          <ListTracks
+            listTracks={listTracks}
+            isPending={albumPending}
+            albumId={track.album._id}
+            hiddenTitle={true}
+          />
+        </Box>
+      )}
     </Box>
   )
 }
