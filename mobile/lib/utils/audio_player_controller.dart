@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:mobile/models/track_model.dart';
 
 class AudioPlayerController extends ChangeNotifier {
@@ -38,7 +39,7 @@ class AudioPlayerController extends ChangeNotifier {
   bool get repeating => _player.loopMode == LoopMode.one;
   bool get hasNext => _player.hasNext;
   bool get hasPrev => _player.hasPrevious;
-
+  bool get available => _player.processingState != ProcessingState.idle;
 
   Future<void> setPlaylist({
     required List<TrackModel> tracks,
@@ -60,7 +61,16 @@ class AudioPlayerController extends ChangeNotifier {
       notifyListeners();
       final playlist = ConcatenatingAudioSource(
         useLazyPreparation: true,
-        children: _tracks.map((track) => AudioSource.uri(Uri.parse(track.audioLink))).toList()
+        children: _tracks.map(
+          (track) => AudioSource.uri(
+            Uri.parse(track.audioLink),
+            tag: MediaItem(
+              id: track.id,
+              album: track.album?.name,
+              title: track.name,
+              artUri: Uri.parse(track.imageLink),
+            )
+        )).toList()
       );
       await _player.setAudioSource(
         playlist,
@@ -88,16 +98,14 @@ class AudioPlayerController extends ChangeNotifier {
 
   Future<void> pause() async {
     await _player.pause(); 
-    debugPrint('pause');
     notifyListeners();
   }
 
   Future<void> stop() async {
-    _player.stop();
-    tracks.clear();
-    progress = 0;
+    await _player.stop();
+    await _player.seek(const Duration(), index: 0);
+    currentPlaylist = null;
     notifyListeners();
-    currentIndex = 0;
   }
 
   Future<void> handleTrackSlider(double value) async {
