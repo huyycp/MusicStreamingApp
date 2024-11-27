@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:mobile/views/premium/premium_view.dart';
+import 'package:mobile/views/profile/profile_view.dart';
 
 class ProfileRoute {
   ProfileRoute._();
@@ -8,6 +8,6 @@ class ProfileRoute {
   
   static final GoRoute _profileRoute = GoRoute(
     path: '/profile',
-    builder: (context, state) => const PremiumView()
+    builder: (context, state) => const ProfileView()
   );
 }

@@ -31,9 +31,9 @@ class PageMenuSelection {
   );
 
   static final profile = ViewInfoModel(
-    title: 'Premium',
-    iconData: 'assets/icons/ic_spotify.svg',
-    selectedIconData: 'assets/icons/ic_spotify.svg',
+    title: 'Profile',
+    iconData: 'assets/icons/ic_user.svg',
+    selectedIconData: 'assets/icons/ic_user_filled.svg',
     path: '/profile',
     index: 3,
   );
@@ -73,7 +73,7 @@ class _AppNavbarState extends State<AppNavbar> {
         ),
         selectedLabelStyle: const TextStyle(
           color: Colors.white
-        ),  
+        ),
         useLegacyColorScheme: false,
         showSelectedLabels: true,
         showUnselectedLabels: true,

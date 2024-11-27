@@ -18,15 +18,17 @@ class TrackActionSheet extends ConsumerStatefulWidget {
 class _TrackActionSheetState extends ConsumerState<TrackActionSheet> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _trackInfo(),
-        Divider(
-          color: BUTTON_STROKE.withOpacity(0.25),
-        ),
-        _trackActions(),
-      ],
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _trackInfo(),
+          Divider(
+            color: BUTTON_STROKE.withOpacity(0.25),
+          ),
+          _trackActions(),
+        ],
+      ),
     );
   }
 
