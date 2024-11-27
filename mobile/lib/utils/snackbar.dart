@@ -24,12 +24,12 @@ class SnackBarUtils {
         color = ERROR_COLOR;
         break;
       default:
-        color = GRAY_BCK_2;
+        color = BUTTON_STROKE;
     }
     scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
       backgroundColor: GRAY_BCK_1,
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide.none,
