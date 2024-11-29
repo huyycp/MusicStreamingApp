@@ -15,9 +15,9 @@ class _PlaylistListViewState extends ConsumerState<PlaylistListView> {
   @override
   void initState() {
     super.initState();
-    ref.read(libraryViewModel).getPlaylists();
+    ref.read(libraryViewModel).getPlaylists(refresh: true);
   }
-
+  
   Widget itemWidget(dynamic playlist) => LibraryWidget(playlist);
   
   @override

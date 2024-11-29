@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/home/home_view_model.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/views/search/search_view_model.dart';
 import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
+import 'package:mobile/widgets/navigate_avatar.dart';
 import 'package:mobile/widgets/track/track_widget.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
@@ -17,9 +19,14 @@ class SearchView extends ConsumerStatefulWidget {
   ConsumerState<SearchView> createState() => _SearchViewState();
 }
 
-class _SearchViewState extends ConsumerState<SearchView> {
+class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAliveClientMixin{
+  
+  @override
+  bool get wantKeepAlive => true;  
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BaseContainer(
       child: Scaffold(
         appBar: _appBar(),
@@ -39,14 +46,11 @@ class _SearchViewState extends ConsumerState<SearchView> {
   }
 
   Widget _userAvatar() {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: DynamicImage(
-        ref.watch(homeViewModel.select((value) => value.user?.avatarLink ?? '')),
-        width: 10,
-        height: 20,
-        isCircle: true,
-      ),
+    return NavigateAvatar(
+      onTap: () {
+        ref.read(mainViewModel).changeView(PageMenuSelection.profile);
+      },
+      imageSource: ref.watch(homeViewModel.select((value) => value.user?.avatarLink ?? '')),
     );
   }
 

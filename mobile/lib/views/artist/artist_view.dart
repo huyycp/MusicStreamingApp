@@ -37,6 +37,12 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
 
   AppBar _appBar() {
     return AppBar(
+      leading: ref.watch(mainViewModel.select((value) => value.prevView != null))
+        ? IconButton(
+            onPressed: () => ref.read(mainViewModel).goBack(),
+            icon: const Icon(Icons.arrow_back),
+          )
+        : null,
       forceMaterialTransparency: true,
     );
   }

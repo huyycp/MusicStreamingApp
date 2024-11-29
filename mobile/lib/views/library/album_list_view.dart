@@ -15,7 +15,7 @@ class _AlbumListViewState extends ConsumerState<AlbumListView> {
   @override
   void initState() {
     super.initState();
-    ref.read(libraryViewModel).getAlbums();
+    ref.read(libraryViewModel).getAlbums(refresh: true);
   }
 
   Widget itemWidget(dynamic album) => LibraryWidget(album);

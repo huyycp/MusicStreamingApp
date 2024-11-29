@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/repositories/user_repository.dart';
-import 'package:mobile/theme/theme_provider.dart';
 import 'package:mobile/views/profile/widgets/user_action_sheet.dart';
 import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -26,7 +25,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             const SizedBox(height: 24),
             _userAction(),
             const SizedBox(height: 24),
-            Expanded(
+            const Expanded(
               child: Text('abv'),
             )
           ],

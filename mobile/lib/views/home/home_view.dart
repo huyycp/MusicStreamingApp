@@ -6,9 +6,10 @@ import 'package:mobile/views/home/widgets/bighit_track_widget.dart';
 import 'package:mobile/views/home/widgets/favorite_genre_widget.dart';
 import 'package:mobile/views/home/widgets/recommended_album_widget.dart';
 import 'package:mobile/views/home/widgets/suggested_artist_widget.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
-import 'package:mobile/widgets/dynamic_image.dart';
+import 'package:mobile/widgets/navigate_avatar.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -17,18 +18,19 @@ class HomeView extends ConsumerStatefulWidget {
   ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends ConsumerState<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
-    ref.read(homeViewModel).getCurrentUser();
-    ref.read(homeViewModel).getRecommendAlbums();
-    ref.read(homeViewModel).getBighitTracks();
-    ref.read(homeViewModel).getSuggestedArtists();
+    ref.read(homeViewModel).run();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     ref.listen(homeViewModel.select((value) => value.sessionValid), (prev, next) {
       if (!next) {
         context.go('/auth');
@@ -55,14 +57,11 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 
   Widget _userAvatar() {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: DynamicImage(
-        ref.watch(homeViewModel.select((value) => value.user?.avatarLink ?? '')),
-        width: 10,
-        height: 20,
-        isCircle: true,
-      ),
+    return NavigateAvatar(
+      onTap: () {
+        ref.read(mainViewModel).changeView(PageMenuSelection.profile);
+      },
+      imageSource: ref.watch(homeViewModel.select((value) => value.user?.avatarLink ?? '')),
     );
   }
   

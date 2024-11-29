@@ -22,7 +22,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
     ref.listen(splashViewModel, (prev, next) {
       if (next.isInitialized) {
         if (next.isValidSession) {
-          context.go('/home');
+          context.go('/main');
         } else {
           context.go('/auth');
         }

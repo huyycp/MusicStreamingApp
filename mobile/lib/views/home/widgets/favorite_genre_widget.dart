@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class FavoriteGenreWidget extends StatelessWidget {
+class FavoriteGenreWidget extends ConsumerWidget {
   final GenreModel genre;
   const FavoriteGenreWidget(this.genre, {super.key});
   final double size = 150;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        context.push('/library/${genre.id}?isGenre=true');
+        ref.read(mainViewModel).openLibrary(id: genre.id, isGenre: true);
       },
       child: Container(
         width: size,

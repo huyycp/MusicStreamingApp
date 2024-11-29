@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/library_model.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class RecommendedAlbumWidget extends StatelessWidget {
+class RecommendedAlbumWidget extends ConsumerWidget {
   final LibraryModel library;
   const RecommendedAlbumWidget(this.library, {super.key});
   final double size = 150;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => context.push('/library/${library.id}'),
+      onTap: () => ref.read(mainViewModel).openLibrary(id: library.id),
       child: SizedBox(
         width: size,
         height: size + 20,

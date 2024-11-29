@@ -1,3 +1,4 @@
+
 class ViewInfoModel {
   ViewInfoModel({
     required this.title,
