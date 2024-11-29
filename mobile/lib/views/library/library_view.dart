@@ -4,14 +4,17 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/modal_bottom_sheet.dart';
 import 'package:mobile/utils/string_format.dart';
+import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/album_list_view.dart';
 import 'package:mobile/views/library/library_list_view.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/views/library/playlist_list_view.dart';
 import 'package:mobile/views/library/track_list_view.dart';
 import 'package:mobile/views/library/widgets/bottom_sheet_item.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
+import 'package:mobile/widgets/navigate_avatar.dart';
 
 class LibraryView extends ConsumerStatefulWidget {
   const LibraryView({super.key});
@@ -20,7 +23,7 @@ class LibraryView extends ConsumerStatefulWidget {
   ConsumerState<LibraryView> createState() => _LibraryViewState();
 }
 
-class _LibraryViewState extends ConsumerState<LibraryView> {
+class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAliveClientMixin{
   List<Widget> views = [
     const AlbumListView(),
     const PlaylistListView(),
@@ -30,7 +33,11 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
   ];
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BaseContainer(
       child: Scaffold(
         appBar: _appBar(),
@@ -55,6 +62,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
 
   Widget _body() {
     final LibraryTabs currentTab = ref.watch(libraryViewModel.select((value) => value.currentTab));
+    
     return currentTab == LibraryTabs.none
       ? const LibraryListView()
       : views[ref.watch(libraryViewModel.select((value) => value.currentTab.index))];
@@ -121,14 +129,11 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
   }
 
   Widget _userAvatar() {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: DynamicImage(
-        ref.watch(libraryViewModel.select((value) => value.user?.avatarLink ?? '')),
-        width: 10,
-        height: 20,
-        isCircle: true,
-      ),
+    return NavigateAvatar(
+      onTap: () {
+        ref.read(mainViewModel).changeView(PageMenuSelection.profile);
+      },
+      imageSource: ref.watch(homeViewModel.select((value) => value.user?.avatarLink ?? '')),
     );
   }
   

@@ -46,6 +46,13 @@ class HomeViewModel extends ChangeNotifier {
 
   bool sessionValid = true;
 
+  void run() {
+    getCurrentUser();
+    getRecommendAlbums();
+    getBighitTracks();
+    getSuggestedArtists();
+  }
+
   Future<void> logout() async {
     try {
       sessionValid = !(await _userRepo.logout());

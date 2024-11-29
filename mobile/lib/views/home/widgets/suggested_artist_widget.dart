@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/user_model.dart';
+import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class SuggestedArtistWidget extends StatelessWidget {
+class SuggestedArtistWidget extends ConsumerWidget {
   final UserModel artist;
   const SuggestedArtistWidget(this.artist, {super.key});
   final double size = 150;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        context.push('/artist/${artist.id}');
+        ref.read(mainViewModel).openArrist(artist.id);
       },
       child: Column(
         children: [

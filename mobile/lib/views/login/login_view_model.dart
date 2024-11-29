@@ -37,7 +37,7 @@ class LoginViewModel extends ChangeNotifier{
           message: 'Login successfully',
           status: MessageTypes.success,
         );
-        RouteConfig.instance.go('/home') ;
+        RouteConfig.instance.go('/main') ;
       } else if (isLoginSuccess == false) {
         SnackBarUtils.showSnackBar(
           message: 'Login failed',

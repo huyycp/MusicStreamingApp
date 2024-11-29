@@ -8,6 +8,6 @@ class SearchRoute {
   
   static final GoRoute _searchRoute = GoRoute(
     path: '/search',
-    builder: (context, state) => const SearchView()
+    builder: (context, state) => const SearchView(),
   );
 }

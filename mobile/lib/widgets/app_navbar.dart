@@ -1,60 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mobile/models/view_info_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class PageMenuSelection {
-  PageMenuSelection._();
-  
-  static final home = ViewInfoModel(
-    title: 'Home',
-    iconData: 'assets/icons/ic_home_outlined.svg',
-    selectedIconData: 'assets/icons/ic_home_filled.svg',
-    path: '/home',
-    index: 0,
-  );
-
-  static final search =  ViewInfoModel(
-    title: 'Search',
-    iconData: 'assets/icons/ic_search.svg',
-    selectedIconData: 'assets/icons/ic_search_filled.svg',
-    path: '/search',
-    index: 1,
-  );
-
-  static final libraries =  ViewInfoModel(
-    title: 'Your Library',
-    iconData: 'assets/icons/ic_library_outlined.svg',
-    selectedIconData: 'assets/icons/ic_library_filled.svg',
-    path: '/library',
-    index: 2,
-  );
-
-  static final profile = ViewInfoModel(
-    title: 'Profile',
-    iconData: 'assets/icons/ic_user.svg',
-    selectedIconData: 'assets/icons/ic_user_filled.svg',
-    path: '/profile',
-    index: 3,
-  );
-}
-
 class AppNavbar extends StatefulWidget {
-  const AppNavbar({super.key});
+  const AppNavbar({
+    required this.onTap,
+    required this.currentView,
+    required this.views,
+    super.key,
+  });
+  
+  final void Function(ViewInfoModel) onTap;
+  final ViewInfoModel currentView;
+  final List<ViewInfoModel> views;
 
   @override
   State<AppNavbar> createState() => _AppNavbarState();
 }
 
 class _AppNavbarState extends State<AppNavbar> {
-  ViewInfoModel currentView = PageMenuSelection.home; 
-  final viewInfos = [
-    PageMenuSelection.home,
-    PageMenuSelection.search,
-    PageMenuSelection.libraries,
-    PageMenuSelection.profile,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -67,7 +31,7 @@ class _AppNavbarState extends State<AppNavbar> {
         ),
       ),
       child: BottomNavigationBar(
-        currentIndex: currentView.index,
+        currentIndex: widget.currentView.index,
         unselectedLabelStyle: const TextStyle(
           color: Colors.white
         ),
@@ -78,8 +42,8 @@ class _AppNavbarState extends State<AppNavbar> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         backgroundColor: Colors.transparent,
-        onTap: onChangeView,
-        items: viewInfos.map(
+        onTap: (index) => widget.onTap(widget.views[index]),
+        items: widget.views.map(
           (view) => BottomNavigationBarItem(
             label: view.title,
             backgroundColor: Colors.transparent,
@@ -88,12 +52,5 @@ class _AppNavbarState extends State<AppNavbar> {
         )).toList()
       )
     );
-  }
-
-  void onChangeView(int index) {
-    context.go(viewInfos[index].path);
-    setState(() {
-      currentView = viewInfos[index];
-    });    
   }
 }

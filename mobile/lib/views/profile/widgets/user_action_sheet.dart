@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/utils/modal_bottom_sheet.dart';
 import 'package:mobile/utils/snackbar.dart';
-import 'package:mobile/widgets/app_navbar.dart';
 import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 

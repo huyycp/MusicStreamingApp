@@ -15,7 +15,7 @@ class _LibraryListViewState extends ConsumerState<LibraryListView> {
   @override
   void initState() {
     super.initState();
-    ref.read(libraryViewModel).getLibraries();
+    ref.read(libraryViewModel).getLibraries(refresh: true);
   }
 
   Widget itemWidget(dynamic library) => LibraryWidget(library);

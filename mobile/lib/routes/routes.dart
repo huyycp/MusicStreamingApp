@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/artist_route.dart';
 import 'package:mobile/routes/auth_route.dart';
 import 'package:mobile/routes/library_route.dart';
 import 'package:mobile/routes/main_route.dart';
@@ -22,6 +23,7 @@ class RouteConfig {
       TrackRoute.routes,
       PickTrackRoute.routes,
       ReportRoute.routes,
+      ArtistRoute.routes,
     ]
   );
 }

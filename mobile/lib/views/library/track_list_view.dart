@@ -15,7 +15,7 @@ class _TrackListViewState extends ConsumerState<TrackListView> {
   @override
   void initState() {
     super.initState();
-    ref.read(libraryViewModel).getMyTracks();
+    ref.read(libraryViewModel).getMyTracks(refresh: true);
   }
 
   Widget itemWidget(dynamic track) => TrackWidget(track);
