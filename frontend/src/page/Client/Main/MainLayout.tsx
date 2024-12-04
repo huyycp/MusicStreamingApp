@@ -4,7 +4,6 @@ import AppBar from './AppBar/AppBar'
 import TrackBar from './TrackBar/TrackBar'
 import { ResizeProvider } from '~/contents/ResizeProvider'
 import { MusicProvider } from '~/contents/MusicProvider'
-import CircularProgress from '@mui/material/CircularProgress'
 import { useEffect, useRef, useState } from 'react'
 import useGetMyLibrary from '~/hooks/Library/useGetMyLibrary'
 import { ILibrary } from '~/type/Library/ILibrary'
@@ -88,9 +87,18 @@ export default function MainLayout() {
         </MusicProvider>
       )}
       {isPending && (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
-          <CircularProgress sx={{ color: (theme) => theme.palette.primary.main }} />
-        </Box>
+        <MusicProvider
+          listAlbumId={listAlbumId}
+          initIndexAlbum={albumIndex}
+          addAlbumToList={addAlbumToList}
+          trackIndex={trackIndex}
+          initTrackId={trackId}
+        >
+          <ResizeProvider fullWidth={fullWidth}>
+            <Outlet />
+            <TrackBar />
+          </ResizeProvider>
+        </MusicProvider>
       )}
     </Box>
   )

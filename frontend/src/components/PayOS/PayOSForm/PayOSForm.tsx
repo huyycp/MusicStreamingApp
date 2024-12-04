@@ -6,6 +6,8 @@ import Box from '@mui/material/Box'
 import SvgIcon from '@mui/material/SvgIcon'
 import MusicIcon from '~/assets/icon/MusicIcon2.svg?react'
 import Divider from '@mui/material/Divider'
+import { useUser } from '~/hooks/useUser'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 
 interface PayOSFormProps {
   defaultOrderCode?: string
@@ -21,6 +23,7 @@ function PayOSForm({
   cancelUrl = `${window.location.origin}/payment/cancel`
 }: PayOSFormProps) {
   const [loading, setLoading] = useState(false)
+  const { user } = useUser()
 
   const generateSignature = (data: Record<string, string | number>, checkSum: string): string => {
     const sortedKeys = Object.keys(data).sort()
@@ -31,44 +34,50 @@ function PayOSForm({
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     setLoading(true)
+    try {
+      const clientId = import.meta.env.VITE_PAYOS_CLIENT_ID
+      const secretKey = import.meta.env.VITE_PAYOS_SECRET_KEY
+      const checkSum = import.meta.env.VITE_PAYOS_CHECKSUM_KEY
+      const apiEndpoint = import.meta.env.VITE_PAYOS_API_URL
 
-    const clientId = import.meta.env.VITE_PAYOS_CLIENT_ID
-    const secretKey = import.meta.env.VITE_PAYOS_SECRET_KEY
-    const checkSum = import.meta.env.VITE_PAYOS_CHECKSUM_KEY
-    const apiEndpoint = import.meta.env.VITE_PAYOS_API_URL
+      if (!clientId || !secretKey || !apiEndpoint) {
+        throw new Error('Thiếu cấu hình PayOS')
+      }
 
-    if (!clientId || !secretKey || !apiEndpoint) {
-      throw new Error('Thiếu cấu hình PayOS')
+      const paymentData = {
+        orderCode: parseInt(defaultOrderCode, 10),
+        amount: defaultAmount,
+        description: 'Premium',
+        cancelUrl,
+        returnUrl
+      }
+
+      const signature = generateSignature(paymentData, checkSum)
+      const expiredAt = Math.floor(Date.now() / 1000) + 15 * 60
+      const payload = { ...paymentData, expiredAt, signature }
+
+      const response = await fetch(`${apiEndpoint}/payment-requests`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-client-id': clientId,
+          'x-api-key': secretKey
+        },
+        body: JSON.stringify(payload)
+      })
+
+      if (!response.ok) {
+        const errorResponse = await response.json()
+        throw new Error(errorResponse?.message || 'Không thể tạo liên kết thanh toán')
+      }
+
+      const { data } = await response.json()
+      window.location.href = data.checkoutUrl
+    } catch {
+      alert('Đã xảy ra lỗi')
+    } finally {
+      setLoading(false)
     }
-
-    const paymentData = {
-      orderCode: parseInt(defaultOrderCode),
-      amount: defaultAmount,
-      description: 'Premium',
-      cancelUrl,
-      returnUrl
-    }
-
-    const signature = generateSignature(paymentData, checkSum)
-    const expiredAt: number = Math.floor(Date.now() / 1000) + 15 * 60
-    const payload = { ...paymentData, expiredAt, signature }
-
-    const response = await fetch(`${apiEndpoint}/payment-requests`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-client-id': clientId,
-        'x-api-key': secretKey
-      },
-      body: JSON.stringify(payload)
-    })
-
-    if (!response.ok) {
-      throw new Error('Không thể tạo liên kết thanh toán')
-    }
-
-    const { data } = await response.json()
-    window.location.href = data.checkoutUrl
   }
 
   return (
@@ -101,6 +110,26 @@ function PayOSForm({
           50.000 <span style={{ fontSize: '0.8em', position: 'relative', top: '-4px' }}>₫</span> cho 1 tháng
         </strong>
       </Box>
+      {user?.premium && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            pl: 1,
+            pt: 0.5,
+            pr: 1,
+            background: (theme) => theme.palette.primary.main,
+            borderBottomRightRadius: 5,
+            borderTopLeftRadius: 5,
+            color: 'black',
+            zIndex: 1,
+            height: '32px'
+          }}
+        >
+          <CheckCircleOutlineIcon sx={{ color: (theme) => theme.palette.secondary4.main }} />
+        </Box>
+      )}
 
       <Box
         sx={{
@@ -149,7 +178,29 @@ function PayOSForm({
         <li>Sử dụng không giới hạn AI</li>
         <li>Download không giới hạn</li>
       </ul>
-      <form onSubmit={handleSubmit}>
+      {!user?.premium && (
+        <form onSubmit={handleSubmit}>
+          <Button
+            variant='contained'
+            color='primary'
+            type='submit'
+            fullWidth
+            sx={{
+              'mt': 2,
+              'background': (theme) => theme.palette.gradient.gradient3,
+              '&:hover': {
+                background: (theme) => theme.palette.gradient.gradient3,
+                opacity: 0.8
+              },
+              'fontWeight': 'bold'
+            }}
+            disabled={loading}
+          >
+            {loading ? 'Đang xử lý...' : 'Mua Premium'}
+          </Button>
+        </form>
+      )}
+      {user?.premium && (
         <Button
           variant='contained'
           color='primary'
@@ -157,18 +208,16 @@ function PayOSForm({
           fullWidth
           sx={{
             'mt': 2,
-            'background': (theme) => theme.palette.gradient.gradient3,
-            '&:hover': {
-              background: (theme) => theme.palette.gradient.gradient3,
-              opacity: 0.8
-            },
-            'fontWeight': 'bold'
+            'fontWeight': 'bold',
+            '&:disabled': {
+              background: (theme) => theme.palette.primary.main
+            }
           }}
-          disabled={loading}
+          disabled
         >
-          {loading ? 'Đang xử lý...' : 'Mua Premium'}
+          Đã mua Premium
         </Button>
-      </form>
+      )}
     </Box>
   )
 }

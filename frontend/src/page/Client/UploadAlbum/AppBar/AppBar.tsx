@@ -3,7 +3,6 @@ import MusicIcon from '~/assets/icon/MusicIcon2.svg?react'
 import SvgIcon from '@mui/material/SvgIcon'
 import { useNavigate } from 'react-router-dom'
 import Tooltip from '@mui/material/Tooltip'
-import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded'
 import Profile from '../../Main/AppBar/Profile/Profile'
 
 export default function AppBar() {
@@ -36,18 +35,6 @@ export default function AppBar() {
         </Box>
       </Tooltip>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Tooltip title='Thông tin mới'>
-          <NotificationsNoneRoundedIcon
-            sx={{
-              'fontSize': 30,
-              'cursor': 'pointer',
-              'color': (theme) => theme.palette.neutral.neutral1,
-              '&:hover': {
-                color: (theme) => theme.palette.secondary4.main
-              }
-            }}
-          />
-        </Tooltip>
         <Profile />
       </Box>
     </Box>

@@ -169,7 +169,7 @@ export default function ListTracks({ listAlbums, isPending }: Props) {
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor, borderColor: borderColor }}>
                   {hoveredRow !== row._id ? (
-                    'N/A'
+                    `${row.number_of_tracks} bài hát`
                   ) : (
                     <Box
                       className='icon-actions'

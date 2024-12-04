@@ -36,11 +36,15 @@ export default function DescBody() {
         borderRadius: '10px',
         padding: '12px'
       }}
-      onClick={() => navigate(`/library/${album._id}`)}
+      onClick={() => {
+        if (music?.album) navigate(`/library/${music?.album._id}`)
+        else if (!music?.album && album?._id) navigate(`/library/${album._id}`)
+        else navigate(`/track/${music?._id}`)
+      }}
     >
       <img
-        alt={music?.name}
-        src={album?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
+        alt={music?.album?.name || album?.name || music?.name}
+        src={music?.album?.image || album?.image || music?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
         onError={(e) => {
           e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
         }}

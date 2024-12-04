@@ -1,24 +1,41 @@
+/* eslint-disable no-unused-vars */
 import { createContext, useState, ReactNode } from 'react'
 
 interface AudioContextProps {
   audioFile: File | null
-  // eslint-disable-next-line no-unused-vars
   setAudioFile: (file: File | null) => void
-  clearAudioFile: () => void
+  clearSearch: () => void
+  setSearchValue: (keyword: string | null) => void
+  searchKeyword: string
 }
 
 export const AudioContext = createContext<AudioContextProps | undefined>(undefined)
 
 export const AudioProvider = ({ children }: { children: ReactNode }) => {
   const [audioFile, setAudioFileState] = useState<File | null>(null)
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   const setAudioFile = (file: File | null) => {
-    setAudioFileState(file)
+    if (file !== null) {
+      setAudioFileState(file)
+      setSearchKeyword('')
+    }
   }
 
-  const clearAudioFile = () => {
+  const clearSearch = () => {
     setAudioFileState(null)
+    setSearchKeyword('')
   }
 
-  return <AudioContext.Provider value={{ audioFile, setAudioFile, clearAudioFile }}>{children}</AudioContext.Provider>
+  const setSearchValue = (keyword: string | null) => {
+    if (keyword === null) {
+      setSearchKeyword('')
+    }
+    if (keyword !== null) {
+      setSearchKeyword(keyword)
+      setAudioFile(null)
+    }
+  }
+
+  return <AudioContext.Provider value={{ audioFile, setAudioFile, clearSearch, setSearchValue, searchKeyword }}>{children}</AudioContext.Provider>
 }

@@ -86,7 +86,7 @@ export default function PlayListModal({ open, setOpen }: Props) {
           </IconButton>
 
           <Typography variant='h6' align='center' sx={{ mb: 2 }}>
-            Tạo playlist mới
+            Tạo danh sách phát mới
           </Typography>
         </Box>
 
@@ -113,12 +113,12 @@ export default function PlayListModal({ open, setOpen }: Props) {
             }
           }}
         >
-          <FormControl sx={{ width: '100%', pb: 2 }} error={!!error}>
-            <Box sx={{ fontSize: 14, fontWeight: 'bold' }}>Tên của Playlist</Box>
+          <FormControl sx={{ width: '100%', pb: 1 }} error={!!error}>
+            <Box sx={{ fontSize: 14, fontWeight: 'bold' }}>Tên của Danh sách phát</Box>
             <Input
               id='my-input'
               aria-describedby='my-helper-text'
-              placeholder='Tên playlist'
+              placeholder='Tên danh sách phát'
               value={name}
               onChange={handleChange}
               sx={{
@@ -150,21 +150,41 @@ export default function PlayListModal({ open, setOpen }: Props) {
             )}
           </FormControl>
         </Box>
-        <Button
-          variant='contained'
-          fullWidth
-          onClick={handleCreate}
+        <Box
           sx={{
-            '&:disabled': {
-              backgroundColor: 'grey.500',
-              color: 'white',
-              opacity: 0.7
-            }
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
           }}
-          disabled={isPending || error !== ''}
         >
-          Tạo mới
-        </Button>
+          <Typography
+            variant='body2'
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              color: (theme) => theme.palette.neutral.neutral2
+            }}
+          >
+            <ErrorOutlineIcon fontSize='small'/>
+            Không để trống tên danh sách phát
+          </Typography>
+          <Button
+            variant='contained'
+            onClick={handleCreate}
+            sx={{
+              'width': '20%',
+              '&:disabled': {
+                backgroundColor: 'grey.500',
+                color: 'white',
+                opacity: 0.7
+              }
+            }}
+            disabled={isPending || error !== ''}
+          >
+            Tạo mới
+          </Button>
+        </Box>
       </Box>
     </Modal>
   )

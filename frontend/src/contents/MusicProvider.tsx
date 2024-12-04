@@ -35,10 +35,11 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
       const tracks = data.result.list_of_tracks as ITrack[]
       setListMusic(tracks)
       if (trackId !== '') {
-        const index = tracks.findIndex((track) => track._id === trackId)
+        const track = tracks.find((track) => track._id === trackId) || null
         setTrackId('')
-        setCurrentTrackIndex(index)
-        setMusic(tracks[index] || null)
+        setCurrentTrackIndex(0)
+        setListMusic(track ? [track] : [])
+        setMusic(track)
       } else {
         setCurrentTrackIndex(defaultIndex)
         setMusic(tracks[defaultIndex] || null)
@@ -90,9 +91,16 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
     setMusic(song)
     setPosition(0)
     setAudioElement(newAudio)
-
     newAudio.play()
     setPause(false)
+  }
+
+  const addTrackList = (tracks: ITrack[]) => {
+    if (tracks && tracks.length > 0) {
+      setListMusic(tracks)
+      setCurrentTrackIndex(0)
+      changeMusic(tracks[0])
+    }
   }
 
   useEffect(() => {
@@ -148,10 +156,16 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
     }
   }, [pause, audioElement])
 
+  useEffect(() => {
+    if (audioElement) {
+      audioElement.preload = 'auto'
+    }
+  }, [audioElement])
+
   const playNextTrack = () => {
     if (!isPending) {
       const nextIndex = currentTrackIndex + 1
-      if (nextIndex < listMusic.length) {
+      if (nextIndex < listMusic.length - 1) {
         setCurrentTrackIndex((prev) => prev + 1)
         changeMusic(listMusic[nextIndex])
       } else {
@@ -206,6 +220,7 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
         currentTrackIndex,
         changeMusic,
         addAlbum,
+        addTrackList,
         currentAlbumIndex: listAlbumId[currentAlbumIndex],
         album: data?.result || null
       }}

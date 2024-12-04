@@ -44,37 +44,40 @@ instance.interceptors.response.use(
   async function (error: AxiosError) {
     const originalRequest = error.config as CustomAxiosRequestConfig
 
-    // Kiểm tra nếu request chưa được retry và lỗi là 401 (Unauthorized)
-    if (originalRequest && error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
+    // Kiểm tra nếu chưa retry và lỗi là 401
+    const refresh_token = localStorage.getItem('refresh_token')
+    if (originalRequest && error.response?.status === 401 && !originalRequest._retry && refresh_token) {
+      originalRequest._retry = true // Đánh dấu đã retry
 
       try {
-        const refresh_token = localStorage.getItem('refresh_token')
         if (refresh_token) {
           // Gọi API refresh token
           const response = await apiRefreshToken({ refresh_token })
 
-          if (response) {
-            // Lưu access_token mới vào localStorage
+          if (response && response.result?.access_token) {
+            // Lưu token mới
             localStorage.setItem('access_token', response.result.access_token)
             localStorage.setItem('refresh_token', response.result.refresh_token)
 
-            // Cập nhật header Authorization với access_token mới
+            // Cập nhật header Authorization
             originalRequest.headers.Authorization = 'Bearer ' + response.result.access_token
 
-            // Gửi lại request ban đầu với access_token mới
+            // Gửi lại request
             return instance(originalRequest)
+          } else {
+            throw new Error('Failed to refresh token - Invalid response')
           }
         } else {
-          throw new Error('No refresh token available')
+          return Promise.reject(error)
         }
-      } catch (err) {
-        // Xử lý khi refresh token thất bại
-        return Promise.reject(err)
+      } catch (refreshError) {
+        return Promise.reject(refreshError)
       }
     }
-
-    return Promise.reject(error)
+    else {
+      originalRequest._retry = true
+      return Promise.reject(error)
+    }
   }
 )
 

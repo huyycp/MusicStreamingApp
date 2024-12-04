@@ -28,14 +28,13 @@ export default function TrackDetail() {
   const [trackDurations, setTrackDurations] = useState<number>(0)
   const track = data?.result as ITrack
   const { data: albumDetail, isPending: albumPending } = useGetAlbumDetail(track?.album._id || null)
-  const { addAlbum, music, pause, setPause } = useMusic()
+  const { music, pause, setPause, addTrackList } = useMusic()
   const listTracks = albumDetail?.result.list_of_tracks as ITrack[]
   const navigate = useNavigate()
 
   const handlePlay = () => {
     if (music?._id !== trackId) {
-      const index = listTracks.findIndex((item) => item._id === trackId)
-      addAlbum(track.album._id, index)
+      addTrackList([track])
     } else if (!pause) setPause(true)
     else setPause(false)
   }
@@ -328,12 +327,7 @@ export default function TrackDetail() {
               </Typography>
             </Box>
           </Box>
-          <ListTracks
-            listTracks={listTracks}
-            isPending={albumPending}
-            albumId={track.album._id}
-            hiddenTitle={true}
-          />
+          <ListTracks listTracks={listTracks} isPending={albumPending} albumId={track.album._id} hiddenTitle={true} />
         </Box>
       )}
     </Box>

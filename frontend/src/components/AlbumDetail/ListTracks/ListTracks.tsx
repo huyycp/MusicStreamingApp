@@ -39,16 +39,15 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
   const [trackDurations, setTrackDurations] = useState<{ [key: string]: number }>({})
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [open, setOpen] = useState(false)
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>, row: string) => {
     setAnchorEl(event.currentTarget)
-    setOpen(true)
+    setHoveredRow(row)
   }
 
   const handleClose = () => {
     setAnchorEl(null)
-    setOpen(false)
+    setHoveredRow(null)
   }
 
   const handlePlay = (index: number, musicId: string) => {
@@ -117,7 +116,11 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
               <TableRow
                 key={row._id}
                 onMouseEnter={() => setHoveredRow(row._id)}
-                onMouseLeave={() => setHoveredRow(null)}
+                onMouseLeave={() => {
+                  if (anchorEl === null) {
+                    setHoveredRow(null)
+                  }
+                }}
                 sx={{
                   '&:hover': {
                     backgroundColor: hoverBackgroundColor
@@ -241,6 +244,7 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                           <MicExternalOnOutlinedIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
                         </IconButton>
                       </Tooltip>
+                      {anchorEl && <MenuTrack track={row} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} />}
                       <Tooltip title='Thêm vào thư viện' placement='top'>
                         <IconButton
                           sx={{
@@ -252,7 +256,7 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                           <FavoriteBorderOutlinedIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title='Khác' placement='top' onClick={handleClick}>
+                      <Tooltip title='Khác' placement='top' onClick={(e) => handleClick(e, row._id)}>
                         <IconButton
                           sx={{
                             '&:hover': {
@@ -263,7 +267,6 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                           <MoreHorizIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
                         </IconButton>
                       </Tooltip>
-                      {open && anchorEl && <MenuTrack track={row} open={open} anchorEl={anchorEl} onClose={handleClose} />}
                     </Box>
                   )}
                 </TableCell>

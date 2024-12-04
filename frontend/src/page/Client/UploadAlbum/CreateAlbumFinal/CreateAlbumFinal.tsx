@@ -49,7 +49,7 @@ export default function CreateAlbumFinal() {
     formData.append('image', imageFile as File)
     createAlbum(formData, {
       onSuccess: (data) => {
-        navigate(`/create-album/${data.result._id}/add-track`)
+        window.location.href = `/create-album/${data.result._id}/add-track`
         clearData()
       }
     })

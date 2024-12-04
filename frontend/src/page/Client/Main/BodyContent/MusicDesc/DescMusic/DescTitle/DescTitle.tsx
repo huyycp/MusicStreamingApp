@@ -7,7 +7,7 @@ import { useResize } from '~/hooks/useResize'
 import { useNavigate } from 'react-router-dom'
 
 export default function DescTitle() {
-  const { album } = useMusic()
+  const { music, album } = useMusic()
   const { setOpenList, setIsBox2Visible } = useResize()
   const navigate = useNavigate()
 
@@ -24,9 +24,13 @@ export default function DescTitle() {
             textDecoration: 'underline'
           }
         }}
-        onClick={() => navigate(`/library/${album?._id}`)}
+        onClick={() => {
+          if (music?.album) navigate(`/library/${music?.album?._id}`)
+          else if (!music?.album && album?._id) navigate(`/library/${album._id}`)
+          else navigate(`/track/${music?._id}`)
+        }}
       >
-        {album?.name}
+        {music?.album?.name || album?.name || music?.name}
       </Box>
 
       <Tooltip title='Khác' placement='top'>
