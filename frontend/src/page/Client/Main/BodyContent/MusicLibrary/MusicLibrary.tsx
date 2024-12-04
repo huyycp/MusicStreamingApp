@@ -4,8 +4,11 @@ import LibraryBody from './LibraryBody/LibraryBody'
 import { useEffect, useState } from 'react'
 import { ILibrary } from '~/type/Library/ILibrary'
 import useGetMyLibrary from '~/hooks/Library/useGetMyLibrary'
+import { useUser } from '~/hooks/useUser'
+import LibraryHeaderNoUser from './LibraryHeader/LibraryHeaderNoUser'
 
 export default function MusicLibrary() {
+  const { user } = useUser()
   const { data } = useGetMyLibrary(100, 1)
   const [playlistSelect, setPlaylistSelect] = useState<ILibrary[] | []>([])
   const [originalPlaylist, setOriginalPlaylist] = useState<ILibrary[] | []>([])
@@ -35,14 +38,17 @@ export default function MusicLibrary() {
         overflow: 'hidden'
       }}
     >
-      <LibraryHeader
-        listAlbums={playlistSelect}
-        setPlaylistSelect={setPlaylistSelect}
-        setAlbum={setAlbum}
-        album={album}
-        originalPlaylist={originalPlaylist}
-      />
-      <LibraryBody listAlbums={playlistSelect} album={album} />
+      {user && (
+        <LibraryHeader
+          listAlbums={playlistSelect}
+          setPlaylistSelect={setPlaylistSelect}
+          setAlbum={setAlbum}
+          album={album}
+          originalPlaylist={originalPlaylist}
+        />
+      )}
+      {user && <LibraryBody listAlbums={playlistSelect} album={album} />}
+      {!user && <LibraryHeaderNoUser />}
     </Box>
   )
 }

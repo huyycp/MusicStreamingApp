@@ -25,7 +25,6 @@ export default function TrackItem({ track }: Props) {
   const { data } = useGetAlbumDetail(track?.album._id)
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [open, setOpen] = useState(false)
   const [trackDurations, setTrackDurations] = useState<number>(0)
   const { currentAlbumIndex, addAlbum, pause, setPause, music } = useMusic()
 
@@ -49,12 +48,10 @@ export default function TrackItem({ track }: Props) {
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
-    setOpen(true)
   }
 
   const handleClose = () => {
     setAnchorEl(null)
-    setOpen(false)
   }
 
   return (
@@ -169,7 +166,7 @@ export default function TrackItem({ track }: Props) {
                 <MoreHorizIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
               </IconButton>
             </Tooltip>
-            {open && anchorEl && <MenuTrack track={track} open={open} anchorEl={anchorEl} onClose={handleClose} />}
+            {anchorEl && <MenuTrack track={track} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} />}
           </Box>
         </Box>
       </Box>
@@ -255,10 +252,13 @@ export default function TrackItem({ track }: Props) {
             <Typography
               sx={{
                 fontSize: 14,
-                color: (theme) => theme.palette.neutral.neutral1
+                color: (theme) => theme.palette.neutral.neutral1,
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 0.5
               }}
             >
-              {track.owners?.map((artist) => (
+              {track.owners?.map((artist, index) => (
                 <Box
                   key={artist._id}
                   onClick={() => navigate(`/artist/${artist._id}`)}
@@ -269,6 +269,7 @@ export default function TrackItem({ track }: Props) {
                   }}
                 >
                   {artist.name}
+                  {index < (track.owners?.length ?? 0) - 1 && ','}
                 </Box>
               ))}
             </Typography>
@@ -313,7 +314,7 @@ export default function TrackItem({ track }: Props) {
                 <MoreHorizIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
               </IconButton>
             </Tooltip>
-            {open && anchorEl && <MenuTrack track={track} open={open} anchorEl={anchorEl} onClose={handleClose} />}
+            {anchorEl && <MenuTrack track={track} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} />}
           </Box>
         </Box>
       </Box>

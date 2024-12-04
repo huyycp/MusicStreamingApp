@@ -68,7 +68,7 @@ export default function MyMusic() {
               }}
             />
           )}
-          <Button variant='contained' startIcon={<AddIcon />} onClick={() => navigate('/upload-music')}>
+          <Button variant='contained' startIcon={<AddIcon />} onClick={() => (window.location.href = '/upload-music')}>
             Tải nhạc lên
           </Button>
         </Box>

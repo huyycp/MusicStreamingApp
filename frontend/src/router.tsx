@@ -76,6 +76,14 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='section' />
       },
       {
+        path: '/genres/:genreId',
+        element: <BodyContent viewType='genres' />
+      },
+      {
+        path: '/user/:userId',
+        element: <BodyContent viewType='user' />
+      },
+      {
         path: '/test',
         element: <TestUI /> // Element cho trang TestUI
       }

@@ -25,12 +25,12 @@ export default function LeftBar() {
 
       <Paper sx={{ padding: 2 }}>
         <List>
-          <ListItem button>
+          <ListItem component='button'>
             <ListItemText primary='Thông tin cá nhân' />
           </ListItem>
           <Divider />
 
-          <ListItem button>
+          <ListItem component='button'>
             <ListItemText primary='Sở thích của bạn' />
           </ListItem>
         </List>

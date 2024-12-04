@@ -48,7 +48,7 @@ export default function ArtistTrack({ artist }: Props) {
           paddingLeft: 1
         }}
       >
-        <Typography variant='body1'>{artist.name}</Typography>
+        <Typography variant='body1' fontWeight='bold'>Nghệ sĩ</Typography>
         <Typography
           variant='body1'
           fontWeight='bold'

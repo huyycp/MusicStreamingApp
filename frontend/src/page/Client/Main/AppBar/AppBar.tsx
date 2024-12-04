@@ -1,4 +1,4 @@
-import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import HomeIcon from '@mui/icons-material/Home'
 import MusicIcon from '~/assets/icon/MusicIcon2.svg?react'
@@ -9,22 +9,26 @@ import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
 import Tooltip from '@mui/material/Tooltip'
-import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded'
 import Divider from '@mui/material/Divider'
 import Profile from './Profile/Profile'
 import AudioRecognition from '~/components/Microphone/AudioRecognition'
 import AudioRecorder from '~/components/Microphone/AudioRecorder'
 import Button from '@mui/material/Button'
+import { useUser } from '~/hooks/useUser'
+import { useAudioContext } from '~/hooks/useGetAudio'
 
 export default function AppBar() {
+  const { user } = useUser()
   const [searchValue, setSearchValue] = useState<null | string>('')
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const navigate = useNavigate()
   const location = useLocation()
   const textFieldRef = useRef<HTMLInputElement>(null)
+  const { setSearchValue: setSearchKeyword } = useAudioContext()
 
   const handleTranscriptChange = (newTranscript: string) => {
     setSearchValue(newTranscript)
+    setSearchKeyword(newTranscript)
   }
 
   useEffect(() => {
@@ -37,9 +41,18 @@ export default function AppBar() {
     setIsSearch(location.pathname === '/search')
   }, [location.pathname])
 
-  const handleSearchChange = useCallback((e: { target: { value: SetStateAction<string | null> } }) => {
-    setSearchValue(e.target.value)
-  }, [])
+  useEffect(() => {
+    setSearchValue('')
+    setIsSearch(false)
+  }, [location.pathname])
+
+  const handleSearchChange = useCallback(
+    (e: { target: { value: string | null } }) => {
+      setSearchValue(e.target.value)
+      setSearchKeyword(e.target.value)
+    },
+    [setSearchKeyword]
+  )
 
   const handleSearchClick = useCallback(() => {
     navigate('/search')
@@ -47,6 +60,8 @@ export default function AppBar() {
 
   const handleClearSearch = useCallback(() => {
     setSearchValue('')
+    setSearchKeyword('')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -103,8 +118,11 @@ export default function AppBar() {
           type='text'
           size='small'
           value={searchValue}
+          onClick={handleSearchClick}
           onChange={handleSearchChange}
           inputRef={textFieldRef}
+          autoCorrect='off'
+          autoComplete='off'
           InputProps={{
             startAdornment: (
               <InputAdornment position='start'>
@@ -197,23 +215,13 @@ export default function AppBar() {
           gap: 1
         }}
       >
-        <Tooltip title='Premium'>
-          <Button variant='contained' color='secondary' sx={{ fontWeight: 'bold' }} onClick={() => navigate('/payment')}>
-            Khám phá Premium
-          </Button>
-        </Tooltip>
-        <Tooltip title='Thông tin mới'>
-          <NotificationsNoneRoundedIcon
-            sx={{
-              'fontSize': 30,
-              'cursor': 'pointer',
-              'color': (theme) => theme.palette.neutral.neutral1,
-              '&:hover': {
-                color: (theme) => theme.palette.secondary4.main
-              }
-            }}
-          />
-        </Tooltip>
+        {user && !user.premium && (
+          <Tooltip title='Premium'>
+            <Button variant='contained' color='secondary' sx={{ fontWeight: 'bold' }} onClick={() => navigate('/payment')}>
+              Khám phá Premium
+            </Button>
+          </Tooltip>
+        )}
         <Profile />
       </Box>
     </Box>

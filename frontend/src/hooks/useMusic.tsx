@@ -24,7 +24,8 @@ interface MusicContextProps {
   addAlbum: (albumId: string, musicIndex: number, trackId?: string) => void
   currentAlbumIndex: string
   currentTrackIndex: number
-  album: ILibrary
+  album: ILibrary,
+  addTrackList: (trackList: ITrack[]) => void
 }
 
 const MusicContext = createContext<MusicContextProps | undefined>(undefined)

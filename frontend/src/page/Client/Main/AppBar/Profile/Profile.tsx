@@ -11,8 +11,9 @@ import Tooltip from '@mui/material/Tooltip'
 import { useEffect, useRef, useState } from 'react'
 import LaunchIcon from '@mui/icons-material/Launch'
 import useLogout from '~/hooks/Auth/useLogout'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { useUser } from '~/hooks/useUser'
+import Button from '@mui/material/Button'
+import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
   const [open, setOpen] = useState(false)
@@ -20,6 +21,7 @@ export default function Profile() {
   const { user } = useUser()
   const profileData = user
   const { mutate: logout } = useLogout()
+  const navigate = useNavigate()
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
   }
@@ -55,29 +57,29 @@ export default function Profile() {
   }, [open])
   return (
     <Box>
-      <Tooltip title={profileData ? profileData.name : ''}>
-        <Box
-          ref={anchorRef}
-          id='composition-button'
-          aria-controls={open ? 'composition-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
-          aria-haspopup='true'
-          onClick={handleToggle}
-          sx={{
-            'width': '48px',
-            'height': '48px',
-            'borderRadius': '100%',
-            'bgcolor': (theme) => theme.palette.secondary2.main,
-            'display': 'flex',
-            'alignItems': 'center',
-            'justifyContent': 'center',
-            'cursor': 'pointer',
-            '&:hover': {
-              transform: 'scale(1.05)'
-            }
-          }}
-        >
-          {profileData ? (
+      {profileData && (
+        <Tooltip title={profileData ? profileData.name : ''}>
+          <Box
+            ref={anchorRef}
+            id='composition-button'
+            aria-controls={open ? 'composition-menu' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup='true'
+            onClick={handleToggle}
+            sx={{
+              'width': '48px',
+              'height': '48px',
+              'borderRadius': '100%',
+              'bgcolor': (theme) => theme.palette.secondary2.main,
+              'display': 'flex',
+              'alignItems': 'center',
+              'justifyContent': 'center',
+              'cursor': 'pointer',
+              '&:hover': {
+                transform: 'scale(1.05)'
+              }
+            }}
+          >
             <Avatar
               alt={profileData.name}
               sx={{
@@ -87,16 +89,31 @@ export default function Profile() {
                 }
               }}
             >
-              {profileData?.name.charAt(0)}
+              {profileData?.name?.charAt(0) || 'A'}
             </Avatar>
-          ) : (
-            <AccountCircleIcon
-              sx={{ width: '56px', height: '56px', color: (theme) => theme.palette.primary.main }}
-              onClick={() => (window.location.href = '/login')}
-            />
-          )}
+          </Box>
+        </Tooltip>
+      )}
+      {!profileData && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            flexDirection: 'row'
+          }}
+        >
+          <Tooltip title='Đăng nhập'>
+            <Button variant='contained' color='secondary' sx={{ fontWeight: 'bold' }} onClick={() => navigate('/login')}>
+              Đăng nhập
+            </Button>
+          </Tooltip>
+          <Tooltip title='Đăng ký'>
+            <Button variant='outlined' sx={{ fontWeight: 'bold' }} onClick={() => navigate('/register')}>
+              Đăng ký
+            </Button>
+          </Tooltip>
         </Box>
-      </Tooltip>
+      )}
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -110,7 +127,7 @@ export default function Profile() {
           {
             name: 'offset',
             options: {
-              offset: [0, 8] // Điều chỉnh khoảng cách từ anchorEl đến Popper
+              offset: [0, 8]
             }
           },
           {
@@ -152,8 +169,13 @@ export default function Profile() {
                       }
                     }}
                   >
-                    <MenuItem onClick={handleClose}>
-                      Tài khoản <LaunchIcon sx={{ fontSize: 20, ml: 3 }} />
+                    <MenuItem
+                      onClick={(e) => {
+                        navigate(`/user/${profileData._id}`)
+                        handleClose(e)
+                      }}
+                    >
+                      Hồ sơ <LaunchIcon sx={{ fontSize: 20, ml: 3 }} />
                     </MenuItem>
                     <MenuItem component='a' href='/genres' target='_blank' rel='noopener noreferrer'>
                       Sở thích của bạn

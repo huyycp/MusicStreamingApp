@@ -11,4 +11,5 @@ export interface IUser {
   verify: number
   genres: IGenres[]
   avatar: string
+  premium: boolean
 }

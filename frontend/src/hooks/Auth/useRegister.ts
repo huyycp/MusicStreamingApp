@@ -1,12 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { apiCheckEmail, apiGetOTP, apiRegister, apiVerifyEmail } from '~/apis/Auth/RegisterAPI'
 import { RegisterData } from '~/type/Auth/RegisterData'
 
 const useRegister = () => {
-  const navigate = useNavigate()
-
   const [registerData, setRegisterData] = useState<RegisterData | null>(null)
 
   const verifyEmailMutation = useMutation({
@@ -27,7 +24,7 @@ const useRegister = () => {
         localStorage.setItem('access_token', access_token)
         localStorage.setItem('refresh_token', refresh_token)
       }
-      navigate('/')
+      window.location.href = '/'
     }
   })
 

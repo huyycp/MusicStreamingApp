@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import HeadphonesIcon from '@mui/icons-material/Headphones'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
@@ -8,7 +8,7 @@ import Box from '@mui/material/Box'
 import MenuList from '@mui/material/MenuList'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import LinkIcon from '@mui/icons-material/Link'
+import IosShareIcon from '@mui/icons-material/IosShare'
 import Popover from '@mui/material/Popover'
 import { useSnackbar } from 'notistack'
 import PlaylistPopover from './PlayListPopover/PlayListPopover'
@@ -17,6 +17,9 @@ import SvgIcon from '@mui/material/SvgIcon'
 import ArtistPopover from './ArtistPopover/ArtistPopover'
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred'
 import ReportTrack from '../ReportModal/ReportTrack/ReportTrack'
+import DownloadIcon from '@mui/icons-material/Download'
+import { normalizeString } from '~/utils/normalizeString'
+import SharePopover from './SharePopover/SharePopover'
 
 type Props = {
   track: ITrack
@@ -29,6 +32,7 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
   const [openReportModal, setOpenReportModal] = useState(false)
   const [playlistPopoverAnchorEl, setPlaylistPopoverAnchorEl] = useState<HTMLElement | null>(null)
   const [artistPopoverAnchorEl, setArtistPopoverAnchorEl] = useState<HTMLElement | null>(null)
+  const [shareAnchorEl, setShareAnchorEl] = useState<HTMLElement | null>(null)
   const { enqueueSnackbar } = useSnackbar()
 
   const handlePlaylistPopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -39,25 +43,48 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
     setArtistPopoverAnchorEl(event.currentTarget)
   }
 
+  const handleSharePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setShareAnchorEl(event.currentTarget)
+  }
+
   const handlePopoverClose = () => {
     setPlaylistPopoverAnchorEl(null)
     setArtistPopoverAnchorEl(null)
+    setShareAnchorEl(null)
   }
 
   const handleReportModalClose = () => {
     setOpenReportModal(false)
   }
 
-  const handleCopyLink = () => {
-    navigator.clipboard
-      .writeText(`${window.location.origin}/track/${track?._id}`)
-      .then(() => {
-        enqueueSnackbar('Sao chép đường dẫn thành công', { variant: 'success' })
-      })
-      .catch(() => {
-        enqueueSnackbar('Sao chép đường dẫn thất bại', { variant: 'error' })
-      })
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(track.path_audio)
+      const blob = await response.blob()
+
+      const url = window.URL.createObjectURL(blob)
+
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${normalizeString(track.name)}.m4a`
+
+      document.body.appendChild(link)
+      link.click()
+
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+
+      enqueueSnackbar('Tải xuống bắt đầu', { variant: 'success' })
+    } catch {
+      enqueueSnackbar('Không thể tải xuống bài hát', { variant: 'error' })
+    }
   }
+
+  useEffect(() => {
+    if (!anchorEl) {
+      onClose()
+    }
+  }, [anchorEl, onClose])
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -152,12 +179,6 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
               <ArrowForwardIosIcon fontSize='small' />
             </ListItemIcon>
           </MenuItem>
-          <MenuItem onClick={handleCopyLink}>
-            <ListItemIcon sx={{ gap: 1 }}>
-              <LinkIcon fontSize='small' />
-              <Box>Sao chép liên kết</Box>
-            </ListItemIcon>
-          </MenuItem>
           <MenuItem
             onMouseEnter={handleArtistPopoverOpen}
             onMouseLeave={() => {
@@ -175,6 +196,30 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
               <ArrowForwardIosIcon fontSize='small' />
             </ListItemIcon>
           </MenuItem>
+          <MenuItem onClick={handleDownload}>
+            <ListItemIcon sx={{ gap: 1 }}>
+              <DownloadIcon fontSize='small' />
+              <Box>Tải xuống bài hát</Box>
+            </ListItemIcon>
+          </MenuItem>
+          <MenuItem
+            sx={{ borderTop: '1px solid', borderTopColor: (theme) => theme.palette.neutral.neutral2 }}
+            onMouseEnter={handleSharePopoverOpen}
+            onMouseLeave={() => {
+              const popoverElement = document.querySelector('[role="presentation"].MuiPopover-root:last-child')
+              if (popoverElement && !popoverElement.matches(':hover')) {
+                handlePopoverClose()
+              }
+            }}
+          >
+            <ListItemIcon sx={{ gap: 1 }}>
+              <IosShareIcon fontSize='small' />
+              <Box>Chia sẻ</Box>
+            </ListItemIcon>
+            <ListItemIcon sx={{ paddingLeft: '15px' }}>
+              <ArrowForwardIosIcon fontSize='small' />
+            </ListItemIcon>
+          </MenuItem>
           <MenuItem
             sx={{ borderTop: '1px solid', borderTopColor: (theme) => theme.palette.neutral.neutral2 }}
             onClick={() => setOpenReportModal(true)}
@@ -186,10 +231,11 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
           </MenuItem>
         </MenuList>
 
-        <ReportTrack open={openReportModal} setOpen={handleReportModalClose} track={track} />
         <PlaylistPopover anchorEl={playlistPopoverAnchorEl} onClose={handlePopoverClose} track={track} />
         <ArtistPopover anchorEl={artistPopoverAnchorEl} onClose={handlePopoverClose} track={track} />
+        <SharePopover anchorEl={shareAnchorEl} onClose={handlePopoverClose} track={track} />
       </Popover>
+      <ReportTrack open={openReportModal} setOpen={handleReportModalClose} track={track} />
     </Box>
   )
 }

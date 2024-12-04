@@ -6,6 +6,7 @@ import Grid from '@mui/material/Grid'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import useGetGenres from '~/hooks/Genres/useGetGenres'
 
 const StyledCard = styled(Card)(() => ({
@@ -66,6 +67,7 @@ const getColor = (index: number) => {
 
 export default function GenresSearchTag() {
   const { data } = useGetGenres()
+  const navigate = useNavigate()
   const genres = useMemo(() => {
     return Array.isArray(data?.result) ? data.result : []
   }, [data])
@@ -101,7 +103,7 @@ export default function GenresSearchTag() {
       >
         <Grid container spacing={2}>
           {genres.map((genre, index) => (
-            <Grid item xs={12} sm={6} md={4} key={genre._id}>
+            <Grid item xs={12} sm={6} md={4} key={genre._id} onClick={() => navigate(`/genres/${genre._id}`)}>
               <StyledCard sx={{ backgroundColor: getColor(index) }}>
                 <CardContent
                   sx={{

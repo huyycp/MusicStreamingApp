@@ -5,7 +5,9 @@ import ArtistDetail from '~/components/Artist/ArtistDetail'
 import HomeView from '~/components/HomeView'
 import MusicAlbum from '~/components/MusicAlbum'
 import MyMusic from '~/components/MyMusic'
+import ProfileForm from '~/components/ProfileForm/ProfileForm'
 import AudioSearchResutl from '~/components/SearchResult/AudioSearchResult/AudioSearchResult'
+import GenresTrack from '~/components/SearchResult/GenresTag/GenresTrack/GenresTrack'
 import SectionAlbum from '~/components/Section/SectionAlbum/SectionAlbum'
 import TrackDetail from '~/components/TrackDetail/TrackDetail'
 
@@ -47,7 +49,9 @@ export default function MainMusic({ viewType }: Props) {
         {viewType === 'album' && <AlbumDetail />}
         {viewType === 'track' && <TrackDetail />}
         {viewType === 'artist' && <ArtistDetail />}
+        {viewType === 'genres' && <GenresTrack />}
         {viewType === 'section' && <SectionAlbum />}
+        {viewType === 'user' && <ProfileForm />}
         {!viewType && <HomeView />}
       </>
     </Box>

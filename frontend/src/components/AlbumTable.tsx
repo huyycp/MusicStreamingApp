@@ -15,7 +15,6 @@ import { useEffect, useRef } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import { useNavigate } from 'react-router-dom'
 
 export default function AlbumTable() {
   const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetAlbumByArtist(5)
@@ -23,7 +22,6 @@ export default function AlbumTable() {
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
   const loader = useRef(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
     const options = {
@@ -151,7 +149,7 @@ export default function AlbumTable() {
                         }
                       }}
                       onClick={() => {
-                        navigate(`/create-album/${row._id}/add-track`)
+                        window.location.href = `/create-album/${row._id}/add-track`
                       }}
                     >
                       <AddCircleOutlineIcon />

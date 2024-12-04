@@ -10,7 +10,7 @@ const AudioRecorder = () => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const streamRef = useRef<MediaStream | null>(null)
-  const navigate = useNavigate() // Khởi tạo navigate
+  const navigate = useNavigate()
 
   const clearCurrentRecording = () => {
     setAudioFile(null)
