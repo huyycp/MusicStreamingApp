@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/track_model.dart';
+import 'package:mobile/repositories/genre_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/utils/snackbar.dart';
 import 'package:mobile/views/search/search_view.dart';
@@ -12,14 +14,17 @@ import 'package:record/record.dart';
 
 final searchViewModel = ChangeNotifierProvider.autoDispose<SearchViewModel>(
   (ref) => SearchViewModel(
-    trackRepo: ref.read(trackRepoProvider)
+    trackRepo: ref.read(trackRepoProvider),
+    genreRepo: ref.read(genreRepoProvider),
   )
 );
 
 class SearchViewModel extends ChangeNotifier {
   SearchViewModel({
     required TrackRepository trackRepo,
-  }) : _trackRepo = trackRepo {
+    required GenreRepository genreRepo,
+  }) : _trackRepo = trackRepo,
+       _genreRepo = genreRepo {
     audioRecorder = AudioRecorder();
     audioRecorder.onStateChanged().listen((state) {
       recordState = state;
@@ -29,6 +34,7 @@ class SearchViewModel extends ChangeNotifier {
   }
 
   final TrackRepository _trackRepo;
+  final GenreRepository _genreRepo;
   late final AudioRecorder audioRecorder;
   RecordState recordState = RecordState.stop;
   bool isLoading = false;
@@ -38,7 +44,12 @@ class SearchViewModel extends ChangeNotifier {
   double recordingProgress = 0;
   int refreshDuration = 100;
   double recordingDuration = 0;
+  List<GenreModel> genres = [];
 
+  Future<void> getGenres() async {
+    genres = await _genreRepo.getGenres();
+    notifyListeners();
+  }
 
   Future<void> handleRecord(BuildContext context) async {
     try {

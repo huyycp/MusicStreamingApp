@@ -45,7 +45,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   path: ^1.9.0
   go_router: ^14.2.7
-  palette_generator: ^0.3.3+4
+  palette_generator: ^0.3.3+5
   flutter_signin_button: ^2.0.0
   string_validator: ^1.1.0
   password_text_field: ^2.0.0
@@ -60,6 +60,7 @@ dependencies:
   path_provider: ^2.1.5
   simple_ripple_animation: ^0.1.0
   just_audio_background: ^0.0.1-beta.13
+  shimmer: ^3.0.0
   
 dev_dependencies:
   flutter_test:

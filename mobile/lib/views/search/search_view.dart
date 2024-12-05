@@ -5,6 +5,7 @@ import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/views/search/search_view_model.dart';
+import 'package:mobile/views/search/widgets/genre_explore_widget.dart';
 import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -23,6 +24,12 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
   
   @override
   bool get wantKeepAlive => true;  
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(searchViewModel).getGenres();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +66,11 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
       children: [
         _searchBar(),
         const SizedBox(height: 24),
-        _tracks(),
+        ref.watch(searchViewModel.select(
+          (value) => value.tracks.isNotEmpty
+        )) 
+        ?_tracks()
+        : _exploreGenres(),
       ],
     );
   }
@@ -86,6 +97,22 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
         width: 16,
         height: 24,
       ),
+    );
+  }
+
+  Widget _exploreGenres()  {
+    final genres = ref.watch(searchViewModel.select(
+      (value) =>  value.genres
+    ));
+    return Expanded(
+      child: GridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        childAspectRatio: 1.4,
+        physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+        children: genres.map((genre) => GenreExploreWidget(genre)).toList(),
+      )
     );
   }
 
