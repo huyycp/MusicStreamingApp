@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/dto/resp/search_resp.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/genre_repository.dart';
+import 'package:mobile/repositories/search_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/utils/snackbar.dart';
 import 'package:mobile/views/search/search_view.dart';
@@ -16,6 +18,7 @@ final searchViewModel = ChangeNotifierProvider.autoDispose<SearchViewModel>(
   (ref) => SearchViewModel(
     trackRepo: ref.read(trackRepoProvider),
     genreRepo: ref.read(genreRepoProvider),
+    searchRepo: ref.read(searchRepoProvider),
   )
 );
 
@@ -23,18 +26,20 @@ class SearchViewModel extends ChangeNotifier {
   SearchViewModel({
     required TrackRepository trackRepo,
     required GenreRepository genreRepo,
+    required SearchRepository searchRepo,
   }) : _trackRepo = trackRepo,
-       _genreRepo = genreRepo {
+       _genreRepo = genreRepo,
+       _searchRepo = searchRepo {
     audioRecorder = AudioRecorder();
     audioRecorder.onStateChanged().listen((state) {
       recordState = state;
       notifyListeners();
     });
-    
   }
 
   final TrackRepository _trackRepo;
   final GenreRepository _genreRepo;
+  final SearchRepository _searchRepo;
   late final AudioRecorder audioRecorder;
   RecordState recordState = RecordState.stop;
   bool isLoading = false;
@@ -45,6 +50,17 @@ class SearchViewModel extends ChangeNotifier {
   int refreshDuration = 100;
   double recordingDuration = 0;
   List<GenreModel> genres = [];
+  SearchResp searchResp = SearchResp.fromJson({});
+  final keywordController = TextEditingController();
+  Timer? deboundTimer;
+  final pageController = PageController();
+  int currentTabIndex = 0;
+
+  void changeTab(int newIndex) {
+    currentTabIndex = newIndex;
+    pageController.jumpToPage(currentTabIndex);
+    notifyListeners();
+  }
 
   Future<void> getGenres() async {
     genres = await _genreRepo.getGenres();
@@ -116,5 +132,21 @@ class SearchViewModel extends ChangeNotifier {
       notifyListeners();
       SnackBarUtils.showSnackBar(message: 'Cannot recognize, please try again');
     }
+  }
+
+  void onKeywordChanged() {
+    if (deboundTimer?.isActive ?? false) deboundTimer?.cancel();
+    if (keywordController.text.isEmpty) return;
+    if (currentTabIndex != 1) changeTab(2);
+    deboundTimer = Timer(const Duration(milliseconds: 1000), () async {
+      searchResp = await _searchRepo.search(keywordController.text);
+      notifyListeners();
+    });
+  }
+
+  void clear() {
+    keywordController.clear();
+    searchResp = SearchResp.fromJson({});
+    tracks.clear();
   }
 }
