@@ -27,7 +27,7 @@ class _AppNavbarState extends State<AppNavbar> {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [Colors.black, Colors.black.withOpacity(0.5)]
+          colors: [Colors.black, Colors.black.withOpacity(0.05)]
         ),
       ),
       child: BottomNavigationBar(
