@@ -1,6 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/report_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
@@ -42,6 +46,8 @@ class ReportViewModel extends ChangeNotifier {
   bool? isReportCreated = false;
   bool isLoading = true;
   bool isValidForm = false;
+  List<XFile> imagesEvidence = [];
+  List<PlatformFile> audioEvidence = [];
 
   Future<void> getTrack(String trackId) async {
     try {
@@ -72,6 +78,8 @@ class ReportViewModel extends ChangeNotifier {
         reason: selectedReasons[0],
         subject: subjectController.text,
         body: bodyController.text,
+        images: imagesEvidence,
+        audios: audioEvidence,
       );
       if (report != null) {
         isReportCreated = true;
@@ -94,8 +102,39 @@ class ReportViewModel extends ChangeNotifier {
     isValidForm = (
       selectedReasons.isNotEmpty &&
       subjectController.text.isNotEmpty &&
-      bodyController.text.isNotEmpty
+      bodyController.text.isNotEmpty && 
+      imagesEvidence.isNotEmpty &&
+      audioEvidence.isNotEmpty
     );
     notifyListeners();
+  }
+
+  Future<void> selectImage() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final result = await picker.pickMultiImage();
+      if (result.isNotEmpty) {
+        imagesEvidence = [...result, ...imagesEvidence];
+        imagesEvidence = imagesEvidence.sublist(0, imagesEvidence.length < 5 ? imagesEvidence.length : 5);
+        checkValidForm();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+  }
+
+  Future<void> selectAudio() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['m4a', 'mp3', 'wav'],
+      );
+      if (result != null) {
+        audioEvidence = result.files;
+        checkValidForm();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
+    }
   }
 }
