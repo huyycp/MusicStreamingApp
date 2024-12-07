@@ -1,8 +1,10 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/report/report_view_model.dart';
 import 'package:mobile/views/report/widgets/app_chip_selector.dart';
+import 'package:mobile/widgets/audio_image_widget.dart';
 import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -31,7 +33,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
         appBar: _appBar(),
         body: _body(),
         bottomNavigationBar: _sendReportBtn(),
-        extendBody: true,
+        extendBody: false,
       ),
     );
   }
@@ -39,6 +41,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
   AppBar _appBar() {
     return AppBar(
       title: const Text('Report'),
+      forceMaterialTransparency: true,
     );
   }
   
@@ -59,6 +62,11 @@ class _ReportViewState extends ConsumerState<ReportView> {
               _subjectInput(),
               const SizedBox(height: 24),
               _bodyInput(),
+              const SizedBox(height: 24),
+              _imageEvidence(),
+              const SizedBox(height: 24),
+              _audioEvidence(),
+              const SizedBox(height: 48),
             ],
           ),
         );
@@ -131,8 +139,135 @@ class _ReportViewState extends ConsumerState<ReportView> {
           const SizedBox(height: 8),
           TextField(
             controller: ref.read(reportViewModel).bodyController,
+            maxLines: 5,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _imageEvidence() {
+    final images = ref.watch(reportViewModel.select(
+      (value) => value.imagesEvidence
+    ));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const FieldLabel('Attach image'),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 100,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _imageSelector(),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: images.length,
+                  itemBuilder: (context, index) => DynamicImage(
+                    images[index].path,
+                    width: 100,
+                    height: 100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(width: 12),
+                ),
+              ) 
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _imageSelector() {
+    return GestureDetector(
+      onTap: () => ref.read(reportViewModel).selectImage(),
+      child: DottedBorder(
+        color: GRAY_BCK_2,
+        radius: const Radius.circular(8),
+        borderType: BorderType.RRect,
+        dashPattern: const [5, 3],
+        child: Container(
+          padding: const EdgeInsets.all(36),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Center(
+            child: DynamicImage(
+              'assets/icons/ic_add.svg',
+              width: 24,
+              height: 24,
+              color: GRAY_BCK_2,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _audioEvidence() {
+    final audios = ref.watch(reportViewModel.select(
+      (value) => value.audioEvidence
+    ));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const FieldLabel('Attach audio'),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 100,
+          child: Row(
+            children: [
+              _audioSelector(),
+              const SizedBox(width: 12),
+               Expanded(
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: audios.length,
+                  itemBuilder: (context, index) => AudioImageWidget(
+                    imagePath: 'assets/icons/app_image.png',
+                    audioPath: audios[index].path,
+                    size: 64,
+                    padding: const EdgeInsets.all(18),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(width: 12),
+                ),
+              ),
+            ],
+          )
+        ),
+      ],
+    );
+  }
+
+  Widget _audioSelector() {
+    return GestureDetector(
+      onTap: () => ref.read(reportViewModel).selectAudio(),
+      child: DottedBorder(
+        color: GRAY_BCK_2,
+        radius: const Radius.circular(8),
+        borderType: BorderType.RRect,
+        dashPattern: const [5, 3],
+        child: Container(
+          padding: const EdgeInsets.all(36),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Center(
+            child: DynamicImage(
+              'assets/icons/ic_add.svg',
+              width: 24,
+              height: 24,
+              color: GRAY_BCK_2,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -142,7 +277,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
       (value) => value.isValidForm
     ));
     return BaseButton(
-      onPressed: isValidForm
+      onPressed: isValidForm && ref.watch(reportViewModel.select((value) => value.isReportCreated == false))
         ? () {
           ref.read(reportViewModel).createReport();
         }

@@ -51,8 +51,8 @@ class CreateTrackViewModel extends ChangeNotifier {
   Future<void> selectAudio() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.any,
-        // allowedExtensions: ['m4a', 'mp3', 'wav'],
+        type: FileType.custom,
+        allowedExtensions: ['m4a', 'mp3', 'wav'],
       );
       if (result != null) {
         trackAudio = result.files.single;
