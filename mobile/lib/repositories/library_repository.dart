@@ -91,4 +91,8 @@ class LibraryRepository {
     );
     return await _libraryRemote.getTracksNotInLibrary(libraryId, req);
   }
+
+  Future<bool> addTracksToFavorite(List<String> trackIds) async {
+    return await _libraryRemote.addTracksToFavorite(trackIds);
+  }
 }
