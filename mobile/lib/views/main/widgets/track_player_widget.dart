@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:marquee/marquee.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/utils/snackbar.dart';
 import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/views/main/track_player_view.dart';
+import 'package:mobile/views/main/widgets/track_player_widget_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class TrackPlayerWidget extends ConsumerStatefulWidget {
@@ -12,7 +15,7 @@ class TrackPlayerWidget extends ConsumerStatefulWidget {
   ConsumerState<TrackPlayerWidget> createState() => _AudioWidgetState();
 }
 
-class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
+class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {  
   @override
   Widget build(BuildContext context) {
     return ref.watch(mainAudioController).available
@@ -59,13 +62,20 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         _trackImage(track.imageLink),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _trackTitle(track.name),
-              _trackAuthors(track.ownerNames),
-            ],
+          child: GestureDetector(
+            onHorizontalDragUpdate: (details) {
+              int sensitivity = 10;
+              if (details.delta.dx > sensitivity) ref.read(mainAudioController).playPrevTrack();
+              if (details.delta.dx < -sensitivity) ref.read(mainAudioController).playNextTrack();
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _trackTitle(track.name),
+                _trackAuthors(track.ownerNames),
+              ],
+            ),
           ),
         )
       ],
@@ -82,11 +92,18 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   }
 
   Widget _trackTitle(String title) {
-    return Text(
-      title,
-      style: Theme.of(context).textTheme.titleMedium,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+    return LayoutBuilder(
+      builder: (context, constraints) => Container(
+        height: 24,
+        child: Marquee(
+          text: title,
+          style: Theme.of(context).textTheme.titleMedium,
+          pauseAfterRound: const Duration(seconds: 3),
+          startAfter: const Duration(seconds: 3),
+          blankSpace: constraints.maxWidth,
+          velocity: 100
+        ),
+      ),
     );
   }
 
@@ -105,6 +122,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _stopBtn(),
+        _addFavoriteBtn(),
         _playOrPauseBtn(),
       ],
     );
@@ -138,6 +156,36 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         width: 20,
         height: 20,
         color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _addFavoriteBtn() {
+    bool isFavorite = ref.watch(trackPlayerWidgetModel.select(
+      (value) => value.isFavorite
+    ));
+    return IconButton(
+      onPressed: isFavorite
+        ? () {
+          
+        }
+        : () {
+          ref.read(trackPlayerWidgetModel).addTracksToFavorite(
+            ref.watch(mainAudioController.select((value) => value.currentTrack.id)),
+            (isDone) {
+              if (isDone == null) return;
+              if (isDone) {
+                SnackBarUtils.showSnackBar(message: 'Add to favorite successfully', status: MessageTypes.success);
+              } else {
+                SnackBarUtils.showSnackBar(message: 'Add to favorite failed', status: MessageTypes.error);
+              }
+            }
+          );
+        },
+      icon: DynamicImage(
+        isFavorite ? 'assets/icons/ic_added_check.svg' : 'assets/icons/ic_add_circle.svg',
+        width: 24,
+        height: 24,
       ),
     );
   }

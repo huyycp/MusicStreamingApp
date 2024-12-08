@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -128,5 +129,16 @@ class LibraryRemoteDataSource {
       }
     }
     return null;
+  }
+
+  Future<bool> addTracksToFavorite(List<String> trackIds) async {
+    final response = await _magicMusicApi.request(
+      '$_libraryPath/favorite',
+      method: HttpMethods.PATCH,
+      data: {
+        'track_list': jsonEncode(trackIds)
+      }
+    );
+    return response.statusCode == HttpStatus.ok;
   }
 }
