@@ -7,6 +7,7 @@ import 'package:mobile/build_config.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/theme_provider.dart';
 import 'package:mobile/utils/snackbar.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,12 +20,22 @@ void main() async {
     androidNotificationChannelName: BuildConfig.appName,
     androidNotificationOngoing: true,
   );
-  runApp(ProviderScope(
-    overrides: [
-      themeProvider.overrideWith((ref) => ThemeProvider())
-    ],
-    child: const MyApp()
-  ));
+  await SentryFlutter.init(
+    (options) {
+      options
+        ..dsn = dotenv.env['SENTRY_DSN']!
+        ..environment = dotenv.env['SENTRY_ENV']!
+        ..tracesSampleRate = 1.0
+        ..profilesSampleRate = 1.0;
+    },
+      appRunner: () => runApp(ProviderScope(
+      overrides: [
+        themeProvider.overrideWith((ref) => ThemeProvider())
+      ],
+      child: const MyApp()
+    ))
+  );
+  
 }
 
 class MyApp extends ConsumerWidget {
