@@ -26,7 +26,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
           child: Container(
             height: 66,
             width: 380,
-            padding: const EdgeInsets.only(right: 12, left: 12, top: 12),
+            padding: const EdgeInsets.only(right: 10, left: 10, top: 8),
             decoration: BoxDecoration(
               color: GRAY_BCK_1,
               borderRadius: BorderRadius.circular(8),
@@ -152,7 +152,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         ref.read(mainAudioController).stop();
       },
       icon: DynamicImage(
-        'assets/icons/ic_stop.svg',
+        'assets/icons/ic_close.svg',
         width: 20,
         height: 20,
         color: Colors.white,

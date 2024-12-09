@@ -95,4 +95,16 @@ class LibraryRepository {
   Future<bool> addTracksToFavorite(List<String> trackIds) async {
     return await _libraryRemote.addTracksToFavorite(trackIds);
   }
+
+  Future<LibraryModel?> editLibrary({
+    required String id,
+    String? name,
+    XFile? image,
+  }) async {
+    final req = CreateLibraryRep(
+      name: name ?? '',
+      image: image,
+    );
+    return await _libraryRemote.editLibrary(id, req);
+  }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -55,13 +56,13 @@ class DynamicImage extends StatelessWidget {
       default:
         {
           if (url.startsWith('http')) {
-            image = Image.network(
-              url,
+            image = CachedNetworkImage(
+              imageUrl: url,
               width: width,
               height: height,
               fit: BoxFit.cover,
               color: color,
-              errorBuilder: (context, error, stackTrace) =>
+              errorWidget: (context, error, stackTrace) =>
                 Container(color: Colors.grey),
             );
           } else if (url.startsWith('/')) {

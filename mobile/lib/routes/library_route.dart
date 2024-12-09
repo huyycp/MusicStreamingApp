@@ -23,12 +23,24 @@ class LibraryRoute {
     path: 'create-album',
     name: 'create-album',
     builder: (context, state) => const CreateAlbumView(),
+    routes: [
+      GoRoute(
+        path: ':id',
+        builder: (context, state) => CreateAlbumView(id: state.pathParameters['id'])
+      )
+    ]
   );
 
   static final GoRoute _createPlaylistRoute =  GoRoute(
     path: 'create-playlist',
     name: 'create-playlist',
     builder: (context, state) => const CreatePlaylistView(),
+    routes: [
+      GoRoute(
+        path: ':id',
+        builder: (context, state) => CreatePlaylistView(id: state.pathParameters['id'])
+      )
+    ]
   );
 
   static final GoRoute _detailLibraryRoute = GoRoute(
