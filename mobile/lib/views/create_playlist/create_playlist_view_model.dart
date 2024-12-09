@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/dto/req/create_library_req.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/routes/routes.dart';
@@ -22,6 +23,18 @@ class CreatePlaylistViewModel extends ChangeNotifier {
   final playlistNameController = TextEditingController();
   bool isPlaylistCreated = false;
   bool isValidName = false;
+
+  Future<void> getPlaylistInfo(String id) async {
+    try {
+      final playlist = await _libraryRepo.getLibrary(id);
+      if (playlist != null) {
+        playlistNameController.text = playlist.name;
+        checkValidName();
+      }
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+  }
   
   Future<void> createPlaylist() async {
     try {
@@ -40,6 +53,23 @@ class CreatePlaylistViewModel extends ChangeNotifier {
       }
     } catch (err) {
       SnackBarUtils.showSnackBar(message: 'Server error, please try again', status: MessageTypes.error);
+    }
+  }
+
+  Future<void> editPlaylist(String id, Function(bool) onDone) async {
+    try {
+      final playlist = await _libraryRepo.editLibrary(
+        id: id,
+        name: playlistNameController.text,
+      );
+      if (playlist != null) {
+        onDone(true);
+      } else {
+        onDone(false);
+      }
+    } catch (err) {
+      onDone(false);
+      debugPrint(err.toString());
     }
   }
 

@@ -47,7 +47,7 @@ class HomeViewModel extends ChangeNotifier {
   bool sessionValid = true;
 
   void run() {
-    getCurrentUser();
+    // getCurrentUser();
     getRecommendAlbums();
     getBighitTracks();
     getSuggestedArtists();

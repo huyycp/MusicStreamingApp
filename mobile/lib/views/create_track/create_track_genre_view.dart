@@ -43,7 +43,7 @@ class _CreateTrackGenreViewState extends ConsumerState<CreateTrackGenreView> {
   }
 
   Widget _createTrackBtn() {
-    return BaseButton(
+    return AppButton(
       onPressed: ref.watch(createTrackViewModel.select((value) => value.isValidTrackGenre && value.isTrackCreatedSuccess == false)) 
         ? () {
           ref.read(createTrackViewModel).createTrack();

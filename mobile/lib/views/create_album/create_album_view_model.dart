@@ -22,8 +22,16 @@ class CreateAlbumViewModel extends ChangeNotifier {
   final LibraryRepository _libraryRepo;
   final albumNameController = TextEditingController();
   XFile? albumImage;
+  String? albumImagePath;
   bool isValidInfor = false;
   bool? isAlbumCreated = false;
+
+  Future<void> getLibraryInfo(String id) async {
+    final album = await _libraryRepo.getLibrary(id);
+    albumImagePath = album?.imageLink;
+    albumNameController.text = album?.name ?? '';
+    checkValidInfo();
+  }
 
   Future<void> pickImage() async {
     try {
@@ -60,6 +68,32 @@ class CreateAlbumViewModel extends ChangeNotifier {
       isAlbumCreated = false;
       notifyListeners();
       SnackBarUtils.showSnackBar(message: 'Server error, please try again.', status: MessageTypes.error);
+    }
+  }
+
+  Future<void> editAlbum(String id, Function(bool) onDone) async {
+    try {
+      isAlbumCreated = null;
+      notifyListeners();
+      final album = await _libraryRepo.editLibrary(
+        id: id,
+        name: albumNameController.text,
+        image: albumImage
+      );
+      if (album != null) {
+        albumNameController.text = album.name;
+        albumImagePath = album.imageLink;
+        albumImage = null;
+        notifyListeners();
+        onDone(true);
+      } else {
+        onDone(false);
+      }
+      isAlbumCreated = false;
+      notifyListeners();
+    } catch(err) {
+      onDone(false);
+      debugPrint(err.toString());
     }
   }
 

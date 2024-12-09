@@ -141,4 +141,20 @@ class LibraryRemoteDataSource {
     );
     return response.statusCode == HttpStatus.ok;
   }
+
+  Future<LibraryModel?> editLibrary(String id, CreateLibraryRep req) async {
+    final data = FormData.fromMap(await req.toJson());
+    final response = await _magicMusicApi.request(
+      '$_libraryPath/$id',
+      method: HttpMethods.PATCH,
+      data: data,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return LibraryModel.fromJson(data);
+      }
+    }
+    return null;
+  }
 }

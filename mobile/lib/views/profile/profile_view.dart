@@ -75,7 +75,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
   Widget _userAction() {
     return Row(
       children: [
-        BaseButton(
+        AppButton(
           onPressed: () {
 
           },

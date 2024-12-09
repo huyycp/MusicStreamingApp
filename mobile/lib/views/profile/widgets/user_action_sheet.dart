@@ -34,7 +34,7 @@ class _UserActionSheetState extends ConsumerState<UserActionSheet> {
   }
 
   Widget _upgradePremium() {
-    return BaseButton(
+    return AppButton(
       onPressed: () {
         SnackBarUtils.showSnackBar(message: 'Please use web for the best experience');
         context.pop();

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/theme/text_theme.dart';
 
-class BaseButton extends StatelessWidget {
-  const BaseButton({
+class AppButton extends StatelessWidget {
+  const AppButton({
     this.onPressed,
     required this.child,
     this.type = ButtonType.elevated,

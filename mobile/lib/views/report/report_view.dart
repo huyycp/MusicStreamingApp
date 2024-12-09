@@ -276,7 +276,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
     final isValidForm = ref.watch(reportViewModel.select(
       (value) => value.isValidForm
     ));
-    return BaseButton(
+    return AppButton(
       onPressed: isValidForm && ref.watch(reportViewModel.select((value) => value.isReportCreated == false))
         ? () {
           ref.read(reportViewModel).createReport();

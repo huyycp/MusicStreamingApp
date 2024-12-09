@@ -64,7 +64,7 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
   }
 
   Widget _thumbnailPicker() {
-    return BaseButton(
+    return AppButton(
       onPressed: () {
         ref.read(createTrackViewModel).selectThumbnail();
       },

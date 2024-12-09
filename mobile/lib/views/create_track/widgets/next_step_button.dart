@@ -17,7 +17,7 @@ class NextStepButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
-      child: BaseButton(
+      child: AppButton(
         onPressed: enabled 
           ? () {
               if (extraAction != null) {

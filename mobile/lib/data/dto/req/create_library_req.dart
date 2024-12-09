@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 class CreateLibraryRep {
   CreateLibraryRep({
-    required this.name,
+    this.name = '',
     this.image,
   });
 

@@ -2,19 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/utils/snackbar.dart';
 import 'package:mobile/views/create_playlist/create_playlist_view_model.dart';
+import 'package:mobile/views/detail_library/detail_library_view_model.dart';
+import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 
 class CreatePlaylistView extends ConsumerStatefulWidget {
-  const CreatePlaylistView({super.key});
+  const CreatePlaylistView({this.id, super.key});
+  final String? id;
 
   @override
   ConsumerState<CreatePlaylistView> createState() => _CreatePlaylistViewState();
 }
 
 class _CreatePlaylistViewState extends ConsumerState<CreatePlaylistView> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.id != null) ref.read(createPlaylistViewModel).getPlaylistInfo(widget.id!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -98,7 +108,7 @@ class _CreatePlaylistViewState extends ConsumerState<CreatePlaylistView> {
   }
 
   Widget _cancelBtn() {
-    return BaseButton(
+    return AppButton(
       onPressed: () {
         context.pop();
       },
@@ -110,14 +120,24 @@ class _CreatePlaylistViewState extends ConsumerState<CreatePlaylistView> {
   }
 
   Widget _createPlaylistBtn() {
-    return BaseButton(
+    return AppButton(
       onPressed: ref.watch(createPlaylistViewModel.select((value) => value.isValidName)) 
-        ? () => ref.read(createPlaylistViewModel).createPlaylist()
+        ? widget.id == null
+          ? () => ref.read(createPlaylistViewModel).createPlaylist()
+          : () => ref.read(createPlaylistViewModel).editPlaylist(widget.id!, (isDone) {
+            if (isDone) {
+              context.pop();
+              SnackBarUtils.showSnackBar(message: 'Edit playlist successfully', status: MessageTypes.success);
+              ref.read(detailLibraryViewModel).getLibrary(widget.id!);
+            } else {
+              SnackBarUtils.showSnackBar(message: 'Edit playlist failed', status: MessageTypes.error);
+            }
+          })
         : null,
       isPrimary: true,
       border: ButtonBorder.round,
       type: ButtonType.elevated,
-      child: const Text('Create'),
+      child: Text(widget.id == null ? 'Create' : 'Save'),
     );
   }
 }

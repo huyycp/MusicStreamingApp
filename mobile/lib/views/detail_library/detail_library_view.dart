@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/utils/modal_bottom_sheet.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
+import 'package:mobile/views/detail_library/widgets/library_action_sheet.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/widgets/track/track_widget.dart';
 import 'package:mobile/views/main/main_view_model.dart';
@@ -215,7 +217,16 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
 
   Widget _moreOptionsBtn() {
     return IconButton(
-      onPressed: () {},
+      onPressed: () {
+        showAppModalBottomSheet(context: context, builder: (context) {
+          return LibraryActionSheet(
+            id: widget.id,
+            type: ref.watch(detailLibraryViewModel.select(
+              (value) => value.library?.type ?? LibraryType.playlist)
+            ),
+          );
+        });
+      },
       icon: DynamicImage(
         'assets/icons/ic_menu.svg',
         width: 20,
@@ -310,7 +321,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
     ));
     return tracks.isNotEmpty
       ? ListView.separated(
-          padding: EdgeInsets.zero,
+          padding: const EdgeInsets.only(bottom: 48),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: tracks.length,    
@@ -339,7 +350,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 24),
-        BaseButton(
+        AppButton(
           border: ButtonBorder.round,
           onPressed: () {
             context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library?.id ?? ''))}');
