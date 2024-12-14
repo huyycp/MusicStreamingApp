@@ -4,6 +4,7 @@ import 'package:mobile/routes/auth_route.dart';
 import 'package:mobile/routes/library_route.dart';
 import 'package:mobile/routes/main_route.dart';
 import 'package:mobile/routes/pick_track_route.dart';
+import 'package:mobile/routes/profile_route.dart';
 import 'package:mobile/routes/report_route.dart';
 import 'package:mobile/routes/splash_route.dart';
 import 'package:mobile/routes/track_route.dart';
@@ -24,6 +25,7 @@ class RouteConfig {
       PickTrackRoute.routes,
       ReportRoute.routes,
       ArtistRoute.routes,
+      ProfileRoute.routes,
     ]
   );
 }

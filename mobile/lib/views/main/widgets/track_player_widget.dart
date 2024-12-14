@@ -63,10 +63,10 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         const SizedBox(width: 12),
         Expanded(
           child: GestureDetector(
-            onHorizontalDragUpdate: (details) {
+            onHorizontalDragDown: (details) {
               int sensitivity = 10;
-              if (details.delta.dx > sensitivity) ref.read(mainAudioController).playPrevTrack();
-              if (details.delta.dx < -sensitivity) ref.read(mainAudioController).playNextTrack();
+              if (details.localPosition.dx > sensitivity) ref.read(mainAudioController).playPrevTrack();
+              if (details.localPosition.dx < -sensitivity) ref.read(mainAudioController).playNextTrack();
             },
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -152,7 +152,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         ref.read(mainAudioController).stop();
       },
       icon: DynamicImage(
-        'assets/icons/ic_close.svg',
+        'assets/icons/ic_close_light.svg',
         width: 20,
         height: 20,
         color: Colors.white,
