@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/views/profile/widgets/user_action_sheet.dart';
 import 'package:mobile/widgets/base_button.dart';
@@ -25,8 +26,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             const SizedBox(height: 24),
             _userAction(),
             const SizedBox(height: 24),
-            const Expanded(
-              child: Text('abv'),
+            Expanded(
+              child: Text(
+                'No recent activity',
+                style: Theme.of(context).textTheme.titleLarge
+              ),
             )
           ],
         )
@@ -44,7 +48,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                ref.read(userRepoProvider).user!.name,
+                ref.watch(userRepoProvider).user!.name,
                 style: Theme.of(context).textTheme.titleLarge,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -65,7 +69,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
 
   Widget _userAvatar() {
     return DynamicImage(
-      ref.read(userRepoProvider).user!.avatarLink,
+      ref.watch(userRepoProvider).user!.avatarLink,
       width: 84,
       height: 84,
       isCircle: true,
@@ -76,8 +80,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     return Row(
       children: [
         AppButton(
-          onPressed: () {
-
+          onPressed: () async {
+            final result = await context.push('/profile/edit');
+            if (result == true) {
+              ref.read(userRepoProvider).getCurrentUser();
+            }
           },
           type: ButtonType.outlined,
           border: ButtonBorder.round,

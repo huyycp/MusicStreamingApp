@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
+import 'package:mobile/data/dto/req/edit_profile_req.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
 import 'package:mobile/data/dto/req/register_req.dart';
 import 'package:mobile/data/dto/req/verify_email_req.dart';
@@ -151,6 +152,22 @@ class UserRemoteDataSource {
     final response = await _magicMusicApi.request(
       '$_userPath/$userId',
       method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return UserModel.fromJson(data);
+      }
+    }
+    return null;
+  }
+
+  Future<UserModel?> editProfile(EditProfileReq req) async {
+    final data = FormData.fromMap(await req.toJson());
+    final response = await _magicMusicApi.request(
+      '$_userPath/me',
+      method: HttpMethods.PATCH,
+      data: data,
     );
     if (response.statusCode == HttpStatus.ok) {
       final data = response.data['result'];

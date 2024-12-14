@@ -23,12 +23,15 @@ class _UserActionSheetState extends ConsumerState<UserActionSheet> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _upgradePremium(),
-        ],
+      child: Container(
+        padding: const EdgeInsets.only(bottom: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _upgradePremium(),
+          ],
+        ),
       ),
     );
   }

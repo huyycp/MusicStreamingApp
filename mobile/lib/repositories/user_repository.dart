@@ -1,18 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mobile/data/data_sources/remote/user_remote_data_source.dart';
+import 'package:mobile/data/dto/req/edit_profile_req.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
 import 'package:mobile/data/dto/req/register_req.dart';
 import 'package:mobile/data/dto/req/verify_email_req.dart';
 import 'package:mobile/models/user_model.dart';
 
-final userRepoProvider = Provider<UserRepository>(
+final userRepoProvider = ChangeNotifierProvider<UserRepository>(
   (ref) => UserRepository(
     ref.read(userRemoteProvider)
   )
 );
 
-class UserRepository {
+class UserRepository extends ChangeNotifier {
   UserRepository(UserRemoteDataSource userRemote) {
     _userRemote = userRemote;
   }
@@ -90,6 +93,7 @@ class UserRepository {
   Future<void> getCurrentUser() async {
     try {
       user = await _userRemote.getCurrentUser();
+      notifyListeners();
     } catch (err) {
       user = null;
     }
@@ -97,5 +101,18 @@ class UserRepository {
 
   Future<UserModel?> getUser(String userId) async {
     return await _userRemote.getUser(userId);
+  }
+
+  Future<UserModel?> editProfile({
+    String? name,
+    String? gender,
+    XFile? image,
+  }) async {
+    final req = EditProfileReq(
+      name: name,
+      gender: gender,
+      image: image,
+    );
+    return await _userRemote.editProfile(req);
   }
 }
