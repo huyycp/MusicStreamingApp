@@ -15,6 +15,10 @@ import MenuTrack from '~/components/MenuMore/MenuTrack'
 import Tooltip from '@mui/material/Tooltip'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import PauseIcon from '@mui/icons-material/Pause'
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { useFavorite } from '~/hooks/useFavorite'
+import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
 
 type Props = {
   tracks: ITrack[]
@@ -26,6 +30,8 @@ export default function SearchResults({ tracks }: Props) {
   const { pause, setPause, music, addTrackList } = useMusic()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [selectedTrack, setSelectedTrack] = useState<ITrack | null>(null)
+  const { isTrackFavorite } = useFavorite()
+  const { addToFavorite } = useAddToFavorite()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>, track: ITrack) => {
     event.preventDefault()
@@ -297,6 +303,30 @@ export default function SearchResults({ tracks }: Props) {
                     ))}
                   </Typography>
                 </Box>
+                <Tooltip title='Thêm vào thư viện' placement='top' className='more-icon'>
+                  <IconButton
+                    sx={{
+                      'opacity': 0,
+                      '&:hover': {
+                        backgroundColor: (theme) => theme.palette.neutral.neutral2
+                      }
+                    }}
+                    onClick={() => {
+                      addToFavorite([track._id])
+                    }}
+                  >
+                    {isTrackFavorite(track._id) ? (
+                      <CheckCircleIcon
+                        sx={{
+                          color: (theme) => theme.palette.primary.main,
+                          fontSize: 17
+                        }}
+                      />
+                    ) : (
+                      <FavoriteBorderOutlinedIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
+                    )}
+                  </IconButton>
+                </Tooltip>
 
                 <Typography
                   sx={{

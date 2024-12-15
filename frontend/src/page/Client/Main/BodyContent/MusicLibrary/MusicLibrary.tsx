@@ -6,23 +6,32 @@ import { ILibrary } from '~/type/Library/ILibrary'
 import useGetMyLibrary from '~/hooks/Library/useGetMyLibrary'
 import { useUser } from '~/hooks/useUser'
 import LibraryHeaderNoUser from './LibraryHeader/LibraryHeaderNoUser'
+import { useFavorite } from '~/hooks/useFavorite'
 
 export default function MusicLibrary() {
   const { user } = useUser()
   const { data } = useGetMyLibrary(100, 1)
   const [playlistSelect, setPlaylistSelect] = useState<ILibrary[] | []>([])
+  const [playlistFavorite, setPlayListFavorite] = useState<ILibrary | undefined>(undefined)
   const [originalPlaylist, setOriginalPlaylist] = useState<ILibrary[] | []>([])
   const [album, setAlbum] = useState<number>(0)
+  const { setFavIds } = useFavorite()
 
   useEffect(() => {
     if (data) {
-      const listAlbums = (data?.result.data as ILibrary[]).filter(
+      const listAlbums1 = (data?.result.data as ILibrary[]).filter(
         (album) => (album.number_of_tracks > 0 && album.type === 'album') || album.type === 'playlist'
       )
 
+      const listAlbums = listAlbums1.filter((album) => album.favorite !== true)
+      const listFavorite = listAlbums1.find((album) => album.favorite === true) as ILibrary
+
+      setPlayListFavorite(listFavorite)
+      setFavIds(listFavorite?._id)
       setPlaylistSelect(listAlbums)
       setOriginalPlaylist(listAlbums)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   return (
@@ -47,7 +56,7 @@ export default function MusicLibrary() {
           originalPlaylist={originalPlaylist}
         />
       )}
-      {user && <LibraryBody listAlbums={playlistSelect} album={album} />}
+      {user && <LibraryBody listAlbums={playlistSelect} album={album} favorite={playlistFavorite}/>}
       {!user && <LibraryHeaderNoUser />}
     </Box>
   )

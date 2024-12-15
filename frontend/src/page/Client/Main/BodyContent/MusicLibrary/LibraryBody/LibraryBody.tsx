@@ -7,9 +7,10 @@ import { ILibrary } from '~/type/Library/ILibrary'
 type Props = {
   listAlbums: ILibrary[] | []
   album: number
+  favorite: ILibrary | undefined
 }
 
-export default function LibraryBody({ listAlbums, album }: Props) {
+export default function LibraryBody({ listAlbums, album, favorite }: Props) {
   const { user } = useUser()
   return (
     <Box
@@ -23,7 +24,7 @@ export default function LibraryBody({ listAlbums, album }: Props) {
     >
       <div className='scrollable-container' style={{ blockSize: '100%', overflow: 'auto' }}>
         <Box sx={{ inlineSize: '100%', blockSize: '5px' }}></Box>
-        {album !== 1 && user && <MusicView2 type='liked-music' totalMusic={6} />}
+        {album !== 1 && favorite && user && <MusicView2 type='liked-music'/>}
         {album !== 1 && user?.role === 1 && <MusicView2 type='my-music' totalMusic={4} />}
         {listAlbums?.map((album, index) => <MusicView1 key={index} initAlbum={album} />)}
       </div>

@@ -16,6 +16,9 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import { getAudioDuration } from '~/utils/getAudioDuration'
 import { formatDuration } from '~/utils/formatDuration'
 import Loader from '~/components/Animation/Loader'
+import { useFavorite } from '~/hooks/useFavorite'
+import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 type Props = {
   track: ITrack
@@ -27,6 +30,8 @@ export default function TrackItem({ track }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [trackDurations, setTrackDurations] = useState<number>(0)
   const { currentAlbumIndex, addAlbum, pause, setPause, music } = useMusic()
+  const { isTrackFavorite } = useFavorite()
+  const { addToFavorite } = useAddToFavorite()
 
   useEffect(() => {
     const fetchDurations = async () => {
@@ -144,15 +149,27 @@ export default function TrackItem({ track }: Props) {
             >
               <PlayCircleFilledOutlinedIcon sx={{ color: (theme) => theme.palette.secondary4.main, inlineSize: '40px', blockSize: '40px' }} />
             </IconButton>
-            <Tooltip title='Thêm vào thư viện' placement='top'>
+            <Tooltip title='Thêm vào Bài hát yêu thích' placement='top'>
               <IconButton
                 sx={{
                   '&:hover': {
                     backgroundColor: (theme) => theme.palette.neutral.neutral2
                   }
                 }}
+                onClick={() => {
+                  addToFavorite([track._id])
+                }}
               >
-                <FavoriteBorderOutlinedIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
+                {isTrackFavorite(track._id) ? (
+                  <CheckCircleIcon
+                    sx={{
+                      color: (theme) => theme.palette.primary.main,
+                      fontSize: 17
+                    }}
+                  />
+                ) : (
+                  <FavoriteBorderOutlinedIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
+                )}
               </IconButton>
             </Tooltip>
             <Tooltip title='Khác' placement='top' onClick={handleClick}>
@@ -290,8 +307,20 @@ export default function TrackItem({ track }: Props) {
                     backgroundColor: (theme) => theme.palette.neutral.neutral2
                   }
                 }}
+                onClick={() => {
+                  addToFavorite([track._id])
+                }}
               >
-                <FavoriteBorderOutlinedIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
+                {isTrackFavorite(track._id) ? (
+                  <CheckCircleIcon
+                    sx={{
+                      color: (theme) => theme.palette.primary.main,
+                      fontSize: 17
+                    }}
+                  />
+                ) : (
+                  <FavoriteBorderOutlinedIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
+                )}
               </IconButton>
             </Tooltip>
             <Typography

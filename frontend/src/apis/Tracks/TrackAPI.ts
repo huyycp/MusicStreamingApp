@@ -31,3 +31,17 @@ export const apiGetTrackDetail = async (trackId: string) => {
   const response = await instance.get<IResponse>(`/tracks/${trackId}`)
   return response.data
 }
+
+export const apiLikeTrack = async (trackList: string[]) => {
+  const response = await instance.patch<IResponse>('/libraries/favorite', { track_list: JSON.stringify(trackList) })
+  return response.data
+}
+
+export const apiUnLikeTrack = async (trackList: string[]) => {
+  const response = await instance.delete<IResponse>('/libraries/favorite', {
+    data: {
+      track_list: JSON.stringify(trackList)
+    }
+  })
+  return response.data
+}

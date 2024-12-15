@@ -18,6 +18,9 @@ import ArtistTrack from '../Artist/ArtistTrack'
 import ArtistAlbum from '../Artist/ArtistAlbum/ArtistAlbum'
 import useGetAlbumDetail from '~/hooks/Album/useGetLibraryDetail'
 import ListTracks from '../AlbumDetail/ListTracks/ListTracks'
+import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
+import { useFavorite } from '~/hooks/useFavorite'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 export default function TrackDetail() {
   const [isSticky, setIsSticky] = useState(false)
@@ -31,6 +34,8 @@ export default function TrackDetail() {
   const { music, pause, setPause, addTrackList } = useMusic()
   const listTracks = albumDetail?.result.list_of_tracks as ITrack[]
   const navigate = useNavigate()
+  const { isTrackFavorite } = useFavorite()
+  const { addToFavorite } = useAddToFavorite()
 
   const handlePlay = () => {
     if (music?._id !== trackId) {
@@ -172,17 +177,33 @@ export default function TrackDetail() {
         )}
 
         <Tooltip title='Thêm vào Bài hát yêu thích' placement='top'>
-          <IconButton>
-            <ControlPointIcon
-              sx={{
-                'color': (theme) => theme.palette.neutral.neutral1,
-                'cursor': 'pointer',
-                'fontSize': 36,
-                '&:hover': {
-                  color: (theme) => theme.palette.secondary4.main
-                }
-              }}
-            />
+          <IconButton
+            onClick={(event) => {
+              event.stopPropagation()
+              addToFavorite([track._id])
+            }}
+          >
+            {isTrackFavorite(track._id) ? (
+              <CheckCircleIcon
+                sx={{
+                  color: (theme) => theme.palette.primary.main,
+                  cursor: 'pointer',
+                  fontSize: 36,
+                  flexShrink: 0
+                }}
+              />
+            ) : (
+              <ControlPointIcon
+                sx={{
+                  'color': (theme) => theme.palette.neutral.neutral1,
+                  'cursor': 'pointer',
+                  'fontSize': 36,
+                  '&:hover': {
+                    color: (theme) => theme.palette.secondary4.main
+                  }
+                }}
+              />
+            )}
           </IconButton>
         </Tooltip>
         <Tooltip title={`Các tùy chọn khác cho ${track.name}`} placement='top'>
@@ -228,18 +249,35 @@ export default function TrackDetail() {
               }}
             />
           </IconButton>
-          <Tooltip title='Thêm vào Bài hát yêu thích' placement='top'>
+          <Tooltip
+            title='Thêm vào Bài hát yêu thích'
+            placement='top'
+            onClick={() => {
+              addToFavorite([track._id])
+            }}
+          >
             <IconButton>
-              <ControlPointIcon
-                sx={{
-                  'color': (theme) => theme.palette.neutral.neutral1,
-                  'cursor': 'pointer',
-                  'fontSize': 36,
-                  '&:hover': {
-                    color: (theme) => theme.palette.secondary4.main
-                  }
-                }}
-              />
+              {isTrackFavorite(track._id) ? (
+                <CheckCircleIcon
+                  sx={{
+                    color: (theme) => theme.palette.primary.main,
+                    cursor: 'pointer',
+                    fontSize: 36,
+                    flexShrink: 0
+                  }}
+                />
+              ) : (
+                <ControlPointIcon
+                  sx={{
+                    'color': (theme) => theme.palette.neutral.neutral1,
+                    'cursor': 'pointer',
+                    'fontSize': 36,
+                    '&:hover': {
+                      color: (theme) => theme.palette.secondary4.main
+                    }
+                  }}
+                />
+              )}
             </IconButton>
           </Tooltip>
           <IconButton>

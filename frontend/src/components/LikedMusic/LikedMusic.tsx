@@ -2,50 +2,42 @@ import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { Params, useNavigate, useParams } from 'react-router-dom'
-import { ITrack } from '~/type/Tracks/ITrack'
-import { capitalizeFirstLetterOfEachWord } from '~/utils/capitalizeFirstLetterOfEachWord'
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import MenuTrack from '~/components/MenuMore/MenuTrack'
 import { useEffect, useRef, useState } from 'react'
-import { useMusic } from '~/hooks/useMusic'
-import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import { getAudioDuration } from '~/utils/getAudioDuration'
-import { formatDuration } from '~/utils/formatDuration'
-import Loader from '~/components/Animation/Loader'
-import useGetTracksByGenres from '~/hooks/Genres/useGetTracksByGenres'
-import { CircularProgress } from '@mui/material'
-import useGetGenresDetail from '~/hooks/Genres/useGetGenresDetail'
 import { useResize } from '~/hooks/useResize'
-import { useFavorite } from '~/hooks/useFavorite'
-import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
+import { useMusic } from '~/hooks/useMusic'
+import { useNavigate } from 'react-router-dom'
+import { ITrack } from '~/type/Tracks/ITrack'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import { useUser } from '~/hooks/useUser'
+import Loader from '../Animation/Loader'
+import MenuTrack from '../MenuMore/MenuTrack'
+import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import { capitalizeFirstLetterOfEachWord } from '~/utils/capitalizeFirstLetterOfEachWord'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { formatDuration } from '~/utils/formatDuration'
+import { getAudioDuration } from '~/utils/getAudioDuration'
+import { useFavorite } from '~/hooks/useFavorite'
 
-export default function GenresTrack() {
-  const { genreId } = useParams<Params>()
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTracksByGenres(6, genreId)
-  const { data: genreDetail } = useGetGenresDetail(genreId)
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const genre = genreDetail?.result
-  const listTracks = data?.pages?.flatMap((page) => page.result.data) as ITrack[]
+export default function LikedMusic() {
   const { setPause, addTrackList } = useMusic()
   const [trackDurations, setTrackDurations] = useState<{ [key: string]: number }>({})
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const [selectedTrack, setSelectedTrack] = useState<ITrack | null>(null)
   const navigate = useNavigate()
+  const { user } = useUser()
   const { music, pause } = useMusic()
   const [isSticky, setIsSticky] = useState(false)
   const triggerRef = useRef<HTMLDivElement>(null)
+  const { favTracks: listTracks } = useFavorite()
   const { widths } = useResize()
-  const [selectedTrack, setSelectedTrack] = useState<null | ITrack>(null)
-  const { isTrackFavorite } = useFavorite()
-  const { addToFavorite } = useAddToFavorite()
 
   useEffect(() => {
     const handleScroll = () => {
       if (triggerRef.current) {
         const triggerPosition = triggerRef.current.getBoundingClientRect().top
-        setIsSticky(triggerPosition <= 0 + 60)
+        setIsSticky(triggerPosition <= 0)
       }
     }
 
@@ -58,6 +50,17 @@ export default function GenresTrack() {
     return () => window.removeEventListener('wheel', onScroll)
   }, [])
 
+  const handlePlayAll = () => {
+    if (listTracks.length !== 0) {
+      addTrackList(listTracks)
+    }
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+    setSelectedTrack(null)
+  }
+
   const handlePlayOnce = (musicData: ITrack) => {
     if (musicData._id === music?._id) {
       if (!pause) setPause(true)
@@ -67,16 +70,10 @@ export default function GenresTrack() {
     }
   }
 
-  const handlePlayAll = () => {
-    if (listTracks.length !== 0) {
-      addTrackList(listTracks)
-    }
-  }
-
-  const handleLoadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage()
-    }
+  const handleClick = (event: React.MouseEvent<HTMLElement>, track: ITrack) => {
+    event.preventDefault()
+    setAnchorEl(event.currentTarget)
+    setSelectedTrack(track)
   }
 
   useEffect(() => {
@@ -99,19 +96,8 @@ export default function GenresTrack() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listTracks])
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>, track: ITrack) => {
-    event.preventDefault()
-    setAnchorEl(event.currentTarget)
-    setSelectedTrack(track)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-    setSelectedTrack(null)
-  }
-
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Box
         sx={{
           width: 'calc(100% + 36px)',
@@ -120,7 +106,7 @@ export default function GenresTrack() {
           height: '200px',
           backgroundImage: `
             linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-            url('https://live-production.wcms.abc-cdn.net.au/a362273509f7eccdcf362bb73b3b006d')
+            url('https://res.cloudinary.com/dswj1rtvu/image/upload/v1733478512/27f3bf83-df1b-4428-b788-0645992626a2_fm7pte.webp')
           `,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -132,32 +118,44 @@ export default function GenresTrack() {
         <Box sx={{ pl: '18px', pr: '18px' }}>
           <Box sx={{ height: '50px' }}></Box>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-            <img
-              alt={genre?.name}
-              src={genre?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
-              style={{
-                inlineSize: '142px',
-                blockSize: '142px',
-                objectFit: 'cover',
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '142px',
+                height: '142px',
+                background: (theme) => theme.palette.gradient.gradient3,
                 borderRadius: '5px'
               }}
-            />
+            >
+              <FavoriteIcon sx={{ fontSize: '60px' }} />
+            </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 'auto', mb: 'auto' }}>
               <Typography variant='body2' sx={{ color: (theme) => theme.palette.secondary4.main }}>
-                Bài hát thuộc thể loại
+                Danh sách phát
               </Typography>
               <Typography
+                variant='h2'
                 sx={{
                   color: 'white',
-                  fontWeight: '700',
-                  fontSize: 'calc(1vw + 1em)',
+                  fontWeight: '1000',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis'
                 }}
               >
-                {genre?.name}
+                Bài hát đã thích
               </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center', color: (theme) => theme.palette.neutral.neutral1 }}>
+                <Typography variant='body2' sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 1000 }}>
+                  {user?.name}
+                </Typography>
+                •
+                <Typography variant='body2' sx={{ fontWeight: 500 }}>
+                  {listTracks?.length || 0} bài hát
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -175,21 +173,6 @@ export default function GenresTrack() {
             }}
           />
         </IconButton>
-
-        <Tooltip title={'Các tùy chọn khác'} placement='top'>
-          <IconButton>
-            <MoreHorizIcon
-              sx={{
-                'color': (theme) => theme.palette.neutral.neutral1,
-                'inlineSize': '32px',
-                'blockSize': '32px',
-                '&:hover': {
-                  color: (theme) => theme.palette.secondary4.main
-                }
-              }}
-            />
-          </IconButton>
-        </Tooltip>
       </Box>
 
       {isSticky && (
@@ -219,18 +202,15 @@ export default function GenresTrack() {
               }}
             />
           </IconButton>
-          <IconButton>
-            <MoreHorizIcon
-              sx={{
-                'color': (theme) => theme.palette.neutral.neutral1,
-                'inlineSize': '32px',
-                'blockSize': '32px',
-                '&:hover': {
-                  color: (theme) => theme.palette.secondary4.main
-                }
-              }}
-            />
-          </IconButton>
+          <Typography
+            sx={{
+              color: 'white',
+              fontWeight: '1000',
+              fontSize: 'calc(1vw + 1em)'
+            }}
+          >
+            Bài hát đã thích
+          </Typography>
         </Box>
       )}
       <Box
@@ -263,6 +243,26 @@ export default function GenresTrack() {
           }}
         >
           Tiêu đề
+        </Typography>
+        <Typography
+          sx={{
+            width: 150,
+            fontSize: 12,
+            color: (theme) => theme.palette.neutral.neutral1,
+            textTransform: 'uppercase'
+          }}
+        >
+          Album
+        </Typography>
+        <Typography
+          sx={{
+            width: 100,
+            fontSize: 12,
+            color: (theme) => theme.palette.neutral.neutral1,
+            textTransform: 'uppercase'
+          }}
+        >
+          Thể loại
         </Typography>
         <AccessTimeIcon fontSize='small' sx={{ color: (theme) => theme.palette.neutral.neutral1, mr: 4 }} />
       </Box>
@@ -318,7 +318,7 @@ export default function GenresTrack() {
                 track?.image?.replace('{w}x{h}bb', '48x48bb') || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
               }
               onError={(e) => {
-                e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif' // Đường dẫn đến ảnh mặc định
+                e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
               }}
               style={{
                 inlineSize: '40px',
@@ -373,6 +373,32 @@ export default function GenresTrack() {
               </Typography>
             </Box>
           </Box>
+          <Typography
+            sx={{
+              'width': 200,
+              'fontSize': 14,
+              'color': (theme) => theme.palette.neutral.neutral1,
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+            onClick={() => navigate(`/library/${track.album?._id}`)}
+          >
+            {track.album?.name}
+          </Typography>
+          <Typography
+            sx={{
+              'width': 40,
+              'fontSize': 14,
+              'color': (theme) => theme.palette.neutral.neutral1,
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+            onClick={() => navigate(`/genres/${track.genre?._id}`)}
+          >
+            {track.genre?.name}
+          </Typography>
           <Box
             sx={{
               display: 'flex',
@@ -389,16 +415,8 @@ export default function GenresTrack() {
                     backgroundColor: (theme) => theme.palette.neutral.neutral2
                   }
                 }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  addToFavorite([track._id])
-                }}
               >
-                {isTrackFavorite(track._id) ? (
-                  <CheckCircleIcon sx={{ color: (theme) => theme.palette.primary.main, fontSize: 17 }} />
-                ) : (
-                  <FavoriteBorderOutlinedIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
-                )}
+                <CheckCircleIcon sx={{ color: (theme) => theme.palette.primary.main, fontSize: 17 }} />
               </IconButton>
             </Tooltip>
             <Typography
@@ -430,23 +448,6 @@ export default function GenresTrack() {
           </Box>
         </Box>
       ))}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, alignItems: 'center', mb: 2 }}>
-        {isFetchingNextPage ? (
-          <CircularProgress />
-        ) : hasNextPage ? (
-          <Typography
-            onClick={handleLoadMore}
-            sx={{
-              'cursor': 'pointer',
-              '&:hover': { textDecoration: 'underline' }
-            }}
-          >
-            Tải thêm...
-          </Typography>
-        ) : (
-          <></>
-        )}
-      </Box>
     </Box>
   )
 }
