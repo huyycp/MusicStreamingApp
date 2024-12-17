@@ -60,7 +60,7 @@ class TrackRepository {
   Future<GetTrackResp?> getTracksByUser({
     required PaginationListReq pagination,
     String genreId = '',
-    TrackStatus status = TrackStatus.all,
+    TrackLibraryStatus status = TrackLibraryStatus.all,
   }) async {
     final req = GetTrackReq(
       pagination: pagination,
@@ -78,5 +78,9 @@ class TrackRepository {
 
   Future<List<TrackModel>> getTrackByAudio(String path) async {
     return await _trackRemote.getTrackByAudio(path);
+  }
+
+  Future<bool> isFavoriteTrack(String trackId) async {
+    return await _trackRemote.isFavoriteTrack(trackId);
   }
 }

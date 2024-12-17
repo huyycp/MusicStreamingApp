@@ -5,7 +5,6 @@ import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/snackbar.dart';
 import 'package:mobile/views/create_playlist/create_playlist_view_model.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
-import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';

@@ -18,6 +18,7 @@ final mainAudioController = ChangeNotifierProvider<AudioPlayerController>(
 );
 
 class MainViewModel extends ChangeNotifier {
+
   final audioController = AudioPlayerController();
   ViewInfoModel currentView = PageMenuSelection.home;
   ViewInfoModel? prevView;
@@ -44,11 +45,9 @@ class MainViewModel extends ChangeNotifier {
   void changeView(ViewInfoModel newView) {
     currentView = newView;
     notifyListeners();
-    pageController.animateToPage(
+    pageController.jumpToPage(
       newView.index,
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );   
+    );
   }
 
   void openLibrary({required String id, bool isGenre = false}) {

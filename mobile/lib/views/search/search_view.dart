@@ -136,6 +136,7 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
       (value) =>  value.genres
     ));
     return GridView.count(
+      addAutomaticKeepAlives: true,
       padding: const EdgeInsets.only(bottom: 75),
       crossAxisCount: 2,
       mainAxisSpacing: 16,

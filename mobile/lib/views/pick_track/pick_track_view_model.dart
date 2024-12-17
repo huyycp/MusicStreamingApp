@@ -49,7 +49,7 @@ class PickTrackViewModel extends ChangeNotifier {
           pagination: PaginationListReq(
             limit: 20
           ),
-          status: TrackStatus.pending,
+          status: TrackLibraryStatus.pending,
         );
       } else {
         resp = await _libraryRepo.getTracksNotInLibrary(

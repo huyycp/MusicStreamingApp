@@ -1,6 +1,7 @@
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/user_model.dart';
+import 'package:mobile/utils/enum_utils.dart';
 
 class TrackModel {
   TrackModel ({
@@ -15,6 +16,7 @@ class TrackModel {
     this.createdAt,
     this.updatedAt,
     this.owners = const [],
+    this.status = TrackStatus.pending,
   });
 
   String id;
@@ -29,6 +31,7 @@ class TrackModel {
   DateTime? updatedAt;
   List<UserModel> owners;
   GenreModel? genre;
+  TrackStatus status;
 
   String get ownerNames => owners.map((owner) => owner.name).join(', ');
 
@@ -45,6 +48,7 @@ class TrackModel {
     owners: List.from(json['owners']?.map(
       (ownerJson) => UserModel.fromJson(ownerJson)
     ) ?? []),
+    status: enumFromString(TrackStatus.values, json['status'], TrackStatus.unknown),
   );
 
   Map<String, dynamic> toJson() => {
@@ -59,6 +63,7 @@ class TrackModel {
     'created_at': createdAt,
     'updated_at': updatedAt,
     'owners': owners.map((owner) => owner.toJson()),
+    'status': status.name,
   };
 
   @override
@@ -68,6 +73,13 @@ class TrackModel {
 }
 
 enum TrackStatus {
+  pending,
+  active,
+  banned,
+  unknown,
+}
+
+enum TrackLibraryStatus {
   all,
   available,
   pending,

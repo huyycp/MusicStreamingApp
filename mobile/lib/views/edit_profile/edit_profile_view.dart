@@ -65,15 +65,13 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
   }
 
   Widget _body() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _avatar(),
-          const SizedBox(height: 24),
-          _name(),
-        ]
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _avatar(),
+        const SizedBox(height: 24),
+        _name(),
+      ]
     );
   }
   

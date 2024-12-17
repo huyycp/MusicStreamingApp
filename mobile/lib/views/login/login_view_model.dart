@@ -49,8 +49,8 @@ class LoginViewModel extends ChangeNotifier{
       isLoginSuccess = false;
       notifyListeners();
       SnackBarUtils.showSnackBar(
-        message: 'Magic Music takes too long to respond',
-        status: MessageTypes.info,
+        message: 'Fail to login',
+        status: MessageTypes.error,
       );
     }
   }

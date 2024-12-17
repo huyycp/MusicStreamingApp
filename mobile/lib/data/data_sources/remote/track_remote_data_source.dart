@@ -76,10 +76,10 @@ class TrackRemoteDataSource {
 
   Future<GetTrackResp?> getTracksByUser({
     required GetTrackReq req,
-    TrackStatus status = TrackStatus.all,
+    TrackLibraryStatus status = TrackLibraryStatus.all,
   }) async {
     final queryParams = req.toJson();
-    queryParams['status'] = (status == TrackStatus.all ? '' : status.name);
+    queryParams['status'] = (status == TrackLibraryStatus.all ? '' : status.name);
     final response = await _magicMusicApi.request(
       '$_trackPath/my-tracks',
       method: HttpMethods.GET,
@@ -130,5 +130,17 @@ class TrackRemoteDataSource {
       throw Exception();
     }
     return [];
+  }
+
+  Future<bool> isFavoriteTrack(String trackId) async {
+    final response = await _magicMusicApi.request(
+      '$_trackPath/$trackId /favorite',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      return data ?? false;
+    }
+    return false;
   }
 }

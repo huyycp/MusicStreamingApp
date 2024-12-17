@@ -116,33 +116,29 @@ class _ReportViewState extends ConsumerState<ReportView> {
   }
 
   Widget _subjectInput() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const FieldLabel('Subject'),
-          const SizedBox(height: 8),
-          TextField(
-            controller: ref.read(reportViewModel).subjectController,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const FieldLabel('Subject'),
+        const SizedBox(height: 8),
+        TextField(
+          controller: ref.read(reportViewModel).subjectController,
+        ),
+      ],
     );
   }
 
   Widget _bodyInput() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const FieldLabel('Body'),
-          const SizedBox(height: 8),
-          TextField(
-            controller: ref.read(reportViewModel).bodyController,
-            maxLines: 5,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const FieldLabel('Body'),
+        const SizedBox(height: 8),
+        TextField(
+          controller: ref.read(reportViewModel).bodyController,
+          maxLines: 5,
+        ),
+      ],
     );
   }
 

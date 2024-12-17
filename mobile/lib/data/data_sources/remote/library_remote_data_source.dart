@@ -142,6 +142,17 @@ class LibraryRemoteDataSource {
     return response.statusCode == HttpStatus.ok;
   }
 
+  Future<bool> removeTrackFromFavorite(List<String> trackIds) async {
+    final response = await _magicMusicApi.request(
+      '$_libraryPath/favorite',
+      method: HttpMethods.DELETE,
+      data: {
+        'track_list': jsonEncode(trackIds)
+      }
+    );
+    return !(response.statusCode == HttpStatus.ok);
+  }
+
   Future<LibraryModel?> editLibrary(String id, CreateLibraryRep req) async {
     final data = FormData.fromMap(await req.toJson());
     final response = await _magicMusicApi.request(

@@ -13,7 +13,6 @@ class MainView extends ConsumerStatefulWidget {
 }
 
 class _MainViewState extends ConsumerState<MainView> { 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

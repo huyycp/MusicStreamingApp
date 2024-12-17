@@ -15,9 +15,15 @@ class TrackPlayerWidget extends ConsumerStatefulWidget {
   ConsumerState<TrackPlayerWidget> createState() => _AudioWidgetState();
 }
 
-class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {  
+class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   @override
   Widget build(BuildContext context) {
+    ref.listen(mainAudioController.select((value) => value.currentTrack), (prev, next) {
+      if (next.id.isNotEmpty) {
+        ref.read(trackPlayerWidgetModel).checkFavoriteTrack(next.id);
+      }
+    });
+
     return ref.watch(mainAudioController).available
       ? GestureDetector(
           onTap: () {
@@ -93,7 +99,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
 
   Widget _trackTitle(String title) {
     return LayoutBuilder(
-      builder: (context, constraints) => Container(
+      builder: (context, constraints) => SizedBox(
         height: 24,
         child: Marquee(
           text: title,

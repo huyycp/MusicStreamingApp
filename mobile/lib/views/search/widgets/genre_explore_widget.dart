@@ -15,7 +15,10 @@ class GenreExploreWidget extends ConsumerStatefulWidget {
   ConsumerState<GenreExploreWidget> createState() => _GenreExploreWidgetState();
 }
 
-class _GenreExploreWidgetState extends ConsumerState<GenreExploreWidget> {
+class _GenreExploreWidgetState extends ConsumerState<GenreExploreWidget> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  
   Color themeColor = GRAY_BCK_1;
   bool isReady = false;
 
@@ -32,6 +35,7 @@ class _GenreExploreWidgetState extends ConsumerState<GenreExploreWidget> {
   
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return isReady
       ? GestureDetector(
           onTap: () {
