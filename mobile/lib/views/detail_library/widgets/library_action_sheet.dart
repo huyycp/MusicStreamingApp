@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -42,7 +43,7 @@ class _LibraryActionSheetState extends State<LibraryActionSheet> {
       child: Row(
         children: [
           DynamicImage(
-            'assets/icons/ic_edit.svg',
+            AppConstantIcons.edit,
             width: 24,
             height: 24,
           ),

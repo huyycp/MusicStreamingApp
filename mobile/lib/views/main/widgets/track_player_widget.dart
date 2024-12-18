@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marquee/marquee.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/main/main_view_model.dart';
@@ -144,8 +145,8 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
       },
       icon: DynamicImage(
         playing 
-          ? 'assets/icons/ic_pause.svg'
-          : 'assets/icons/ic_play.svg',
+          ? AppConstantIcons.pause
+          : AppConstantIcons.play,
         width: 24,
         height: 24,
       ),
@@ -158,7 +159,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         ref.read(mainAudioController).stop();
       },
       icon: DynamicImage(
-        'assets/icons/ic_close_light.svg',
+        AppConstantIcons.closeLight,
         width: 20,
         height: 20,
         color: Colors.white,
@@ -189,7 +190,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
           );
         },
       icon: DynamicImage(
-        isFavorite ? 'assets/icons/ic_added_check.svg' : 'assets/icons/ic_add_circle.svg',
+        isFavorite ? AppConstantIcons.addedCheck : AppConstantIcons.addCircle,
         width: 24,
         height: 24,
       ),

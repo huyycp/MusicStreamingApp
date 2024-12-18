@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/main/main_view_model.dart';
@@ -82,7 +83,7 @@ class TrackWidget extends ConsumerWidget {
           );
         },
         icon: DynamicImage(
-          'assets/icons/ic_menu.svg',
+          AppConstantIcons.menu,
           width: 16,
           height: 16,
         ),

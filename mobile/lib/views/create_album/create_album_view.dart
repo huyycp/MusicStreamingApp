@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_images.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/utils/validators.dart';
@@ -102,7 +103,7 @@ class _CreateAlbumViewState extends ConsumerState<CreateAlbumView> {
           ? imagePath == null
             ? Center(
               child: DynamicImage(
-                'assets/images/default_image_placeholder.png',
+                AppConstantImages.placeHolder,
                 width: 88,
                 height: 88,
                 color: BUTTON_STROKE,

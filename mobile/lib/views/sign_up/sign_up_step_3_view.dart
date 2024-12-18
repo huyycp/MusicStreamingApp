@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
@@ -69,7 +70,7 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
           filled: true,
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: DynamicImage('assets/icons/ic_chevron_down.svg', width: 20, height: 20),
+            child: DynamicImage(AppConstantIcons.chevronDown, width: 20, height: 20),
           ),
           suffixIconConstraints: const BoxConstraints(maxHeight: 24, maxWidth: 24, minHeight: 24, minWidth: 24),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/main/main_view_model.dart';
@@ -62,7 +63,7 @@ class FavoriteGenreWidget extends ConsumerWidget {
 
   Widget _icSpotify() {
     return DynamicImage(
-      'assets/icons/ic_spotify.svg',
+      AppConstantIcons.spotify,
       width: 12,
       height: 12,
     );

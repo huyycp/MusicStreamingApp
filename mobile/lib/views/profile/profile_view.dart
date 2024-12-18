@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/views/profile/widgets/user_action_sheet.dart';
@@ -94,7 +95,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
         const SizedBox(width: 12),
         IconButton(
           onPressed: () => showUserActionsSheet(context),
-          icon: DynamicImage('assets/icons/ic_menu.svg', width: 18, height: 16),
+          icon: DynamicImage(AppConstantIcons.menu, width: 18, height: 16),
         )
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
@@ -149,7 +150,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
     return IconButton(
       onPressed: () {},
       icon: DynamicImage(
-        'assets/icons/ic_search.svg',
+        AppConstantIcons.search,
         width: 24,
         height: 24,
       ),
@@ -160,7 +161,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
     return IconButton(
       onPressed: _openAddSheet,
       icon: DynamicImage(
-        'assets/icons/ic_add.svg',
+        AppConstantIcons.add,
         width: 24,
         height: 24,
       ),
@@ -179,7 +180,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 BottomSheetItem(
-                  iconData: 'assets/icons/ic_add_song.svg',
+                  iconData: AppConstantIcons.addSong,
                   title: 'Track',
                   subtitle: 'Share your music to the world',
                   onPressed: () {
@@ -188,7 +189,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
                   },
                 ),
                 BottomSheetItem(
-                  iconData: 'assets/icons/ic_music_note.svg',
+                  iconData: AppConstantIcons.musicNote,
                   title: 'Playlist',
                   subtitle: 'Build a playlist with songs, or episodes',
                   onPressed: () {
@@ -197,7 +198,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
                   },
                 ),
                 BottomSheetItem(
-                  iconData: 'assets/icons/ic_folder.svg',
+                  iconData: AppConstantIcons.folder,
                   title: 'Album',
                   subtitle: 'Build your album and release to everyone',
                   onPressed: () {

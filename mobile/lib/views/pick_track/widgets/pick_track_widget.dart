@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/pick_track/pick_track_view_model.dart';
@@ -47,7 +48,7 @@ class PickTrackWidget extends ConsumerWidget {
               ref.read(pickTrackViewModel).addTrackToLibrary(track);
             },
             icon: DynamicImage(
-              'assets/icons/ic_add_circle.svg',
+              AppConstantIcons.addCircle,
               width: 24,
               height: 24,
             ),

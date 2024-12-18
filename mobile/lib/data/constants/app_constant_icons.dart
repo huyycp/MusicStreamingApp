@@ -1,0 +1,45 @@
+class AppConstantIcons {
+  AppConstantIcons._();
+
+  static const String downloadDisabled = 'assets/icons/ic_download_disabled.svg';
+  static const String addUserDisabled = 'assets/icons/ic_add_user_disabled.svg';
+  static const String menu = 'assets/icons/ic_menu.svg';
+  static const String shuffleActive = 'assets/icons/ic_shuffle_active.svg';
+  static const String play = 'assets/icons/ic_play.svg';
+  static const String pause = 'assets/icons/ic_pause.svg';
+  static const String google = 'assets/icons/ic_google.svg';
+  static const String facebook = 'assets/icons/ic_facebook.svg';
+  static const String upload = 'assets/icons/ic_upload.svg';
+  static const String musicNote = 'assets/icons/ic_music_note.svg';
+  static const String add = 'assets/icons/ic_add.svg';
+  static const String edit = 'assets/icons/ic_edit.svg';
+  static const String closeLight = 'assets/icons/ic_close_light.svg';
+  static const String camera = 'assets/icons/ic_camera.svg';
+  static const String spotify = 'assets/icons/ic_spotify.svg';
+  static const String search = 'assets/icons/ic_search.svg';
+  static const String addSong = 'assets/icons/ic_add_song.svg';
+  static const String folder = 'assets/icons/ic_folder.svg';
+  static const String chevronLeft = 'assets/icons/ic_chevron_left.svg';
+  static const String chevronDown = 'assets/icons/ic_chevron_down.svg';
+  static const String homeOutlined = 'assets/icons/ic_home_outlined.svg';
+  static const String homeFilled = 'assets/icons/ic_home_filled.svg';
+  static const String searchFilled = 'assets/icons/ic_search_filled.svg';
+  static const String libraryOutlined = 'assets/icons/ic_library_outlined.svg';
+  static const String libraryFilled = 'assets/icons/ic_library_filled.svg';
+  static const String user = 'assets/icons/ic_user.svg';
+  static const String userFilled = 'assets/icons/ic_user_filled.svg';
+  static const String favOutlined = 'assets/icons/ic_fav_outlined.svg';
+  static const String favFilled = 'assets/icons/ic_fav_filled.svg';
+  static const String addedCheck = 'assets/icons/ic_added_check.svg';
+  static const String addCircle = 'assets/icons/ic_add_circle.svg';
+  static const String appImage = 'assets/icons/app_image.png';
+  static const String mic = 'assets/icons/ic_mic.svg';
+  static const String close = 'assets/icons/ic_close.svg';
+  static const String shuffle = 'assets/icons/ic_shuffle.svg';
+  static const String prev = 'assets/icons/ic_prev.svg';
+  static const String next = 'assets/icons/ic_next.svg';
+  static const String repeatActive = 'assets/icons/ic_repeat_active.svg';
+  static const String repeat = 'assets/icons/ic_repeat.svg';
+  static const String oddCircle = 'assets/icons/ic_odd_circle.svg';
+  static const String report = 'assets/icons/ic_report.svg';
+}

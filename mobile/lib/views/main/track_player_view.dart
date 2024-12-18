@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/main/main_view_model.dart';
@@ -66,7 +67,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
         context.pop();
       },
       icon: DynamicImage(
-        'assets/icons/ic_chevron_down.svg',
+        AppConstantIcons.chevronDown,
         width: 20,
         height: 20,
       ),
@@ -92,7 +93,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
         ))));
       },
       icon: DynamicImage(
-        'assets/icons/ic_menu.svg',
+        AppConstantIcons.menu,
         width: 16,
         height: 16,
       ),
@@ -156,7 +157,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
         }
       },
       icon: DynamicImage(
-        isFavorite ? 'assets/icons/ic_fav_filled.svg' : 'assets/icons/ic_fav_outlined.svg',
+        isFavorite ? AppConstantIcons.favFilled: AppConstantIcons.favOutlined,
         width: 24,
         height: 24,
       ),

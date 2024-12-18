@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
@@ -73,7 +74,7 @@ class _CreateTrackThumbnailViewState extends ConsumerState<CreateTrackThumbnailV
         mainAxisSize: MainAxisSize.min,
         children: [
           DynamicImage(
-            'assets/icons/ic_upload.svg',
+            AppConstantIcons.upload,
             width: 16,
             height: 16,
           ),

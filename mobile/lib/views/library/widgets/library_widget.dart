@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/data/constants/app_constant_images.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/string_format.dart';
@@ -50,8 +52,8 @@ class LibraryWidget extends ConsumerWidget {
         library.type == LibraryType.album
           ? library.imageLink
           : library.isFavorite
-            ? 'assets/images/favorite.jpeg'
-            : 'assets/icons/ic_music_note.svg',
+            ? AppConstantImages.favoritePlaylist
+            : AppConstantIcons.musicNote,
         width: library.type == LibraryType.album || library.isFavorite ? 64 : 32,
         height: library.type == LibraryType.album || library.isFavorite ? 64 : 32,
         borderRadius: BorderRadius.circular(4),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/view_info_model.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/ui/audio_player_controller.dart';
@@ -83,32 +84,32 @@ class PageMenuSelection {
   
   static final home = ViewInfoModel(
     title: 'Home',
-    iconData: 'assets/icons/ic_home_outlined.svg',
-    selectedIconData: 'assets/icons/ic_home_filled.svg',
+    iconData: AppConstantIcons.homeOutlined,
+    selectedIconData: AppConstantIcons.homeFilled,
     path: RouteNamed.home,
     index: 0,
   );
 
   static final search =  ViewInfoModel(
     title: 'Search',
-    iconData: 'assets/icons/ic_search.svg',
-    selectedIconData: 'assets/icons/ic_search_filled.svg',
+    iconData: AppConstantIcons.search,
+    selectedIconData: AppConstantIcons.searchFilled,
     path: RouteNamed.search,
     index: 1,
   );
 
   static final libraries =  ViewInfoModel(
     title: 'Your Library',
-    iconData: 'assets/icons/ic_library_outlined.svg',
-    selectedIconData: 'assets/icons/ic_library_filled.svg',
+    iconData: AppConstantIcons.libraryOutlined,
+    selectedIconData: AppConstantIcons.libraryFilled,
     path: RouteNamed.library,
     index: 2,
   );
 
   static final profile = ViewInfoModel(
     title: 'Profile',
-    iconData: 'assets/icons/ic_user.svg',
-    selectedIconData: 'assets/icons/ic_user_filled.svg',
+    iconData: AppConstantIcons.user,
+    selectedIconData: AppConstantIcons.userFilled,
     path: RouteNamed.profile,
     index: 3,
   );

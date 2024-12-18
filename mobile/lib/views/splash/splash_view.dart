@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_images.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/views/splash/splash_view_model.dart';
 
@@ -36,7 +37,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
           width: 100,
           height: 100,
           child: Image.asset(
-            'assets/images/app_image.png',
+            AppConstantImages.appImage,
             fit: BoxFit.contain,
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/theme/text_theme.dart';
@@ -81,7 +82,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
         textAlign: TextAlign.center,
         style: BaseTextTheme.LABEL_BUTTON,
       ),
-      icon: SvgPicture.asset('assets/icons/ic_google.svg'),
+      icon: SvgPicture.asset(AppConstantIcons.google),
     );
   }
 
@@ -100,7 +101,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
         textAlign: TextAlign.center,
         style: BaseTextTheme.LABEL_BUTTON,
       ),
-      icon: SvgPicture.asset('assets/icons/ic_facebook.svg'),
+      icon: SvgPicture.asset(AppConstantIcons.facebook),
     );
   }
 

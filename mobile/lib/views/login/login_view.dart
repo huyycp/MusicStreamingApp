@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/login/login_view_model.dart';
 import 'package:mobile/widgets/loading_widget.dart';
@@ -31,7 +32,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       title: const Text('Login'),
       centerTitle: true,
       leading: IconButton(
-        icon: SvgPicture.asset('assets/icons/ic_chevron_left.svg'),
+        icon: SvgPicture.asset(AppConstantIcons.chevronLeft),
         onPressed: () {
           context.pop();
         },
