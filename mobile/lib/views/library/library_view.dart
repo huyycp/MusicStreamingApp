@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/modal_bottom_sheet.dart';
+import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/album_list_view.dart';

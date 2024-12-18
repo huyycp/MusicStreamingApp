@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/routes/routes.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 
 final createAlbumViewModel = ChangeNotifierProvider.autoDispose<CreateAlbumViewModel>(
   (ref) => CreateAlbumViewModel(

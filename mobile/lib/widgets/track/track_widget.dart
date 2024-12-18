@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/track_model.dart';
-import 'package:mobile/utils/modal_bottom_sheet.dart';
+import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 import 'package:mobile/widgets/track/track_action_sheet.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/view_info_model.dart';
-import 'package:mobile/utils/audio_player_controller.dart';
+import 'package:mobile/utils/ui/audio_player_controller.dart';
 import 'package:mobile/views/artist/artist_view.dart';
 import 'package:mobile/views/detail_library/detail_library_view.dart';
 import 'package:mobile/views/home/home_view.dart';

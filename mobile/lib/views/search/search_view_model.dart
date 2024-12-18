@@ -8,7 +8,7 @@ import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/genre_repository.dart';
 import 'package:mobile/repositories/search_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/search/search_view.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';

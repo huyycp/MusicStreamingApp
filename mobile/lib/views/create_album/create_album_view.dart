@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/create_album/create_album_view_model.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';

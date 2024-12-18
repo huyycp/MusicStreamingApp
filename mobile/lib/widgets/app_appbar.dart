@@ -15,7 +15,7 @@ class AppAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Home'),
+      title: title,
       leading: leading,
       actions: actions,
       forceMaterialTransparency: true,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/views/main/track_player_view.dart';
 import 'package:mobile/views/main/widgets/track_player_widget_model.dart';

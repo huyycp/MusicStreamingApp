@@ -6,8 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/track_repository.dart';
-import 'package:mobile/utils/audio_player_controller.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/audio_player_controller.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 
 final createTrackViewModel = ChangeNotifierProvider<CreateTrackViewModel>(
   (ref) => CreateTrackViewModel(

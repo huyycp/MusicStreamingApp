@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/base_api.dart';
 import 'package:mobile/routes/routes.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 
 final magicMusicApiProvider = Provider<MagicMusicApi>(
   (ref) => MagicMusicApi(dotenv.env['MAGIC_MUSIC_URL']!)

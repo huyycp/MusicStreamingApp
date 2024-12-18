@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/audio_player_controller.dart';
+import 'package:mobile/utils/ui/audio_player_controller.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class AudioPlayerWidget extends ConsumerStatefulWidget {

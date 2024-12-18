@@ -1,5 +1,6 @@
 import 'package:mobile/data/dto/resp/meta_resp.dart';
 import 'package:mobile/models/library_model.dart';
+import 'package:mobile/utils/list_ex.dart';
 
 class GetLibraryResp {
   GetLibraryResp({
@@ -12,8 +13,6 @@ class GetLibraryResp {
 
   factory GetLibraryResp.fromJson(Map<String, dynamic> json) => GetLibraryResp(
     meta: MetaResp.fromJson(json['meta']),
-    libraries: List.from(json['data']?.map(
-      (libraryJson) => LibraryModel.fromJson(libraryJson),
-    ) ?? []),
+    libraries: listFromJson(json['data'], LibraryModel.fromJson),
   );
 }

@@ -7,7 +7,7 @@ import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 
 final pickTrackViewModel = ChangeNotifierProvider.autoDispose<PickTrackViewModel>(
   (ref) => PickTrackViewModel(

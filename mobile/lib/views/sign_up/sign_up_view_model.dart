@@ -5,7 +5,7 @@ import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/genre_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 
 final signUpViewModel = ChangeNotifierProvider.autoDispose<SignUpViewModel>(
   (ref) => SignUpViewModel(ref.read(userRepoProvider), ref.read(genreRepoProvider))

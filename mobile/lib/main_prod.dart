@@ -6,7 +6,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:mobile/build_config.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/theme_provider.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {

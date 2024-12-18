@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:string_validator/string_validator.dart';
 
 final loginViewModel = ChangeNotifierProvider.autoDispose<LoginViewModel>(

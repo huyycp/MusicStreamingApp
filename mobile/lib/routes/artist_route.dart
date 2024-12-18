@@ -5,6 +5,7 @@ class ArtistRoute {
   ArtistRoute._();
 
   static RouteBase get routes => _artistRoute;
+  
 
   static final GoRoute _artistRoute = GoRoute(
     path: '/artist/:id',

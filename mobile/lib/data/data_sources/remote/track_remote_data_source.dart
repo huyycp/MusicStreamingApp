@@ -6,8 +6,8 @@ import 'package:mobile/data/data_sources/remote/audio_recognizer_api.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/req/create_track_req.dart';
 import 'package:mobile/data/dto/req/get_track_req.dart';
-import 'package:mobile/data/dto/resp/get_playlist_with_track_resp.dart';
 import 'package:mobile/data/dto/resp/get_track_resp.dart';
+import 'package:mobile/data/dto/resp/playlist_with_track_resp.dart';
 import 'package:mobile/models/track_model.dart';
 
 final trackRemoteProvider = Provider<TrackRemoteDataSource>(
@@ -95,20 +95,6 @@ class TrackRemoteDataSource {
     }
   }
 
-  Future<GetPlaylistWithTrackResp?> getPlaylistWithTrack(String trackId) async {
-    final response  = await _magicMusicApi.request(
-      '$_trackPath/$trackId/my-libraries',
-      method: HttpMethods.GET,
-    );
-    if (response.statusCode == HttpStatus.ok) {
-      final data = response.data['result'];
-      if (data != null) {
-        return GetPlaylistWithTrackResp.fromJson(data);
-      }
-    }
-    return null;
-  }
-
   Future<List<TrackModel>> getTrackByAudio(String path) async {
     final file = await MultipartFile.fromFile(path);
     final data = FormData.fromMap({
@@ -142,5 +128,17 @@ class TrackRemoteDataSource {
       return data ?? false;
     }
     return false;
+  }
+
+  Future<PlaylistWithTrackResp> getPlaylistsWithTrack(String trackId) async {
+    final response = await _magicMusicApi.request(
+      '$_trackPath/$trackId/my-libraries',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      return PlaylistWithTrackResp.fromJson(data);
+    }
+    return PlaylistWithTrackResp.fromJson({});
   }
 }

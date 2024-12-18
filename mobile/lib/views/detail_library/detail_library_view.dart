@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/models/library_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/modal_bottom_sheet.dart';
+import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
 import 'package:mobile/views/detail_library/widgets/library_action_sheet.dart';
 import 'package:mobile/views/library/library_view_model.dart';
