@@ -9,11 +9,16 @@ import IconButton from '@mui/material/IconButton'
 import { Tooltip } from '@mui/material'
 import IosShareIcon from '@mui/icons-material/IosShare'
 import { useSnackbar } from 'notistack'
+import { useFavorite } from '~/hooks/useFavorite'
+import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 export default function DescBody() {
   const navigate = useNavigate()
   const { music, album } = useMusic()
   const { enqueueSnackbar } = useSnackbar()
+  const { isTrackFavorite } = useFavorite()
+  const { addToFavorite } = useAddToFavorite()
 
   const handleGetLink = () => {
     navigator.clipboard
@@ -44,7 +49,9 @@ export default function DescBody() {
     >
       <img
         alt={music?.album?.name || album?.name || music?.name}
-        src={music?.album?.image || album?.image || music?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
+        src={
+          music?.album?.image || album?.image || music?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
+        }
         onError={(e) => {
           e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
         }}
@@ -138,17 +145,35 @@ export default function DescBody() {
             </IconButton>
           </Tooltip>
           <Tooltip title='Thêm vào Bài hát yêu thích' placement='top'>
-            <IconButton>
-              <ControlPointIcon
-                sx={{
-                  'color': (theme) => theme.palette.neutral.neutral1,
-                  'cursor': 'pointer',
-                  'fontSize': 24,
-                  '&:hover': {
-                    color: (theme) => theme.palette.secondary4.main
-                  }
-                }}
-              />
+            <IconButton
+              onClick={(event) => {
+                event.stopPropagation()
+                if (music?._id) addToFavorite([music._id])
+              }}
+            >
+              {music?._id && isTrackFavorite(music?._id) ? (
+                <CheckCircleIcon
+                  sx={{
+                    'color': (theme) => theme.palette.primary.main,
+                    'cursor': 'pointer',
+                    'fontSize': 24,
+                    '&:hover': {
+                      color: (theme) => theme.palette.secondary4.main
+                    }
+                  }}
+                />
+              ) : (
+                <ControlPointIcon
+                  sx={{
+                    'color': (theme) => theme.palette.neutral.neutral1,
+                    'cursor': 'pointer',
+                    'fontSize': 24,
+                    '&:hover': {
+                      color: (theme) => theme.palette.secondary4.main
+                    }
+                  }}
+                />
+              )}
             </IconButton>
           </Tooltip>
         </Box>

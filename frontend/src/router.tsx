@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='search' /> // Element cho trang tìm kiếm
       },
       {
-        path: '/liked-music/tracks',
+        path: '/liked-music',
         element: <BodyContent viewType='liked-music' />
       },
       {

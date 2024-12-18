@@ -5,6 +5,7 @@ import PushPinIcon from '@mui/icons-material/PushPin'
 import { useNavigate } from 'react-router-dom'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { useFavorite } from '~/hooks/useFavorite'
 
 type Props = {
   type: string
@@ -45,10 +46,11 @@ const TextFade = styled(Box)(({ theme }) => ({
 export default function MusicView1({ type = 'album', totalMusic }: Props) {
   const { widths, minWidths } = useResize()
   const navigate = useNavigate()
+  const { favTracks } = useFavorite()
 
   const handleGetList = () => {
     if (type === 'liked-music') {
-      navigate('/liked-music/tracks')
+      navigate('/liked-music')
     }
     if (type === 'my-music') {
       navigate('/my-music')
@@ -94,7 +96,7 @@ export default function MusicView1({ type = 'album', totalMusic }: Props) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   blockSize: '48px',
-                  background: (theme) => theme.palette.gradient.gradient1,
+                  background: type === 'liked-music' ? (theme) => theme.palette.gradient.gradient3 : (theme) => theme.palette.gradient.gradient1,
                   color: (theme) => theme.palette.secondary4.main
                 }}
                 onClick={handleGetList}
@@ -120,7 +122,7 @@ export default function MusicView1({ type = 'album', totalMusic }: Props) {
                 {type !== 'album' && (
                   <TextFade>
                     <PushPinIcon sx={{ fontSize: 15, color: (theme) => theme.palette.primary.main, transform: 'rotate(45deg)' }} />
-                    {` ${totalMusic} bài hát`}
+                    {` ${totalMusic || favTracks?.length} bài hát`}
                   </TextFade>
                 )}
               </Box>

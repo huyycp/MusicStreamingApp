@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import AlbumDetail from '~/components/AlbumDetail/LibraryItemDetail'
 import ArtistDetail from '~/components/Artist/ArtistDetail'
 import HomeView from '~/components/HomeView'
-import MusicAlbum from '~/components/MusicAlbum'
+import LikedMusic from '~/components/LikedMusic/LikedMusic'
 import MyMusic from '~/components/MyMusic'
 import ProfileForm from '~/components/ProfileForm/ProfileForm'
 import AudioSearchResutl from '~/components/SearchResult/AudioSearchResult/AudioSearchResult'
@@ -43,7 +43,7 @@ export default function MainMusic({ viewType }: Props) {
     >
       <>
         {viewType === 'search' && <AudioSearchResutl />}
-        {viewType === 'liked-music' && <MusicAlbum />}
+        {viewType === 'liked-music' && <LikedMusic />}
         {viewType === 'playlist' && <Box>PlayList</Box>}
         {viewType === 'my-music' && <MyMusic />}
         {viewType === 'album' && <AlbumDetail />}

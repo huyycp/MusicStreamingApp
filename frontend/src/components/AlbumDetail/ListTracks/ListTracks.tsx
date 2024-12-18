@@ -21,6 +21,10 @@ import { useMusic } from '~/hooks/useMusic'
 import MenuTrack from '~/components/MenuMore/MenuTrack'
 import { getAudioDuration } from '~/utils/getAudioDuration'
 import { formatDuration } from '~/utils/formatDuration'
+import PauseIcon from '@mui/icons-material/Pause'
+import { useFavorite } from '~/hooks/useFavorite'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
 
 type Props = {
   albumId: string
@@ -37,6 +41,8 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
   const [hoveredRow, setHoveredRow] = useState<string | null>(null)
   const { currentAlbumIndex, addAlbum, pause, setPause, music } = useMusic()
   const [trackDurations, setTrackDurations] = useState<{ [key: string]: number }>({})
+  const { isTrackFavorite } = useFavorite()
+  const { addToFavorite } = useAddToFavorite()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -167,8 +173,34 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                           transition: 'opacity 0.3s ease'
                         }}
                       />
-                      {hoveredRow === row._id && (
+                      {hoveredRow === row._id && music?._id !== row._id && (
                         <PlayArrowIcon
+                          sx={{
+                            fontSize: 30,
+                            color: 'white',
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            zIndex: 1
+                          }}
+                        />
+                      )}
+                      {hoveredRow === row._id && music?._id === row._id && pause && (
+                        <PlayArrowIcon
+                          sx={{
+                            fontSize: 30,
+                            color: 'white',
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            zIndex: 1
+                          }}
+                        />
+                      )}
+                      {hoveredRow === row._id && music?._id === row._id && !pause && (
+                        <PauseIcon
                           sx={{
                             fontSize: 30,
                             color: 'white',
@@ -245,15 +277,20 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                         </IconButton>
                       </Tooltip>
                       {anchorEl && <MenuTrack track={row} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} />}
-                      <Tooltip title='Thêm vào thư viện' placement='top'>
+                      <Tooltip title='Thêm vào Bài hát yêu thích' placement='top'>
                         <IconButton
                           sx={{
                             '&:hover': {
                               backgroundColor: theme.palette.neutral.neutral2
                             }
                           }}
+                          onClick={() => addToFavorite([row._id])}
                         >
-                          <FavoriteBorderOutlinedIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
+                          {isTrackFavorite(row._id) ? (
+                            <CheckCircleIcon sx={{ color: theme.palette.primary.main, fontSize: 17 }} />
+                          ) : (
+                            <FavoriteBorderOutlinedIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
+                          )}
                         </IconButton>
                       </Tooltip>
                       <Tooltip title='Khác' placement='top' onClick={(e) => handleClick(e, row._id)}>

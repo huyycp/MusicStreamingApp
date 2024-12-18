@@ -7,6 +7,9 @@ import { useState } from 'react'
 import IconButton from '@mui/material/IconButton'
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import { ITrack } from '~/type/Tracks/ITrack'
+import { useFavorite } from '~/hooks/useFavorite'
+import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 const CoverImage = styled('div')({
   'position': 'relative',
@@ -45,6 +48,8 @@ type Props = {
 
 export default function MusicInfo({ music }: Props) {
   const [isZoom, setIsZoom] = useState<boolean>(false)
+  const { isTrackFavorite } = useFavorite()
+  const { addToFavorite } = useAddToFavorite()
 
   return (
     <Box
@@ -128,19 +133,36 @@ export default function MusicInfo({ music }: Props) {
             ))}
           </Box>
         </Box>
-        <Tooltip title='Thêm vào bài hát đã thích'>
-          <ControlPointIcon
-            sx={{
-              'color': (theme) => theme.palette.neutral.neutral1,
-              'cursor': 'pointer',
-              'fontSize': 18,
-              'ml': 1,
-              'flexShrink': 0,
-              '&:hover': {
-                color: (theme) => theme.palette.secondary4.main
-              }
-            }}
-          />
+        <Tooltip
+          title='Thêm vào Bài hát yêu thích'
+          onClick={() => {
+            addToFavorite([music._id])
+          }}
+        >
+          {isTrackFavorite(music._id) ? (
+            <CheckCircleIcon
+              sx={{
+                'color': (theme) => theme.palette.primary.main,
+                'cursor': 'pointer',
+                'fontSize': 18,
+                'ml': 1,
+                'flexShrink': 0
+              }}
+            />
+          ) : (
+            <ControlPointIcon
+              sx={{
+                'color': (theme) => theme.palette.neutral.neutral1,
+                'cursor': 'pointer',
+                'fontSize': 18,
+                'ml': 1,
+                'flexShrink': 0,
+                '&:hover': {
+                  color: (theme) => theme.palette.secondary4.main
+                }
+              }}
+            />
+          )}
         </Tooltip>
       </Box>
     </Box>
