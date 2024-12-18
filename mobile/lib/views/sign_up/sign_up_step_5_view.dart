@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/models/user_model.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
@@ -74,7 +75,7 @@ class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
         debugPrint(ref.read(signUpViewModel).genderController.text);
         debugPrint(ref.read(signUpViewModel).nameController.text);
         debugPrint(ref.read(signUpViewModel).userRole.name);
-        context.push('/auth/verify-email');
+        context.push(RouteNamed.verifyEmail);
       },
     );
   }

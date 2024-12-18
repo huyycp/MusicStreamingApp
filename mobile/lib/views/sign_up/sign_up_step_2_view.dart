@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
@@ -73,7 +74,7 @@ class _SignUpStep2State extends ConsumerState<SignUpStep2View> {
     return ForwardButton(
       onPressed: () {
         if (ref.read(signUpViewModel).passwordFormKey.currentState!.validate()) {
-          context.push('/auth/sign-up/step-3');
+          context.push(RouteNamed.signUpStep3);
         }
       },
     );

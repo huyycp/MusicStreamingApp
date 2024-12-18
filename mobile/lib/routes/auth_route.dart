@@ -14,9 +14,30 @@ class AuthRoute {
   AuthRoute._();
 
   static RouteBase get routes => _authRoute;
-  
+  static const String _baseAuth = '/auth';
+  static const String _login = 'login';
+  static const String _signUp = 'sign-up';
+  static const String _signUpStep1 = 'step-1';
+  static const String _signUpStep2 = 'step-2';
+  static const String _signUpStep3 = 'step-3';
+  static const String _signUpStep4 = 'step-4';
+  static const String _signUpStep5 = 'step-5';
+  static const String _verifyEmail = 'verify-email';
+  static const String _selectGenre = 'select-genre';
+
+  static String get authMethods => _baseAuth;
+  static String get login => '$_baseAuth/$_login';
+  static String get signUp => '$_baseAuth/$_signUp';
+  static String get signUpStep1 => '$signUp/$_signUpStep1';
+  static String get signUpStep2 => '$signUp/$_signUpStep2';
+  static String get signUpStep3 => '$signUp/$_signUpStep3';
+  static String get signUpStep4 => '$signUp/$_signUpStep4';
+  static String get signUpStep5 => '$signUp/$_signUpStep5';
+  static String get verifyEmail => '$_baseAuth/$_verifyEmail';
+  static String get selectGenre => '$_baseAuth/$_selectGenre';
+
   static final GoRoute _authRoute = GoRoute(
-    path: '/auth',
+    path: _baseAuth,
     name: 'auth',
     builder: (context, state) => const AuthMethodsView(),
     routes: <RouteBase>[
@@ -27,20 +48,14 @@ class AuthRoute {
     ]
   );
 
-  static GoRoute get authMethodsRoute => GoRoute(
-    path: '/auth',
-    name: 'auth',
-    builder: (context, state) => const AuthMethodsView(),
-  );
-
   static GoRoute get loginRoute => GoRoute(
-    path: 'login',
+    path: _login,
     name: 'login',
     builder: (context, state) => const LoginView()
   );
 
   static GoRoute get signUpRoute => GoRoute(
-    path: 'sign-up',
+    path: _signUp,
     name: 'sign-up',
     builder: (context, state) => const NotFoundView(),
     routes: <RouteBase>[
@@ -68,13 +83,13 @@ class AuthRoute {
   );
 
   static GoRoute get verifyEmailRoute => GoRoute(
-    path: 'verify-email',
+    path: _verifyEmail,
     name: 'verify-email',
     builder: (context, state) => const VerifyEmailView()
   );
 
   static GoRoute get selectFavoriteGenreRoute => GoRoute(
-    path: 'select-genre',
+    path: _selectGenre,
     builder: (context, state) => const SelectFavoriteGenreView(),
   );
 }

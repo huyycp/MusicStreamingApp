@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/view_info_model.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/ui/audio_player_controller.dart';
 import 'package:mobile/views/artist/artist_view.dart';
 import 'package:mobile/views/detail_library/detail_library_view.dart';
@@ -84,7 +85,7 @@ class PageMenuSelection {
     title: 'Home',
     iconData: 'assets/icons/ic_home_outlined.svg',
     selectedIconData: 'assets/icons/ic_home_filled.svg',
-    path: '/home',
+    path: RouteNamed.home,
     index: 0,
   );
 
@@ -92,7 +93,7 @@ class PageMenuSelection {
     title: 'Search',
     iconData: 'assets/icons/ic_search.svg',
     selectedIconData: 'assets/icons/ic_search_filled.svg',
-    path: '/search',
+    path: RouteNamed.search,
     index: 1,
   );
 
@@ -100,7 +101,7 @@ class PageMenuSelection {
     title: 'Your Library',
     iconData: 'assets/icons/ic_library_outlined.svg',
     selectedIconData: 'assets/icons/ic_library_filled.svg',
-    path: '/library',
+    path: RouteNamed.library,
     index: 2,
   );
 
@@ -108,7 +109,7 @@ class PageMenuSelection {
     title: 'Profile',
     iconData: 'assets/icons/ic_user.svg',
     selectedIconData: 'assets/icons/ic_user_filled.svg',
-    path: '/profile',
+    path: RouteNamed.profile,
     index: 3,
   );
   
@@ -116,7 +117,7 @@ class PageMenuSelection {
     title: '',
     iconData: '',
     selectedIconData: '',
-    path: '/library',
+    path: RouteNamed.library,
     index: 4,
   );
 
@@ -124,14 +125,7 @@ class PageMenuSelection {
     title: '',
     iconData: '',
     selectedIconData: '',
-    path: '/artist',
+    path: RouteNamed.artist,
     index: 5,
   );
 }
-
-// final Map<ViewInfoModel, Widget> views = {
-//   PageMenuSelection.home: const HomeView(),
-//   PageMenuSelection.search: const SearchView(),
-//   PageMenuSelection.libraries: const LibraryView(),
-//   PageMenuSelection.profile: const ProfileView(),
-// };

@@ -5,9 +5,12 @@ class HomeRoute {
   HomeRoute._();
 
   static RouteBase get routes => _homeRoute;
+  static const String _baseHome = '/home';
+
+  static String get home => _baseHome;
 
   static final GoRoute _homeRoute = GoRoute(
-    path: '/home',
+    path: _baseHome,
     builder: (context, state) => const HomeView(),
   );
 }

@@ -8,9 +8,16 @@ class LibraryRoute {
   LibraryRoute._();
 
   static RouteBase get routes => _libraryRoute;
+  static const String _baseLibrary = '/library';
+  static const String _createAlbum = 'create-album';
+  static const String _createPlaylist = 'create-playlist';
+
+  static String get library => _baseLibrary;
+  static String get createAlbum => '$_baseLibrary/$_createAlbum';
+  static String get createPlaylist => '$_baseLibrary/$_createPlaylist';
 
   static final GoRoute _libraryRoute = GoRoute(
-    path: '/library',
+    path: _baseLibrary,
     builder: (context, state) => const LibraryView(),
     routes: [
       _createAlbumRoute,
@@ -20,7 +27,7 @@ class LibraryRoute {
   );
 
   static final GoRoute _createAlbumRoute = GoRoute(
-    path: 'create-album',
+    path: _createAlbum,
     name: 'create-album',
     builder: (context, state) => const CreateAlbumView(),
     routes: [
@@ -32,7 +39,7 @@ class LibraryRoute {
   );
 
   static final GoRoute _createPlaylistRoute =  GoRoute(
-    path: 'create-playlist',
+    path: _createPlaylist,
     name: 'create-playlist',
     builder: (context, state) => const CreatePlaylistView(),
     routes: [

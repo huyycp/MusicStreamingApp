@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/models/library_model.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
@@ -284,7 +285,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
       visible: tracks.isNotEmpty,
       child: GestureDetector(
         onTap: () {
-          context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library!.id))}');
+          context.push('${RouteNamed.pickTrack}/${ref.watch(detailLibraryViewModel.select((value) => value.library!.id))}');
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -325,15 +326,10 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: tracks.length,    
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              context.push('/track/${tracks[index].id}');
-            },
-            child: TrackWidget(
-              tracks[index],
-              isMenuVisible: true,
-              onPressed: () => _playLibrary(index: index),
-            ),
+          itemBuilder: (context, index) => TrackWidget(
+            tracks[index],
+            isMenuVisible: true,
+            onPressed: () => _playLibrary(index: index),
           ),
           separatorBuilder: (context, state) => const SizedBox(height: 16),
         )
@@ -353,7 +349,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
         AppButton(
           border: ButtonBorder.round,
           onPressed: () {
-            context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library?.id ?? ''))}');
+            context.push('${RouteNamed.pickTrack}/${ref.watch(detailLibraryViewModel.select((value) => value.library?.id ?? ''))}');
           },
           child: const Text('Add to this playlist'),
         )

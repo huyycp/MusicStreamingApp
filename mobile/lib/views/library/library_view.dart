@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/utils/string_format.dart';
@@ -183,7 +184,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
                   subtitle: 'Share your music to the world',
                   onPressed: () {
                     context.pop();
-                    context.push('/track/create/track-info');
+                    context.push(RouteNamed.createTrackInfo);
                   },
                 ),
                 BottomSheetItem(
@@ -192,7 +193,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
                   subtitle: 'Build a playlist with songs, or episodes',
                   onPressed: () {
                     context.pop();
-                    context.push('/library/create-playlist');
+                    context.push(RouteNamed.createPlaylist);
                   },
                 ),
                 BottomSheetItem(
@@ -201,7 +202,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
                   subtitle: 'Build your album and release to everyone',
                   onPressed: () {
                     context.pop();
-                    context.push('/library/create-album');
+                    context.push(RouteNamed.createAlbum);
                   },
                 ),
               ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/views/home/home_view.dart';
 import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_button.dart';
@@ -46,7 +47,7 @@ class _TrackPlaylistViewState extends ConsumerState<TrackPlaylistView> {
   Widget _createPlaylistBtn() {
     return AppButton(
       onPressed: () {
-        context.push('/library/create-playlist');
+        context.push(RouteNamed.createPlaylist);
       },
       child: const Text('New playlist'),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/artist/artist_view_model.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
@@ -222,7 +223,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
           itemCount: albums.length,    
           itemBuilder: (context, index) => GestureDetector(
             onTap: () {
-              context.push('/library/${albums[index].id}');
+              context.push('${RouteNamed.library}/${albums[index].id}');
             },
             child: LibraryWidget(albums[index]),
           ),

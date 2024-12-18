@@ -45,7 +45,7 @@ class CreatePlaylistViewModel extends ChangeNotifier {
       notifyListeners();
       if (isPlaylistCreated) {
         RouteConfig.instance.pop();
-        RouteConfig.instance.push('/library/${playlist!.id}');
+        RouteConfig.instance.push('${RouteNamed.library}/${playlist!.id}');
         SnackBarUtils.showSnackBar(message: 'Create playlist success', status: MessageTypes.success);
       } else {
         SnackBarUtils.showSnackBar(message: 'Create playlist failed', status: MessageTypes.error);

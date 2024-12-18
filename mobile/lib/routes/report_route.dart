@@ -6,9 +6,12 @@ class ReportRoute {
   ReportRoute._();
 
   static RouteBase get routes => _reportRoute;
+  static const String _baseReport = '/report';
+
+  static String get createReport => _baseReport;
 
   static final GoRoute _reportRoute = GoRoute(
-    path: '/report',
+    path: _baseReport,
     builder: (context, state) => const NotFoundView(),
     routes: [
       GoRoute(
@@ -18,5 +21,4 @@ class ReportRoute {
       ),
     ]
   );
-
 }

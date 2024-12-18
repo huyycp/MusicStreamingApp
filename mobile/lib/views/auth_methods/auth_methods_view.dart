@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/theme/text_theme.dart';
 import 'package:mobile/utils/constants.dart';
@@ -50,7 +51,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
   Widget _signUpBtn() {
     return ElevatedButton(
       onPressed: () {
-        context.push('/auth/sign-up/step-1');
+        context.push(RouteNamed.signUpStep1);
       }, 
       style: ElevatedButton.styleFrom(
         backgroundColor: PRIMARY_COLOR,
@@ -106,7 +107,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
   Widget _loginBtn() {
     return TextButton(
       onPressed: () {
-        context.push('/auth/login');
+        context.push(RouteNamed.login);
       }, 
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,

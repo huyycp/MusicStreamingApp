@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/utils/validators.dart';
@@ -97,7 +98,7 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
     return ForwardButton(
       onPressed: () {
         if (ref.read(signUpViewModel).genderFormKey.currentState!.validate()) {
-          context.push('/auth/sign-up/step-4');
+          context.push(RouteNamed.signUpStep4);
         }
       },
     );

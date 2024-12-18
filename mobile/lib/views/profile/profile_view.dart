@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/repositories/user_repository.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/views/profile/widgets/user_action_sheet.dart';
 import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -81,7 +82,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       children: [
         AppButton(
           onPressed: () async {
-            final result = await context.push('/profile/edit');
+            final result = await context.push(RouteNamed.editProfile);
             if (result == true) {
               ref.read(userRepoProvider).getCurrentUser();
             }

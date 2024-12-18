@@ -5,21 +5,12 @@ class MainRoute {
   MainRoute._();
 
   static RouteBase get routes => _mainRoute;
+  static const String _baseMain = '/main';
 
-  // static final ShellRoute _mainRoute = ShellRoute(
-  //   builder: (context, state, child) => MainView(child: child),
-  //   routes: [
-  //     HomeRoute.routes,
-  //     SearchRoute.routes,
-  //     LibraryRoute.detailLibraryRoute,
-  //     LibraryRoute.librariesRoute,
-  //     ProfileRoute.routes,
-  //     ArtistRoute.routes,
-  //   ],
-  // );
+  static String get main => _baseMain;
 
   static final GoRoute _mainRoute = GoRoute(
-    path: '/main',
+    path: _baseMain,
     builder: (context, state) => const MainView(),
   );
 }

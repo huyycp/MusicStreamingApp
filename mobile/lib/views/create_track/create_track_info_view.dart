@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/validators.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
 import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
@@ -83,7 +84,7 @@ class _CreateTrackInfoViewState extends ConsumerState<CreateTrackInfoView> {
 
   Widget _nextBtn() {
     return NextStepButton(
-      destination: '/track/create/audio',
+      destination: RouteNamed.createTrackAudio,
       enabled: ref.watch(createTrackViewModel.select((value) => value.isValidTrackInfo)),
     );
   }

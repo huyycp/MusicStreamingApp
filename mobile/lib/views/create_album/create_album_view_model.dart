@@ -58,7 +58,7 @@ class CreateAlbumViewModel extends ChangeNotifier {
       isAlbumCreated = (album != null);
       if (isAlbumCreated == true) {
         RouteConfig.instance.pop();
-        RouteConfig.instance.push('/library/${album!.id}');
+        RouteConfig.instance.push('${RouteNamed.library}/${album!.id}');
         SnackBarUtils.showSnackBar(message: 'Create album successfully', status: MessageTypes.success);
       } else {
         SnackBarUtils.showSnackBar(message: 'Create album failed', status: MessageTypes.error);

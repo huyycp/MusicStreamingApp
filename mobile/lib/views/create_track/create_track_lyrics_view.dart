@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
 import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
 import 'package:mobile/widgets/field_label.dart';
@@ -44,8 +45,8 @@ class _CreateTrackLyricsViewState extends ConsumerState<CreateTrackLyricsView> {
   }
 
   Widget _nextBtn() {
-    return const NextStepButton(
-      destination: '/track/create/thumbnail',
+    return NextStepButton(
+      destination: RouteNamed.createTrackThumbnail,
       enabled: true,
     );
   }
