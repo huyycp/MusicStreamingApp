@@ -83,4 +83,5 @@ class RouteNamed {
   static String createTrackLyrics = TrackRoute.createTrackLyrics;
   static String createTrackThumbnail = TrackRoute.createTrackThumbnail;
   static String createTrackGenre = TrackRoute.createTrackGenre;
+  static String pickPlaylist = TrackRoute.pickPlaylist;
 }
