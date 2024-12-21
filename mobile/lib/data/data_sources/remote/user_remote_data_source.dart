@@ -177,4 +177,23 @@ class UserRemoteDataSource {
     }
     return null;
   }
+
+  Future<bool> followUser(String userId, {bool follow = true}) async {
+    final response = await _magicMusicApi.request(
+      '$_userPath/follow/$userId',
+      method: follow ? HttpMethods.POST : HttpMethods.DELETE
+    );
+    return response.statusCode == HttpStatus.ok;
+  }
+
+  Future<bool> checkFollow(String userId) async {
+    final response = await _magicMusicApi.request(
+      '$_userPath/follow/$userId',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      return response.data['result'] ?? false;
+    }
+    return false;
+  }
 }

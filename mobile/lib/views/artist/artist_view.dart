@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/artist/artist_view_model.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
+import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/widgets/library_widget.dart';
 import 'package:mobile/views/main/main_view_model.dart';
+import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class ArtistView extends ConsumerStatefulWidget {
@@ -75,6 +79,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
               _albumsActions(),
               const SizedBox(height: 16),
               _albums(),
+              const SizedBox(height: 70),
             ],
           ),
         ),
@@ -126,12 +131,42 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
   Widget _albumsActions() {
     return Row(
       children: [
+        _followBtn(),
         _downloadBtn(),
         _moreOptionsBtn(),
         const Spacer(),
         // _shuffleBtn(),
         // _playBtn(),
       ],
+    );
+  }
+
+  Widget _followBtn() {
+    final isFollowed = ref.watch(artistViewModel.select(
+      (value) => value.isFollowed
+    ));
+    return Visibility(
+      visible: ref.watch(userRepoProvider.select((value) => value.user?.id != widget.id)),
+      child: IconButton(
+        onPressed: () {
+          ref.read(artistViewModel).followArtist(widget.id, (isDone) {
+            if (isDone == null) {
+              SnackBarUtils.showSnackBar(message: 'Something wrong', status: MessageTypes.error);
+              return;
+            }
+            if (isDone) {
+              SnackBarUtils.showSnackBar(message: 'Follow successfully', status: MessageTypes.success);
+            } else {
+              SnackBarUtils.showSnackBar(message: 'Unfollow successfully', status: MessageTypes.success);
+            }
+          });
+        },
+        icon: DynamicImage(
+          isFollowed ? AppConstantIcons.favFilled : AppConstantIcons.favOutlined,
+          width: 24,
+          height: 24,
+        ),
+      ),
     );
   }
 

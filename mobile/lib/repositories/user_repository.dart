@@ -115,4 +115,16 @@ class UserRepository extends ChangeNotifier {
     );
     return await _userRemote.editProfile(req);
   }
+
+  Future<bool> followUser(String userId) async {
+    return await _userRemote.followUser(userId, follow: true);
+  }
+
+  Future<bool> unfollowUser(String userId) async {
+    return await _userRemote.followUser(userId, follow: false);
+  }
+
+  Future<bool> checkFollow(String userId) async {
+    return await _userRemote.checkFollow(userId);
+  }
 }
