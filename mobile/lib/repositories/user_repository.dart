@@ -4,9 +4,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mobile/data/data_sources/remote/user_remote_data_source.dart';
 import 'package:mobile/data/dto/req/edit_profile_req.dart';
+import 'package:mobile/data/dto/req/get_artist_req.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
+import 'package:mobile/data/dto/req/pagination_list_req.dart';
 import 'package:mobile/data/dto/req/register_req.dart';
 import 'package:mobile/data/dto/req/verify_email_req.dart';
+import 'package:mobile/data/dto/resp/get_artist_resp.dart';
 import 'package:mobile/models/user_model.dart';
 
 final userRepoProvider = ChangeNotifierProvider<UserRepository>(
@@ -126,5 +129,12 @@ class UserRepository extends ChangeNotifier {
 
   Future<bool> checkFollow(String userId) async {
     return await _userRemote.checkFollow(userId);
+  }
+
+  Future<GetArtistResp?> getFollowingArtists({
+    required PaginationListReq pagination
+  }) async {
+    final req = GetArtistReq(pagination: pagination);
+    return await _userRemote.getFollowingArtists(req);
   }
 }

@@ -83,6 +83,13 @@ class LibraryViewModel extends ChangeNotifier {
   bool isLoadingTracks = true;
   final trackScrollController = ScrollController();
 
+  List<UserModel> artists = [];
+  int artistPage = 1;
+  int artistLimit = 10;
+  bool canLoadArtists = false;
+  bool isLoadingArtists = true;
+  final artistScrollController = ScrollController();
+
   void selectTab(LibraryTabs tab) {
     if ((tab == LibraryTabs.none) || (tab != LibraryTabs.none && currentTab == LibraryTabs.none)) {
       currentTab = tab;
@@ -245,7 +252,46 @@ class LibraryViewModel extends ChangeNotifier {
       debugPrint(err.toString());
     }
   }
+
+  Future<void> getFollowingArtists({bool refresh = false}) async {
+    try {
+      if (refresh) {
+        isLoadingArtists = true;
+        notifyListeners();
+        artistPage = 1;
+        if (artists.isNotEmpty) {
+          artistScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        }
+        artists.clear();
+      }
+      final resp = await _userRepo.getFollowingArtists(
+        pagination: PaginationListReq(
+          page: artistPage,
+          limit: artistLimit,
+        ),
+      );
+      if (resp != null) {
+        artists = [...artists, ...resp.artists];
+        if (resp.meta.currentPage < resp.meta.totalPages) {
+          artistPage += 1;
+          canLoadArtists = true;
+        } else {
+          canLoadArtists = false;
+        }
+      } else {
+        SnackBarUtils.showSnackBar(message: 'Cannot get data. Please check your connection again.');
+      }
+      isLoadingArtists = false;
+      notifyListeners();
+    } catch (err) {
+      isLoadingArtists = false;
+      notifyListeners();
+      debugPrint(err.toString());
+    }
+  }
 }
+
+
 
 enum LibraryTabs {
   albums,
