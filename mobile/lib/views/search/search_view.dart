@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/data/constants/app_constant_images.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/home/widgets/suggested_artist_widget.dart';
@@ -90,7 +92,7 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 80, vertical: 6),
         hintText: 'What do you want to listen to?',
-        prefixIcon: Container(padding: const EdgeInsets.all(10), child: DynamicImage('assets/icons/ic_search.svg', width: 10, height: 10)),
+        prefixIcon: Container(padding: const EdgeInsets.all(10), child: DynamicImage(AppConstantIcons.search, width: 10, height: 10)),
         suffixIcon: _suffixIcon(),
       ),
     );
@@ -110,7 +112,7 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
         ref.read(searchViewModel).handleRecord(context);
       },
       icon: DynamicImage(
-        'assets/icons/ic_mic.svg',
+        AppConstantIcons.mic,
         width: 16,
         height: 24,
       ),
@@ -124,7 +126,7 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
         ref.read(searchViewModel).clear();
       },
       icon: DynamicImage(
-        'assets/icons/ic_close.svg',
+        AppConstantIcons.close,
         width: 16,
         height: 16,
       ),
@@ -136,6 +138,7 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
       (value) =>  value.genres
     ));
     return GridView.count(
+      addAutomaticKeepAlives: true,
       padding: const EdgeInsets.only(bottom: 75),
       crossAxisCount: 2,
       mainAxisSpacing: 16,
@@ -243,7 +246,7 @@ class _SearchViewState extends ConsumerState<SearchView> with AutomaticKeepAlive
                       )
                     ),
                     child: DynamicImage(
-                      'assets/images/app_image.png',
+                      AppConstantImages.appImage,
                       width: 100,
                       height: 100,
                       isCircle: true,

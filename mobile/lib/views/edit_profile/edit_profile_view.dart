@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/data/constants/app_constant_images.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/edit_profile/edit_profile_view_model.dart';
 import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -39,7 +41,7 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
           context.pop();
         },
         icon: DynamicImage(
-          'assets/icons/ic_close_light.svg',
+          AppConstantIcons.closeLight,
           width: 24,
           height: 24,
           color: Colors.grey[500],
@@ -65,22 +67,20 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
   }
 
   Widget _body() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _avatar(),
-          const SizedBox(height: 24),
-          _name(),
-        ]
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        _avatar(),
+        const SizedBox(height: 24),
+        _name(),
+      ]
     );
   }
   
   Widget _avatar() {
     final avatarSource = ref.watch(editProfileViewModel.select(
       (value) => value.image != null ? value.image?.path : value.user?.avatarLink
-    )) ?? 'assets/images/default_image_placeholder.png';
+    )) ?? AppConstantImages.placeHolder;
     return GestureDetector(
       onTap: () => ref.read(editProfileViewModel).pickImage(),
       child: SizedBox(
@@ -106,7 +106,7 @@ class _EditProfileViewState extends ConsumerState<EditProfileView> {
                   shape: BoxShape.circle
                 ),
                 child: DynamicImage(
-                  'assets/icons/ic_camera.svg',
+                  AppConstantIcons.camera,
                   width: 24,
                   height: 24,
                 ),

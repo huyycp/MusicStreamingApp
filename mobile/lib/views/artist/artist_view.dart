@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/artist/artist_view_model.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
@@ -140,7 +142,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
         padding: EdgeInsets.zero,
         onPressed: () {},
         icon: DynamicImage(
-          'assets/icons/ic_download_disabled.svg',
+          AppConstantIcons.downloadDisabled,
           width: 24,
           height: 24,
         ),
@@ -152,7 +154,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
     return IconButton(
       onPressed: () {},
       icon: DynamicImage(
-        'assets/icons/ic_add_user_disabled.svg',
+        AppConstantIcons.addUserDisabled,
         width: 30,
         height: 30,
       ),
@@ -163,7 +165,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
     return IconButton(
       onPressed: () {},
       icon: DynamicImage(
-        'assets/icons/ic_menu.svg',
+        AppConstantIcons.menu,
         width: 20,
         height: 20,
       ),
@@ -176,7 +178,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
       child: IconButton(
         onPressed: () {},
         icon: DynamicImage(
-          'assets/icons/ic_shuffle_active.svg',
+          AppConstantIcons.shuffleActive,
           width: 24,
           height: 24,
         ),
@@ -200,7 +202,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
             color: PRIMARY_COLOR,
           ),
           child: DynamicImage(
-            'assets/icons/ic_play.svg',
+            AppConstantIcons.play,
             width: 20,
             height: 20,
             color: PRIMARY_BACKGROUND,
@@ -222,7 +224,7 @@ class _ArtistViewState extends ConsumerState<ArtistView> {
           itemCount: albums.length,    
           itemBuilder: (context, index) => GestureDetector(
             onTap: () {
-              context.push('/library/${albums[index].id}');
+              context.push('${RouteNamed.library}/${albums[index].id}');
             },
             child: LibraryWidget(albums[index]),
           ),

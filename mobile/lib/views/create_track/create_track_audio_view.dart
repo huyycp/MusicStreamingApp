@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_images.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_track/create_track_view_model.dart';
 import 'package:mobile/views/create_track/widgets/create_track_app_bar.dart';
@@ -67,7 +69,7 @@ class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
           alignment: Alignment.center,
 
           child: DynamicImage(
-            'assets/images/default_audio_picker.png',
+            AppConstantImages.audioPicker,
             width: 150,
             height: 150,
             isCircle: true,
@@ -96,7 +98,7 @@ class _CreateTrackAudioViewState extends ConsumerState<CreateTrackAudioView> {
 
   Widget _nextBtn() {
     return NextStepButton(
-      destination: '/track/create/lyrics',
+      destination: RouteNamed.createTrackLyrics,
       extraAction: () => ref.read(createTrackViewModel).audioController.pause(),
       enabled: ref.watch(createTrackViewModel.select((value) => value.isValidTrackAudio)),
     );

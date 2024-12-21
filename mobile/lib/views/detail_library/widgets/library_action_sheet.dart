@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/library_model.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class LibraryActionSheet extends StatefulWidget {
@@ -33,15 +35,15 @@ class _LibraryActionSheetState extends State<LibraryActionSheet> {
       onTap: () {
         context.pop();
         if (widget.type == LibraryType.album) {
-          context.push('/library/create-album/${widget.id}');
+          context.push('${RouteNamed.createAlbum}/${widget.id}');
         } else if (widget.type == LibraryType.playlist) {
-          context.push('/library/create-playlist/${widget.id}');
+          context.push('${RouteNamed.createPlaylist}/${widget.id}');
         }
       },
       child: Row(
         children: [
           DynamicImage(
-            'assets/icons/ic_edit.svg',
+            AppConstantIcons.edit,
             width: 24,
             height: 24,
           ),

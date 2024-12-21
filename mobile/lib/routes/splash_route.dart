@@ -5,9 +5,12 @@ class SplashRoute {
   SplashRoute._();
   
   static RouteBase get routes => _splashRoute;
+  static const String _baseSplash = '/splash';
+
+  static String get splash => _baseSplash;
   
   static final GoRoute _splashRoute = GoRoute(
-    path : '/splash',
+    path : _baseSplash,
     builder: (context, state) => const SplashView(),
   );
 }

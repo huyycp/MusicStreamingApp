@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/audio_player_controller.dart';
+import 'package:mobile/utils/ui/audio_player_controller.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class AudioPlayerWidget extends ConsumerStatefulWidget {
@@ -66,8 +67,8 @@ class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
         : null,
       icon: DynamicImage(
         isShuffing
-          ? 'assets/icons/ic_shuffle_active.svg'
-          : 'assets/icons/ic_shuffle.svg',
+          ? AppConstantIcons.shuffleActive
+          : AppConstantIcons.shuffle,
         width: 24,
         height: isShuffing ? 30 : 24,
         color: widget.isShuffingEnabled ? Colors.white : GRAY_BCK_2,
@@ -82,7 +83,7 @@ class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
         ? ref.read(widget.notifier).playPrevTrack
         : null,
       icon: DynamicImage(
-        'assets/icons/ic_prev.svg',
+        AppConstantIcons.prev,
         width: 30,
         height: 30,
         color: hasPrev ? Colors.white : GRAY_BCK_2,
@@ -101,8 +102,8 @@ class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
         ),
         child: DynamicImage(
           ref.watch(widget.notifier.select((value) => value.playing)) 
-            ? 'assets/icons/ic_pause.svg'
-            : 'assets/icons/ic_play.svg',
+            ? AppConstantIcons.pause
+            : AppConstantIcons.play,
           width: 24,
           height: 24,
           color: PRIMARY_BACKGROUND,
@@ -118,7 +119,7 @@ class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
         ? ref.read(widget.notifier).playNextTrack
         : null,
       icon: DynamicImage(
-        'assets/icons/ic_next.svg',
+        AppConstantIcons.next,
         width: 30,
         height: 30,
         color: hasNext ? Colors.white : GRAY_BCK_2,
@@ -134,8 +135,8 @@ class _AudioPlayerWidgetState extends ConsumerState<AudioPlayerWidget> {
         : null,
       icon: DynamicImage(
         isRepeating
-          ? 'assets/icons/ic_repeat_active.svg'
-          : 'assets/icons/ic_repeat.svg',
+          ? AppConstantIcons.repeatActive
+          : AppConstantIcons.repeat,
         width: 24,
         height: isRepeating ? 30 : 24,
         color: widget.isRepeatEnabled ? Colors.white : GRAY_BCK_2,

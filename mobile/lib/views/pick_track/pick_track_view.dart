@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
 import 'package:mobile/views/pick_track/pick_track_view_model.dart';
@@ -67,7 +68,7 @@ class _PickTrackViewState extends ConsumerState<PickTrackView> {
       child: Row(
         children: [
           DynamicImage(
-            'assets/icons/ic_search.svg',
+            AppConstantIcons.search,
             width: 24,
             height: 24,
           ),

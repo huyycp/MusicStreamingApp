@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/library_model.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/modal_bottom_sheet.dart';
+import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
 import 'package:mobile/views/detail_library/widgets/library_action_sheet.dart';
 import 'package:mobile/views/library/library_view_model.dart';
@@ -126,7 +128,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
               borderRadius: BorderRadius.circular(4),
             )
           : DynamicImage(
-            'assets/icons/ic_music_note.svg',
+            AppConstantIcons.musicNote,
             width: 80,
             height: 80,
             borderRadius: BorderRadius.circular(4),
@@ -196,7 +198,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
         padding: EdgeInsets.zero,
         onPressed: () {},
         icon: DynamicImage(
-          'assets/icons/ic_download_disabled.svg',
+          AppConstantIcons.downloadDisabled,
           width: 24,
           height: 24,
         ),
@@ -208,7 +210,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
     return IconButton(
       onPressed: () {},
       icon: DynamicImage(
-        'assets/icons/ic_add_user_disabled.svg',
+        AppConstantIcons.addUserDisabled,
         width: 30,
         height: 30,
       ),
@@ -228,7 +230,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
         });
       },
       icon: DynamicImage(
-        'assets/icons/ic_menu.svg',
+        AppConstantIcons.menu,
         width: 20,
         height: 20,
       ),
@@ -241,7 +243,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
       child: IconButton(
         onPressed: () {},
         icon: DynamicImage(
-          'assets/icons/ic_shuffle_active.svg',
+          AppConstantIcons.shuffleActive,
           width: 24,
           height: 24,
         ),
@@ -265,8 +267,8 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
           ),
           child: DynamicImage(
             isPlaying
-              ? 'assets/icons/ic_pause.svg'
-              : 'assets/icons/ic_play.svg',
+              ? AppConstantIcons.pause
+              : AppConstantIcons.play,
             width: 20,
             height: 20,
             color: PRIMARY_BACKGROUND,
@@ -284,7 +286,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
       visible: tracks.isNotEmpty,
       child: GestureDetector(
         onTap: () {
-          context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library!.id))}');
+          context.push('${RouteNamed.pickTrack}/${ref.watch(detailLibraryViewModel.select((value) => value.library!.id))}');
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -293,7 +295,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
               color: GRAY_BCK_1,
               padding: const EdgeInsets.all(16),
               child: DynamicImage(
-                'assets/icons/ic_add.svg',
+                AppConstantIcons.add,
                 width: 24,
                 height: 24,
                 color: BUTTON_STROKE,
@@ -325,15 +327,10 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: tracks.length,    
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              context.push('/track/${tracks[index].id}');
-            },
-            child: TrackWidget(
-              tracks[index],
-              isMenuVisible: true,
-              onPressed: () => _playLibrary(index: index),
-            ),
+          itemBuilder: (context, index) => TrackWidget(
+            tracks[index],
+            isMenuVisible: true,
+            onPressed: () => _playLibrary(index: index),
           ),
           separatorBuilder: (context, state) => const SizedBox(height: 16),
         )
@@ -353,7 +350,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
         AppButton(
           border: ButtonBorder.round,
           onPressed: () {
-            context.push('/pick-track/${ref.watch(detailLibraryViewModel.select((value) => value.library?.id ?? ''))}');
+            context.push('${RouteNamed.pickTrack}/${ref.watch(detailLibraryViewModel.select((value) => value.library?.id ?? ''))}');
           },
           child: const Text('Add to this playlist'),
         )

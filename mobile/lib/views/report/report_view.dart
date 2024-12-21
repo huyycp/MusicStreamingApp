@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/report/report_view_model.dart';
 import 'package:mobile/views/report/widgets/app_chip_selector.dart';
@@ -116,33 +117,29 @@ class _ReportViewState extends ConsumerState<ReportView> {
   }
 
   Widget _subjectInput() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const FieldLabel('Subject'),
-          const SizedBox(height: 8),
-          TextField(
-            controller: ref.read(reportViewModel).subjectController,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const FieldLabel('Subject'),
+        const SizedBox(height: 8),
+        TextField(
+          controller: ref.read(reportViewModel).subjectController,
+        ),
+      ],
     );
   }
 
   Widget _bodyInput() {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const FieldLabel('Body'),
-          const SizedBox(height: 8),
-          TextField(
-            controller: ref.read(reportViewModel).bodyController,
-            maxLines: 5,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const FieldLabel('Body'),
+        const SizedBox(height: 8),
+        TextField(
+          controller: ref.read(reportViewModel).bodyController,
+          maxLines: 5,
+        ),
+      ],
     );
   }
 
@@ -198,7 +195,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
           ),
           child: Center(
             child: DynamicImage(
-              'assets/icons/ic_add.svg',
+              AppConstantIcons.add,
               width: 24,
               height: 24,
               color: GRAY_BCK_2,
@@ -230,7 +227,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                   scrollDirection: Axis.horizontal,
                   itemCount: audios.length,
                   itemBuilder: (context, index) => AudioImageWidget(
-                    imagePath: 'assets/icons/app_image.png',
+                    imagePath: AppConstantIcons.appImage,
                     audioPath: audios[index].path,
                     size: 64,
                     padding: const EdgeInsets.all(18),
@@ -261,7 +258,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
           ),
           child: Center(
             child: DynamicImage(
-              'assets/icons/ic_add.svg',
+              AppConstantIcons.add,
               width: 24,
               height: 24,
               color: GRAY_BCK_2,

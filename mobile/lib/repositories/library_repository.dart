@@ -96,6 +96,10 @@ class LibraryRepository {
     return await _libraryRemote.addTracksToFavorite(trackIds);
   }
 
+  Future<bool> removeTrackFromFavorite(List<String> trackIds) async {
+    return await _libraryRemote.removeTrackFromFavorite(trackIds);
+  }
+
   Future<LibraryModel?> editLibrary({
     required String id,
     String? name,

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile/utils/modal_bottom_sheet.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
+import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/widgets/base_button.dart';
-import 'package:mobile/widgets/dynamic_image.dart';
 
 void showUserActionsSheet(BuildContext context) {
   showAppModalBottomSheet(context: context, builder: (context) {
@@ -29,25 +28,25 @@ class _UserActionSheetState extends ConsumerState<UserActionSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _upgradePremium(),
+            _logout(),
           ],
         ),
       ),
     );
   }
 
-  Widget _upgradePremium() {
+  Widget _logout() {
     return AppButton(
       onPressed: () {
-        SnackBarUtils.showSnackBar(message: 'Please use web for the best experience');
         context.pop();
+        ref.read(homeViewModel).logout();
       },
       type: ButtonType.text,
-      child: Row(
+      child: const Row(
         children: [
-          DynamicImage('assets/icons/app_image.png', width: 24, height: 24),
-          const SizedBox(width: 8),
-          const Text('Upgrade to Premium'),
+          Icon(Icons.logout, size: 24),
+          SizedBox(width: 8),
+          Text('Logout'),
         ],
       ),
     );

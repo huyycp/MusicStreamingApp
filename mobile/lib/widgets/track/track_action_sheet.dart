@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/track_model.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -63,7 +65,7 @@ class _TrackActionSheetState extends ConsumerState<TrackActionSheet> {
         child: Row(
           children: [
             DynamicImage(
-              'assets/icons/ic_odd_circle.svg',
+              AppConstantIcons.oddCircle,
               width: 24,
               height: 24,
               color: Colors.white,
@@ -85,12 +87,12 @@ class _TrackActionSheetState extends ConsumerState<TrackActionSheet> {
     return GestureDetector(
       onTap: () {
         context.pop();
-        context.push('/report/${widget.track.id}');
+        context.push('${RouteNamed.createReport}/${widget.track.id}');
       },
       child: Row(
         children: [
           DynamicImage(
-            'assets/icons/ic_report.svg',
+            AppConstantIcons.report,
             width: 24,
             height: 24,
           ),

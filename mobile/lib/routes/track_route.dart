@@ -5,45 +5,68 @@ import 'package:mobile/views/create_track/create_track_info_view.dart';
 import 'package:mobile/views/create_track/create_track_lyrics_view.dart';
 import 'package:mobile/views/create_track/create_track_thumbnail_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
+import 'package:mobile/views/track_playlist/track_playlist_view.dart';
 
 class TrackRoute {
   TrackRoute._();
 
   static RouteBase get routes => _trackRoute;
+  static const String _baseTrack = '/track';
+  static const String _createTrack = 'create';
+  static const String _createTrackInfo = 'track-info';
+  static const String _createTrackAudio = 'audio';
+  static const String _createTrackLyrics = 'lyrics';
+  static const String _createTrackThumbnail = 'thumbnail';
+  static const String _createTrackGenre = 'genre';
+  static const String _pickPlaylist = 'pick-playlist';
+
+  static String get createTrack => '$_baseTrack/$_createTrack';
+  static String get createTrackInfo => '$createTrack/$_createTrackInfo';
+  static String get createTrackAudio => '$createTrack/$_createTrackAudio';
+  static String get createTrackLyrics => '$createTrack/$_createTrackLyrics';
+  static String get createTrackThumbnail => '$createTrack/$_createTrackThumbnail';
+  static String get createTrackGenre => '$createTrack/$_createTrackGenre';
+  static String get pickPlaylist => '$_baseTrack/$_pickPlaylist';
 
   static final GoRoute _trackRoute = GoRoute(
-    path: '/track',
+    path: _baseTrack,
     builder: (context, state) => const NotFoundView(),
     routes: [
       _createTrackRoute,
+      _pickPlaylistRoute,
     ]
   );
 
   static final GoRoute _createTrackRoute = GoRoute(
-    path: 'create',
+    path: _createTrack,
     name: 'create-track',
     builder: (context, state) => const NotFoundView(),
     routes: [
       GoRoute(
-        path: 'track-info',
+        path: _createTrackInfo,
         builder: (context, state) => const CreateTrackInfoView()
       ),
       GoRoute(
-        path: 'audio',
+        path: _createTrackAudio,
         builder: (context, state) => const CreateTrackAudioView()
       ),
       GoRoute(
-        path: 'lyrics',
+        path: _createTrackLyrics,
         builder: (context, state) => const CreateTrackLyricsView( )
       ),
       GoRoute(
-        path: 'thumbnail',
+        path: _createTrackThumbnail,
         builder: (context, state) => const CreateTrackThumbnailView()
       ),
       GoRoute(
-        path: 'genre',
+        path: _createTrackGenre,
         builder: (context, state) => const CreateTrackGenreView()
       ),
     ]
+  );
+  
+  static final GoRoute _pickPlaylistRoute = GoRoute(
+    path: '$_pickPlaylist/:id',
+    builder: (context, state) => TrackPlaylistView(state.pathParameters['id']!)
   );
 }

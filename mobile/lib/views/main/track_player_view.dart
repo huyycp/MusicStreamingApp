@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/modal_bottom_sheet.dart';
+import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/main/main_view_model.dart';
+import 'package:mobile/views/main/widgets/track_player_widget_model.dart';
 import 'package:mobile/widgets/audio_controller_widget.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 import 'package:mobile/widgets/track/track_action_sheet.dart';
@@ -65,7 +67,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
         context.pop();
       },
       icon: DynamicImage(
-        'assets/icons/ic_chevron_down.svg',
+        AppConstantIcons.chevronDown,
         width: 20,
         height: 20,
       ),
@@ -91,7 +93,7 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
         ))));
       },
       icon: DynamicImage(
-        'assets/icons/ic_menu.svg',
+        AppConstantIcons.menu,
         width: 16,
         height: 16,
       ),
@@ -136,12 +138,26 @@ class _TrackPlayerViewState extends ConsumerState<TrackPlayerView> {
   }
 
   Widget _favoriteBtn() {
+    final isFavorite = ref.watch(trackPlayerWidgetModel.select((value) => value.isFavorite));
     return IconButton(
       onPressed: () {
+        if (isFavorite) {
+          ref.read(trackPlayerWidgetModel).removeTrackFromFavorite(
+            ref.watch(mainAudioController.select((value) => value.currentTrack.id)),
+            (isDone) {
 
+            }
+          );
+        } else {
+          ref.read(trackPlayerWidgetModel).addTracksToFavorite(
+            ref.watch(mainAudioController.select((value) => value.currentTrack.id)), (_) {
+
+            }
+          );
+        }
       },
       icon: DynamicImage(
-        'assets/icons/ic_fav_filled.svg',
+        isFavorite ? AppConstantIcons.favFilled: AppConstantIcons.favOutlined,
         width: 24,
         height: 24,
       ),

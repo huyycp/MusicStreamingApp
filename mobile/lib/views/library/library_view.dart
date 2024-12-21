@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/modal_bottom_sheet.dart';
+import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/album_list_view.dart';
@@ -148,7 +150,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
     return IconButton(
       onPressed: () {},
       icon: DynamicImage(
-        'assets/icons/ic_search.svg',
+        AppConstantIcons.search,
         width: 24,
         height: 24,
       ),
@@ -159,7 +161,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
     return IconButton(
       onPressed: _openAddSheet,
       icon: DynamicImage(
-        'assets/icons/ic_add.svg',
+        AppConstantIcons.add,
         width: 24,
         height: 24,
       ),
@@ -178,30 +180,30 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 BottomSheetItem(
-                  iconData: 'assets/icons/ic_add_song.svg',
+                  iconData: AppConstantIcons.addSong,
                   title: 'Track',
                   subtitle: 'Share your music to the world',
                   onPressed: () {
                     context.pop();
-                    context.push('/track/create/track-info');
+                    context.push(RouteNamed.createTrackInfo);
                   },
                 ),
                 BottomSheetItem(
-                  iconData: 'assets/icons/ic_music_note.svg',
+                  iconData: AppConstantIcons.musicNote,
                   title: 'Playlist',
                   subtitle: 'Build a playlist with songs, or episodes',
                   onPressed: () {
                     context.pop();
-                    context.push('/library/create-playlist');
+                    context.push(RouteNamed.createPlaylist);
                   },
                 ),
                 BottomSheetItem(
-                  iconData: 'assets/icons/ic_folder.svg',
+                  iconData: AppConstantIcons.folder,
                   title: 'Album',
                   subtitle: 'Build your album and release to everyone',
                   onPressed: () {
                     context.pop();
-                    context.push('/library/create-album');
+                    context.push(RouteNamed.createAlbum);
                   },
                 ),
               ],

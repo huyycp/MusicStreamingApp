@@ -6,8 +6,8 @@ import 'package:mobile/data/data_sources/remote/audio_recognizer_api.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/req/create_track_req.dart';
 import 'package:mobile/data/dto/req/get_track_req.dart';
-import 'package:mobile/data/dto/resp/get_playlist_with_track_resp.dart';
 import 'package:mobile/data/dto/resp/get_track_resp.dart';
+import 'package:mobile/data/dto/resp/playlist_with_track_resp.dart';
 import 'package:mobile/models/track_model.dart';
 
 final trackRemoteProvider = Provider<TrackRemoteDataSource>(
@@ -76,10 +76,10 @@ class TrackRemoteDataSource {
 
   Future<GetTrackResp?> getTracksByUser({
     required GetTrackReq req,
-    TrackStatus status = TrackStatus.all,
+    TrackLibraryStatus status = TrackLibraryStatus.all,
   }) async {
     final queryParams = req.toJson();
-    queryParams['status'] = (status == TrackStatus.all ? '' : status.name);
+    queryParams['status'] = (status == TrackLibraryStatus.all ? '' : status.name);
     final response = await _magicMusicApi.request(
       '$_trackPath/my-tracks',
       method: HttpMethods.GET,
@@ -93,20 +93,6 @@ class TrackRemoteDataSource {
     } else {
       return null;
     }
-  }
-
-  Future<GetPlaylistWithTrackResp?> getPlaylistWithTrack(String trackId) async {
-    final response  = await _magicMusicApi.request(
-      '$_trackPath/$trackId/my-libraries',
-      method: HttpMethods.GET,
-    );
-    if (response.statusCode == HttpStatus.ok) {
-      final data = response.data['result'];
-      if (data != null) {
-        return GetPlaylistWithTrackResp.fromJson(data);
-      }
-    }
-    return null;
   }
 
   Future<List<TrackModel>> getTrackByAudio(String path) async {
@@ -130,5 +116,29 @@ class TrackRemoteDataSource {
       throw Exception();
     }
     return [];
+  }
+
+  Future<bool> isFavoriteTrack(String trackId) async {
+    final response = await _magicMusicApi.request(
+      '$_trackPath/$trackId /favorite',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      return data ?? false;
+    }
+    return false;
+  }
+
+  Future<PlaylistWithTrackResp> getPlaylistsWithTrack(String trackId) async {
+    final response = await _magicMusicApi.request(
+      '$_trackPath/$trackId/my-libraries',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      return PlaylistWithTrackResp.fromJson(data);
+    }
+    return PlaylistWithTrackResp.fromJson({});
   }
 }

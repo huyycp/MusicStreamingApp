@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:marquee/marquee.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
+import 'package:mobile/views/home/home_view.dart';
 import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/views/main/track_player_view.dart';
 import 'package:mobile/views/main/widgets/track_player_widget_model.dart';
@@ -15,9 +19,15 @@ class TrackPlayerWidget extends ConsumerStatefulWidget {
   ConsumerState<TrackPlayerWidget> createState() => _AudioWidgetState();
 }
 
-class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {  
+class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
   @override
   Widget build(BuildContext context) {
+    ref.listen(mainAudioController.select((value) => value.currentTrack), (prev, next) {
+      if (next.id.isNotEmpty) {
+        ref.read(trackPlayerWidgetModel).checkFavoriteTrack(next.id);
+      }
+    });
+
     return ref.watch(mainAudioController).available
       ? GestureDetector(
           onTap: () {
@@ -93,7 +103,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
 
   Widget _trackTitle(String title) {
     return LayoutBuilder(
-      builder: (context, constraints) => Container(
+      builder: (context, constraints) => SizedBox(
         height: 24,
         child: Marquee(
           text: title,
@@ -138,8 +148,8 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
       },
       icon: DynamicImage(
         playing 
-          ? 'assets/icons/ic_pause.svg'
-          : 'assets/icons/ic_play.svg',
+          ? AppConstantIcons.pause
+          : AppConstantIcons.play,
         width: 24,
         height: 24,
       ),
@@ -152,7 +162,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
         ref.read(mainAudioController).stop();
       },
       icon: DynamicImage(
-        'assets/icons/ic_close_light.svg',
+        AppConstantIcons.closeLight,
         width: 20,
         height: 20,
         color: Colors.white,
@@ -167,7 +177,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
     return IconButton(
       onPressed: isFavorite
         ? () {
-          
+          context.push('${RouteNamed.pickPlaylist}/${ref.watch(mainAudioController.select((value) => value.currentTrack.id))}');
         }
         : () {
           ref.read(trackPlayerWidgetModel).addTracksToFavorite(
@@ -183,7 +193,7 @@ class _AudioWidgetState extends ConsumerState<TrackPlayerWidget> {
           );
         },
       icon: DynamicImage(
-        isFavorite ? 'assets/icons/ic_added_check.svg' : 'assets/icons/ic_add_circle.svg',
+        isFavorite ? AppConstantIcons.addedCheck : AppConstantIcons.addCircle,
         width: 24,
         height: 24,
       ),

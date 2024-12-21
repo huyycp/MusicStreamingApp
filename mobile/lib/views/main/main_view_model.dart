@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/view_info_model.dart';
-import 'package:mobile/utils/audio_player_controller.dart';
+import 'package:mobile/routes/routes.dart';
+import 'package:mobile/utils/ui/audio_player_controller.dart';
 import 'package:mobile/views/artist/artist_view.dart';
 import 'package:mobile/views/detail_library/detail_library_view.dart';
 import 'package:mobile/views/home/home_view.dart';
@@ -18,6 +20,7 @@ final mainAudioController = ChangeNotifierProvider<AudioPlayerController>(
 );
 
 class MainViewModel extends ChangeNotifier {
+
   final audioController = AudioPlayerController();
   ViewInfoModel currentView = PageMenuSelection.home;
   ViewInfoModel? prevView;
@@ -44,11 +47,9 @@ class MainViewModel extends ChangeNotifier {
   void changeView(ViewInfoModel newView) {
     currentView = newView;
     notifyListeners();
-    pageController.animateToPage(
+    pageController.jumpToPage(
       newView.index,
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );   
+    );
   }
 
   void openLibrary({required String id, bool isGenre = false}) {
@@ -83,33 +84,33 @@ class PageMenuSelection {
   
   static final home = ViewInfoModel(
     title: 'Home',
-    iconData: 'assets/icons/ic_home_outlined.svg',
-    selectedIconData: 'assets/icons/ic_home_filled.svg',
-    path: '/home',
+    iconData: AppConstantIcons.homeOutlined,
+    selectedIconData: AppConstantIcons.homeFilled,
+    path: RouteNamed.home,
     index: 0,
   );
 
   static final search =  ViewInfoModel(
     title: 'Search',
-    iconData: 'assets/icons/ic_search.svg',
-    selectedIconData: 'assets/icons/ic_search_filled.svg',
-    path: '/search',
+    iconData: AppConstantIcons.search,
+    selectedIconData: AppConstantIcons.searchFilled,
+    path: RouteNamed.search,
     index: 1,
   );
 
   static final libraries =  ViewInfoModel(
     title: 'Your Library',
-    iconData: 'assets/icons/ic_library_outlined.svg',
-    selectedIconData: 'assets/icons/ic_library_filled.svg',
-    path: '/library',
+    iconData: AppConstantIcons.libraryOutlined,
+    selectedIconData: AppConstantIcons.libraryFilled,
+    path: RouteNamed.library,
     index: 2,
   );
 
   static final profile = ViewInfoModel(
     title: 'Profile',
-    iconData: 'assets/icons/ic_user.svg',
-    selectedIconData: 'assets/icons/ic_user_filled.svg',
-    path: '/profile',
+    iconData: AppConstantIcons.user,
+    selectedIconData: AppConstantIcons.userFilled,
+    path: RouteNamed.profile,
     index: 3,
   );
   
@@ -117,7 +118,7 @@ class PageMenuSelection {
     title: '',
     iconData: '',
     selectedIconData: '',
-    path: '/library',
+    path: RouteNamed.library,
     index: 4,
   );
 
@@ -125,14 +126,7 @@ class PageMenuSelection {
     title: '',
     iconData: '',
     selectedIconData: '',
-    path: '/artist',
+    path: RouteNamed.artist,
     index: 5,
   );
 }
-
-// final Map<ViewInfoModel, Widget> views = {
-//   PageMenuSelection.home: const HomeView(),
-//   PageMenuSelection.search: const SearchView(),
-//   PageMenuSelection.libraries: const LibraryView(),
-//   PageMenuSelection.profile: const ProfileView(),
-// };

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/views/sign_up/widgets/forward_button.dart';
@@ -93,7 +94,7 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
       onPressed: ref.watch(signUpViewModel.select((value) => value.availableEmails)) != ['']
         ? () {
           if (ref.read(signUpViewModel).emailFormKey.currentState!.validate()) {
-            context.push('/auth/sign-up/step-2');
+            context.push(RouteNamed.signUpStep2);
           }
         }
         : null,  

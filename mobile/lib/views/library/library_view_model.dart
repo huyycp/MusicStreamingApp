@@ -8,7 +8,7 @@ import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/library_repository.dart';
 import 'package:mobile/repositories/track_repository.dart';
 import 'package:mobile/repositories/user_repository.dart';
-import 'package:mobile/utils/snackbar.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 
 final libraryViewModel = ChangeNotifierProvider<LibraryViewModel>(
   (ref) => LibraryViewModel(

@@ -51,7 +51,6 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
       child: AppAppbar(
         title: const Text('Home'),
         leading: _userAvatar(),
-        actions: _appBarActions(),
       ),
     );
   }
@@ -63,17 +62,6 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
       },
       imageSource: ref.watch(homeViewModel.select((value) => value.user?.avatarLink ?? '')),
     );
-  }
-  
-  List<Widget> _appBarActions() {
-    return [
-      IconButton(
-        icon: const Icon(Icons.logout),
-        onPressed: () {
-          ref.read(homeViewModel).logout();
-        },
-      )
-    ];
   }
 
   Widget _body() {
