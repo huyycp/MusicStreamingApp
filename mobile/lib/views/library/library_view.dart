@@ -8,6 +8,7 @@ import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/album_list_view.dart';
+import 'package:mobile/views/library/artist_list_view.dart';
 import 'package:mobile/views/library/library_list_view.dart';
 import 'package:mobile/views/library/library_view_model.dart';
 import 'package:mobile/views/library/playlist_list_view.dart';
@@ -30,7 +31,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
     const AlbumListView(),
     const PlaylistListView(),
     const TrackListView(),
-    Container(),
+    const ArtistListView(),
     Container(),
   ];
 

@@ -25,10 +25,12 @@ class ArtistViewModel extends ChangeNotifier {
   UserModel? artist;
   List<LibraryModel> albums = [];
   bool isLoading = true;
+  bool isFollowed = false;
 
   Future<void> getAlbumsByArtist(String artistId) async {
     try {
       artist = await _userRepo.getUser(artistId);
+      isFollowed = await _userRepo.checkFollow(artistId);
       final resp = await _artistRepo.getAlbumsByArtist(
         pagination: PaginationListReq(limit: 10), 
         artistId: artistId
@@ -42,6 +44,21 @@ class ArtistViewModel extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } catch (err) {
+      debugPrint(err.toString());
+    }
+  }
+
+  Future<void> followArtist(String userId, Function(bool?) onDone) async {
+    try {
+      if (isFollowed) {
+        isFollowed = ! await _userRepo.unfollowUser(userId);
+      } else {
+        isFollowed = await _userRepo.followUser(userId);
+      }
+      onDone(isFollowed);
+      notifyListeners();
+    } catch(err) {
+      onDone(null);
       debugPrint(err.toString());
     }
   }

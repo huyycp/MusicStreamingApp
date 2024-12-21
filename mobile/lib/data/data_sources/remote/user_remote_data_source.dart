@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/req/edit_profile_req.dart';
+import 'package:mobile/data/dto/req/get_artist_req.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
 import 'package:mobile/data/dto/req/register_req.dart';
 import 'package:mobile/data/dto/req/verify_email_req.dart';
+import 'package:mobile/data/dto/resp/get_artist_resp.dart';
 import 'package:mobile/models/user_model.dart';
 
 final userRemoteProvider = Provider<UserRemoteDataSource>(
@@ -173,6 +175,40 @@ class UserRemoteDataSource {
       final data = response.data['result'];
       if (data != null) {
         return UserModel.fromJson(data);
+      }
+    }
+    return null;
+  }
+
+  Future<bool> followUser(String userId, {bool follow = true}) async {
+    final response = await _magicMusicApi.request(
+      '$_userPath/follow/$userId',
+      method: follow ? HttpMethods.POST : HttpMethods.DELETE
+    );
+    return response.statusCode == HttpStatus.ok;
+  }
+
+  Future<bool> checkFollow(String userId) async {
+    final response = await _magicMusicApi.request(
+      '$_userPath/follow/$userId',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      return response.data['result'] ?? false;
+    }
+    return false;
+  }
+
+  Future<GetArtistResp?> getFollowingArtists(GetArtistReq req) async {
+    final response = await _magicMusicApi.request(
+      '$_userPath/follow',
+      method: HttpMethods.GET,
+      data: req.toJson(),
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return GetArtistResp.fromJson(data);
       }
     }
     return null;
