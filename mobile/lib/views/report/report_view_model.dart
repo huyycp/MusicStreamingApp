@@ -28,11 +28,12 @@ class ReportViewModel extends ChangeNotifier {
       this.status = status;
     }
     notifyListeners();
+    getReports(refresh: true);
   }
 
   Future<void> getReports({ bool refresh = false }) async {
     try {
-      if (!canLoadReport) return;
+      if (!canLoadReport && !refresh) return;
       if (refresh) {
         reportPage = 1;
         if (reports.isNotEmpty) {

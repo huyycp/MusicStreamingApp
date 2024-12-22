@@ -44,4 +44,5 @@ class AppConstantIcons {
   static const String repeat = '$basePath/ic_repeat.svg';
   static const String oddCircle = '$basePath/ic_odd_circle.svg';
   static const String report = '$basePath/ic_report.svg';
+  static const String filter = '$basePath/ic_filter.svg';
 }
