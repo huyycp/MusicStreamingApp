@@ -50,7 +50,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                ref.watch(userRepoProvider).user!.name,
+                ref.watch(userRepoProvider).user?.name ?? 'User',
                 style: Theme.of(context).textTheme.titleLarge,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -71,7 +71,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
 
   Widget _userAvatar() {
     return DynamicImage(
-      ref.watch(userRepoProvider).user!.avatarLink,
+      ref.watch(userRepoProvider).user?.avatarLink ?? '',
       width: 84,
       height: 84,
       isCircle: true,

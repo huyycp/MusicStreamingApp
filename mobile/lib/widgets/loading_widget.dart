@@ -22,7 +22,7 @@ class LoadingWidget extends StatelessWidget {
           size: size,
           child: const CircularProgressIndicator( 
             strokeWidth: 2, 
-            color: GRAY_BCK_1
+            color: BUTTON_STROKE,
           ),
         ),
       ),

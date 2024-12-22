@@ -39,6 +39,7 @@ class TrackWidget extends ConsumerWidget {
             ),
           ),
           const SizedBox(width: 12),
+          _trackStatusTag(context),
           _openMenuBtn(context),
         ],
       ),
@@ -69,6 +70,20 @@ class TrackWidget extends ConsumerWidget {
       style: Theme.of(context).textTheme.labelLarge,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Widget _trackStatusTag(BuildContext context) {
+    return Visibility(
+      visible: track.status == TrackStatus.pending,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.amber,
+        ),
+        child: Text(track.status.name, style: Theme.of(context).textTheme.titleMedium),
+      ),
     );
   }
 

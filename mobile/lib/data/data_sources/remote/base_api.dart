@@ -121,7 +121,6 @@ abstract class BaseApi {
       case DioExceptionType.badResponse:
         debugPrint("STATUS CODE : ${err.response?.statusCode}");
         debugPrint("${err.response?.data}");
-        throw DioException(requestOptions: err.requestOptions, error: err.error, type: err.type);
       default:
         debugPrint(err.message);
     }

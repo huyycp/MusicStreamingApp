@@ -42,7 +42,7 @@ class MagicMusicApi extends BaseApi {
       await removeAccessToken();
       await removeRefreshToken();
       SnackBarUtils.showSnackBar(message: 'Session expired. Please log in!');
-      RouteConfig.instance.go('/auth');
+      RouteConfig.instance.go(RouteNamed.authMethods);
       return (accessToken: null, refreshToken: null);
     }
   }
