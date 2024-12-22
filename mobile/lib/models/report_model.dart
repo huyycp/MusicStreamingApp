@@ -11,6 +11,7 @@ class ReportModel {
     required this.createdAt,
     required this.imagePaths,
     required this.audioPath,
+    required this.rejectionReason,
   });
 
   String id;
@@ -24,6 +25,7 @@ class ReportModel {
   DateTime createdAt;
   List<String> imagePaths;
   String audioPath;
+  String rejectionReason;
 
   factory ReportModel.fromJson(Map<String, dynamic> json) => ReportModel(
     id: json['_id'] ?? '',
@@ -41,6 +43,7 @@ class ReportModel {
     createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
     imagePaths: List.from(json['image']?.map((imageJson) => imageJson.toString()) ?? []),
     audioPath: json['path_audio'] ?? '',
+    rejectionReason: json['rejection_reason'] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +58,7 @@ class ReportModel {
     'created_at': createdAt.toIso8601String(),
     'image': imagePaths,
     'path_audio': audioPath,
+    'rejection_reason': rejectionReason,
   };
 }
 

@@ -71,6 +71,7 @@ class RouteNamed {
   static String pickTrack = PickTrackRoute.pickTrack;
 
   // Report
+  static String report = ReportRoute.report;
   static String createReport = ReportRoute.createReport;
 
   // Splash

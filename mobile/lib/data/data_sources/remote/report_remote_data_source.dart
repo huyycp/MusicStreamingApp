@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
 import 'package:mobile/data/dto/req/create_report_req.dart';
+import 'package:mobile/data/dto/req/get_report_req.dart';
+import 'package:mobile/data/dto/resp/get_report_resp.dart';
 import 'package:mobile/models/report_model.dart';
 
 final reportRemoteProvider = Provider<ReportRemoteDataSource>(
@@ -36,4 +38,16 @@ class ReportRemoteDataSource {
     return null;
   }
 
+  Future<GetReportResp> getReports(GetReportReq req) async {
+    final response = await _magicMusicApi.request(
+      '$_reportPath/my-reports',
+      method: HttpMethods.GET,
+      queryParameters: req.toJson(),
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      return GetReportResp.fromJson(data ?? {});
+    }
+    return GetReportResp.fromJson({});
+  }
 }
