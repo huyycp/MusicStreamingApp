@@ -291,8 +291,6 @@ class LibraryViewModel extends ChangeNotifier {
   }
 }
 
-
-
 enum LibraryTabs {
   albums,
   playlists,

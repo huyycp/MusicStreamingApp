@@ -5,6 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/data/data_sources/remote/report_remote_data_source.dart';
 import 'package:mobile/data/dto/req/create_report_req.dart';
+import 'package:mobile/data/dto/req/get_report_req.dart';
+import 'package:mobile/data/dto/req/pagination_list_req.dart';
+import 'package:mobile/data/dto/resp/get_report_resp.dart';
 import 'package:mobile/models/report_model.dart';
 
 final reportRepoProvider = Provider<ReportRepository>(
@@ -37,5 +40,16 @@ class ReportRepository {
       audios: audios.map((audio) => File(audio.path!)).toList()
     );
     return await _reportRemote.createReport(req);
+  }
+
+  Future<GetReportResp> getReports({
+    required PaginationListReq pagination,
+    ReportStatus? status,
+  }) async {
+    final req = GetReportReq(
+      pagination: pagination,
+      status: status,
+    );
+    return await _reportRemote.getReports(req);
   }
 }

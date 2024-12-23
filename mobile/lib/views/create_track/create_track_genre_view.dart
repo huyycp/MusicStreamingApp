@@ -30,7 +30,8 @@ class _CreateTrackGenreViewState extends ConsumerState<CreateTrackGenreView> {
         appBar: createTrackAppBar(),
         body: _body(),
         bottomNavigationBar: _createTrackBtn(),
-        extendBody: true,
+        extendBody: false,
+        
       ),
     );
   }

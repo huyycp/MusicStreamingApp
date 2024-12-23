@@ -11,6 +11,7 @@ class MainRoute {
 
   static final GoRoute _mainRoute = GoRoute(
     path: _baseMain,
+    name: 'main',
     builder: (context, state) => const MainView(),
   );
 }

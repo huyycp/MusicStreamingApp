@@ -56,15 +56,15 @@ class CreateTrackViewModel extends ChangeNotifier {
       );
       if (result != null) {
         trackAudio = result.files.single;
+        checkValidTrackAudio();
         await audioController.setPlaylist(tracks: [
           TrackModel(
-            id: '',
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
             name: trackTitleController.text,
             imageLink: '', 
             audioLink: trackAudio!.path!
           )
         ]);
-        checkValidTrackAudio();
       }
     } catch (err) {
       debugPrint(err.toString());
