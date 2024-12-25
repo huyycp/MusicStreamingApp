@@ -15,6 +15,7 @@ import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 import useLogin from '~/hooks/Auth/useLogin'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import CircularProgress from '@mui/material/CircularProgress'
+import useGoogleLogin from '~/hooks/Auth/useGoogleLogin'
 
 export default function LoginBody() {
   const [email, setEmail] = useState('')
@@ -22,9 +23,10 @@ export default function LoginBody() {
   const [password, setPassword] = useState('')
   const [visible, setVisible] = useState(true)
   const { mutate: login, isPending } = useLogin()
+  const { googleLogin, error: googleError } = useGoogleLogin()
 
   useEffect(() => {
-    document.title = 'Magic Music - Login'
+    document.title = 'Magic Music - Đăng nhập'
   }, [])
 
   const navigate = useNavigate()
@@ -55,6 +57,10 @@ export default function LoginBody() {
     }
   }
 
+  const handleLoginGoogle = () => {
+    googleLogin()
+  }
+
   return (
     <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', p: '0px 32px' }}>
       <Typography variant='h4' fontWeight='bold' sx={{ textAlign: 'center', mb: '40px' }}>
@@ -71,8 +77,15 @@ export default function LoginBody() {
         }}
       >
         <SvgIcon component={GoogleIcon} inheritViewBox sx={{ height: '24px', width: '24px', mr: 1 }} />
-        <Box sx={{ fontWeight: 'bold', fontSize: 14 }}>Đăng ký bằng Google</Box>
+        <Box sx={{ fontWeight: 'bold', fontSize: 14 }} onClick={handleLoginGoogle}>
+          Đăng nhập bằng Google
+        </Box>
       </Button>
+      {googleError && (
+        <Typography variant='body2' sx={{ color: 'red', mt: 2 }}>
+          {googleError}
+        </Typography>
+      )}
       <Divider sx={{ width: '100%', bgcolor: (theme) => theme.palette.neutral.neutral2, mt: 5, mb: 5 }} />
       <FormControl sx={{ width: '100%', pb: 2 }}>
         <Box sx={{ fontSize: 14, fontWeight: 'bold', pb: 1 }}>Địa chỉ email</Box>

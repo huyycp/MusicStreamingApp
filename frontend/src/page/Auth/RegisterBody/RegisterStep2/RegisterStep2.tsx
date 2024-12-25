@@ -32,13 +32,16 @@ export default function RegisterStep2() {
   const navigate = useNavigate()
   const email = location.state?.email as string
   const password = location.state?.password as string
+  const displayName = location.state?.displayName as string
+  const type = location.state?.type as string
 
   useEffect(() => {
-    document.title = 'Magic Music - Register: Step 2'
+    document.title = 'Magic Music - Đăng ký: Bước 2'
   }, [])
   useEffect(() => {
+    if (displayName) setName(displayName)
     if (!email || !password) navigate('/register')
-  })
+  }, [email, password, displayName, navigate])
 
   const [name, setName] = useState('')
   const [errorCheck, setErrorCheck] = useState<boolean>(false)
@@ -60,7 +63,7 @@ export default function RegisterStep2() {
     if (name === '') setError(true)
     if (selectedValue === '') setErrorCheck(true)
     else if (name !== '' && selectedValue !== '') {
-      navigate('/register/step3', { state: { email, password, name, gender: selectedValue } })
+      navigate('/register/step3', { state: { email, password, name, gender: selectedValue, type } })
     }
   }
 
@@ -80,6 +83,7 @@ export default function RegisterStep2() {
             }
           }}
           onClick={() => {
+            if (type === 'oauth') navigate('/register')
             navigate('/register/step1', { state: { email } })
           }}
         />

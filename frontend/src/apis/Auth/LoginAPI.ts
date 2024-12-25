@@ -1,7 +1,7 @@
 import instance from '~/axiosConfig'
 import { IResponse } from '~/type/IResponse'
 
-export const apiLogin = async (data: { email: string; password: string }): Promise<IResponse> => {
+export const apiLogin = async (data: { email: string; password: string; type?: '' | 'oauth' }): Promise<IResponse> => {
   const response = await instance.post<IResponse>('/auth/login', data)
   return response.data
 }
