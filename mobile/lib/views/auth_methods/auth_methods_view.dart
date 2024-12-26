@@ -68,7 +68,13 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
 
   Widget _googleBtn() {
     return OutlinedButton.icon(
-      onPressed: ref.read(authMethodsViewModel).loginWithGoogle, 
+      onPressed: () {
+        ref.read(authMethodsViewModel).loginWithGoogle((isDone) {
+          if (isDone) {
+
+          }
+        });
+      }, 
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.white,
         side: const BorderSide(

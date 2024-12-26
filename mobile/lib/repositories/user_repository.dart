@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +26,10 @@ class UserRepository extends ChangeNotifier {
   
   late final UserRemoteDataSource _userRemote;
   UserModel? user;
+
+  Future<void> initFirebase() async {
+    await _userRemote.init();
+  }
 
   Future<bool> registerWithEmail({
     required String email,
@@ -70,10 +75,32 @@ class UserRepository extends ChangeNotifier {
   }) async {
     final result = await _userRemote.loginWithEmail(LoginReq(
       email: email,
-      password: password
+      password: password,
     ));
     if (result) {
        await getCurrentUser();
+    }
+    return result;
+  }
+
+  Future<bool> loginWithGoogle({
+    required AuthCredential authCred,
+    required String gender,
+    required UserRole role,
+  }) async {
+    final userCred = await _userRemote.loginWithGoogle(authCred);
+    if (userCred.user == null) return false; 
+    final req = RegisterReq(
+      email: userCred.user!.email ?? '',
+      password: userCred.user!.uid,
+      name: userCred.user!.displayName ?? 'User#${DateTime.now().millisecondsSinceEpoch % 10000}',
+      gender: gender,
+      role: role,
+      authType: AppAuthType.oauth,
+    );
+    final result = await _userRemote.registerWithEmail(req);
+    if (result) {
+      await getCurrentUser();
     }
     return result;
   }

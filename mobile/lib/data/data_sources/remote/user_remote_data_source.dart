@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
+import 'package:mobile/data/data_sources/remote/api/firebase_api.dart';
+import 'package:mobile/data/data_sources/remote/api/magic_music_api.dart';
 import 'package:mobile/data/dto/req/edit_profile_req.dart';
 import 'package:mobile/data/dto/req/get_artist_req.dart';
 import 'package:mobile/data/dto/req/login_req.dart';
@@ -12,15 +14,24 @@ import 'package:mobile/data/dto/resp/get_artist_resp.dart';
 import 'package:mobile/models/user_model.dart';
 
 final userRemoteProvider = Provider<UserRemoteDataSource>(
-  (ref) => UserRemoteDataSource(ref.read(magicMusicApiProvider))
+  (ref) => UserRemoteDataSource(
+    magicMusicApi: ref.read(magicMusicApiProvider),
+    firebaseApi: ref.read(firebaseApi),
+  )
 );
 
 class UserRemoteDataSource {
-  UserRemoteDataSource(MagicMusicApi magicMusicApi) {
+  UserRemoteDataSource({
+    required MagicMusicApi magicMusicApi,
+    required FirebaseApi firebaseApi,
+  }) {
     _magicMusicApi = magicMusicApi;
+    _firebaseApi = firebaseApi;
   }
 
-  late MagicMusicApi _magicMusicApi;
+  late final MagicMusicApi _magicMusicApi;
+  late final FirebaseApi _firebaseApi;
+
   final String _registerPath = '/auth/register';
   final String _getOtpPath = '/auth/get-otp-verify';
   final String _verifyEmailPath = '/auth/verify-email';
@@ -28,6 +39,10 @@ class UserRemoteDataSource {
   final String _loginPath = '/auth/login';
   final String _logoutPath = '/auth/logout';
   final String _userPath = '/users';
+
+  Future<void> init() async {
+    await _firebaseApi.initApi();
+  }
 
   Future<bool> registerWithEmail(RegisterReq dto) async {
     final response = await _magicMusicApi.request(
@@ -103,6 +118,10 @@ class UserRemoteDataSource {
     } else {
       return false;
     }
+  }
+
+  Future<UserCredential> loginWithGoogle(AuthCredential cred) async {
+    return await _firebaseApi.signInWithCredential(cred);
   }
 
   Future<bool> logout() async {

@@ -8,10 +8,8 @@ import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/artist/artist_view_model.dart';
 import 'package:mobile/views/detail_library/detail_library_view_model.dart';
-import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/widgets/library_widget.dart';
 import 'package:mobile/views/main/main_view_model.dart';
-import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
 class ArtistView extends ConsumerStatefulWidget {

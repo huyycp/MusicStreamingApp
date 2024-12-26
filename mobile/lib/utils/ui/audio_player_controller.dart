@@ -110,7 +110,7 @@ class AudioPlayerController extends ChangeNotifier {
 
   Future<void> handleTrackSlider(double value) async {
     if (value >= 0 && value <= 1) {
-      _player.seek(Duration(milliseconds: (value * _player.duration!.inMilliseconds).round()));
+      _player.seek(Duration(milliseconds: (value * (_player.duration?.inMilliseconds ?? 0)).round()));
       notifyListeners();
     }
   }

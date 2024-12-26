@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
+import 'package:mobile/data/data_sources/remote/api/magic_music_api.dart';
 import 'package:mobile/data/dto/resp/search_resp.dart';
 
 final searchRemoteProvider = Provider<SearchRemoteDataSource>(

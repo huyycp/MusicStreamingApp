@@ -21,6 +21,7 @@ class SplashViewModel extends ChangeNotifier {
     try {
       isValidSession = (await _userRepo.loadAccessToken()) && (await _userRepo.isValidRefreshToken());
       if (isValidSession) await _userRepo.getCurrentUser();
+      await _userRepo.initFirebase();
       isInitialized = true;
       debugPrint('Initialized');
       notifyListeners();
