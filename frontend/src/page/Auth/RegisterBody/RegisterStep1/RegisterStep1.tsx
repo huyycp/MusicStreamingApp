@@ -40,7 +40,7 @@ export default function RegisterStep1() {
     if (!email) navigate('/register')
   })
   useEffect(() => {
-    document.title = 'Magic Music - Register: Step 1'
+    document.title = 'Magic Music - Đăng ký: Bước 1'
   }, [])
 
   const [password, setPassword] = useState('')

@@ -14,15 +14,17 @@ import SvgIcon from '@mui/icons-material/ErrorOutline'
 import { useNavigate } from 'react-router-dom'
 import useRegister from '~/hooks/Auth/useRegister'
 import CircularProgress from '@mui/material/CircularProgress'
+import useGoogleAuth from '~/hooks/Auth/useGoogleRegister'
 
 export default function RegisterBody() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState<string>('')
   const { checkEmail, isPending } = useRegister()
+  const { googleSignIn, googleError } = useGoogleAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    document.title = 'Magic Music - Register'
+    document.title = 'Magic Music - Đăng ký'
   }, [])
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +53,9 @@ export default function RegisterBody() {
         }
       )
     }
+  }
+  const handleGoogleSignIn = () => {
+    googleSignIn()
   }
 
   return (
@@ -119,16 +124,18 @@ export default function RegisterBody() {
             justifyContent: 'center',
             padding: '8px'
           }}
+          onClick={handleGoogleSignIn}
         >
           <SvgIcon component={GoogleIcon} inheritViewBox sx={{ height: '24px', width: '24px', mr: 1 }} />
           <Box sx={{ fontWeight: 'bold', fontSize: 14 }}>Đăng ký bằng Google</Box>
         </Button>
+        {googleError && <Typography variant='body2' sx={{ color: 'red', mt: 2 }}>{googleError}</Typography>}
         <Divider sx={{ width: '100%', bgcolor: (theme) => theme.palette.neutral.neutral2, mt: 4, mb: 3 }}></Divider>
         <Box sx={{ fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', pl: 3, pr: 3 }}>
           <Box sx={{ color: (theme) => theme.palette.neutral.neutral2 }}>Bạn đã có tài khoản?</Box>
           <Box
             sx={{ color: (theme) => theme.palette.secondary4.main, cursor: 'pointer', textDecoration: 'underline' }}
-            onClick={() => window.location.href = '/login'}
+            onClick={() => (window.location.href = '/login')}
           >
             Đăng nhập tại đây
           </Box>

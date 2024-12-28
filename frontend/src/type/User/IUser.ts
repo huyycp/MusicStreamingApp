@@ -12,4 +12,6 @@ export interface IUser {
   genres: IGenres[]
   avatar: string
   premium: boolean
+  number_of_following: number
+  number_of_followers: number
 }

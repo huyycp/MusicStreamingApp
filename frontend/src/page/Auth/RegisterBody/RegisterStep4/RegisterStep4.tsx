@@ -33,11 +33,12 @@ export default function RegisterStep4() {
   const gender = location.state?.gender as string
   const name = location.state?.name as string
   const role = location.state?.role as string
+  const type = location.state?.type as string
 
   const [activeGenres, setActiveGenres] = useState<string[]>([])
 
   useEffect(() => {
-    document.title = 'Magic Music - Register: Step 4'
+    document.title = 'Magic Music - Đăng ký: Bước 4'
   }, [])
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function RegisterStep4() {
       { email },
       {
         onSuccess: () => {
-          navigate('/register/verify-email', { state: { email, password, name, gender, role, listGenres: activeGenres } })
+          navigate('/register/verify-email', { state: { email, password, name, gender, role, listGenres: activeGenres, type } })
         }
       }
     )

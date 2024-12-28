@@ -46,12 +46,13 @@ export default function RegisterStep3() {
   const password = location.state?.password as string
   const gender = location.state?.gender as string
   const name = location.state?.name as string
+  const type = location.state?.type as string
 
   const [errorCheck, setErrorCheck] = useState<boolean>(false)
   const [selectedValue, setSelectedValue] = useState('')
 
   useEffect(() => {
-    document.title = 'Magic Music - Register: Step 3'
+    document.title = 'Magic Music - Đăng ký: Bước 3'
   }, [])
 
   useEffect(() => {
@@ -67,7 +68,7 @@ export default function RegisterStep3() {
     if (selectedValue === '') {
       setErrorCheck(true)
     } else if (!errorCheck) {
-      navigate('/register/step4', { state: { email, password, name, gender, role: selectedValue } })
+      navigate('/register/step4', { state: { email, password, name, gender, role: selectedValue, type } })
     }
   }
 
@@ -87,6 +88,7 @@ export default function RegisterStep3() {
             }
           }}
           onClick={() => {
+            if (type === 'oauth') navigate('/register')
             navigate('/register/step2', { state: { email, password } })
           }}
         />

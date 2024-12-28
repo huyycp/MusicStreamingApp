@@ -5,4 +5,5 @@ export interface RegisterData {
   role: string
   gender: string
   genres: string
+  type?: string
 }

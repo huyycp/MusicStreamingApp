@@ -41,11 +41,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <BodyContent /> // Element cho trang chính
+        element: <BodyContent />
       },
       {
         path: '/search',
-        element: <BodyContent viewType='search' /> // Element cho trang tìm kiếm
+        element: <BodyContent viewType='search' />
       },
       {
         path: '/liked-music',
@@ -72,8 +72,8 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='artist' />
       },
       {
-        path: '/section',
-        element: <BodyContent viewType='section' />
+        path: '/album/top',
+        element: <BodyContent viewType='album-top' />
       },
       {
         path: '/genres/:genreId',
@@ -84,8 +84,16 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='user' />
       },
       {
+        path: 'artist/follow',
+        element: <BodyContent viewType='artist-follow' />
+      },
+      {
+        path: '/artist/top',
+        element: <BodyContent viewType='artist-top' />
+      },
+      {
         path: '/test',
-        element: <TestUI /> // Element cho trang TestUI
+        element: <TestUI />
       }
     ]
   },
