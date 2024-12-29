@@ -9,14 +9,14 @@ import 'package:mobile/views/sign_up/widgets/forward_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/views/sign_up/widgets/sign_up_app_bar.dart';
 
-class SignUpStep5View extends ConsumerStatefulWidget {
-  const SignUpStep5View({super.key});
+class SignUpStepRole extends ConsumerStatefulWidget {
+  const SignUpStepRole({super.key});
 
   @override
-  ConsumerState<SignUpStep5View> createState() => _SignUpStep5State();
+  ConsumerState<SignUpStepRole> createState() => _SignUpStepRoleState();
 }
 
-class _SignUpStep5State extends ConsumerState<SignUpStep5View> {
+class _SignUpStepRoleState extends ConsumerState<SignUpStepRole> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

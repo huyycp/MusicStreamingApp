@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,17 +9,25 @@ final authMethodsViewModel = ChangeNotifierProvider.autoDispose<AuthMethodsViewM
 
 class AuthMethodsViewModel extends ChangeNotifier{
 
-  Future<void> loginWithGoogle(Function(bool) onDone) async {
-    final googleSignIn = GoogleSignIn();
+  Future<void> loginWithGoogle(Function(GoogleSignInAccount?) onDone) async {
+    try {
+      final googleSignIn = GoogleSignIn();
 
-    final GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
-    
-    final GoogleSignInAuthentication? accountAuth = await googleAccount?.authentication; 
-    
-    if (accountAuth != null) {
-      debugPrint('Account : ${accountAuth.idToken}');
+      final GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
+      debugPrint('Google account $googleAccount');    
+      // final GoogleSignInAuthentication? accountAuth = await googleAccount?.authentication; 
+      
+      // final AuthCredential cred = GoogleAuthProvider.credential(
+      //   idToken: accountAuth?.idToken,
+      //   accessToken: accountAuth?.accessToken,
+      // );
+
+      // debugPrint('Account : $cred');
+      
+      onDone(googleAccount);
+    } catch (err) {
+      debugPrint(err.toString());
     }
-    onDone(accountAuth != null);
   }
   
   void loginWithFacebook() {

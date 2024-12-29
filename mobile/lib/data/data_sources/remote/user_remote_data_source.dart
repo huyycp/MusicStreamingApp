@@ -38,6 +38,7 @@ class UserRemoteDataSource {
   final String _getAvailableEmailsPath = '/auth/get-list-email';
   final String _loginPath = '/auth/login';
   final String _logoutPath = '/auth/logout';
+  final String _checkEmailPath = '/auth/check-email';
   final String _userPath = '/users';
 
   Future<void> init() async {
@@ -231,5 +232,24 @@ class UserRemoteDataSource {
       }
     }
     return null;
+  }
+
+  Future<UserCredential> addToFirebase(AuthCredential cred) async {
+    return await _firebaseApi.signInWithCredential(cred);
+  }
+
+  Future<bool> checkExistEmail(String email) async {
+    final response = await _magicMusicApi.request(
+      _checkEmailPath,
+      method: HttpMethods.POST,
+      data: {
+        'email': email,
+      }
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      return data ?? false;
+    }
+    return false;
   }
 }

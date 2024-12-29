@@ -42,7 +42,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
           builder: (context) {
             return _statusDialog('Registering...');
           });
-        ref.read(signUpViewModel).registerWithEmail();
+        ref.read(signUpViewModel).register();
       } else {
         debugPrint('Verify email failed');
       }

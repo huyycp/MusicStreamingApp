@@ -8,6 +8,7 @@ class RegisterReq {
     required this.name,
     required this.role,
     this.authType = AppAuthType.inapp,
+    this.avatar,
   });
   
   String email;
@@ -16,6 +17,7 @@ class RegisterReq {
   String name;
   UserRole role;
   AppAuthType authType;
+  String? avatar;
 
   Map<String, dynamic> toJson() => {
     'email': email,
@@ -24,5 +26,6 @@ class RegisterReq {
     'name': name,
     'role': role.index.toString(),
     'type': authType == AppAuthType.inapp ? '' : authType.name,
+    'avatar': avatar,
   };
 }

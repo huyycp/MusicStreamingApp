@@ -13,14 +13,14 @@ import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/views/sign_up/widgets/sign_up_app_bar.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
-class SignUpStep3View extends ConsumerStatefulWidget {
-  const SignUpStep3View({super.key});
+class SignUpStepGenderView extends ConsumerStatefulWidget {
+  const SignUpStepGenderView({super.key});
 
   @override
-  ConsumerState<SignUpStep3View> createState() => _SignUpStep3State();
+  ConsumerState<SignUpStepGenderView> createState() => _SignUpStepGenderState();
 }
 
-class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
+class _SignUpStepGenderState extends ConsumerState<SignUpStepGenderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +99,7 @@ class _SignUpStep3State extends ConsumerState<SignUpStep3View> {
     return ForwardButton(
       onPressed: () {
         if (ref.read(signUpViewModel).genderFormKey.currentState!.validate()) {
-          context.push(RouteNamed.signUpStep4);
+          context.push(RouteNamed.signUpStepRole);
         }
       },
     );

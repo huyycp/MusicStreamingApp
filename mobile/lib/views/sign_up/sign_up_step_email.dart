@@ -9,14 +9,14 @@ import 'package:mobile/views/sign_up/widgets/sign_up_app_bar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:string_validator/string_validator.dart';
 
-class SignUpStep1View extends ConsumerStatefulWidget {
-  const SignUpStep1View({super.key});
+class SignUpStepEmail extends ConsumerStatefulWidget {
+  const SignUpStepEmail({super.key});
 
   @override
-  ConsumerState<SignUpStep1View> createState() => _SignUpStep1State();
+  ConsumerState<SignUpStepEmail> createState() => _SignUpStepEmail();
 }
 
-class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
+class _SignUpStepEmail extends ConsumerState<SignUpStepEmail> {
   @override
   void initState() {
     super.initState();
@@ -94,7 +94,7 @@ class _SignUpStep1State extends ConsumerState<SignUpStep1View> {
       onPressed: ref.watch(signUpViewModel.select((value) => value.availableEmails)) != ['']
         ? () {
           if (ref.read(signUpViewModel).emailFormKey.currentState!.validate()) {
-            context.push(RouteNamed.signUpStep2);
+            context.push(RouteNamed.signUpStepPassword);
           }
         }
         : null,  

@@ -3,11 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/models/user_model.dart';
+import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/theme/text_theme.dart';
 import 'package:mobile/utils/constants.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/auth_methods/auth_methods_view_model.dart';
+import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/widgets/base_container.dart';
 
 class AuthMethodsView extends ConsumerStatefulWidget {
@@ -52,7 +56,7 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
   Widget _signUpBtn() {
     return ElevatedButton(
       onPressed: () {
-        context.push(RouteNamed.signUpStep1);
+        context.push(RouteNamed.signUpStepEmail);
       }, 
       style: ElevatedButton.styleFrom(
         backgroundColor: PRIMARY_COLOR,
@@ -69,9 +73,24 @@ class _AuthMethodsViewState extends ConsumerState<AuthMethodsView> {
   Widget _googleBtn() {
     return OutlinedButton.icon(
       onPressed: () {
-        ref.read(authMethodsViewModel).loginWithGoogle((isDone) {
-          if (isDone) {
-
+        ref.watch(signUpViewModel);
+        ref.read(authMethodsViewModel).loginWithGoogle((account) async {
+          if (account != null) {
+            if (await ref.read(userRepoProvider).checkExistEmail(account.email)) {
+              final result = await ref.read(userRepoProvider).loginWithEmail(
+                email: account.email,
+                password: account.id,
+                type: AppAuthType.oauth,
+              );
+              if (result) {
+                context.go(RouteNamed.main);
+              } else {
+                SnackBarUtils.showSnackBar(message: 'Email already exists');
+              }
+            } else {
+              ref.read(signUpViewModel).setGoogleAccount(account);
+              context.push(RouteNamed.signUpStepGender);
+            }
           }
         });
       }, 

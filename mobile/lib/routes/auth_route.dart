@@ -3,11 +3,11 @@ import 'package:mobile/views/auth_methods/auth_methods_view.dart';
 import 'package:mobile/views/login/login_view.dart';
 import 'package:mobile/views/not_found/not_found_view.dart';
 import 'package:mobile/views/sign_up/select_favorite_genre_view.dart';
-import 'package:mobile/views/sign_up/sign_up_step_1_view.dart';
-import 'package:mobile/views/sign_up/sign_up_step_2_view.dart';
-import 'package:mobile/views/sign_up/sign_up_step_3_view.dart';
-import 'package:mobile/views/sign_up/sign_up_step_4_view.dart';
-import 'package:mobile/views/sign_up/sign_up_step_5_view.dart';
+import 'package:mobile/views/sign_up/sign_up_step_email.dart';
+import 'package:mobile/views/sign_up/sign_up_step_password.dart';
+import 'package:mobile/views/sign_up/sign_up_step_gender_view.dart';
+import 'package:mobile/views/sign_up/sign_up_step_name.dart';
+import 'package:mobile/views/sign_up/sign_up_step_role_view.dart';
 import 'package:mobile/views/sign_up/verify_email_view.dart';
 
 class AuthRoute {
@@ -17,22 +17,22 @@ class AuthRoute {
   static const String _baseAuth = '/auth';
   static const String _login = 'login';
   static const String _signUp = 'sign-up';
-  static const String _signUpStep1 = 'step-1';
-  static const String _signUpStep2 = 'step-2';
-  static const String _signUpStep3 = 'step-3';
-  static const String _signUpStep4 = 'step-4';
-  static const String _signUpStep5 = 'step-5';
+  static const String _signUpStepEmail = 'step-email';
+  static const String _signUpStepPassword = 'step-password';
+  static const String _signUpStepGender = 'step-gender';
+  static const String _signUpStepName = 'step-name';
+  static const String _signUpStepRole = 'step-role';
   static const String _verifyEmail = 'verify-email';
   static const String _selectGenre = 'select-genre';
 
   static String get authMethods => _baseAuth;
   static String get login => '$_baseAuth/$_login';
   static String get signUp => '$_baseAuth/$_signUp';
-  static String get signUpStep1 => '$signUp/$_signUpStep1';
-  static String get signUpStep2 => '$signUp/$_signUpStep2';
-  static String get signUpStep3 => '$signUp/$_signUpStep3';
-  static String get signUpStep4 => '$signUp/$_signUpStep4';
-  static String get signUpStep5 => '$signUp/$_signUpStep5';
+  static String get signUpStepEmail => '$signUp/$_signUpStepEmail';
+  static String get signUpStepPassword => '$signUp/$_signUpStepPassword';
+  static String get signUpStepGender => '$signUp/$_signUpStepGender';
+  static String get signUpStepName => '$signUp/$_signUpStepName';
+  static String get signUpStepRole => '$signUp/$_signUpStepRole';
   static String get verifyEmail => '$_baseAuth/$_verifyEmail';
   static String get selectGenre => '$_baseAuth/$_selectGenre';
 
@@ -60,24 +60,24 @@ class AuthRoute {
     builder: (context, state) => const NotFoundView(),
     routes: <RouteBase>[
       GoRoute(
-        path: 'step-1',
-        builder: (context, state) => const SignUpStep1View()
+        path: 'step-email',
+        builder: (context, state) => const SignUpStepEmail()
       ),
       GoRoute(
-        path: 'step-2',
-        builder: (context, state) => const SignUpStep2View()
+        path: 'step-password',
+        builder: (context, state) => const SignUpPassStepPassword()
       ),
       GoRoute(
-        path: 'step-3',
-        builder: (context, state) => const SignUpStep3View()
+        path: 'step-gender',
+        builder: (context, state) => const SignUpStepGenderView()
       ),
       GoRoute(
-        path: 'step-4',
-        builder: (context, state) => const SignUpStep4View()
+        path: 'step-name',
+        builder: (context, state) => const SignUpStepNameView()
       ),
       GoRoute(
-        path: 'step-5',
-        builder: (context, state) => const SignUpStep5View()
+        path: 'step-role',
+        builder: (context, state) => const SignUpStepRole()
       ),
     ]
   );
