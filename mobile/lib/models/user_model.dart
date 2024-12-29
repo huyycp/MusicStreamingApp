@@ -63,3 +63,9 @@ enum UserStatus {
   verified,
   banned,
 }
+
+enum AppAuthType {
+  inapp, // Auth with email and password
+  oauth,
+  unknown,
+}

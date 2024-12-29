@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
+import 'package:mobile/data/data_sources/remote/api/magic_music_api.dart';
 import 'package:mobile/data/dto/req/get_artist_req.dart';
 import 'package:mobile/data/dto/req/get_library_req.dart';
 import 'package:mobile/data/dto/resp/get_artist_resp.dart';

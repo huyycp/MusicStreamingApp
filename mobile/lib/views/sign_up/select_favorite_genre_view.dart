@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/views/genre/genre_view.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
+import 'package:mobile/widgets/base_button.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/loading_widget.dart';
 
@@ -47,12 +48,7 @@ class _SelectFavoriteGenreViewState extends ConsumerState<SelectFavoriteGenreVie
   Widget _addFavoriteGenresBtn() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          )
-        ),
+      child: AppButton(
         onPressed: ref.watch(signUpViewModel.select((value) => value.favoriteGenres.length >= 3 && value.isGenresAdded == false))
           ? () => ref.read(signUpViewModel).addGenresToFavorite()
           : null,

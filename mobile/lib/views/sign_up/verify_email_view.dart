@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/sign_up/sign_up_view_model.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -25,7 +26,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
     ref.listen(signUpViewModel.select((value) => value.registerSuccess), (prev, next) {
       context.pop();
       if (next) {
-        context.go('/auth/select-genre');
+        context.go(RouteNamed.selectGenre);
       } else {
         debugPrint('Register failed');
       }
@@ -41,7 +42,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
           builder: (context) {
             return _statusDialog('Registering...');
           });
-        ref.read(signUpViewModel).registerWithEmail();
+        ref.read(signUpViewModel).register();
       } else {
         debugPrint('Verify email failed');
       }

@@ -38,11 +38,11 @@ class RouteNamed {
   static String authMethods = AuthRoute.authMethods;
   static String login = AuthRoute.login;
   static String signUp = AuthRoute.signUp;
-  static String signUpStep1 = AuthRoute.signUpStep1;
-  static String signUpStep2 = AuthRoute.signUpStep2;
-  static String signUpStep3 = AuthRoute.signUpStep3;
-  static String signUpStep4 = AuthRoute.signUpStep4;
-  static String signUpStep5 = AuthRoute.signUpStep5;
+  static String signUpStepEmail = AuthRoute.signUpStepEmail;
+  static String signUpStepPassword = AuthRoute.signUpStepPassword;
+  static String signUpStepGender = AuthRoute.signUpStepGender;
+  static String signUpStepName = AuthRoute.signUpStepName;
+  static String signUpStepRole = AuthRoute.signUpStepRole;
   static String verifyEmail = AuthRoute.verifyEmail;
   static String selectGenre = AuthRoute.selectGenre;
 

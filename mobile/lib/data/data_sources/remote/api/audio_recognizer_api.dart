@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/data_sources/remote/base_api.dart';
-import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
+import 'package:mobile/data/data_sources/remote/api/base_api.dart';
+import 'package:mobile/data/data_sources/remote/api/magic_music_api.dart';
 
 final audioRecognizerProvider = Provider<AudioRecognizerApi>(
   (ref) => AudioRecognizerApi(dotenv.env['AUDIO_RECOGNIZER_URL']!)

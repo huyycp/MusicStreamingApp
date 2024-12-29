@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/models/genre_model.dart';
 import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/genre_repository.dart';
@@ -7,7 +9,7 @@ import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/ui/snackbar.dart';
 
-final signUpViewModel = ChangeNotifierProvider.autoDispose<SignUpViewModel>(
+final signUpViewModel = ChangeNotifierProvider<SignUpViewModel>(
   (ref) => SignUpViewModel(ref.read(userRepoProvider), ref.read(genreRepoProvider))
 );
 
@@ -31,15 +33,28 @@ class SignUpViewModel extends ChangeNotifier{
   UserRole userRole = UserRole.listener;
   List<GenreModel> favoriteGenres = [];
 
+
   bool verifySuccess = false;
   bool registerSuccess = false;
   bool? isGenresAdded = false;
   List<String> availableEmails = [''];
 
+  GoogleSignInAccount? account;
+  bool isOauth = false;
+
   void changeUserRole(UserRole? value) {
     if (value == null || value == userRole) return;
     userRole = value;
+    account;
     notifyListeners();
+  }
+
+  Future<void> register() async {
+    if (isOauth) {
+      await registerWithGoogle();
+    } else {
+      await registerWithEmail();
+    }
   }
 
   Future<void> registerWithEmail() async {
@@ -53,13 +68,30 @@ class SignUpViewModel extends ChangeNotifier{
     notifyListeners();
   } 
 
+  Future<void> registerWithGoogle() async {
+    final userCred = await _userRepo.addToFirebase(account!);
+    registerSuccess = await _userRepo.registerWithEmail(
+      email: userCred.user!.email!,
+      password: account!.id,
+      gender: genderController.text,
+      name: userCred.user!.displayName!,
+      role: userRole,
+      avatar: userCred.user!.photoURL,
+    );
+    notifyListeners();
+  }
+
   Future<void> getAuthOTP() async {
-    await _userRepo.getAuthOTP(emailController.text);
+    await _userRepo.getAuthOTP(
+      isOauth
+        ? (account?.email ?? '')
+        : emailController.text
+    );
   }
 
   Future<void> verifyEmail(String otp) async {
     verifySuccess = await _userRepo.verifyEmail(
-      email: emailController.text, 
+      email: isOauth ? (account?.email ?? '') : emailController.text, 
       otp: otp
     );
     notifyListeners();
@@ -106,5 +138,12 @@ class SignUpViewModel extends ChangeNotifier{
       isGenresAdded = false;
       notifyListeners();
     }
+  }
+
+  /// For OAuth
+  void setGoogleAccount(GoogleSignInAccount account) {
+    this.account = account;
+    isOauth = true;
+    notifyListeners();
   }
 }

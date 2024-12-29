@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mobile/data/data_sources/remote/magic_music_api.dart';
+import 'package:mobile/data/data_sources/remote/api/magic_music_api.dart';
 import 'package:mobile/data/dto/req/create_report_req.dart';
 import 'package:mobile/data/dto/req/get_report_req.dart';
 import 'package:mobile/data/dto/resp/get_report_resp.dart';

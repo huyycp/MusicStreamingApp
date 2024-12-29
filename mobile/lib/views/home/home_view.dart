@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/home/widgets/bighit_track_widget.dart';
 import 'package:mobile/views/home/widgets/favorite_genre_widget.dart';
@@ -33,7 +34,7 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
     super.build(context);
     ref.listen(homeViewModel.select((value) => value.sessionValid), (prev, next) {
       if (!next) {
-        context.go('/auth');
+        context.go(RouteNamed.authMethods);
       }
     });
 

@@ -6,7 +6,6 @@ import 'package:mobile/models/report_model.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
-import 'package:mobile/views/library/widgets/library_widget.dart';
 import 'package:mobile/views/profile/widgets/report_widget.dart';
 import 'package:mobile/views/report/report_view_model.dart';
 import 'package:mobile/widgets/base_container.dart';
@@ -53,6 +52,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
         const SizedBox(height: 12),
         Expanded(
           child: ListView.separated(
+            controller: ref.read(reportViewModel).reportScrollController,
             itemCount: reports.length,
             itemBuilder: (context, index) => ReportWidget(reports[index]),
             separatorBuilder: (context, index) => const SizedBox(height: 12),

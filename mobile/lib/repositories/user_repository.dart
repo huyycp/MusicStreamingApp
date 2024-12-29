@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mobile/data/data_sources/remote/user_remote_data_source.dart';
@@ -26,19 +28,26 @@ class UserRepository extends ChangeNotifier {
   late final UserRemoteDataSource _userRemote;
   UserModel? user;
 
+  Future<void> initFirebase() async {
+    await _userRemote.init();
+  }
+
   Future<bool> registerWithEmail({
     required String email,
     required String password,
     required String gender, 
     required String name, 
     required UserRole role, 
+    String? avatar,
   }) async {
     final result = await _userRemote.registerWithEmail(RegisterReq(
       email: email, 
       password: password, 
       gender: gender, 
       name: name, 
-      role: role
+      role: role,
+      avatar: avatar,
+      authType: AppAuthType.oauth,
     ));
     if (result) {
        await getCurrentUser();
@@ -66,14 +75,38 @@ class UserRepository extends ChangeNotifier {
 
   Future<bool> loginWithEmail({
     required String email,
-    required String password
+    required String password,
+    AppAuthType type = AppAuthType.inapp,
   }) async {
     final result = await _userRemote.loginWithEmail(LoginReq(
       email: email,
-      password: password
+      password: password,
+      authType: type,
     ));
     if (result) {
        await getCurrentUser();
+    }
+    return result;
+  }
+
+  Future<bool> loginWithGoogle({
+    required AuthCredential authCred,
+    required String gender,
+    required UserRole role,
+  }) async {
+    final userCred = await _userRemote.loginWithGoogle(authCred);
+    if (userCred.user == null) return false; 
+    final req = RegisterReq(
+      email: userCred.user!.email ?? '',
+      password: userCred.user!.uid,
+      name: userCred.user!.displayName ?? 'User#${DateTime.now().millisecondsSinceEpoch % 10000}',
+      gender: gender,
+      role: role,
+      authType: AppAuthType.oauth,
+    );
+    final result = await _userRemote.registerWithEmail(req);
+    if (result) {
+      await getCurrentUser();
     }
     return result;
   }
@@ -136,5 +169,20 @@ class UserRepository extends ChangeNotifier {
   }) async {
     final req = GetArtistReq(pagination: pagination);
     return await _userRemote.getFollowingArtists(req);
+  }
+
+  Future<UserCredential> addToFirebase(GoogleSignInAccount account) async {
+    final GoogleSignInAuthentication accountAuth = await account.authentication; 
+    
+    final AuthCredential cred = GoogleAuthProvider.credential(
+      idToken: accountAuth.idToken,
+      accessToken: accountAuth.accessToken,
+    );
+
+    return await _userRemote.addToFirebase(cred);
+  }
+
+  Future<bool> checkExistEmail(String email) async {
+    return await _userRemote.checkExistEmail(email);
   }
 }
