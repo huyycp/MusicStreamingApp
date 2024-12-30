@@ -11,6 +11,7 @@ import 'package:mobile/views/main/main_view_model.dart';
 import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/navigate_avatar.dart';
+import 'package:mobile/widgets/notification_nav_widget.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -52,6 +53,9 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
       child: AppAppbar(
         title: const Text('Home'),
         leading: _userAvatar(),
+        actions: const [
+          NotificationNavWidget()
+        ],
       ),
     );
   }

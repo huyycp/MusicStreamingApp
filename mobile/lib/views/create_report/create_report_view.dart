@@ -113,7 +113,15 @@ class _CreateReportViewState extends ConsumerState<CreateReportView> {
   }
 
   Widget _reasonSelector() {
-    return const AppChipSelector();
+    return AppChipSelector(
+      reasons: ref.watch(createReportViewModel.select(
+        (value) => value.reasons
+      )),
+      selectedReasons: ref.watch(createReportViewModel.select(
+        (value) => value.selectedReasons
+      )),
+      onReasonSelected: ref.read(createReportViewModel).selectReason,
+    );
   }
 
   Widget _subjectInput() {

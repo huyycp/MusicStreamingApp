@@ -53,11 +53,13 @@ class HomeViewModel extends ChangeNotifier {
     getSuggestedArtists();
   }
 
-  Future<void> logout() async {
+  Future<void> logout(Function(bool) onDone) async {
     try {
       sessionValid = !(await _userRepo.logout());
       notifyListeners();
+      onDone(sessionValid);
     } catch (err) {
+      onDone(false);
       debugPrint(err.toString());
     }
   }

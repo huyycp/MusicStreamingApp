@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile/models/report_model.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/string_format.dart';
 
 class ReportWidget extends StatelessWidget {
@@ -8,18 +10,21 @@ class ReportWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            report.subject,
-            style: Theme.of(context).textTheme.bodyLarge,
-            overflow: TextOverflow.ellipsis,
+    return GestureDetector(
+      onTap: () => context.push('${RouteNamed.report}/${report.id}'),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              report.subject,
+              style: Theme.of(context).textTheme.bodyLarge,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
-        const SizedBox(width: 12),
-        _reportStatusTag(context),
-      ],
+          const SizedBox(width: 12),
+          _reportStatusTag(context),
+        ],
+      ),
     );
   }
 

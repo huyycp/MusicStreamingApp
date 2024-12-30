@@ -11,7 +11,7 @@ import 'package:mobile/views/library/library_view.dart';
 import 'package:mobile/views/profile/profile_view.dart';
 import 'package:mobile/views/search/search_view.dart';
 
-final mainViewModel = ChangeNotifierProvider<MainViewModel>(
+final mainViewModel = ChangeNotifierProvider.autoDispose<MainViewModel>(
   (ref) => MainViewModel()
 );
 

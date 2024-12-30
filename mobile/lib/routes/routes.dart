@@ -4,6 +4,7 @@ import 'package:mobile/routes/auth_route.dart';
 import 'package:mobile/routes/home_route.dart';
 import 'package:mobile/routes/library_route.dart';
 import 'package:mobile/routes/main_route.dart';
+import 'package:mobile/routes/notification_route.dart';
 import 'package:mobile/routes/pick_track_route.dart';
 import 'package:mobile/routes/profile_route.dart';
 import 'package:mobile/routes/report_route.dart';
@@ -27,6 +28,7 @@ class RouteConfig {
       PickTrackRoute.routes,
       ReportRoute.routes,
       ProfileRoute.routes,
+      NotificationRoute.routes,
     ]
   );
 }
@@ -85,4 +87,7 @@ class RouteNamed {
   static String createTrackThumbnail = TrackRoute.createTrackThumbnail;
   static String createTrackGenre = TrackRoute.createTrackGenre;
   static String pickPlaylist = TrackRoute.pickPlaylist;
+
+  // Notification
+  static String notification = NotificationRoute.notification;
 }

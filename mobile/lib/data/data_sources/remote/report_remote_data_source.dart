@@ -50,4 +50,18 @@ class ReportRemoteDataSource {
     }
     return GetReportResp.fromJson({});
   }
+
+  Future<ReportModel?> getReport(String reportId) async {
+    final response = await _magicMusicApi.request(
+      '$_reportPath/$reportId',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      if (data != null) {
+        return ReportModel.fromJson(data);
+      }
+    }
+    return null;
+  }
 }
