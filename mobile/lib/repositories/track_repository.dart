@@ -83,4 +83,8 @@ class TrackRepository {
   Future<PlaylistWithTrackResp> getPlaylistsWithTrack(String trackId) async {
     return await _trackRemote.getPlaylistsWithTrack(trackId);
   }
+
+  Future<bool> increaseView(String trackId) async {
+    return await _trackRemote.increaseView(trackId);
+  }
 }
