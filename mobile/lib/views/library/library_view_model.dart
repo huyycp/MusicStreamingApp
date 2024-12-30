@@ -27,23 +27,28 @@ class LibraryViewModel extends ChangeNotifier {
        _userRepo = userRepo,
        _trackRepo = trackRepo {
     libraryScrollController.addListener(() {
-      if (libraryScrollController.position.pixels == libraryScrollController.position.maxScrollExtent && canLoadLibraries) {
+      if (libraryScrollController.position.pixels == libraryScrollController.position.maxScrollExtent - 100 && canLoadLibraries) {
         getLibraries();
       }
     });
     albumScrollController.addListener(() {
-      if (albumScrollController.position.pixels == albumScrollController.position.maxScrollExtent && canLoadAlbums) {
+      if (albumScrollController.position.pixels == albumScrollController.position.maxScrollExtent - 100 && canLoadAlbums) {
         getAlbums();
       }
     });
     playlistScrollController.addListener(() {
-      if (playlistScrollController.position.pixels == playlistScrollController.position.maxScrollExtent && canLoadPlaylists) {
+      if (playlistScrollController.position.pixels == playlistScrollController.position.maxScrollExtent - 100 && canLoadPlaylists) {
         getPlaylists();
       }
     });
     trackScrollController.addListener(() {
-      if (trackScrollController.position.pixels == trackScrollController.position.maxScrollExtent && canLoadTracks) {
+      if (trackScrollController.position.pixels == trackScrollController.position.maxScrollExtent - 100 && canLoadTracks) {
         getMyTracks();
+      }
+    });
+    artistScrollController.addListener(() {
+      if (artistScrollController.position.pixels == artistScrollController.position.maxScrollExtent - 100 && canLoadArtists) {
+        getFollowingArtists();
       }
     });
   }
@@ -100,13 +105,11 @@ class LibraryViewModel extends ChangeNotifier {
   Future<void> getLibraries({ bool refresh  = false }) async {
     try {
       if (refresh) {
-        isLoadingLibraries = true;
-        notifyListeners();
-        libraryPage = 1;
         if (libraries.isNotEmpty) {
+          libraryPage = 1;
           libraryScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+          libraries.clear();
         }
-        libraries.clear();
       }
       final resp = await _libraryRepo.getLibraries(
         pagination: PaginationListReq(
@@ -139,13 +142,11 @@ class LibraryViewModel extends ChangeNotifier {
   Future<void> getAlbums({bool refresh = false}) async {
     try {
       if (refresh) {
-        isLoadingAlbums = true;
-        notifyListeners();
-        albumPage = 1;
         if (albums.isNotEmpty) {
+          albumPage = 1;
           albumScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+          albums.clear();
         }
-        albums.clear();
       }
       final resp = await _libraryRepo.getLibraries(
         pagination: PaginationListReq(
@@ -179,13 +180,11 @@ class LibraryViewModel extends ChangeNotifier {
   Future<void> getPlaylists({bool refresh = false}) async {
     try {
       if (refresh) {
-        isLoadingPlaylist = true;
-        notifyListeners();
-        playlistPage = 1;
         if (playlists.isNotEmpty) {
+          playlistPage = 1;
           playlistScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+          playlists.clear();
         }
-        playlists.clear();
       }
       final resp = await _libraryRepo.getLibraries(
         pagination: PaginationListReq(
@@ -219,13 +218,11 @@ class LibraryViewModel extends ChangeNotifier {
   Future<void> getMyTracks({bool refresh = false}) async {
     try {
       if (refresh) {
-        isLoadingTracks = true;
-        notifyListeners();
-        trackPage = 1;
         if (tracks.isNotEmpty) {
+          trackPage = 1;
           trackScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+          tracks.clear();
         }
-        tracks.clear();
       }
       final resp = await _trackRepo.getTracksByUser(
         pagination: PaginationListReq(
@@ -256,13 +253,11 @@ class LibraryViewModel extends ChangeNotifier {
   Future<void> getFollowingArtists({bool refresh = false}) async {
     try {
       if (refresh) {
-        isLoadingArtists = true;
-        notifyListeners();
-        artistPage = 1;
         if (artists.isNotEmpty) {
+          artistPage = 1;
           artistScrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+          artists.clear();
         }
-        artists.clear();
       }
       final resp = await _userRepo.getFollowingArtists(
         pagination: PaginationListReq(
