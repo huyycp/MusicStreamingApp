@@ -141,4 +141,12 @@ class TrackRemoteDataSource {
     }
     return PlaylistWithTrackResp.fromJson({});
   }
+
+  Future<bool> increaseView(String trackId) async {
+    final response = await _magicMusicApi.request(
+      '$_trackPath/$trackId/increment-view',
+      method: HttpMethods.PATCH,
+    );
+    return response.statusCode == HttpStatus.ok;
+  }
 }

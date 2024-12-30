@@ -72,7 +72,7 @@ class LibraryWidget extends ConsumerWidget {
 
   Widget _libraryOwner(BuildContext context, WidgetRef ref) {
     return Text(
-      '${library.type.name.capitalize()} - ${library.ownersName.isEmpty ? ref.read(libraryViewModel).user!.name : library.ownersName}',
+      '${library.type.name.capitalize()} - ${library.ownersName.isEmpty ? (ref.read(libraryViewModel).user?.name ?? '') : library.ownersName}',
       style: Theme.of(context).textTheme.bodyMedium,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,

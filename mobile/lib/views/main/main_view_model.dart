@@ -12,7 +12,7 @@ import 'package:mobile/views/profile/profile_view.dart';
 import 'package:mobile/views/search/search_view.dart';
 
 final mainViewModel = ChangeNotifierProvider.autoDispose<MainViewModel>(
-  (ref) => MainViewModel()
+  (ref) => MainViewModel(ref)
 );
 
 final mainAudioController = ChangeNotifierProvider<AudioPlayerController>(
@@ -20,8 +20,11 @@ final mainAudioController = ChangeNotifierProvider<AudioPlayerController>(
 );
 
 class MainViewModel extends ChangeNotifier {
+  MainViewModel(ChangeNotifierProviderRef ref) {
+    audioController = AudioPlayerController(ref);
+  }
 
-  final audioController = AudioPlayerController();
+  late final AudioPlayerController audioController;
   ViewInfoModel currentView = PageMenuSelection.home;
   ViewInfoModel? prevView;
   final pageController = PageController();

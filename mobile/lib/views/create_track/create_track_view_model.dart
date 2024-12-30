@@ -10,19 +10,17 @@ import 'package:mobile/utils/ui/audio_player_controller.dart';
 import 'package:mobile/utils/ui/snackbar.dart';
 
 final createTrackViewModel = ChangeNotifierProvider<CreateTrackViewModel>(
-  (ref) => CreateTrackViewModel(
-    trackRepo: ref.read(trackRepoProvider)
-  )
+  (ref) => CreateTrackViewModel(ref)
 );
 
 class CreateTrackViewModel extends ChangeNotifier {
-  CreateTrackViewModel({
-    required TrackRepository trackRepo
-  }) : _trackRepo = trackRepo {
+  CreateTrackViewModel(ChangeNotifierProviderRef ref) {
+    audioController = AudioPlayerController(ref);
     trackTitleController.addListener(checkValidTrackInfo);
+    _trackRepo = ref.read(trackRepoProvider);
   }
 
-  final TrackRepository _trackRepo;
+  late final TrackRepository _trackRepo;
 
   /// Create track: Track info
   final trackInfoFormKey = GlobalKey<FormState>();
@@ -31,7 +29,7 @@ class CreateTrackViewModel extends ChangeNotifier {
 
   /// Create track: Track audio
   PlatformFile? trackAudio;
-  final audioController = AudioPlayerController();
+  late final AudioPlayerController audioController;
 
   /// Create track: Lyrics
   final trackLyricsController = TextEditingController();
