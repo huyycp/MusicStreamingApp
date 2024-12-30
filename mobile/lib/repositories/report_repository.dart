@@ -52,4 +52,8 @@ class ReportRepository {
     );
     return await _reportRemote.getReports(req);
   }
+
+  Future<ReportModel?> getReport(String reportId) async {
+    return await _reportRemote.getReport(reportId);
+  }
 }

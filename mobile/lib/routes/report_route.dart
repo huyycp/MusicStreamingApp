@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:mobile/views/create_report/create_report_view.dart';
+import 'package:mobile/views/detail_report/detail_report_view.dart';
 import 'package:mobile/views/report/report_view.dart';
 
 class ReportRoute {
@@ -16,6 +17,10 @@ class ReportRoute {
     path: _baseReport,
     builder: (context, state) => const ReportView(),
     routes: [
+      GoRoute(
+        path: ':id',
+        builder: (context, state) => DetailReportView(reportId: state.pathParameters['id']!),
+      ),
       GoRoute(
         path: '$_createReport/:id',
         name: 'create-report',

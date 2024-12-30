@@ -13,7 +13,7 @@ class NotificationWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (notification.type == NotificationType.reports) {
-          // context.go('${RouteNamed.detailReport}/${notification.artifactId}');
+          context.go('${RouteNamed.report}/${notification.artifactId}');
         } else if (notification.type == NotificationType.tracks) {
           // context.go('${RouteNamed.detailTrack}/${notification.artifactId}');
         }

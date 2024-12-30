@@ -28,7 +28,7 @@ class CreateReportViewModel extends ChangeNotifier {
   final ReportRepository _reportRepo;
   final TrackRepository _trackRepo;
   TrackModel? track;
-  final List<String> reason = [
+  final List<String> reasons = [
     'Copyright infringement',
     'Privacy violation',
     'Pornographic content',

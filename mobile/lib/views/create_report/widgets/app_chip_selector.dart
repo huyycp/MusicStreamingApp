@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/theme/color_scheme.dart';
-import 'package:mobile/views/create_report/create_report_view_model.dart';
 import 'package:mobile/views/create_report/widgets/app_chip_item.dart';
 
 class AppChipSelector extends ConsumerWidget {
-  const AppChipSelector({super.key});
+  const AppChipSelector({
+    super.key,
+    required this.reasons,
+    required this.selectedReasons,
+    required this.onReasonSelected,
+  });
+
+  final List<String> reasons;
+  final List<String> selectedReasons;
+  final Function(String) onReasonSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reasons = ref.watch(createReportViewModel.select(
-      (value) => value.reason
-    ));
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -24,8 +29,8 @@ class AppChipSelector extends ConsumerWidget {
         children: reasons.map(
           (reason) => AppChipItem(
             text: reason,
-            isSelected: ref.watch(createReportViewModel.select((value) => value.selectedReasons.contains(reason))),
-            onPressed: ref.read(createReportViewModel).selectReason
+            isSelected: selectedReasons.contains(reason),
+            onPressed: onReasonSelected
           )
         ).toList(),
       ),

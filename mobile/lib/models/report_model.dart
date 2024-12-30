@@ -1,3 +1,6 @@
+import 'package:mobile/models/track_model.dart';
+import 'package:mobile/models/user_model.dart';
+
 class ReportModel {
   ReportModel({
     required this.id,
@@ -12,6 +15,8 @@ class ReportModel {
     required this.imagePaths,
     required this.audioPath,
     required this.rejectionReason,
+    this.reporter,
+    this.track,
   });
 
   String id;
@@ -26,6 +31,8 @@ class ReportModel {
   List<String> imagePaths;
   String audioPath;
   String rejectionReason;
+  UserModel? reporter;
+  TrackModel? track;
 
   factory ReportModel.fromJson(Map<String, dynamic> json) => ReportModel(
     id: json['_id'] ?? '',
@@ -44,6 +51,8 @@ class ReportModel {
     imagePaths: List.from(json['image']?.map((imageJson) => imageJson.toString()) ?? []),
     audioPath: json['path_audio'] ?? '',
     rejectionReason: json['rejection_reason'] ?? '',
+    reporter: json['reporters'] != null ? UserModel.fromJson(json['reporters']) : null,
+    track: json['tracks'] != null ? TrackModel.fromJson(json['tracks']) : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -59,6 +68,8 @@ class ReportModel {
     'image': imagePaths,
     'path_audio': audioPath,
     'rejection_reason': rejectionReason,
+    'reporters': reporter?.toJson(),
+    'tracks': track?.toJson(),
   };
 }
 
