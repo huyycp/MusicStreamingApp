@@ -11,7 +11,13 @@ class AuthMethodsViewModel extends ChangeNotifier{
 
   Future<void> loginWithGoogle(Function(GoogleSignInAccount?) onDone) async {
     try {
-      final googleSignIn = GoogleSignIn();
+      final googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile',
+        ]
+      );
 
       final GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
       debugPrint('Google account $googleAccount');    

@@ -35,8 +35,8 @@ class ReportViewModel extends ChangeNotifier {
     try {
       if (!canLoadReport && !refresh) return;
       if (refresh) {
-        reportPage = 1;
         if (reports.isNotEmpty) {
+          reportPage = 1;
           reportScrollController.animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
           reports.clear();
         }

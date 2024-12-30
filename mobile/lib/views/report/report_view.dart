@@ -8,6 +8,7 @@ import 'package:mobile/utils/string_format.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/profile/widgets/report_widget.dart';
 import 'package:mobile/views/report/report_view_model.dart';
+import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
 
@@ -35,10 +36,12 @@ class _ReportViewState extends ConsumerState<ReportView> {
     );
   }
 
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Reports'),
-      centerTitle: false,
+  PreferredSize _appBar() {
+    return const PreferredSize(
+      preferredSize: Size.fromHeight(56),
+      child: AppAppbar(
+        title: Text('Reports'),
+      ),
     );
   }
 
@@ -51,11 +54,15 @@ class _ReportViewState extends ConsumerState<ReportView> {
         _filters(),
         const SizedBox(height: 12),
         Expanded(
-          child: ListView.separated(
-            controller: ref.read(reportViewModel).reportScrollController,
-            itemCount: reports.length,
-            itemBuilder: (context, index) => ReportWidget(reports[index]),
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
+          child: RefreshIndicator(
+            onRefresh: () => ref.read(reportViewModel).getReports(refresh: true),
+            child: ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+              controller: ref.read(reportViewModel).reportScrollController,
+              itemCount: reports.length,
+              itemBuilder: (context, index) => ReportWidget(reports[index]),
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
+            ),
           ),
         ),
       ],

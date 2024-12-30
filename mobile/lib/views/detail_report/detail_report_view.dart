@@ -4,6 +4,7 @@ import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/views/create_report/widgets/app_chip_selector.dart';
 import 'package:mobile/views/detail_report/detail_report_view_model.dart';
+import 'package:mobile/widgets/app_appbar.dart';
 import 'package:mobile/widgets/audio_image_widget.dart';
 import 'package:mobile/widgets/base_container.dart';
 import 'package:mobile/widgets/dynamic_image.dart';
@@ -35,10 +36,12 @@ class _DetailReportViewState extends ConsumerState<DetailReportView> {
     );
   }
 
-  AppBar _appBar() {
-    return AppBar(
-      title: const Text('Report'),
-      forceMaterialTransparency: true,
+  PreferredSize _appBar() {
+    return const PreferredSize(
+      preferredSize: Size.fromHeight(80),
+      child: AppAppbar(
+        title: Text('Report'),
+      ),
     );
   }
   

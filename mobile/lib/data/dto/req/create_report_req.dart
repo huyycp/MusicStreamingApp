@@ -20,7 +20,7 @@ class CreateReportReq {
   List<File> audios;
 
   Future<Map<String, dynamic>> toJson() async {
-    final imagesFiles = images.map((image) async => await MultipartFile.fromFile(image.path));
+    final imagesFiles = await Future.wait(images.map((image) async => await MultipartFile.fromFile(image.path)));
     final audioFile = await MultipartFile.fromFile(audios[0].path);
     return {
       'reason': reason,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile/routes/routes.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/widgets/base_button.dart';
@@ -39,7 +40,11 @@ class _UserActionSheetState extends ConsumerState<UserActionSheet> {
     return AppButton(
       onPressed: () {
         context.pop();
-        ref.read(homeViewModel).logout();
+        ref.read(homeViewModel).logout((isDone) {
+          if (isDone) {
+            context.go(RouteNamed.authMethods);
+          }
+        });
       },
       type: ButtonType.text,
       child: const Row(
