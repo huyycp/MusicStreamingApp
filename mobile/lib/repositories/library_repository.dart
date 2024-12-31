@@ -50,7 +50,12 @@ class LibraryRepository {
       sortBy: sortBy,
       direction: direction,
     );
-    return await _libraryRemote.getLibraries(req);
+    final resp = await _libraryRemote.getLibraries(req);
+    if (resp != null) {
+      final index = resp.libraries.indexWhere((library) => library.isFavorite);
+      resp.libraries.insert(0, resp.libraries.removeAt(index));
+    }
+    return resp;
   }
 
   Future<LibraryModel?> getLibrary(String libraryId) async {
