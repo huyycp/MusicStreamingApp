@@ -32,6 +32,13 @@ import VnPayForm from './components/VnPay/VnPayForm/VnPayForm'
 import VnPayReturn from './components/VnPay/VnPayReturn/VnPayReturn'
 import PayOSForm from './components/PayOS/PayOSForm/PayOSForm'
 import PayOSCancel from './components/PayOS/PayOSCancel/PayOSCancel'
+import SectionAlbum from './components/Section/SectionAlbum/SectionAlbum'
+import AlbumViewWeekTop10 from './components/TopView/AlbumView/AlbumViewWeekTop10/AlbumViewWeekTop10'
+import AlbumViewTop10 from './components/TopView/AlbumView/AlbumViewTop10/AlbumViewTop10'
+import SectionArtist from './components/Section/SectionArtist/SectionArtist'
+import { ArtistViewWeeklyTop } from './components/TopView/ArtistView/ArtistViewWeeklyTop10/ArtistViewWeeklyTop'
+import { ArtistViewTop } from './components/TopView/ArtistView/ArtistViewTop/ArtistViewTop'
+import { ArtistTopFollow } from './components/TopView/ArtistView/ArtistTopFollow/ArtistTopFollow'
 
 const router = createBrowserRouter([
   {
@@ -57,7 +64,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/library/:albumId',
-        element: <BodyContent viewType='album' />
+        element: <BodyContent viewType='album-detail' />
       },
       {
         path: '/track/:trackId',
@@ -72,8 +79,26 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='artist' />
       },
       {
-        path: '/album/top',
-        element: <BodyContent viewType='album-top' />
+        path: '/album',
+        element: <BodyContent viewType='album' />,
+        children: [
+          {
+            index: true,
+            element: <SectionAlbum />
+          },
+          {
+            path: 'weekly/top10',
+            element: <AlbumViewWeekTop10 />
+          },
+          {
+            path: 'top10',
+            element: <AlbumViewTop10 />
+          }
+        ]
+      },
+      {
+        path: '/album/:albumId/edit-tracks',
+        element: <BodyContent viewType='album-edit' />
       },
       {
         path: '/genres/:genreId',
@@ -84,12 +109,38 @@ const router = createBrowserRouter([
         element: <BodyContent viewType='user' />
       },
       {
-        path: 'artist/follow',
+        path: '/artist/follow',
         element: <BodyContent viewType='artist-follow' />
       },
       {
-        path: '/artist/top',
-        element: <BodyContent viewType='artist-top' />
+        path: '/artist-top',
+        element: <BodyContent viewType='artist-view' />,
+        children: [
+          {
+            index: true,
+            element: <SectionArtist />
+          },
+          {
+            path: 'weekly/top10',
+            element: <ArtistViewWeeklyTop />
+          },
+          {
+            path: 'top10',
+            element: <ArtistViewTop />
+          },
+          {
+            path: 'top-follow',
+            element: <ArtistTopFollow />
+          }
+        ]
+      },
+      {
+        path: '/my-report',
+        element: <BodyContent viewType='my-report' />
+      },
+      {
+        path: '/report/:reportId',
+        element: <BodyContent viewType='report' />
       },
       {
         path: '/test',

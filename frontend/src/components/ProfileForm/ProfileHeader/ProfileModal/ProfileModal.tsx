@@ -7,11 +7,10 @@ import Box from '@mui/material/Box'
 import CloseIcon from '@mui/icons-material/Close'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Typography } from '@mui/material'
 import { IUser } from '~/type/User/IUser'
 import useUpdateProfile from '~/hooks/User/useUpdateProfile'
-import { useUser } from '~/hooks/useUser'
 
 type Props = {
   open: boolean
@@ -23,9 +22,10 @@ type Props = {
 const ProfileModal = ({ open, onClose, initialValue = '', user }: Props) => {
   const [name, setName] = useState(initialValue)
   const [error, setError] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  const { mutate } = useUpdateProfile()
-  const { setUser } = useUser()
+  const { updateProfile, isPending } = useUpdateProfile()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [image, setImage] = useState<string | undefined>(user?.avatar)
+  const [imageFile, setImageFile] = useState<File | undefined>()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
@@ -41,19 +41,40 @@ const ProfileModal = ({ open, onClose, initialValue = '', user }: Props) => {
     if (!name.trim()) {
       setError(true)
       return
+    } else {
+      updateProfile({ name, image: imageFile })
     }
-    mutate(
-      { name: name },
-      {
-        onSuccess: () => {
-          setUser({ ...user, name: name })
-          onClose()
-        },
-        onError: () => {
-          setError(true)
-        }
+  }
+
+  useEffect(() => {
+    if (!isPending) {
+      handleClose()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPending])
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      if (image && image.startsWith('blob:')) {
+        URL.revokeObjectURL(image)
       }
-    )
+      const imageUrl = URL.createObjectURL(file)
+      setImage(imageUrl)
+      setImageFile(file)
+    }
+  }
+
+  const handleDeleteImage = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (image && image.startsWith('blob:')) {
+      URL.revokeObjectURL(image)
+    }
+    setImage(undefined)
+  }
+
+  const handleBoxClick = () => {
+    fileInputRef.current?.click()
   }
 
   const handleClose = () => {
@@ -94,51 +115,92 @@ const ProfileModal = ({ open, onClose, initialValue = '', user }: Props) => {
         <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center' }}>
           <Box
             sx={{
-              width: 180,
-              height: 180,
-              borderRadius: '100%',
-              backgroundColor: user?.avatar ? `url(${user.avatar})` : '#333',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.3s'
+              'width': 180,
+              'height': 180,
+              'borderRadius': '100%',
+              'backgroundColor': '#333',
+              'backgroundImage': image ? `url(${image})` : 'none',
+              'backgroundSize': 'cover',
+              'backgroundPosition': 'center',
+              'display': 'flex',
+              'alignItems': 'center',
+              'justifyContent': 'center',
+              'cursor': 'pointer',
+              'position': 'relative',
+              'transition': 'all 0.3s',
+              '&:hover': {
+                '& .hover-overlay': {
+                  opacity: 1
+                },
+                '& .hover-overlay-1': {
+                  opacity: 0
+                }
+              }
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onClick={handleBoxClick}
           >
-            {!user?.avatar &&
-              (isHovered ? (
-                <Box>
-                  <CreateOutlinedIcon
-                    sx={{
-                      fontSize: '70px',
-                      color: (theme) => theme.palette.secondary4.main,
-                      transition: 'all 0.3s'
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      color: (theme) => theme.palette.secondary4.main
-                    }}
-                  >
-                    Chọn ảnh
-                  </Typography>
-                </Box>
-              ) : (
-                <PermIdentityIcon
-                  sx={{
-                    fontSize: '80px',
-                    color: (theme) => theme.palette.neutral.neutral2,
-                    transition: 'all 0.3s'
-                  }}
-                />
-              ))}
+            <input ref={fileInputRef} type='file' accept='image/*' style={{ display: 'none' }} onChange={handleImageChange} />
+            {!image && (
+              <PermIdentityIcon
+                className='hover-overlay-1'
+                sx={{
+                  fontSize: '80px',
+                  color: (theme) => theme.palette.neutral.neutral2,
+                  transition: 'all 0.3s'
+                }}
+              />
+            )}
+            <Box
+              className='hover-overlay'
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: 0,
+                transition: 'opacity 0.3s',
+                borderRadius: '10px'
+              }}
+            >
+              <CreateOutlinedIcon
+                sx={{
+                  fontSize: '70px',
+                  color: (theme) => theme.palette.secondary4.main
+                }}
+              />
+              <Typography
+                sx={{
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  color: (theme) => theme.palette.secondary4.main
+                }}
+              >
+                {image ? 'Thay đổi ảnh' : 'Chọn ảnh'}
+              </Typography>
+            </Box>
+            {image && (
+              <IconButton
+                onClick={handleDeleteImage}
+                sx={{
+                  'position': 'absolute',
+                  'top': -10,
+                  'right': -10,
+                  'backgroundColor': '#333',
+                  '&:hover': {
+                    backgroundColor: '#444'
+                  }
+                }}
+              >
+                <CloseIcon sx={{ color: 'white' }} />
+              </IconButton>
+            )}
           </Box>
+
           <Box
             sx={{
               width: '60%',

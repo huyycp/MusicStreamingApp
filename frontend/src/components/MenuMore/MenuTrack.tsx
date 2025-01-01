@@ -20,20 +20,44 @@ import ReportTrack from '../ReportModal/ReportTrack/ReportTrack'
 import DownloadIcon from '@mui/icons-material/Download'
 import { normalizeString } from '~/utils/normalizeString'
 import SharePopover from './SharePopover/SharePopover'
+import DeleteIcon from '@mui/icons-material/Delete'
+import useAddTrackToAlbum from '~/hooks/Album/useAddTrackToAlbum'
+import { useQueryClient } from '@tanstack/react-query'
+import { useUser } from '~/hooks/useUser'
+import { Tooltip } from '@mui/material'
 
 type Props = {
   track: ITrack
   open: boolean
   anchorEl: HTMLElement
   onClose: () => void
+  playlistId?: string
 }
 
-export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
+export default function MenuTrack({ track, open, anchorEl, onClose, playlistId }: Props) {
   const [openReportModal, setOpenReportModal] = useState(false)
   const [playlistPopoverAnchorEl, setPlaylistPopoverAnchorEl] = useState<HTMLElement | null>(null)
   const [artistPopoverAnchorEl, setArtistPopoverAnchorEl] = useState<HTMLElement | null>(null)
   const [shareAnchorEl, setShareAnchorEl] = useState<HTMLElement | null>(null)
   const { enqueueSnackbar } = useSnackbar()
+  const { mutate } = useAddTrackToAlbum()
+  const queryClient = useQueryClient()
+  const { user } = useUser()
+
+  const handleAddTrack = (playlistId: string, trackId: string) => {
+    mutate(
+      { library_id: playlistId, tracks: [trackId], type: 'del' },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['library', playlistId] })
+          enqueueSnackbar('Xóa khỏi danh sách phát thành công!', { variant: 'success' })
+        },
+        onError: () => {
+          enqueueSnackbar('Thêm vào danh sách phát thất bại', { variant: 'error' })
+        }
+      }
+    )
+  }
 
   const handlePlaylistPopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
     setPlaylistPopoverAnchorEl(event.currentTarget)
@@ -77,6 +101,12 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
       enqueueSnackbar('Tải xuống bắt đầu', { variant: 'success' })
     } catch {
       enqueueSnackbar('Không thể tải xuống bài hát', { variant: 'error' })
+    }
+  }
+
+  const handleDeletePlayListItem = () => {
+    if (playlistId) {
+      handleAddTrack(playlistId, track._id)
     }
   }
 
@@ -173,12 +203,20 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
           >
             <ListItemIcon sx={{ gap: 1 }}>
               <AddCircleOutlineIcon fontSize='small' />
-              <Box>Thêm vào playlist</Box>
+              <Box>Thêm vào danh sách phát</Box>
             </ListItemIcon>
             <ListItemIcon sx={{ paddingLeft: '15px' }}>
               <ArrowForwardIosIcon fontSize='small' />
             </ListItemIcon>
           </MenuItem>
+          {playlistId && (
+            <MenuItem onClick={handleDeletePlayListItem}>
+              <ListItemIcon sx={{ gap: 1 }}>
+                <DeleteIcon fontSize='small' />
+                <Box>Xóa khỏi danh sách phát này</Box>
+              </ListItemIcon>
+            </MenuItem>
+          )}
           <MenuItem
             onMouseEnter={handleArtistPopoverOpen}
             onMouseLeave={() => {
@@ -196,12 +234,14 @@ export default function MenuTrack({ track, open, anchorEl, onClose }: Props) {
               <ArrowForwardIosIcon fontSize='small' />
             </ListItemIcon>
           </MenuItem>
-          <MenuItem onClick={handleDownload}>
-            <ListItemIcon sx={{ gap: 1 }}>
-              <DownloadIcon fontSize='small' />
-              <Box>Tải xuống bài hát</Box>
-            </ListItemIcon>
-          </MenuItem>
+          <Tooltip title={user?.premium ? '' : 'Chỉ dành cho tài khoản Premium'}>
+            <MenuItem onClick={handleDownload} disabled={!user?.premium}>
+              <ListItemIcon sx={{ gap: 1 }}>
+                <DownloadIcon fontSize='small' />
+                <Box>Tải xuống bài hát</Box>
+              </ListItemIcon>
+            </MenuItem>
+          </Tooltip>
           <MenuItem
             sx={{ borderTop: '1px solid', borderTopColor: (theme) => theme.palette.neutral.neutral2 }}
             onMouseEnter={handleSharePopoverOpen}

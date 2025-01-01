@@ -10,9 +10,11 @@ type Props = {
   title: string
   artists: IArtist[]
   isPending: boolean
+  handleNavigate?: () => void
+  tag?: string
 }
 
-export default function ListArtist({ title, artists, isPending }: Props) {
+export default function ListArtist({ title, artists, isPending, handleNavigate, tag }: Props) {
   const { widths } = useResize()
   const [listArtist, setListArtist] = useState<IArtist[]>([])
 
@@ -43,18 +45,21 @@ export default function ListArtist({ title, artists, isPending }: Props) {
         >
           {title}
         </Typography>
-        <Typography
-          variant='body2'
-          sx={{
-            'cursor': 'pointer',
-            'color': (theme) => theme.palette.neutral.neutral1,
-            '&:hover': {
-              textDecoration: 'underline'
-            }
-          }}
-        >
-          Hiện tất cả
-        </Typography>
+        {handleNavigate && (
+          <Typography
+            variant='body2'
+            sx={{
+              'cursor': 'pointer',
+              'color': (theme) => theme.palette.neutral.neutral1,
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+            onClick={handleNavigate}
+          >
+            Hiện tất cả
+          </Typography>
+        )}
       </Box>
       {isPending && (
         <Box sx={{ display: 'flex', gap: '10px', width: '100%' }}>
@@ -66,7 +71,7 @@ export default function ListArtist({ title, artists, isPending }: Props) {
       {!isPending && (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
           {listArtist.map((artist) => {
-            return <ArtistTag key={artist._id} artist={artist} />
+            return <ArtistTag key={artist._id} artist={artist} tag={tag} />
           })}
         </Box>
       )}

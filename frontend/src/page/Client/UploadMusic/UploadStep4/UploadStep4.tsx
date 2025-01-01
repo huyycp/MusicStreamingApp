@@ -2,13 +2,14 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
 import { styled } from '@mui/material/styles'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useNavigate } from 'react-router-dom'
 import { useGetUploadData } from '~/hooks/useGetUploadData'
 import useUploadMusic from '~/hooks/Upload/useUploadMusic'
 import CircularProgress from '@mui/material/CircularProgress'
 import MusicGenres from '~/components/MusicGenres/MusicGenres'
+import { useUser } from '~/hooks/useUser'
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 2,
@@ -23,9 +24,11 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }))
 
 export default function UploadStep4() {
-  const { setLyrics, name, audioFile, imageFile, lyrics, clearData, activeGenres, setActiveGenres, setImageFile } = useGetUploadData()
+  const { setLyrics, collab, name, audioFile, imageFile, lyrics, clearData, activeGenres, setActiveGenres, setImageFile } = useGetUploadData()
   const { mutate: uploadMusic, isPending } = useUploadMusic()
   const navigate = useNavigate()
+  const [error, setError] = useState('')
+  const { user } = useUser()
 
   useEffect(() => {
     if (!name) {
@@ -43,11 +46,18 @@ export default function UploadStep4() {
     formData.append('image', imageFile as File)
     formData.append('lyrics', lyrics)
     formData.append('genre', activeGenres)
-    // navigate('/upload-music/final')
+    formData.append('collab', collab || `${user?._id}`)
     uploadMusic(formData, {
       onSuccess: () => {
         clearData()
         navigate('/')
+      },
+      onError: (error: Error & { response?: { data?: { message?: string } } }) => {
+        if (error?.response?.data?.message) {
+          setError(error.response.data.message)
+        } else {
+          setError('Đã xảy ra lỗi, vui lòng thử lại')
+        }
       }
     })
   }
@@ -88,6 +98,7 @@ export default function UploadStep4() {
           <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Chọn loại nhạc</Box>
         </Box>
       </Box>
+      {error && <Box sx={{ color: 'red', fontSize: 14 }}>{error}</Box>}
       <MusicGenres activeGenres={activeGenres} setActiveGenres={setActiveGenres} />
       {activeGenres !== '' && !isPending && (
         <Button variant='contained' color='primary' onClick={handleNext}>

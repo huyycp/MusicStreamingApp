@@ -9,7 +9,7 @@ export interface ITrackResponse {
   }
 }
 
-type TrackStatus = 'all' | 'pending' | 'available'
+type TrackStatus = 'all' | 'pending' | 'available' | 'banned' | 'occupied'
 
 export const apiGetTracks = async (limit: number, page: number): Promise<ITrackResponse> => {
   const response = await instance.get<ITrackResponse>(`/tracks?limit=${limit}&page=${page}`)
@@ -43,5 +43,10 @@ export const apiUnLikeTrack = async (trackList: string[]) => {
       track_list: JSON.stringify(trackList)
     }
   })
+  return response.data
+}
+
+export const apiViewIncrement = async (trackId: string) => {
+  const response = await instance.patch<IResponse>(`/tracks/${trackId}/increment-view`)
   return response.data
 }

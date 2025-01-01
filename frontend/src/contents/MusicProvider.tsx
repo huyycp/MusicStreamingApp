@@ -1,5 +1,6 @@
-import { useState, useEffect, ReactNode } from 'react'
+import { useState, useEffect, ReactNode, useRef } from 'react'
 import useGetAlbumDetail from '~/hooks/Album/useGetLibraryDetail'
+import useViewIncrement from '~/hooks/Tracks/useViewIncrement'
 import MusicContext from '~/hooks/useMusic'
 import { ITrack } from '~/type/Tracks/ITrack'
 
@@ -27,8 +28,44 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
   const [trackId, setTrackId] = useState<string>(initTrackId)
   const [listMusic, setListMusic] = useState<ITrack[]>([])
   const [defaultIndex, setDefaultIndex] = useState<number>(trackIndex)
-
   const { data, isPending } = useGetAlbumDetail(listAlbumId[currentAlbumIndex])
+  const startTimeRef = useRef<number | null>(null)
+  const [hasIncrementedView, setHasIncrementedView] = useState<boolean>(false)
+  const { viewIncrement } = useViewIncrement()
+
+  useEffect(() => {
+    const handleTimeUpdate = () => {
+      if (repeat) {
+        if (audioElement && audioElement.currentTime <= 10 && hasIncrementedView) {
+          setHasIncrementedView(false)
+          startTimeRef.current = null
+        }
+      }
+      if (!audioElement || hasIncrementedView || pause) return
+
+      if (startTimeRef.current === null && !pause) {
+        startTimeRef.current = Date.now()
+      }
+
+      const currentListenTime = startTimeRef.current ? (Date.now() - startTimeRef.current) / 1000 : 0
+
+      if (currentListenTime >= 60 && audioElement.currentTime >= 60 && !hasIncrementedView) {
+        viewIncrement(music?._id as string)
+        setHasIncrementedView(true)
+      }
+    }
+
+    if (audioElement) {
+      audioElement.addEventListener('timeupdate', handleTimeUpdate)
+    }
+
+    return () => {
+      if (audioElement) {
+        audioElement.removeEventListener('timeupdate', handleTimeUpdate)
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioElement, music, pause, hasIncrementedView, viewIncrement])
 
   useEffect(() => {
     if (data) {
@@ -91,6 +128,8 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
     setMusic(song)
     setPosition(0)
     setAudioElement(newAudio)
+    setHasIncrementedView(false)
+    startTimeRef.current = null
     newAudio.play()
     setPause(false)
   }
@@ -106,7 +145,10 @@ export function MusicProvider({ children, listAlbumId, initIndexAlbum, addAlbumT
   useEffect(() => {
     const handleEnded = () => {
       if (repeat) {
-        audioElement?.play()
+        if (audioElement) {
+          audioElement.currentTime = 0
+          audioElement.play()
+        }
       } else {
         playNextTrack()
       }

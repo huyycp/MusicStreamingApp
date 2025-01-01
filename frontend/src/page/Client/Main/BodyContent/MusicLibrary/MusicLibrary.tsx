@@ -14,6 +14,7 @@ export default function MusicLibrary() {
   const [playlistSelect, setPlaylistSelect] = useState<ILibrary[] | []>([])
   const [playlistFavorite, setPlayListFavorite] = useState<ILibrary | undefined>(undefined)
   const [originalPlaylist, setOriginalPlaylist] = useState<ILibrary[] | []>([])
+  const [search, setSearch] = useState<string>('')
   const [album, setAlbum] = useState<number>(0)
   const { setFavIds } = useFavorite()
 
@@ -31,8 +32,17 @@ export default function MusicLibrary() {
       setPlaylistSelect(listAlbums)
       setOriginalPlaylist(listAlbums)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
+
+  useEffect(() => {
+    if (search) {
+      const filteredPlaylists = originalPlaylist.filter((album) => album.name.toLowerCase().includes(search.toLowerCase()))
+      setPlaylistSelect(filteredPlaylists)
+    } else {
+      setPlaylistSelect(originalPlaylist)
+    }
+  }, [search, originalPlaylist])
 
   return (
     <Box
@@ -54,9 +64,11 @@ export default function MusicLibrary() {
           setAlbum={setAlbum}
           album={album}
           originalPlaylist={originalPlaylist}
+          searchData={search}
+          setSearchData={setSearch}
         />
       )}
-      {user && <LibraryBody listAlbums={playlistSelect} album={album} favorite={playlistFavorite}/>}
+      {user && <LibraryBody listAlbums={playlistSelect} album={album} favorite={playlistFavorite} />}
       {!user && <LibraryHeaderNoUser />}
     </Box>
   )

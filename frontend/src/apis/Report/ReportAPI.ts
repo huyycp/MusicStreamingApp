@@ -19,3 +19,19 @@ export const apiReportTrack = async (trackId: string, data: { reason: string[]; 
   })
   return response.data
 }
+
+export const apiGetReportDetail = async (reportId: string) => {
+  const response = await instance.get(`/reports/${reportId}`)
+  return response.data
+}
+
+export const apiGetReports = async (limit: number, page: number, status: 'all' | 'pending' | 'resolved' | 'dismissed') => {
+  const response = await instance.get('/reports/my-reports', {
+    params: {
+      limit,
+      page,
+      status
+    }
+  })
+  return response.data
+}

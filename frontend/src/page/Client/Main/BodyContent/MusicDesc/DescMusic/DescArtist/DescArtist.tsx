@@ -5,11 +5,17 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom'
+import { useFavorite } from '~/hooks/useFavorite'
 import { useMusic } from '~/hooks/useMusic'
+import useFollowUser from '~/hooks/User/useFollowUser'
+import useGetUserDetail from '~/hooks/User/useGetUserDetail'
 
 export default function DescArtist() {
   const navigate = useNavigate()
   const { music } = useMusic()
+  const { data } = useGetUserDetail(music?.owners[0]._id)
+  const { isUserFollow } = useFavorite()
+  const { toggleFollow } = useFollowUser()
 
   return (
     <Card
@@ -35,7 +41,7 @@ export default function DescArtist() {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: 1 // thêm padding nếu cần để tránh chữ và nút bị dính nhau
+          padding: 1
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, overflow: 'hidden' }}>
@@ -62,17 +68,18 @@ export default function DescArtist() {
             sx={{
               cursor: 'pointer',
               color: (theme) => theme.palette.neutral.neutral1,
-              overflow: 'hidden', // Đảm bảo phần chữ bị ẩn đi khi hết không gian
-              textOverflow: 'ellipsis', // Chữ sẽ bị cắt với dấu ba chấm
-              whiteSpace: 'nowrap' // Ngừng xuống dòng
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
             }}
           >
-            1.000.000 người theo dõi
+            {`${data?.result.number_of_followers || 0} người theo dõi`}
           </Typography>
         </Box>
-
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', flexShrink: 0, flexGrow: 0, whiteSpace: 'nowrap' }}>
-          <Button variant='outlined'>Theo dõi</Button>
+          <Button variant='outlined' onClick={() => toggleFollow(music?.owners[0]?._id || '')}>
+            {isUserFollow(music?.owners[0]?._id || '') ? 'Đã theo dõi' : 'Theo dõi'}
+          </Button>
         </Box>
       </CardContent>
     </Card>

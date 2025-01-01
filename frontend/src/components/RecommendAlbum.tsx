@@ -6,9 +6,11 @@ import AlbumTag from './AlbumTag'
 import useGetAlbums from '~/hooks/Album/useGetAlbums'
 import Skeleton from '@mui/material/Skeleton'
 import { ILibrary } from '~/type/Library/ILibrary'
+import { useNavigate } from 'react-router-dom'
 
 export default function RecommendAlbum() {
   const { data, isPending } = useGetAlbums(10, 1)
+  const navigate = useNavigate()
 
   const listAlbum = useMemo(() => (data?.result?.data as ILibrary[]) || [], [data])
 
@@ -52,6 +54,7 @@ export default function RecommendAlbum() {
               textDecoration: 'underline'
             }
           }}
+          onClick={() => navigate('/album/top')}
         >
           Hiện tất cả
         </Typography>

@@ -1,111 +1,54 @@
 import Box from '@mui/material/Box'
-import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
-import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import SearchIcon from '@mui/icons-material/Search'
 import { useState } from 'react'
 import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 import MusicTable from './MusicTable'
-import { useResize } from '~/hooks/useResize'
-import { useNavigate } from 'react-router-dom'
 import AlbumTable from './AlbumTable'
+import useCheckUploadLimit from '~/hooks/User/useCheckUploadLimit'
+import SelectedStatus, { Status } from './SelectedStatus/SelectedStatus'
 
 export default function MyMusic() {
-  const navigate = useNavigate()
-  const { widths } = useResize()
+  const { checkUploadLimit } = useCheckUploadLimit()
 
   const [selectedTab, setSelectedTab] = useState<'songs' | 'albums'>('songs')
+  const [selectedStatus, setSelectedStatus] = useState<Status>('all')
+
+  const handleCreateTrack = () => {
+    checkUploadLimit()
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', pt: 2, width: '100%', gap: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant='h3' noWrap>
-          {selectedTab === 'songs' ? 'Bài hát của tôi' : 'Album của tôi'}
+          {selectedTab === 'songs' ? 'Bài hát của bạn' : 'Album của bạn'}
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'end', gap: 1 }}>
-          {widths[1] > 650 && (
-            <TextField
-              id='outlined-search'
-              placeholder='Tìm kiếm'
-              type='text'
-              size='small'
-              value=''
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <Tooltip title='Tìm kiếm'>
-                      <SearchIcon
-                        sx={{
-                          'fontSize': 20,
-                          'cursor': 'pointer',
-                          'color': (theme) => theme.palette.neutral.neutral1,
-                          '&:hover': {
-                            color: (theme) => theme.palette.secondary4.main
-                          }
-                        }}
-                      />
-                    </Tooltip>
-                  </InputAdornment>
-                )
-              }}
-              sx={{
-                'borderRadius': 20,
-                'minWidth': '200px',
-                'maxWidth': '250px',
-                'width': '50%',
-                'bgcolor': (theme) => theme.palette.secondary5.main,
-                'border': 'none',
-                '& input': { color: 'white', height: '25px', cursor: 'pointer' },
-                '& .MuiOutlinedInput-root': {
-                  '&:hover fieldset': { borderRadius: 20 },
-                  '&.Mui-focused fieldset': {
-                    borderColor: 'white',
-                    borderRadius: 20
-                  }
-                }
-              }}
-            />
-          )}
-          <Button variant='contained' startIcon={<AddIcon />} onClick={() => (window.location.href = '/upload-music')}>
+          <Button variant='contained' startIcon={<AddIcon />} onClick={handleCreateTrack}>
             Tải nhạc lên
           </Button>
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', gap: 2, pt: 2 }}>
-        <Button
-          onClick={() => setSelectedTab('songs')}
-          sx={{
-            'color': selectedTab === 'songs' ? 'white' : 'gray',
-            'bgcolor': selectedTab === 'songs' ? 'primary.main' : 'transparent',
-            'textDecoration': selectedTab === 'songs' ? 'underline' : 'none',
-            '&:hover': {
-              bgcolor: selectedTab === 'songs' ? 'primary.main' : 'transparent',
-              color: 'white'
-            }
-          }}
-        >
-          Bài hát
-        </Button>
-        <Button
-          onClick={() => setSelectedTab('albums')}
-          sx={{
-            'color': selectedTab === 'albums' ? 'white' : 'gray',
-            'bgcolor': selectedTab === 'albums' ? 'primary.main' : 'transparent',
-            'textDecoration': selectedTab === 'albums' ? 'underline' : 'none',
-            '&:hover': {
-              bgcolor: selectedTab === 'albums' ? 'primary.main' : 'transparent',
-              color: 'white'
-            }
-          }}
-        >
-          Album
-        </Button>
-        {selectedTab === 'albums' && (
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, pt: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Button
-            startIcon={<AddIcon />}
+            onClick={() => setSelectedTab('songs')}
+            sx={{
+              'color': selectedTab === 'songs' ? 'white' : 'gray',
+              'bgcolor': selectedTab === 'songs' ? 'primary.main' : 'transparent',
+              'textDecoration': selectedTab === 'songs' ? 'underline' : 'none',
+              '&:hover': {
+                bgcolor: selectedTab === 'songs' ? 'primary.main' : 'transparent',
+                color: 'white'
+              }
+            }}
+          >
+            Bài hát
+          </Button>
+          <Button
+            onClick={() => setSelectedTab('albums')}
             sx={{
               'color': selectedTab === 'albums' ? 'white' : 'gray',
               'bgcolor': selectedTab === 'albums' ? 'primary.main' : 'transparent',
@@ -115,18 +58,35 @@ export default function MyMusic() {
                 color: 'white'
               }
             }}
-            onClick={() => {
-              navigate('/create-album')
-            }}
           >
-            New Album
+            Album
           </Button>
-        )}
+          {selectedTab === 'albums' && (
+            <Button
+              startIcon={<AddIcon />}
+              sx={{
+                'color': selectedTab === 'albums' ? 'white' : 'gray',
+                'bgcolor': selectedTab === 'albums' ? 'primary.main' : 'transparent',
+                'textDecoration': selectedTab === 'albums' ? 'underline' : 'none',
+                '&:hover': {
+                  bgcolor: selectedTab === 'albums' ? 'primary.main' : 'transparent',
+                  color: 'white'
+                }
+              }}
+              onClick={() => {
+                window.location.href = '/create-album'
+              }}
+            >
+              Tạo Album mới
+            </Button>
+          )}
+        </Box>
+
+        {selectedTab === 'songs' && <SelectedStatus selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} />}
       </Box>
 
-      {/* Hiển thị danh sách nhạc đã lọc */}
       <Box sx={{ width: '100%', overflowY: 'auto' }}>
-        {selectedTab === 'songs' && <MusicTable />}
+        {selectedTab === 'songs' && <MusicTable status={selectedStatus} />}
         {selectedTab === 'albums' && <AlbumTable />}
       </Box>
     </Box>

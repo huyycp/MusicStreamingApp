@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useNavigate } from 'react-router-dom'
 import { useGetUploadData } from '~/hooks/useGetUploadData'
+import ArtistChoose from './ArtistChoose/ArtistChoose'
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 2,
@@ -24,7 +25,13 @@ export default function UploadStep1() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [error, setError] = useState('')
-  const { setAudioFile: setAudio, name, setName, audioFile: audioData } = useGetUploadData()
+  const [collab, setCollab] = useState<string[]>([])
+  const { setAudioFile: setAudio, name, setName, audioFile: audioData, setCollab: setCollabData } = useGetUploadData()
+
+  const onCollabChange = (newValue: string[]) => {
+    setCollab(newValue)
+    setCollabData(JSON.stringify(newValue))
+  }
 
   const navigate = useNavigate()
 
@@ -58,7 +65,12 @@ export default function UploadStep1() {
   const handleAudioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null
     if (file) {
-      setAudioFile(file)
+      if (file.size > 6 * 1024 * 1024) {
+        setError('File tải lên không được vượt quá 6MB')
+      } else {
+        setError('')
+        setAudioFile(file)
+      }
     }
   }
   const handleNext = () => {
@@ -104,12 +116,15 @@ export default function UploadStep1() {
           <Box sx={{ color: (theme) => theme.palette.secondary4.main, fontWeight: 'bold' }}>Điền tên bài hát và những người tham gia</Box>
         </Box>
       </Box>
+      <ArtistChoose value={collab} onChange={onCollabChange} />
+
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 3, flexDirection: 'column' }}>
         <Button variant='contained' component='label' sx={{ width: '100%', p: 1.3 }}>
           Tải lên
           <input hidden accept='audio/*' type='file' onChange={handleAudioChange} />
         </Button>
       </Box>
+      {error && <Box sx={{ color: 'red', fontSize: 14 }}>{error}</Box>}
       {audioUrl && (
         <audio ref={audioRef} controls>
           <source src={audioUrl} type={audioFile?.type} />

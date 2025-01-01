@@ -16,6 +16,8 @@ interface UploadContextType {
   clearData: () => void
   activeGenres: string
   setActiveGenres: React.Dispatch<React.SetStateAction<string>>
+  collab: string
+  setCollab: (data: string) => void
 }
 
 export const UploadContext = createContext<UploadContextType | undefined>(undefined)

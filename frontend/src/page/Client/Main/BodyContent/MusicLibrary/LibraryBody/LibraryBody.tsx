@@ -25,7 +25,7 @@ export default function LibraryBody({ listAlbums, album, favorite }: Props) {
       <div className='scrollable-container' style={{ blockSize: '100%', overflow: 'auto' }}>
         <Box sx={{ inlineSize: '100%', blockSize: '5px' }}></Box>
         {album !== 1 && favorite && user && <MusicView2 type='liked-music'/>}
-        {album !== 1 && user?.role === 1 && <MusicView2 type='my-music' totalMusic={4} />}
+        {album !== 1 && user?.role === 1 && <MusicView2 type='my-music' />}
         {listAlbums?.map((album, index) => <MusicView1 key={index} initAlbum={album} />)}
       </div>
     </Box>

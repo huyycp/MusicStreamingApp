@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import Box from '@mui/material/Box'
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined'
 import IconButton from '@mui/material/IconButton'
@@ -7,8 +8,10 @@ import { styled } from '@mui/material/styles'
 import { capitalizeFirstLetterOfEachWord } from '~/utils/capitalizeFirstLetterOfEachWord'
 import { useNavigate } from 'react-router-dom'
 import { ILibrary } from '~/type/Library/ILibrary'
+import theme from '~/theme'
 
 type Props = {
+  tag?: string
   album: ILibrary
 }
 const TextFade = styled(Box)(({ theme }) => ({
@@ -31,8 +34,29 @@ const slideUp = keyframes`
   }
 `
 
-export default function AlbumTag({ album }: Props) {
+export default function AlbumTag({ album, tag }: Props) {
   const navigate = useNavigate()
+  const changeColor = (tag: string) => {
+    switch (tag) {
+      case 'week-top10':
+        return theme.palette.gradient.gradient2
+      case 'top10':
+        return theme.palette.gradient.gradient1
+      default:
+        return 'linear-gradient(90deg, #FFC837 0%, #FF8008 100%)'
+    }
+  }
+
+  const title = (tag: string) => {
+    switch (tag) {
+      case 'week-top10':
+        return 'Top 10 tuần'
+      case 'top10':
+        return 'Top 10'
+      default:
+        return 'Top 10'
+    }
+  }
 
   return (
     <Box
@@ -44,6 +68,7 @@ export default function AlbumTag({ album }: Props) {
         'inlineSize': '166px',
         'blockSize': '216px',
         'padding': '12px',
+        'overflow': 'hidden',
         '&:hover': {
           'bgcolor': (theme) => theme.palette.neutral.neutral3,
           '& .MuiSvgIcon-root': {
@@ -56,6 +81,30 @@ export default function AlbumTag({ album }: Props) {
       }}
       onClick={() => navigate(`/library/${album._id}`)}
     >
+      {tag && (
+        <Box
+          sx={{
+            position: 'absolute',
+            width: 120,
+            top: 20,
+            left: -28,
+            overflow: 'hidden',
+            background: changeColor(tag),
+            color: (theme) => theme.palette.primary.contrastText,
+            padding: '4px 24px',
+            transform: 'rotate(-45deg)',
+            fontWeight: 'bold',
+            fontSize: '12px',
+            zIndex: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          {title(tag)}
+        </Box>
+      )}
+
       <img
         alt={album?.name}
         src={album?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
@@ -65,11 +114,12 @@ export default function AlbumTag({ album }: Props) {
         style={{
           inlineSize: '142px',
           blockSize: '142px',
-          objectFit: 'cover'
+          objectFit: 'cover',
+          position: 'relative'
         }}
       />
 
-      <Typography>{capitalizeFirstLetterOfEachWord(album.name)}</Typography>
+      <Typography noWrap>{capitalizeFirstLetterOfEachWord(album.name)}</Typography>
       <Box
         sx={{
           display: 'flex',

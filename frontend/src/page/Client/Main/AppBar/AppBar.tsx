@@ -16,6 +16,7 @@ import AudioRecorder from '~/components/Microphone/AudioRecorder'
 import Button from '@mui/material/Button'
 import { useUser } from '~/hooks/useUser'
 import { useAudioContext } from '~/hooks/useGetAudio'
+import Notification from './Notification/Notification'
 
 export default function AppBar() {
   const { user } = useUser()
@@ -27,8 +28,10 @@ export default function AppBar() {
   const { setSearchValue: setSearchKeyword } = useAudioContext()
 
   const handleTranscriptChange = (newTranscript: string) => {
-    setSearchValue(newTranscript)
-    setSearchKeyword(newTranscript)
+    const cleanedTranscript = newTranscript.replace(/[.,!?;:]/g, '')
+
+    setSearchValue(cleanedTranscript)
+    setSearchKeyword(cleanedTranscript)
   }
 
   useEffect(() => {
@@ -48,8 +51,11 @@ export default function AppBar() {
 
   const handleSearchChange = useCallback(
     (e: { target: { value: string | null } }) => {
-      setSearchValue(e.target.value)
-      setSearchKeyword(e.target.value)
+      const value = e.target.value ?? ''
+      if (value.length <= 50) {
+        setSearchValue(value)
+        setSearchKeyword(value)
+      }
     },
     [setSearchKeyword]
   )
@@ -61,7 +67,7 @@ export default function AppBar() {
   const handleClearSearch = useCallback(() => {
     setSearchValue('')
     setSearchKeyword('')
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -222,6 +228,7 @@ export default function AppBar() {
             </Button>
           </Tooltip>
         )}
+        {user && <Notification />}
         <Profile />
       </Box>
     </Box>
