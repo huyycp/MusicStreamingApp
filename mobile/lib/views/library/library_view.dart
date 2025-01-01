@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/models/user_model.dart';
 import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
@@ -75,10 +76,13 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
 
   PreferredSize _tabBar() {
     final currentTab = ref.watch(libraryViewModel.select((value) => value.currentTab));
+    final availableTabs = ref.watch(userRepoProvider).user?.role == UserRole.artist
+      ? LibraryTabs.values
+      : LibraryTabs.values.where((tab) => [].contains(tab)).toList();
     final currentTabsList = 
       currentTab == LibraryTabs.none
-        ? LibraryTabs.values.where((tab) => tab != LibraryTabs.none).toList()
-        : LibraryTabs.values.where((tab) => tab == currentTab).toList();
+        ? availableTabs.where((tab) => tab != LibraryTabs.none).toList()
+        : availableTabs.where((tab) => tab == currentTab).toList();
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),

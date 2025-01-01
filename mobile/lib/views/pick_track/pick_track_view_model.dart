@@ -35,13 +35,13 @@ class PickTrackViewModel extends ChangeNotifier {
       library = await _libraryRepo.getLibrary(libraryId);
       isLoading = false;
       notifyListeners();
-      getPendingTracks();
+      getAvailableTracks();
     } catch (err) {
       debugPrint(err.toString());
     }
   }
 
-  Future<void> getPendingTracks() async {
+  Future<void> getAvailableTracks() async {
     try {
       final GetTrackResp? resp;
       if (library!.type == LibraryType.album) {
@@ -49,7 +49,7 @@ class PickTrackViewModel extends ChangeNotifier {
           pagination: PaginationListReq(
             limit: 20
           ),
-          status: TrackLibraryStatus.pending,
+          status: TrackLibraryStatus.available,
         );
       } else {
         resp = await _libraryRepo.getTracksNotInLibrary(
@@ -77,7 +77,7 @@ class PickTrackViewModel extends ChangeNotifier {
       );
       if (success) {
         SnackBarUtils.showSnackBar(message: 'Add track to library success', status: MessageTypes.success);
-        getPendingTracks();
+        getAvailableTracks();
       } else {
         SnackBarUtils.showSnackBar(message: 'Add track to library failed', status: MessageTypes.error);
       }
@@ -95,7 +95,7 @@ class PickTrackViewModel extends ChangeNotifier {
       );
       if (success) {
         SnackBarUtils.showSnackBar(message: 'Remove track from library success', status: MessageTypes.success);
-        getPendingTracks();
+        getAvailableTracks();
       } else {
         SnackBarUtils.showSnackBar(message: 'Remove track from library failed', status: MessageTypes.error);
       }
