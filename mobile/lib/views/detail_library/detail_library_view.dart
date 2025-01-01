@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/data/constants/app_constant_icons.dart';
 import 'package:mobile/models/library_model.dart';
+import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
@@ -158,23 +159,26 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
   }
 
   Widget _playlistOwner() {
-    final owner = ref.watch(detailLibraryViewModel.select(
-      (value) => value.user
+    final library = ref.watch(detailLibraryViewModel.select(
+      (value) => value.library
     ));
-    return Row(
-      children: [
-        DynamicImage(
-          owner?.avatarLink ?? '',
-          width: 24,
-          height: 24,
-          isCircle: true,
-        ),
-        const SizedBox(width: 8),
-        Text(
-          owner?.name ?? 'user',
-          style: Theme.of(context).textTheme.titleMedium,
-        )
-      ],
+    return Visibility(
+      visible: !widget.isGenre,
+      child: Row(
+        children: [
+          DynamicImage(
+            widget.isGenre ? '' : library?.owners.first.avatarLink ?? '',
+            width: 24,
+            height: 24,
+            isCircle: true,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            library?.ownersName ?? 'user',
+            style: Theme.of(context).textTheme.titleMedium,
+          )
+        ],
+      ),
     );
   }
 
@@ -185,7 +189,7 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
         _addOwnersBtn(),
         _moreOptionsBtn(),
         const Spacer(),
-        _shuffleBtn(),
+        // _shuffleBtn(),
         _playBtn(),
       ],
     );
@@ -207,12 +211,19 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
   }
 
   Widget _addOwnersBtn() {
-    return IconButton(
-      onPressed: () {},
-      icon: DynamicImage(
-        AppConstantIcons.addUserDisabled,
-        width: 30,
-        height: 30,
+    final library = ref.watch(detailLibraryViewModel.select((value) => value.library)); 
+    return Visibility(
+      visible: 
+        library?.type == LibraryType.album && 
+        library != null && library.owners.where((owner) => ref.watch(userRepoProvider).user?.id == owner.id).isNotEmpty &&
+        !widget.isGenre,
+      child: IconButton(
+        onPressed: () {},
+        icon: DynamicImage(
+          AppConstantIcons.addUserDisabled,
+          width: 30,
+          height: 30,
+        ),
       ),
     );
   }
@@ -282,8 +293,10 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
     final tracks = ref.watch(detailLibraryViewModel.select(
       (value) => value.library?.tracks ?? []
     ));
+    final isPlaylist = ref.watch(detailLibraryViewModel.select(
+      (value) => value.library?.type)) == LibraryType.playlist;
     return Visibility(
-      visible: tracks.isNotEmpty,
+      visible: tracks.isNotEmpty && ref.watch(detailLibraryViewModel.select((value) => value.library?.type)) == LibraryType.playlist,
       child: GestureDetector(
         onTap: () {
           context.push('${RouteNamed.pickTrack}/${ref.watch(detailLibraryViewModel.select((value) => value.library!.id))}');
