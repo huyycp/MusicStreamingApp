@@ -185,4 +185,8 @@ class UserRepository extends ChangeNotifier {
   Future<bool> checkExistEmail(String email) async {
     return await _userRemote.checkExistEmail(email);
   }
+
+  Future<bool> checkUploadLimit() async {
+    return await _userRemote.checkUploadLimit();
+  }
 }

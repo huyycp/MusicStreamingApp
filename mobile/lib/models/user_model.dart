@@ -12,6 +12,7 @@ class UserModel {
     required this.status,
     required this.avatarLink,
     required this.favoriteGenres,
+    required this.isPremium,
   });
 
   String id;
@@ -24,6 +25,7 @@ class UserModel {
   UserStatus status;
   String avatarLink;
   List<GenreModel> favoriteGenres;
+  bool isPremium;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     id: json['_id'] ?? '',
@@ -38,6 +40,7 @@ class UserModel {
     favoriteGenres: List.from(json['genres']?.map(
       (genreJson) => GenreModel.fromJson(genreJson),
     ) ?? []),
+    isPremium: json['premium'] ?? false,
   );
 
   Map<String, dynamic> toJson() => {
@@ -51,6 +54,7 @@ class UserModel {
     'verify': status.index,
     'avatar': avatarLink,
     'genres': favoriteGenres.map((genre) => genre.toJson()),
+    'premium': isPremium,
   };
 }
 

@@ -197,7 +197,9 @@ class _DetailLibraryViewState extends ConsumerState<DetailLibraryView> {
 
   Widget _downloadBtn() {
     return Visibility(
-      visible: ref.watch(detailLibraryViewModel.select((value) => value.library?.tracks.isNotEmpty ?? false)),
+      visible: 
+        ref.watch(detailLibraryViewModel.select((value) => value.library?.tracks.isNotEmpty ?? false)) &&
+        (ref.watch(userRepoProvider).user?.isPremium ?? false ) == true,
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {},
