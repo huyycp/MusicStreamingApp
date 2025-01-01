@@ -38,11 +38,11 @@ const ImageSlide = ({ src, index, isActive, artistsName, albumName, albumId }: I
       <Box
         sx={{
           position: 'absolute',
-          bottom: 0,
+          bottom: 5,
           left: 0,
           right: 0,
           height: '50px',
-          background: 'linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent)',
+          // background: 'linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent)',
           borderRadius: '0 0 10px 10px',
           display: 'flex',
           alignItems: 'start',
@@ -51,7 +51,10 @@ const ImageSlide = ({ src, index, isActive, artistsName, albumName, albumId }: I
           padding: '0 10px'
         }}
       >
-        <Typography variant='body1' sx={{ color: '#fff', textAlign: 'center' }}>
+        <Typography
+          variant='h6'
+          sx={{ color: '#fff', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
           {capitalizeFirstLetterOfEachWord(albumName)}
         </Typography>
         <Typography variant='body2' sx={{ color: '#fff', textAlign: 'center' }}>

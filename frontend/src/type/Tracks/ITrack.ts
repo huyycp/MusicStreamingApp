@@ -13,6 +13,7 @@ export interface ITrack {
   listen: number
   genre: IGenres
   owners: IArtist[]
+  status: string
   created_at: string
   updated_at: string
 }

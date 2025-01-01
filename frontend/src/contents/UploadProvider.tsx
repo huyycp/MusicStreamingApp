@@ -9,6 +9,7 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
   const [lyrics, setLyrics] = useState<string>('')
   const [artistName, setArtistName] = useState<string>('')
   const [activeGenres, setActiveGenres] = useState<string>('')
+  const [collab, setCollab] = useState<string>('')
 
   const clearData = () => {
     setName('')
@@ -16,6 +17,8 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
     setImageFile(null)
     setLyrics('')
     setArtistName('')
+    setActiveGenres('')
+    setCollab('')
   }
 
   return (
@@ -33,7 +36,9 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
         setArtistName,
         clearData,
         activeGenres,
-        setActiveGenres
+        setActiveGenres,
+        collab,
+        setCollab
       }}
     >
       {children}

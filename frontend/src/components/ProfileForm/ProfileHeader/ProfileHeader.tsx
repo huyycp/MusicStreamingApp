@@ -31,7 +31,8 @@ const ProfileHeader = () => {
           width: 180,
           height: 180,
           borderRadius: '100%',
-          backgroundColor: user?.avatar ? `url(${user.avatar})` : '#333',
+          backgroundColor: '#333',
+          backgroundImage: user?.avatar ? `url(${user.avatar})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           display: 'flex',
@@ -110,7 +111,7 @@ const ProfileHeader = () => {
             gap: '4px'
           }}
         >
-          • 1 đang theo dõi
+          • {user?.number_of_followers} đang theo dõi
         </Typography>
       </Box>
       {user && <ProfileModal open={isModalOpen} onClose={() => setIsModalOpen(false)} initialValue={user?.name} user={user} />}

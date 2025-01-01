@@ -132,22 +132,24 @@ export default function LibraryHeaderNoUser() {
           justifyContent: 'center'
         }}
       >
-        <Box
-          sx={{
-            width: '95%',
-            borderRadius: '5px',
-            p: '16px 20px',
-            gap: 1,
-            bgcolor: (theme) => theme.palette.neutral.neutral3
-          }}
-        >
-          <Typography variant='body2' fontWeight='bold' sx={{ color: (theme) => theme.palette.secondary4.main, pb: 2 }}>
-            Đăng nhập để tối ưu hóa trải nghiệm
-          </Typography>
-          <Button variant='contained' color='secondary' onClick={handleLogin} ref={buttonRef}>
-            Đăng nhập
-          </Button>
-        </Box>
+        {widths[0] !== minWidths[0] && (
+          <Box
+            sx={{
+              width: '95%',
+              borderRadius: '5px',
+              p: '16px 20px',
+              gap: 1,
+              bgcolor: (theme) => theme.palette.neutral.neutral3
+            }}
+          >
+            <Typography variant='body2' fontWeight='bold' sx={{ color: (theme) => theme.palette.secondary4.main, pb: 2 }}>
+              Đăng nhập để tối ưu hóa trải nghiệm
+            </Typography>
+            <Button variant='contained' color='secondary' onClick={handleLogin} ref={buttonRef}>
+              Đăng nhập
+            </Button>
+          </Box>
+        )}
       </Box>
       <Popover
         open={Boolean(anchorEl)}

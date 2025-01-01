@@ -1,15 +1,35 @@
 import Skeleton from '@mui/material/Skeleton'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/system/Box'
-import { useMemo } from 'react'
+import { useRef, useEffect } from 'react'
 import AlbumTag from '~/components/AlbumTag'
-import useGetAlbums from '~/hooks/Album/useGetAlbums'
-import { ILibrary } from '~/type/Library/ILibrary'
+import useGetInfiniteAlbum from '~/hooks/Album/useGetInfiniteAlbum'
 
 export default function SectionAlbum() {
-  const { data, isPending, isLoading } = useGetAlbums(10, 1)
+  const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetInfiniteAlbum(8)
+  const observerRef = useRef<HTMLDivElement | null>(null)
 
-  const listAlbum = useMemo(() => (data?.result?.data as ILibrary[]) || [], [data])
+  const listAlbum = data?.pages?.flatMap((page) => page.result.data)
+
+  useEffect(() => {
+    if (!hasNextPage || isFetchingNextPage) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage()
+        }
+      },
+      { root: null, rootMargin: '0px', threshold: 1.0 }
+    )
+
+    if (observerRef.current) observer.observe(observerRef.current)
+
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      if (observerRef.current) observer.unobserve(observerRef.current)
+    }
+  }, [hasNextPage, fetchNextPage, isFetchingNextPage])
 
   return (
     <Box sx={{ inlineSize: '100%' }}>
@@ -28,12 +48,12 @@ export default function SectionAlbum() {
         Album dành cho bạn
       </Typography>
 
-      {isLoading || isPending ? (
+      {isPending ? (
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'flex-start',
-            flexWrap: 'wrap', // Allow wrapping to new lines when the container width is exceeded
+            flexWrap: 'wrap',
             inlineSize: '100%'
           }}
         >
@@ -41,33 +61,60 @@ export default function SectionAlbum() {
             <Skeleton key={index} variant='rectangular' width={180} height={180} sx={{ flexShrink: 0, marginRight: '8px', marginBottom: '8px' }} />
           ))}
         </Box>
-      ) : listAlbum.length > 0 ? (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            flexWrap: 'wrap'
-          }}
-        >
-          {listAlbum.map((album, index) => (
+      ) : (
+        <>
+          {listAlbum && listAlbum.length > 0 ? (
             <Box
-              key={index}
               sx={{
-                flexShrink: 0,
-                flexBasis: 'auto',
-                marginRight: '8px',
-                marginBottom: '8px'
+                display: 'flex',
+                justifyContent: 'flex-start',
+                flexWrap: 'wrap'
               }}
             >
-              <AlbumTag album={album} />
+              {listAlbum.map((album, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    flexShrink: 0,
+                    flexBasis: 'auto',
+                    marginRight: '8px',
+                    marginBottom: '8px'
+                  }}
+                >
+                  <AlbumTag album={album} />
+                </Box>
+              ))}
             </Box>
-          ))}
-        </Box>
-      ) : (
-        <Typography variant='body1' sx={{ marginTop: 2 }}>
-          Không có album nào để hiển thị.
-        </Typography>
+          ) : (
+            <Typography variant='body1' sx={{ marginTop: 2 }}>
+              Không có album nào để hiển thị.
+            </Typography>
+          )}
+
+          {isFetchingNextPage && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                flexWrap: 'wrap',
+                inlineSize: '100%'
+              }}
+            >
+              {[...Array(5)].map((_, index) => (
+                <Skeleton
+                  key={`loading-${index}`}
+                  variant='rectangular'
+                  width={180}
+                  height={180}
+                  sx={{ flexShrink: 0, marginRight: '8px', marginBottom: '8px' }}
+                />
+              ))}
+            </Box>
+          )}
+        </>
       )}
+
+      <Box ref={observerRef} sx={{ height: '1px' }} />
     </Box>
   )
 }

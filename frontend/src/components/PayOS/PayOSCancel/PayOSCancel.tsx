@@ -15,7 +15,7 @@ export default function PayOSCancel() {
   const cancelStatus = searchParams.get('cancel') === 'true'
   const orderCode = searchParams.get('orderCode') || ''
   const { user } = useUser()
-  const { mutate: updateProfileMutation, isPending, isError } = useUpdateProfile()
+  const { updateProfile, isPending, isError } = useUpdateProfile()
 
   const transactionMessage = cancelStatus ? 'Giao dịch đã bị hủy.' : 'Giao dịch thành công'
 
@@ -26,7 +26,7 @@ export default function PayOSCancel() {
 
   useEffect(() => {
     if (!cancelStatus && orderCode) {
-      updateProfileMutation({ premium: true })
+      updateProfile({ premium: true })
       if (user) {
         user.premium = true
       }

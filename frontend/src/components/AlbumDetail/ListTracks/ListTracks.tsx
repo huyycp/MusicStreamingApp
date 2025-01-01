@@ -25,15 +25,17 @@ import PauseIcon from '@mui/icons-material/Pause'
 import { useFavorite } from '~/hooks/useFavorite'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import useAddToFavorite from '~/hooks/Tracks/useLikeTrack'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   albumId: string
   listTracks: ITrack[]
   isPending: boolean
   hiddenTitle?: boolean
+  type?: string
 }
 
-export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle }: Props) {
+export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle, type }: Props) {
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
   const borderColor = theme.palette.neutral.neutral3
@@ -43,6 +45,7 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
   const [trackDurations, setTrackDurations] = useState<{ [key: string]: number }>({})
   const { isTrackFavorite } = useFavorite()
   const { addToFavorite } = useAddToFavorite()
+  const navigator = useNavigate()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -86,6 +89,9 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>Bài hát</Box>
               </TableCell>
               <TableCell align='right' sx={{ color: textColor, width: '100px', borderColor: borderColor }}>
+                Lượt nghe
+              </TableCell>
+              <TableCell align='right' sx={{ color: textColor, width: '150px', borderColor: borderColor }}>
                 Thời gian
               </TableCell>
             </TableRow>
@@ -139,7 +145,7 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                   scope='row'
                   sx={{
                     borderColor: borderColor,
-                    color: textColor,
+                    color: row.status === 'banned' ? 'red' : textColor,
                     maxWidth: 400,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -215,14 +221,13 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                     </Box>
                     <Box display='flex' flexDirection='column'>
                       <Typography noWrap variant='body2'>
-                        {row.name}
+                        {row.status === 'banned' ? `Đã bị cấm - ${row.name}` : row.name}
                       </Typography>
                       {row.owners && (
                         <Typography
                           sx={{
                             fontSize: 12,
                             cursor: 'pointer',
-                            color: (theme) => theme.palette.neutral.neutral1,
                             display: 'flex',
                             flexWrap: 'wrap',
                             gap: 0.3
@@ -235,11 +240,14 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                                 sx={{
                                   'fontSize': 12,
                                   'cursor': 'pointer',
-                                  'color': (theme) => theme.palette.neutral.neutral1,
+                                  'color': row.status === 'banned' ? 'red' : (theme) => theme.palette.neutral.neutral1,
                                   '&:hover': {
                                     color: (theme) => theme.palette.secondary4.main,
                                     textDecoration: 'underline'
                                   }
+                                }}
+                                onClick={() => {
+                                  navigator(`/artist/${artist._id}`)
                                 }}
                               >
                                 {artist.name}
@@ -251,6 +259,9 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                       )}
                     </Box>
                   </Box>
+                </TableCell>
+                <TableCell align='right' sx={{ color: textColor, borderColor: borderColor }}>
+                  {row.listen}
                 </TableCell>
                 <TableCell align='right' sx={{ color: textColor, borderColor: borderColor }}>
                   {hoveredRow !== row._id ? (
@@ -276,7 +287,15 @@ export default function ListTracks({ listTracks, isPending, albumId, hiddenTitle
                           <MicExternalOnOutlinedIcon sx={{ color: theme.palette.neutral.neutral1, fontSize: 17 }} />
                         </IconButton>
                       </Tooltip>
-                      {anchorEl && <MenuTrack track={row} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} />}
+                      {anchorEl && (
+                        <MenuTrack
+                          track={row}
+                          open={Boolean(anchorEl)}
+                          anchorEl={anchorEl}
+                          onClose={handleClose}
+                          playlistId={type === 'playlist' ? albumId : ''}
+                        />
+                      )}
                       <Tooltip title='Thêm vào Bài hát yêu thích' placement='top'>
                         <IconButton
                           sx={{

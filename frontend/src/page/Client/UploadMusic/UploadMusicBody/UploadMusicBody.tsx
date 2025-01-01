@@ -22,7 +22,7 @@ export default function UploadMusicBody() {
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    setUploadName(value)
+    if (value.trim().length <= 50) setUploadName(value)
     if (value === '') setError('Không để trống')
     else setError('')
   }

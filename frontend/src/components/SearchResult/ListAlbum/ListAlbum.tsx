@@ -10,9 +10,11 @@ type Props = {
   title: string
   listAlbum: ILibrary[]
   isPending: boolean
+  handleNavigate?: () => void
+  tag?: string
 }
 
-export default function ListAlbum({ title, listAlbum, isPending }: Props) {
+export default function ListAlbum({ title, listAlbum, isPending, handleNavigate, tag }: Props) {
   const { widths } = useResize()
   const [albumList, setAlbumList] = useState<ILibrary[]>([])
 
@@ -44,18 +46,21 @@ export default function ListAlbum({ title, listAlbum, isPending }: Props) {
         >
           {title}
         </Typography>
-        <Typography
-          variant='body2'
-          sx={{
-            'cursor': 'pointer',
-            'color': (theme) => theme.palette.neutral.neutral1,
-            '&:hover': {
-              textDecoration: 'underline'
-            }
-          }}
-        >
-          Hiện tất cả
-        </Typography>
+        {handleNavigate && (
+          <Typography
+            variant='body2'
+            sx={{
+              'cursor': 'pointer',
+              'color': (theme) => theme.palette.neutral.neutral1,
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+            onClick={handleNavigate}
+          >
+            Hiện tất cả
+          </Typography>
+        )}
       </Box>
 
       <Box
@@ -98,7 +103,7 @@ export default function ListAlbum({ title, listAlbum, isPending }: Props) {
                     marginRight: '8px'
                   }}
                 >
-                  <AlbumTag album={album} />
+                  <AlbumTag album={album} tag={tag} />
                 </Box>
               ))}
             </Box>

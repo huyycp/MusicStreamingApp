@@ -3,6 +3,7 @@ import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import PlayCircleFilledOutlinedIcon from '@mui/icons-material/PlayCircleFilledOutlined'
+import PauseCircleFilledRoundedIcon from '@mui/icons-material/PauseCircleFilledRounded'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useEffect, useRef, useState } from 'react'
 import { useResize } from '~/hooks/useResize'
@@ -21,16 +22,15 @@ import { getAudioDuration } from '~/utils/getAudioDuration'
 import { useFavorite } from '~/hooks/useFavorite'
 
 export default function LikedMusic() {
-  const { setPause, addTrackList } = useMusic()
+  const { setPause, addTrackList, album, pause, music, addAlbum } = useMusic()
   const [trackDurations, setTrackDurations] = useState<{ [key: string]: number }>({})
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [selectedTrack, setSelectedTrack] = useState<ITrack | null>(null)
   const navigate = useNavigate()
   const { user } = useUser()
-  const { music, pause } = useMusic()
   const [isSticky, setIsSticky] = useState(false)
   const triggerRef = useRef<HTMLDivElement>(null)
-  const { favTracks: listTracks } = useFavorite()
+  const { favTracks: listTracks, favIds } = useFavorite()
   const { widths } = useResize()
 
   useEffect(() => {
@@ -51,8 +51,12 @@ export default function LikedMusic() {
   }, [])
 
   const handlePlayAll = () => {
-    if (listTracks.length !== 0) {
-      addTrackList(listTracks)
+    if (album._id === favIds) {
+      setPause(!pause)
+    } else if (listTracks.length !== 0) {
+      if (favIds) {
+        addAlbum(favIds, 0)
+      }
     }
   }
 
@@ -162,16 +166,29 @@ export default function LikedMusic() {
       </Box>
       <Box ref={triggerRef} sx={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'start' }}>
         <IconButton onClick={() => handlePlayAll()}>
-          <PlayCircleFilledOutlinedIcon
-            sx={{
-              'color': (theme) => theme.palette.primary.main,
-              'inlineSize': '65px',
-              'blockSize': '65px',
-              '&:hover': {
-                transform: 'scale(1.1)'
-              }
-            }}
-          />
+          {favIds === album?._id && !pause ? (
+            <PauseCircleFilledRoundedIcon
+              sx={{
+                'color': (theme) => theme.palette.primary.main,
+                'inlineSize': '65px',
+                'blockSize': '65px',
+                '&:hover': {
+                  transform: 'scale(1.1)'
+                }
+              }}
+            />
+          ) : (
+            <PlayCircleFilledOutlinedIcon
+              sx={{
+                'color': (theme) => theme.palette.primary.main,
+                'inlineSize': '65px',
+                'blockSize': '65px',
+                '&:hover': {
+                  transform: 'scale(1.1)'
+                }
+              }}
+            />
+          )}
         </IconButton>
       </Box>
 
@@ -190,17 +207,30 @@ export default function LikedMusic() {
             zIndex: 1100
           }}
         >
-          <IconButton>
-            <PlayCircleFilledOutlinedIcon
-              sx={{
-                'color': (theme) => theme.palette.primary.main,
-                'inlineSize': '65px',
-                'blockSize': '65px',
-                '&:hover': {
-                  transform: 'scale(1.1)'
-                }
-              }}
-            />
+          <IconButton onClick={() => handlePlayAll()}>
+            {favIds === album?._id && !pause ? (
+              <PauseCircleFilledRoundedIcon
+                sx={{
+                  'color': (theme) => theme.palette.primary.main,
+                  'inlineSize': '65px',
+                  'blockSize': '65px',
+                  '&:hover': {
+                    transform: 'scale(1.1)'
+                  }
+                }}
+              />
+            ) : (
+              <PlayCircleFilledOutlinedIcon
+                sx={{
+                  'color': (theme) => theme.palette.primary.main,
+                  'inlineSize': '65px',
+                  'blockSize': '65px',
+                  '&:hover': {
+                    transform: 'scale(1.1)'
+                  }
+                }}
+              />
+            )}
           </IconButton>
           <Typography
             sx={{

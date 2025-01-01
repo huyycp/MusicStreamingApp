@@ -15,6 +15,7 @@ import { useEffect, useRef } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import IconButton from '@mui/material/IconButton'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { useNavigate } from 'react-router-dom'
 
 export default function AlbumTable() {
   const { data, isPending, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetAlbumByArtist(5)
@@ -22,6 +23,7 @@ export default function AlbumTable() {
   const theme = useTheme()
   const textColor = theme.palette.secondary4.main
   const loader = useRef(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const options = {
@@ -65,9 +67,6 @@ export default function AlbumTable() {
                 Số bài hát
               </TableCell>
               <TableCell align='right' sx={{ color: textColor, width: '120px' }}>
-                Lượt nghe
-              </TableCell>
-              <TableCell align='right' sx={{ color: textColor, width: '120px' }}>
                 Thêm bài hát
               </TableCell>
             </TableRow>
@@ -84,9 +83,6 @@ export default function AlbumTable() {
                   </TableCell>
                   <TableCell>
                     <Skeleton variant='text' width={200} height={24} />
-                  </TableCell>
-                  <TableCell align='right'>
-                    <Skeleton variant='text' width={50} height={24} />
                   </TableCell>
                   <TableCell align='right'>
                     <Skeleton variant='text' width={50} height={24} />
@@ -135,9 +131,6 @@ export default function AlbumTable() {
                   <TableCell align='right' sx={{ color: textColor }}>
                     {row.number_of_tracks}
                   </TableCell>
-                  <TableCell align='right' sx={{ color: textColor }}>
-                      N/A
-                  </TableCell>
                   <TableCell align='center' sx={{ color: textColor }}>
                     <IconButton
                       sx={{
@@ -149,7 +142,7 @@ export default function AlbumTable() {
                         }
                       }}
                       onClick={() => {
-                        window.location.href = `/create-album/${row._id}/add-track`
+                        navigate(`/album/${row._id}/edit-tracks`)
                       }}
                     >
                       <AddCircleOutlineIcon />

@@ -12,21 +12,33 @@ import ListTracks from './ListAlbum'
 import useGetAlbumWithArtist from '~/hooks/Artist/useGetAlbumWithArtist'
 import { Params, useParams } from 'react-router-dom'
 import { ILibrary } from '~/type/Library/ILibrary'
+import useFollowUser from '~/hooks/User/useFollowUser'
+import { useFavorite } from '~/hooks/useFavorite'
+import ListArtist from './ListArtist'
+import useGetArtist from '~/hooks/Artist/useGetArtist'
+import { IArtist } from '~/type/Artist/IArtist'
+import useGetUserDetail from '~/hooks/User/useGetUserDetail'
 
 export default function ArtistDetail() {
   const [isSticky, setIsSticky] = useState(false)
   const { artistId } = useParams<Params>()
   const { data, isPending } = useGetAlbumWithArtist(artistId || null, 10, 0)
   const triggerRef = useRef<HTMLDivElement>(null)
-  const [owner, setOwner] = useState<string>('')
+  const [owner, setOwner] = useState<IArtist | undefined>(undefined)
+  const { data: artistData } = useGetUserDetail(artistId)
   const { widths } = useResize()
+  const { isUserFollow } = useFavorite()
+  const { toggleFollow } = useFollowUser()
+  const { data: dataArtist } = useGetArtist(5, 1)
+
+  const listArtist = Array.isArray(dataArtist?.result?.data) ? (dataArtist.result.data as IArtist[]).filter((artist) => artist._id !== artistId) : []
 
   const albums = data?.result.data as ILibrary[]
 
   useEffect(() => {
     if (albums && albums[0]) {
       const ownerData = albums[0].owners?.find((owner) => owner._id === artistId)
-      setOwner(ownerData ? ownerData.name : '')
+      setOwner(ownerData || undefined)
     }
   }, [albums, artistId])
 
@@ -54,7 +66,7 @@ export default function ArtistDetail() {
           width: 'calc(100% + 36px)',
           display: 'flex',
           flexDirection: 'column',
-          height: '200px',
+          height: '240px',
           backgroundImage: `
             linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
             url('https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif')
@@ -74,8 +86,11 @@ export default function ArtistDetail() {
               Nghệ sĩ được xác minh
             </Typography>
           </Box>
-          <Typography variant='h1' sx={{ color: 'white', mt: 'auto', mb: 'auto', fontWeight: '1000' }}>
-            {owner || 'Tên nghệ sĩ'}
+          <Typography variant='h1' sx={{ color: 'white', mt: 'auto', mb: 'auto', fontWeight: '1000' }} noWrap>
+            {owner?.name || 'Tên nghệ sĩ'}
+          </Typography>
+          <Typography variant='body2' sx={{ color: 'white', mt: 'auto', mb: 'auto', fontWeight: '1000' }} noWrap>
+            {`${artistData?.result?.number_of_followers || 0} người theo dõi`}
           </Typography>
         </Box>
       </Box>
@@ -93,8 +108,8 @@ export default function ArtistDetail() {
             }}
           />
         </IconButton>
-        <Button variant='outlined' sx={{ p: '3px 15px', mr: '24px', ml: '16px', height: '32px' }}>
-          Theo dõi
+        <Button variant='outlined' sx={{ p: '3px 15px', mr: '24px', ml: '16px', height: '32px' }} onClick={() => toggleFollow(artistId!)}>
+          {isUserFollow(artistId!) ? 'Đã theo dõi' : 'Theo dõi'}
         </Button>
         <IconButton>
           <MoreHorizIcon
@@ -137,8 +152,8 @@ export default function ArtistDetail() {
               }}
             />
           </IconButton>
-          <Button variant='outlined' sx={{ p: '3px 15px', mr: '24px', ml: '16px', height: '32px' }}>
-            Theo dõi
+          <Button variant='outlined' sx={{ p: '3px 15px', mr: '24px', ml: '16px', height: '32px' }} onClick={() => toggleFollow(artistId!)}>
+            {isUserFollow(artistId!) ? 'Đã theo dõi' : 'Theo dõi'}
           </Button>
           <IconButton>
             <MoreHorizIcon
@@ -160,6 +175,7 @@ export default function ArtistDetail() {
         </Typography>
         <ListTracks listAlbums={albums} isPending={isPending} />
       </Box>
+      {listArtist && <ListArtist artists={listArtist} title='Nghệ sĩ nổi bật' isPending={isPending} />}
     </Box>
   )
 }

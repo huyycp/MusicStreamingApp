@@ -9,7 +9,6 @@ import { useFavorite } from '~/hooks/useFavorite'
 
 type Props = {
   type: string
-  totalMusic?: number | 0
 }
 
 const CoverImage = styled('div')({
@@ -43,7 +42,7 @@ const TextFade = styled(Box)(({ theme }) => ({
   }
 }))
 
-export default function MusicView1({ type = 'album', totalMusic }: Props) {
+export default function MusicView1({ type = 'album' }: Props) {
   const { widths, minWidths } = useResize()
   const navigate = useNavigate()
   const { favTracks } = useFavorite()
@@ -119,10 +118,10 @@ export default function MusicView1({ type = 'album', totalMusic }: Props) {
                 {type === 'my-music' && 'Bài hát của bạn'}
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'start', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
-                {type !== 'album' && (
+                {type === 'liked-music' && (
                   <TextFade>
                     <PushPinIcon sx={{ fontSize: 15, color: (theme) => theme.palette.primary.main, transform: 'rotate(45deg)' }} />
-                    {` ${totalMusic || favTracks?.length} bài hát`}
+                    {` ${favTracks?.length} bài hát`}
                   </TextFade>
                 )}
               </Box>

@@ -15,16 +15,28 @@ import { ILibrary } from '~/type/Library/ILibrary'
 import { useUser } from '~/hooks/useUser'
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined'
 import UpdatePlayListModal from '~/components/UpdatePlayListModal/UpdatePlayListModal'
+import MenuPlayList from '~/components/MenuPlayList/MenuPlayList'
+import MenuAlbum from '~/components/MenuAlbum/MenuAlbum'
 
 type Props = {
   album: ILibrary
+  firstImage?: string
 }
 
-export default function AlbumInfo({ album }: Props) {
+export default function AlbumInfo({ album, firstImage }: Props) {
   const { user } = useUser()
   const [hover, setHover] = useState(false)
   const [openPlayListModal, setOpenPlayListModal] = useState(false)
   const { addAlbum, currentAlbumIndex, pause, setPause } = useMusic()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   const handlePlay = () => {
     if (album._id !== currentAlbumIndex) {
@@ -54,7 +66,7 @@ export default function AlbumInfo({ album }: Props) {
           >
             <img
               alt={album?.name}
-              src={album?.image || 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'}
+              src={album?.image || firstImage}
               onError={(e) => {
                 e.currentTarget.src = 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
               }}
@@ -92,7 +104,7 @@ export default function AlbumInfo({ album }: Props) {
             )}
           </Box>
           <Box display='flex' alignItems='center' justifyContent='center' flexDirection='column' sx={{ mt: 1 }}>
-            {user?._id !== album.user_id && (
+            {album.owners?.some((owner) => owner._id === user?._id) && (
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Typography sx={{ fontSize: 18, fontWeight: 'bold' }}>{album?.name}</Typography>
                 <IconButton onClick={() => setOpenPlayListModal(true)}>
@@ -100,7 +112,7 @@ export default function AlbumInfo({ album }: Props) {
                 </IconButton>
               </Box>
             )}
-            {user?._id === album.user_id && (
+            {!album.owners?.some((owner) => owner._id === user?._id) && (
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography noWrap sx={{ fontSize: 18, fontWeight: 'bold' }}>
                   {album?.name}
@@ -117,7 +129,8 @@ export default function AlbumInfo({ album }: Props) {
                 color: (theme) => theme.palette.neutral.neutral1,
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: 0.3
+                gap: 0.3,
+                mb: 2
               }}
             >
               {album.owners?.map((artist, index) => (
@@ -140,9 +153,6 @@ export default function AlbumInfo({ album }: Props) {
                 </Fragment>
               ))}
             </Typography>
-            <Typography noWrap sx={{ fontSize: 12, color: (theme) => theme.palette.neutral.neutral1, mb: 2 }}>
-              99 người yêu thích
-            </Typography>
             {currentAlbumIndex !== album._id && (
               <Button variant='contained' startIcon={<PlayArrowIcon />} onClick={handlePlay}>
                 PHÁT TẤT CẢ
@@ -164,16 +174,22 @@ export default function AlbumInfo({ album }: Props) {
                   <FavoriteBorderIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
                 </IconButton>
               </Tooltip>
-              <Tooltip title='Khác' placement='top'>
+              <Tooltip title='Khác' placement='top' onClick={handleClick}>
                 <IconButton sx={{ backgroundColor: (theme) => theme.palette.neutral.neutral3 }}>
                   <MoreHorizIcon sx={{ color: (theme) => theme.palette.neutral.neutral1, fontSize: 17 }} />
                 </IconButton>
               </Tooltip>
+              {anchorEl && album?.type === 'playlist' && (
+                <MenuPlayList playlist={album} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} />
+              )}
+              {anchorEl && album?.type === 'album' && album.owners?.some((owner) => owner._id === user?._id) && (
+                <MenuAlbum album={album} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose} />
+              )}
             </Box>
           </Box>
+          <UpdatePlayListModal open={openPlayListModal} setOpen={setOpenPlayListModal} playListId={album._id} />
         </Box>
       )}
-      {album?.type === 'playlist' && <UpdatePlayListModal open={openPlayListModal} setOpen={setOpenPlayListModal} playList={album} />}
     </Box>
   )
 }

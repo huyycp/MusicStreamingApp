@@ -5,30 +5,29 @@ import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Skeleton from '@mui/material/Skeleton'
 import ImageSlide from './ImageSlide'
-import useGetAlbums from '~/hooks/Album/useGetAlbums'
 import { ILibrary } from '~/type/Library/ILibrary'
+import useGetAlbumWeeklyTop from '~/hooks/Top/useGetAlbumWeeklyTop'
 
 const ImageSlider = () => {
-  const { data, isPending } = useGetAlbums(5, 1)
-  const listAlbum = (data?.result.data as ILibrary[]) || []
+  const { data, isPending } = useGetAlbumWeeklyTop()
+  const listAlbum = (data?.result as ILibrary[]) || []
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % (listAlbum.length - 2))
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % (5 - 2))
   }
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + (listAlbum.length - 2)) % (listAlbum.length - 2))
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + (5 - 2)) % (5 - 2))
   }
 
-  const images = listAlbum.map((album) => album.image)
+  const images = listAlbum.slice(0, 5).map((album) => album.image)
 
   useEffect(() => {
     const interval = setInterval(handleNext, 5000)
     return () => clearInterval(interval)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -70,7 +69,7 @@ const ImageSlider = () => {
               width: `${images.length * (100 / 3)}%`
             }}
           >
-            {listAlbum.map((album, index) => (
+            {listAlbum.slice(0, 5).map((album, index) => (
               <ImageSlide
                 key={index}
                 src={album.image}

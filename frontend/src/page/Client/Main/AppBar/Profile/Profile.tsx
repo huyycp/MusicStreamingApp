@@ -180,8 +180,7 @@ export default function Profile() {
                     <MenuItem component='a' href='/genres' target='_blank' rel='noopener noreferrer'>
                       Sở thích của bạn
                     </MenuItem>
-                    <MenuItem onClick={handleClose}>Hồ sơ</MenuItem>
-                    <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
+                    <MenuItem onClick={() => navigate('/my-report')}>Báo cáo của bạn</MenuItem>
                     <Divider
                       variant='middle'
                       component='li'

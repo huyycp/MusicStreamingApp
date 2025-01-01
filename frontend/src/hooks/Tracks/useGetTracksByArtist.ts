@@ -1,11 +1,11 @@
 import { apiGetTracksByArtist, ITrackResponse } from '~/apis/Tracks/TrackAPI'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
-type TrackStatus = 'all' | 'pending' | 'available'
+type TrackStatus = 'all' | 'pending' | 'available' | 'banned' | 'occupied'
 
 const useGetTracksByArtist = (limit: number = 5, status: TrackStatus = 'all') => {
   return useInfiniteQuery<ITrackResponse>({
-    queryKey: ['tracks', status],
+    queryKey: ['tracksList', status],
     queryFn: async ({ pageParam = 0 }) => {
       return apiGetTracksByArtist(limit, Number(pageParam), status)
     },

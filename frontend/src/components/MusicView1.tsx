@@ -137,13 +137,14 @@ export default function MusicView1({ initAlbum }: Props) {
               >
                 {initAlbum?.name}
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'start', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: (theme) => theme.palette.neutral.neutral1 }}>
                 {(initAlbum.owners ?? []).map((owner, index) => (
                   <TextFade key={index}>
                     {typeof owner === 'string' ? owner : owner.name}
                     {index < (initAlbum.owners ?? []).length - 1 && ','}
                   </TextFade>
                 ))}
+                {initAlbum.owners ? '•' : ''} <TextFade>{initAlbum?.type === 'album' ? 'Album' : 'Danh sách phát'}</TextFade>
               </Box>
             </Box>
           </Box>

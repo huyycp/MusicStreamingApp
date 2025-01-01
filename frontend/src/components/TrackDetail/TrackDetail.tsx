@@ -139,6 +139,10 @@ export default function TrackDetail() {
                 <Typography variant='body2' sx={{ fontWeight: 1000 }}>
                   {formatDuration(trackDurations || 0)}
                 </Typography>
+                •
+                <Typography variant='body2' sx={{ fontWeight: 1000 }}>
+                  {track?.listen} lượt nghe
+                </Typography>
               </Box>
             </Box>
           </Box>

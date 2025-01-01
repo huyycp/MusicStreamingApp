@@ -17,12 +17,6 @@ export const apiGetGenresDetail = async (genres: string): Promise<IResponse> => 
 }
 
 export const apiGetTracksByGenres = async (genres: string | undefined, limit: number, page: number): Promise<IResponse> => {
-  const response = await instance.get<IResponse>('/tracks', {
-    params: {
-      genres,
-      limit,
-      page
-    }
-  })
+  const response = await instance.get<IResponse>(`/tracks?limit=${limit}&page=${page}&genre=${genres}`)
   return response.data
 }

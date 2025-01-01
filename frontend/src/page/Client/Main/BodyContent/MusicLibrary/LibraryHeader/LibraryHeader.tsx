@@ -14,9 +14,10 @@ import { useResize } from '~/hooks/useResize'
 import { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import SearchIcon from '@mui/icons-material/Search'
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import { ILibrary } from '~/type/Library/ILibrary'
 import PlayListModal from '~/components/PlayListModal/PlayListModal'
+import TextField from '@mui/material/TextField'
+import { InputAdornment } from '@mui/material'
 
 type Props = {
   listAlbums: ILibrary[] | []
@@ -25,12 +26,19 @@ type Props = {
   setAlbum: React.Dispatch<React.SetStateAction<number>>
   originalPlaylist: ILibrary[] | []
   album: number
+  searchData: string
+  setSearchData: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum, album, originalPlaylist }: Props) {
+export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum, album, originalPlaylist, searchData, setSearchData }: Props) {
   const { widths, maxWidths, defaultWidths, setWidth, minWidths } = useResize()
   const [openPlayList, setOpenPlayList] = useState(false)
   const [openPlayListModal, setOpenPlayListModal] = useState(false)
+  const [search, setSearch] = useState<boolean>(false)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData(e.target.value)
+  }
 
   const handleClick = () => {
     if (widths[0] === maxWidths[0]) {
@@ -293,45 +301,89 @@ export default function LibraryHeader({ listAlbums, setPlaylistSelect, setAlbum,
         </Box>
       )}
       {widths[0] !== minWidths[0] && (
-        <Box sx={{ m: '2px 16px 0px 16px', height: '32px' }}>
+        <Box sx={{ m: '2px 16px 0px 16px', height: '45px' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Box sx={{ fontSize: 12, fontWeight: 450, color: (theme) => theme.palette.neutral.neutral1 }}>Tiêu đề</Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Tooltip title='Tìm kiếm trong Danh sách phát'>
-                <IconButton
-                  sx={{
-                    'borderRadius': '100%',
-                    'padding': '2px',
-                    '&:hover': {
-                      bgcolor: (theme) => theme.palette.neutral.neutral2
-                    },
-                    'bgcolor': 'transparent',
-                    'color': (theme) => theme.palette.secondary4.main
+            <Box sx={{ fontSize: 12, fontWeight: 450, color: (theme) => theme.palette.neutral.neutral1, pt: '12px', pb: '12px' }}>Tiêu đề</Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+              {!search && (
+                <Tooltip title='Tìm kiếm trong Danh sách phát'>
+                  <IconButton
+                    sx={{
+                      'borderRadius': '100%',
+                      'padding': '2px',
+                      '&:hover': {
+                        bgcolor: (theme) => theme.palette.neutral.neutral2
+                      },
+                      'bgcolor': 'transparent',
+                      'color': (theme) => theme.palette.secondary4.main
+                    }}
+                    onClick={() => setSearch(true)}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+              {search && (
+                <TextField
+                  id='outlined-search'
+                  placeholder='Tìm kiếm'
+                  type='text'
+                  size='small'
+                  autoComplete='off'
+                  value={searchData}
+                  onChange={handleChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Tooltip title='Tìm kiếm'>
+                          <SearchIcon
+                            sx={{
+                              'cursor': 'pointer',
+                              'color': (theme) => theme.palette.neutral.neutral1,
+                              '&:hover': {
+                                color: (theme) => theme.palette.secondary4.main
+                              }
+                            }}
+                          />
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <Tooltip title='Hủy'>
+                          <IconButton
+                            sx={{
+                              'borderRadius': '100%',
+                              '&:hover': {
+                                bgcolor: (theme) => theme.palette.neutral.neutral2
+                              },
+                              'bgcolor': 'transparent',
+                              'color': (theme) => theme.palette.secondary4.main
+                            }}
+                            onClick={() => setSearch(false)}
+                          >
+                            <CloseIcon sx={{}} />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    )
                   }}
-                  // onClick={handleNext}
-                >
-                  <SearchIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title='Thu gọn thư viện' placement='top'>
-                <IconButton
                   sx={{
-                    'display': 'flex',
-                    'justifyContent': 'start',
-                    'alignItems': 'center',
-                    'gap': 1,
-                    'padding': '4px 8px',
-                    'color': (theme) => theme.palette.neutral.neutral1,
-                    '&:hover': {
-                      color: (theme) => theme.palette.secondary4.main
+                    'p': 'unset',
+                    'minWidth': '200px',
+                    'maxWidth': '250px',
+                    'width': '50%',
+                    'bgcolor': (theme) => theme.palette.secondary5.main,
+                    'border': 'none',
+                    '& input': { color: 'white', height: '25px', cursor: 'pointer' },
+                    '& .MuiOutlinedInput-root': {
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'white'
+                      }
                     }
                   }}
-                  onClick={handleMini}
-                >
-                  <Typography variant='body2'>Gần đây</Typography>
-                  <SvgIcon component={FormatListBulletedIcon} inheritViewBox sx={{ height: '24px', width: '24px', cursor: 'pointer' }} />
-                </IconButton>
-              </Tooltip>
+                />
+              )}
             </Box>
           </Box>
           <Divider variant='fullWidth' sx={{ bgcolor: (theme) => theme.palette.neutral.neutral1 }} />

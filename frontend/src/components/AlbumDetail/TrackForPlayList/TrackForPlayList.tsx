@@ -5,12 +5,14 @@ import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import Tooltip from '@mui/material/Tooltip'
 import SearchIcon from '@mui/icons-material/Search'
-import { SetStateAction, useCallback, useState } from 'react'
+import CircularProgress from '@mui/material/CircularProgress'
+import { useCallback, useEffect, useState } from 'react'
 import ListTracks from './ListTracks/ListTracks'
-import useGetTracks from '~/hooks/Tracks/useGetTracks'
 import { ITrack } from '~/type/Tracks/ITrack'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { IResponse } from '~/type/IResponse'
+import { useSearchWithParam } from '~/hooks/Search/useSearchWithParam'
+import useGetTracks from '~/hooks/Tracks/useGetTracks'
 
 type Props = {
   handleClose: () => void
@@ -20,13 +22,26 @@ type Props = {
 }
 
 export default function TrackForPlayList({ handleClose, listTrackIds, playlistId, refetchAlbum }: Props) {
-  const [searchValue, setSearchValue] = useState<null | string>('')
-  const { data, isPending } = useGetTracks()
-  const listTracks = data?.result.data as ITrack[]
+  const [searchValue, setSearchValue] = useState<string>('')
+  const { data: searchData, isPending: isSearching } = useSearchWithParam(searchValue, 'tracks')
+  const { data: tracksData, isPending: isLoadingTracks } = useGetTracks()
+  const [listTracks, setListTracks] = useState<ITrack[]>([])
 
-  const handleSearchChange = useCallback((e: { target: { value: SetStateAction<string | null> } }) => {
-    setSearchValue(e.target.value)
+  const handleSearchChange = useCallback((e: { target: { value: string } }) => {
+    if (e.target.value.trim().length <= 50) {
+      setSearchValue(e.target.value)
+    }
   }, [])
+
+  useEffect(() => {
+    if (searchValue.trim() === '') {
+      setListTracks(tracksData?.result.data || [])
+    } else {
+      setListTracks(searchData?.result.tracks || [])
+    }
+  }, [searchValue, searchData?.result.tracks, tracksData?.result.data])
+
+  const isLoading = (isSearching && searchValue !== '') || isLoadingTracks
 
   return (
     <Box sx={{ width: '100%', position: 'relative' }}>
@@ -42,10 +57,11 @@ export default function TrackForPlayList({ handleClose, listTrackIds, playlistId
       </IconButton>
       <TextField
         id='outlined-search'
-        placeholder='Tìm kiếm bài hát và podcast'
+        placeholder='Tìm kiếm bài hát'
         type='text'
         size='small'
         value={searchValue}
+        autoComplete='off'
         onChange={handleSearchChange}
         InputProps={{
           startAdornment: (
@@ -82,7 +98,13 @@ export default function TrackForPlayList({ handleClose, listTrackIds, playlistId
           }
         }}
       />
-      {!isPending && <ListTracks listTracks={listTracks} listTrackIds={listTrackIds} playlistId={playlistId} refetchAlbum={refetchAlbum} />}
+      {isLoading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <ListTracks listTracks={listTracks} listTrackIds={listTrackIds} playlistId={playlistId} refetchAlbum={refetchAlbum} />
+      )}
     </Box>
   )
 }

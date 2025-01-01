@@ -57,8 +57,21 @@ export const apiGetLibraryItem = async (libraryId: string): Promise<IResponse> =
   const response = await instance.get<IResponse>(`/libraries/${libraryId}`)
   return response.data
 }
+export const apiDeleteLibraryItem = async (libraryId: string): Promise<IResponse> => {
+  const response = await instance.delete<IResponse>(`/libraries/${libraryId}`)
+  return response.data
+}
 
 export const apiCreatePlaylist = async (data: { name: string }): Promise<IResponse> => {
   const response = await instance.post<IResponse>('/libraries/playlists', data)
+  return response.data
+}
+
+export const apiEditLibrary = async (data: { name: string; image: File | ''; library_id: string }): Promise<IResponse> => {
+  const response = await instance.patch<IResponse>(`/libraries/${data.library_id}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
   return response.data
 }
