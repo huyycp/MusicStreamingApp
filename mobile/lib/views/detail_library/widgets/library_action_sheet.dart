@@ -22,6 +22,7 @@ class _LibraryActionSheetState extends State<LibraryActionSheet> {
         padding: const EdgeInsets.only(top: 0, right: 16, bottom: 32, left: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _editLibraryAction(),
           ],
@@ -31,32 +32,35 @@ class _LibraryActionSheetState extends State<LibraryActionSheet> {
   }
 
   Widget _editLibraryAction() {
-    return GestureDetector(
-      onTap: () {
-        context.pop();
-        if (widget.type == LibraryType.album) {
-          context.push('${RouteNamed.createAlbum}/${widget.id}');
-        } else if (widget.type == LibraryType.playlist) {
-          context.push('${RouteNamed.createPlaylist}/${widget.id}');
-        }
-      },
-      child: Row(
-        children: [
-          DynamicImage(
-            AppConstantIcons.edit,
-            width: 24,
-            height: 24,
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              'Edit library',
-              style: Theme.of(context).textTheme.titleMedium,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+    return Visibility(
+      visible: widget.type == LibraryType.playlist,
+      child: GestureDetector(
+        onTap: () {
+          context.pop();
+          if (widget.type == LibraryType.album) {
+            context.push('${RouteNamed.createAlbum}/${widget.id}');
+          } else if (widget.type == LibraryType.playlist) {
+            context.push('${RouteNamed.createPlaylist}/${widget.id}');
+          }
+        },
+        child: Row(
+          children: [
+            DynamicImage(
+              AppConstantIcons.edit,
+              width: 24,
+              height: 24,
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                'Edit library',
+                style: Theme.of(context).textTheme.titleMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

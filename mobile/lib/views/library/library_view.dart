@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/models/user_model.dart';
+import 'package:mobile/repositories/user_repository.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
 import 'package:mobile/utils/ui/modal_bottom_sheet.dart';
 import 'package:mobile/utils/string_format.dart';
+import 'package:mobile/utils/ui/snackbar.dart';
 import 'package:mobile/views/home/home_view_model.dart';
 import 'package:mobile/views/library/album_list_view.dart';
 import 'package:mobile/views/library/artist_list_view.dart';
@@ -73,10 +76,13 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
 
   PreferredSize _tabBar() {
     final currentTab = ref.watch(libraryViewModel.select((value) => value.currentTab));
+    final availableTabs = ref.watch(userRepoProvider).user?.role == UserRole.artist
+      ? LibraryTabs.values
+      : LibraryTabs.values.where((tab) => [].contains(tab)).toList();
     final currentTabsList = 
       currentTab == LibraryTabs.none
-        ? LibraryTabs.values.where((tab) => tab != LibraryTabs.none).toList()
-        : LibraryTabs.values.where((tab) => tab == currentTab).toList();
+        ? availableTabs.where((tab) => tab != LibraryTabs.none).toList()
+        : availableTabs.where((tab) => tab == currentTab).toList();
 
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
@@ -142,20 +148,8 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
   
   List<Widget> _appBarActions() {
     return [
-      _searchBtn(),
       _openAddSheetBtn(),
     ];
-  }
-
-  Widget _searchBtn() {
-    return IconButton(
-      onPressed: () {},
-      icon: DynamicImage(
-        AppConstantIcons.search,
-        width: 24,
-        height: 24,
-      ),
-    );
   }
 
   Widget _openAddSheetBtn() {
@@ -184,9 +178,18 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
                   iconData: AppConstantIcons.addSong,
                   title: 'Track',
                   subtitle: 'Share your music to the world',
-                  onPressed: () {
-                    context.pop();
-                    context.push(RouteNamed.createTrackInfo);
+                  onPressed: () async {
+                    try {
+                      if (await ref.watch(userRepoProvider).checkUploadLimit()) {
+                        SnackBarUtils.showSnackBar(message: 'Upgrade to premium to upload more tracks');
+                      } else {
+                        context.pop();
+                        context.push(RouteNamed.createTrackInfo);
+                      }
+                    } catch (e) {
+                      SnackBarUtils.showSnackBar(message: 'Server error');
+                      debugPrint(e.toString());
+                    }
                   },
                 ),
                 BottomSheetItem(

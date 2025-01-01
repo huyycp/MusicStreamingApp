@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile/data/constants/app_constant_icons.dart';
+import 'package:mobile/models/library_model.dart';
 import 'package:mobile/models/track_model.dart';
 import 'package:mobile/routes/routes.dart';
 import 'package:mobile/theme/color_scheme.dart';
@@ -56,28 +57,32 @@ class _TrackActionSheetState extends ConsumerState<TrackActionSheet> {
   }
 
   Widget _removeTrackBtn() {
-    return GestureDetector(
-      onTap: () {
-        ref.read(detailLibraryViewModel).removeTrackFromPlaylist(widget.track);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 24),
-        child: Row(
-          children: [
-            DynamicImage(
-              AppConstantIcons.oddCircle,
-              width: 24,
-              height: 24,
-              color: Colors.white,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                'Remove from this playlist',
-                style: Theme.of(context).textTheme.titleMedium
+    return Visibility(
+      visible: 
+        ref.watch(detailLibraryViewModel).library?.type == LibraryType.playlist,
+      child: GestureDetector(
+        onTap: () {
+          ref.read(detailLibraryViewModel).removeTrackFromPlaylist(widget.track);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Row(
+            children: [
+              DynamicImage(
+                AppConstantIcons.oddCircle,
+                width: 24,
+                height: 24,
+                color: Colors.white,
               ),
-            ),
-          ],
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  'Remove from this playlist',
+                  style: Theme.of(context).textTheme.titleMedium
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

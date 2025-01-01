@@ -81,6 +81,8 @@ enum TrackStatus {
 
 enum TrackLibraryStatus {
   all,
-  available,
-  pending,
+  pending, // Not censored yet
+  available, // Censored success
+  banned, // Already added to library but get banned,
+  occupied, // Already added to library
 }

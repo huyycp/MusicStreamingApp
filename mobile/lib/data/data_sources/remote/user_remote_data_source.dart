@@ -252,4 +252,16 @@ class UserRemoteDataSource {
     }
     return false;
   }
+
+  Future<bool> checkUploadLimit() async {
+    final response = await _magicMusicApi.request(
+      '$_userPath/upload-limit',
+      method: HttpMethods.GET,
+    );
+    if (response.statusCode == HttpStatus.ok) {
+      final data = response.data['result'];
+      return data ?? false;
+    }
+    return false;
+  }
 }
