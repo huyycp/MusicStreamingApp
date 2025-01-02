@@ -1,0 +1,101 @@
+/* border: var(--test-border); */
+/* background-color: var(--main-color); */
+:root {
+  --main-color: #1db954;
+  --secondary-color: #12863b4c;
+  --tertiary-color: #12863b14;
+
+  --bg-color: #393939;
+  --word-color: #ffffff;
+
+  --main-background-color: #0e0d0d;
+  --secondary-background-color: #393939;
+
+  --main-text-color: #ffffff;
+  --secondary-text-color: #adadad;
+
+  --main-sidebar: #393939;
+  --background-main-color: #0e0d0d;
+  --secondary-main-color: #393939;
+
+  --border-radius: 10px;
+  --font-weight-title: 500;
+
+  --test-border: 1px solid red;
+  --slidebar: 200px;
+
+  /* --main-color: #f1b24a;
+  --secondary-color: #f1c57d6b; */
+  --secondary-main-color: #1f1f1f;
+  /* --background-main-color: #2d5837; */
+  --main-sidebar: #091d01;
+  --font-weight-title: 400;
+  --display: block;
+}
+
+* {
+  font-weight: 100;
+}
+
+table.tableAdmin {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0px;
+}
+
+.tableAdmin th,
+.tableAdmin td {
+  border: none;
+  padding: 16px 10px 4px;
+  text-align: left;
+}
+.tableAdmin tr {
+  border-bottom: #ffffff27 solid 1px;
+}
+.tableAdmin tbody tr:hover {
+  background-color: #f1f1f12b !important;
+}
+.tableAdmin tbody tr:nth-child(odd) {
+  background-color: #f9f9f900;
+}
+
+.tableAdmin tbody tr:nth-child(even) {
+  background-color: #afafaf0f;
+}
+.tableAdmin th {
+  color: var(--main-color);
+  font-weight: 500;
+}
+
+.logo {
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.main {
+  position: absolute;
+  top: 0;
+  right: -100;
+  height: calc(100vh - 20px);
+  margin: 10px 10px 10px 0px;
+  border-radius: var(--border-radius);
+  background-color: var(--secondary1-main);
+  border-top: 10px solid var(--secondary1-main);
+  border-bottom: 10px solid var(--secondary1-main);
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  transition: width 1s ease-in-out;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+h2,
+h3 {
+  font-weight: var(--font-weight-title);
+  margin-left: 10px;
+}

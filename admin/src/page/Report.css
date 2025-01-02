@@ -1,0 +1,7 @@
+.report-list{
+    background-color: var(--secondary-main-color);
+    margin: 20px;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    color: var(--word-color);
+}

@@ -1,0 +1,140 @@
+.popup {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+.popup-inner {
+  margin: 20px;
+  border-radius: 8px;
+  min-width: 800px;
+  width: auto;
+  height: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.usercard {
+  background-color: var(--secondary-main-color);
+  padding: 40px;
+  border-radius: 8px;
+  position: relative;
+}
+.close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+.usercard button {
+  position: absolute;
+  right: 25px;
+  bottom: 20px;
+  
+}
+.user {
+  display: flex;
+  align-items: center;
+}
+.name {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.status {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+.status div {
+  font-size: 16px;
+  padding: 0px 10px;
+  margin-right: 4px;
+  border-radius: 30px;
+}
+.role {
+  display: flex;
+  align-items: center;
+  padding: 0px;
+  position: relative;
+}
+.role p{
+  margin: 0px;
+}
+.sub-role {
+  position: absolute;
+  top: 25px;
+  left: -5px;
+  text-decoration: none;
+  list-style: none;
+  margin: 0px;
+  padding: 2px 4px;
+  background-color: rgba(27, 32, 27, 0.936);
+  /* border-left: #1db954 solid 2px; */
+  box-shadow: 3px 3px 5px 1px rgba(66, 87, 64, 0.801);
+  border-radius: 4px;
+}
+.sub-role li{
+  padding: 4px 4px 0px 2px;
+  cursor: pointer;
+  border-bottom: #1db95473 solid 1px;
+}
+.user-avatar {
+  position: relative;
+  margin-left: 50px;
+}
+.user-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+.userInfo{
+  display: flex;
+  justify-content: space-around;
+}
+.userAlbums {
+  background-color: var(--secondary-main-color);
+  padding: 40px;
+  border-radius: 8px;
+  padding-left: 30px;
+  margin-top: 30px;
+  width: 100%;
+}
+.userAlbums h3 {
+  margin: 0;
+}
+.totalAlbums {
+  font-size: 28px;
+}
+.row {
+  margin-left: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.userAlbums img {
+  width: 60px;
+  margin-right: 10px;
+  border-radius: 8px;
+}
+.searchalbum {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  position: relative;
+}
+.searchalbum h3 {
+  margin-left: 10px;
+}
+.row p {
+  margin: 2px;
+}
+
+
+
+.info {
+  flex: 1;
+  padding: 30px;
+}
+.rowdata {
+  margin-top: 30px;
+}

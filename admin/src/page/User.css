@@ -1,0 +1,54 @@
+.background {
+  top: 0px;
+  color: var(--main-text-color);
+  background-color: var(--secondary-main-color);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin: 20px;
+}
+
+.control {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.table-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination {
+  display: flex;
+  background-color: #444;
+  border-radius: 6px;
+}
+
+.pagination button {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pagination span {
+  color: white;
+  padding: 5px 10px;
+  background-color: #444;
+  border-radius: 4px;
+}
+.statusUser {
+  display: flex;
+  justify-content: center;
+  width: 90px;
+  padding: 0px 10px;
+  border-radius: 30px;
+}
+
+.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26);
+  border: 1px solid rgb(255, 255, 255);
+}

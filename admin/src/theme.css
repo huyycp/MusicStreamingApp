@@ -1,0 +1,172 @@
+/* Primary and secondary colors */
+:root {
+    --primary-main: #1db954;
+    --secondary1-main: #000000;
+    --secondary2-main: #121212;
+    --secondary3-main: #3a433e;
+    --secondary4-main: #ffffff;
+    --secondary5-main: #1f1f1f;
+  
+    /* Neutral colors */
+    --neutral1: #b3b3b3;
+    --neutral2: #777777;
+    --neutral3: #2a2a2a;
+  
+    /* Other colors */
+    --cyan400: #26c6da;
+    --blue400: #42a5f5;
+    --purple400: #ab47bc;
+    --pink400: #ec407a;
+    --red400: #ef5350;
+    --orange400: #ffa726;
+    --yellow400: #ffca28;
+    --teal400: #26a69a;
+  
+    /* Gradients */
+    --gradient1: linear-gradient(90deg, #3DD5F3 0%, #3D8BFD 100%);
+    --gradient2: linear-gradient(90deg, #3D8BFD 0%, #8C68CD 100%);
+    --gradient3: linear-gradient(90deg, #8C68CD 0%, #DE5C9D 100%);
+    --gradient4: linear-gradient(90deg, #DE5C9D 0%, #E35D6A 100%);
+    --gradient5: linear-gradient(90deg, #E35D6A 0%, #FD9843 100%);
+    --gradient6: linear-gradient(90deg, #FD9843 0%, #4DD4AC 100%);
+    --gradient7: linear-gradient(90deg, #1DB954 0%, #4DD4AC 100%);
+  
+    /* Music heights */
+    --app-bar-height: 50px;
+    --app-track-height: 75px;
+    --app-body-height: calc(100vh - var(--app-bar-height) - var(--app-track-height) - 8px);
+  }
+  
+  /* Global styles */
+  body {
+    background-color: var(--secondary1-main);
+  }
+  
+  * {
+    user-select: none;
+  }
+  
+  *::-webkit-scrollbar {
+    width: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--neutral3);
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--neutral1);
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: var(--secondary2-main);
+  }
+  
+  *::-webkit-scrollbar-track:hover {
+    background: var(--secondary2-main);
+  }
+  
+  .scrollable-container {
+    overflow: auto;
+    scrollbar-gutter: stable;
+    position: relative;
+  }
+  
+  .scrollable-container:hover::-webkit-scrollbar {
+    opacity: 1;
+  }
+  
+  /* Component styles */
+  
+  /* Checkbox */
+  .checkbox-root {
+    color: #fff;
+  }
+  
+  .checkbox-root:hover {
+    background-color: transparent;
+  }
+  
+  .checkbox-root:before {
+    background-color: #fff;
+    border: 1px solid #d3d3d3;
+  }
+  
+  /* Button */
+  .button-root {
+    text-transform: none;
+    border-radius: 20px;
+    padding: 8px 24px;
+  }
+  
+  .button-root:hover {
+    transform: scale(1.05);
+  }
+  
+  .button-contained {
+    background: var(--primary-main);
+    color: var(--secondary1-main);
+  }
+  
+  .button-contained:hover {
+    background: var(--primary-main);
+  }
+  
+  .button-contained-secondary {
+    background: var(--secondary4-main);
+    color: var(--secondary1-main);
+    border: none;
+  }
+  
+  .button-contained-secondary:hover {
+    background: var(--secondary4-main);
+    border: none;
+  }
+  
+  .button-outlined {
+    background: inherit;
+    color: var(--secondary4-main);
+    border-color: var(--secondary4-main);
+  }
+  
+  .button-outlined:hover {
+    background: inherit;
+    border: 2px solid var(--secondary4-main);
+  }
+  
+  .button-text {
+    color: var(--secondary4-main);
+  }
+  
+  /* Input */
+  .input-root {
+    border: 2px solid var(--neutral2);
+    height: 48px;
+    padding: 12px;
+    border-radius: 4px;
+  }
+  
+  .input-root:hover {
+    border-color: var(--secondary4-main);
+  }
+  
+  .input-root.Mui-focused {
+    border-color: var(--secondary4-main);
+    box-shadow: none;
+  }
+  
+  .input-root input {
+    color: var(--secondary4-main);
+  }
+  
+  .input-root input::placeholder {
+    color: var(--neutral1);
+  }
+  
+  .input-root::before,
+  .input-root::after {
+    border-bottom: none;
+  }
+  

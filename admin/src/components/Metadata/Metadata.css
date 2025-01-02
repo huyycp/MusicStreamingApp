@@ -2,19 +2,20 @@ body {
     min-width: 800px;
 }
 .BG{
-    width: 18vw;
+    width: 22%;
     height: 200px;
-    background-color: #393939;
+    background-color: var(--secondary-main-color);
     display: flex;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     justify-content: center;
     margin-left: 30px;
     margin-bottom: 30px;
+    position:relative
 }
-.Circle{
+.bgcircle{
     width: 90px;
     height: 90px;
-    background-color: #1db954;
+    background-color: var(--main-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -22,7 +23,12 @@ body {
     position: absolute;
     margin-top: 18px;
 }
-p{
+.title{
+    margin-top: 125px;
+    color: #ffffff;
+    position: absolute;
+}
+p.metadata{
     margin-top: 155px;
     color: #ffffff;
 }
@@ -35,7 +41,7 @@ p{
     margin-right: 30px;
 }
 @media only screen and (max-width: 1150px) {
-    p{
+    .Wrapper p{
         display: none;
     }
     .BG {
@@ -48,7 +54,7 @@ p{
     }
 }
 @media only screen and (max-width: 800px) {
-    p{
+    .Wrapper p{
         display: none;
     }
     .BG {
@@ -58,6 +64,5 @@ p{
     
     .Circle {
         margin-top: 20px;
-        visibility: visible; /* Đảm bảo .Circle vẫn hiện */
     }
 }

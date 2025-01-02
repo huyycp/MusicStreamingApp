@@ -1,266 +1,156 @@
-import { KeyboardArrowDown } from '@mui/icons-material'
+// import { KeyboardArrowDown } from '@mui/icons-material'
 import './MainContent.css'
-import CircularProgressBar from '../CircularProgressBar/CircularProgressBar'
-import HorizontalBar from '../HorizontalBar/HorizontalBar'
-import Album from '../../assets/icon/Album.svg?react'
-import Song from '../../assets/icon/Song.svg?react'
-import Playlist from '../../assets/icon/Playlist.svg?react'
+import { Result, ResultTopAlbum, ResultTopArtist } from '../../type/IDashBoard'
+import DoughnutChart from '../Chart/DoughnutChart'
+import { useEffect, useState } from 'react'
+import { apiGetTopArtist, apiGetTopAlbum, apiInfo } from '../../Auth/DashboardAPI'
+import MusicBarChart from '../Chart/CustomContentOfTooltip'
 
 const MainContent = () => {
+  const [labels, setLabels] = useState<string[]>([])
+  const [data, setData] = useState<number[]>([])
+  const [gets, setGets] = useState<Result | null>(null)
+  const [topAlbum, setTopAlbum] = useState<ResultTopAlbum[]>([])
+  const [topArtist, setTopArtist] = useState<ResultTopArtist[]>([])
+
+  const fetchData = async () => {
+    try {
+      const data = await apiInfo()
+
+      if (!data.result) {
+        throw new Error('Network response was not ok')
+      }
+      setGets(data.result)
+
+      if (data.result?.genre_ratios) {
+        // eslint-disable-next-line no-console
+        console.log(gets)
+        const genreLabels = data.result.genre_ratios.map((item) => item.genre)
+        const genreData = data.result.genre_ratios.map((item) => item.ratio)
+
+        // Cập nhật labels và data
+        setLabels(genreLabels)
+        setData(genreData)
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching data:', err)
+      }
+    }
+  }
+
+  const fetchTopAlbum = async () => {
+    try {
+      const data = await apiGetTopAlbum()
+
+      if (!data.result) {
+        throw new Error('Network response was not ok')
+      }
+      setTopAlbum(data.result)
+    } catch (err) {
+      if (err instanceof Error) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching data:', err)
+      }
+    }
+  }
+
+  const fetchTopArtist = async () => {
+    try {
+      const data = await apiGetTopArtist()
+
+      if (!data.result) {
+        throw new Error('Network response was not ok')
+      }
+      setTopArtist(data.result)
+    } catch (err) {
+      if (err instanceof Error) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching data:', err)
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+    fetchTopAlbum()
+    fetchTopArtist()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
-    <div>
-      <div className='Bg'>
-        <div className='TopArtist'>
-          <div className='Top'>
-            <div className='Left'>
-              <h3>Top Artist</h3>
+    <>
+      {gets && (
+        <>
+          <div>
+            <div className='Bg'>
+              <div className='TopArtist'>
+                <h2>Top Track</h2>
+                <MusicBarChart data={gets.top_track} />
+              </div>
+              <div className='TotalReviews'>
+                <DoughnutChart labels={labels} data={data} />
+              </div>
             </div>
-            <div className='Right'>
-              <div>View All</div>
-              <KeyboardArrowDown />
-            </div>
-          </div>
-          <div className='Top'>
-            <div className='Left'>
-              <div>Show</div>
-              <select>
-                <option value='home'>Home</option>
-                <option value='about'>About</option>
-                <option value='services'>Services</option>
-                <option value='contact'>Contact</option>
-              </select>
-              <div>entries</div>
-            </div>
-            <div className='Right'>
-              <div>Search </div>
-              <input></input>
-            </div>
-          </div>
-          <div className='TableContainer'>
-            <table>
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Artist Name</th>
-                  <th>Joining Date</th>
-                  <th>Total Songs</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>01</td>
-                  <td>
-                    Nguyen Van A
-                    <br />
-                    <td>nguyenvana@gmail.com</td>
-                  </td>
-                  <td>14/9/2024</td>
-                  <td>160</td>
-                </tr>
-                <tr>
-                  <td>02</td>
-                  <td>
-                    Nguyen Van A
-                    <br />
-                    <td>nguyenvana@gmail.com</td>
-                  </td>
-                  <td>14/9/2024</td>
-                  <td>160</td>
-                </tr>
-                <tr>
-                  <td>03</td>
-                  <td>
-                    Nguyen Van A
-                    <br />
-                    <td>nguyenvana@gmail.com</td>
-                  </td>
-                  <td>14/9/2024</td>
-                  <td>160</td>
-                </tr>
-                <tr>
-                  <td>04</td>
-                  <td>
-                    Nguyen Van A
-                    <br />
-                    <td>nguyenvana@gmail.com</td>
-                  </td>
-                  <td>14/9/2024</td>
-                  <td>160</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className='Top'>
-            <div className='Left'>Showing 1 to 3 of 3 entries</div>
-            <div className='Right'>
-              <div className='Pagination'>
-                <button>Previous</button>
-                <button>1</button>
-                <button>Next</button>
+            <div className='Bg'>
+              <div className='RecentUsers'>
+                <h2>Top Albums</h2>
+                <div className='TableContainer'>
+                  <table>
+                    <tbody>
+                      {topAlbum.map((album) => (
+                        <tr>
+                          <td>
+                            <img className='imgAvatar' src={album.image} />
+                          </td>
+                          <td>
+                            {album.name}
+                            <br />
+                            <p style={{ color: 'var(--main-color)' }}>
+                              {Array.isArray(album.owners) && album.owners.length > 0 ? album.owners.map((owner) => owner.name).join(', ') : 'Null'}
+                            </p>
+                          </td>
+                          <td>
+                            {album?.created_at ? new Date(album.created_at).toLocaleDateString() : 'N/A'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className='TotalReviews2'>
+                <h2>Top Artist</h2>
+                <div className='TableContainer'>
+                  <table>
+                    <tbody>
+                      {topArtist.map((artist) => (
+                        <tr>
+                          <td>
+                            <img
+                              className='imgAvatar'
+                              src={
+                                artist.avatar ? artist.avatar : 'https://res.cloudinary.com/dswj1rtvu/image/upload/v1727670619/no-image_vueuvs.avif'
+                              }
+                              alt='avatar'
+                            />
+                          </td>
+                          <td>
+                            {artist.name}
+                            <br />
+                            <p style={{ color: 'var(--main-color)' }}>{artist.email}</p>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className='TotalReviews'>
-          <h3>Total Reviews</h3>
-          <div className='content'>
-            <div className='CircularProgressBar'>
-              <CircularProgressBar></CircularProgressBar>
-            </div>
-            <div className='HorizontalBar' style={{ marginTop: '20px' }}>
-              <table>
-                <tbody>
-                  <tr>
-                    <td style={{ width: '18px', height: '18px' }}>
-                      <Song />
-                    </td>
-                    <td>
-                      <div className='Right'>5.674</div>
-                      <HorizontalBar />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Album />
-                    </td>
-                    <td>
-                      <div className='Right'>5.674</div>
-                      <HorizontalBar />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Playlist />
-                    </td>
-                    <td>
-                      <div className='Right'>5.674</div>
-                      <HorizontalBar />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='Bg'>
-        <div className='RecentUsers'>
-          <h3>Recent Users</h3>
-          <div className='TableContainer'>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <img src='src/assets/img/img1.jpg' />
-                  </td>
-                  <td>
-                    Nguyen Van A
-                    <br />
-                    <td>nguyenvana@gmail.com</td>
-                  </td>
-                  <td>
-                    <div style={{ color: '#1DB954' }}>12 hours ago</div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src='src/assets/img/img2.jpg' />
-                  </td>
-                  <td>
-                    Nguyen Van B
-                    <br />
-                    <td>nguyenvanb@gmail.com</td>
-                  </td>
-                  <td>
-                    <div style={{ color: '#1DB954' }}>14 hours ago</div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src='src/assets/img/img3.jpg' />
-                  </td>
-                  <td>
-                    Nguyen Van C
-                    <br />
-                    <td>nguyenvanc@gmail.com</td>
-                  </td>
-                  <td>
-                    <div style={{ color: '#1DB954' }}>16 hours ago</div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src='src/assets/img/img1.jpg' />
-                  </td>
-                  <td>
-                    Nguyen Van D
-                    <br />
-                    <td>nguyenvand@gmail.com</td>
-                  </td>
-                  <td>
-                    <div style={{ color: '#1DB954' }}>18 hours ago</div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className='TotalReviews2'>
-          <h3>Total Reviews</h3>
-          <div className='TableContainer'>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <img src='src/assets/img/img1.jpg' />
-                  </td>
-                  <td>
-                    This song captures my emotions and paints my world with its beautiful melody and heartfelt lyrics.
-                    <br />
-                    <div className='Top'>
-                      <div className='Left'>By Nguyen Van A</div>
-                      <div className='Right'>
-                        <div style={{ color: '#1DB954' }}>2 hours ago</div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src='src/assets/img/img2.jpg' />
-                  </td>
-                  <td>
-                    This song resonates deeply with my emotions, coloring my world with its enchanting melody and sincere lyrics.
-                    <br />
-                    <div className='Top'>
-                      <div className='Left'>By Nguyen Van B</div>
-                      <div className='Right'>
-                        <div style={{ color: '#1DB954' }}>3 hours ago</div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img src='src/assets/img/img3.jpg' />
-                  </td>
-                  <td>
-                    This song captures my emotions and paints my world with its beautiful melody and heartfelt lyrics.
-                    <br />
-                    <div className='Top'>
-                      <div className='Left'>By Nguyen Van C</div>
-                      <div className='Right'>
-                        <div style={{ color: '#1DB954' }}>4 hours ago</div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   )
 }
 
