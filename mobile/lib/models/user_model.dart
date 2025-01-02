@@ -40,7 +40,7 @@ class UserModel {
     favoriteGenres: List.from(json['genres']?.map(
       (genreJson) => GenreModel.fromJson(genreJson),
     ) ?? []),
-    isPremium: json['premium'] ?? false,
+    isPremium: bool.parse((json['premium'] ?? false).toString()),
   );
 
   Map<String, dynamic> toJson() => {
