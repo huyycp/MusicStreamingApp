@@ -75,11 +75,16 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
       _recommendedAlbums(),
       _bighitTracks(),
       _suggestedArtists(),
+      _topAlbumsAllTime(),
+      _topArtistAllTime(),
     ];
-    return ListView.separated(
-      itemCount: sections.length,
-      itemBuilder: (context, index) => sections[index],
-      separatorBuilder: (context, index) => const SizedBox(height: 40),
+    return RefreshIndicator(
+      onRefresh: () async => ref.read(homeViewModel).run(),
+      child: ListView.separated(
+        itemCount: sections.length,
+        itemBuilder: (context, index) => sections[index],
+        separatorBuilder: (context, index) => const SizedBox(height: 40),
+      ),
     );
   }
 
@@ -164,6 +169,30 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
       items: artists,
       itemWidget: itemWidget,
       placeHolder: const Text('No suggested artists today'),
+    );
+  }
+
+  Widget _topAlbumsAllTime() {
+    final albums = ref.watch(homeViewModel.select(
+      (value) => value.topAlbums
+    ));
+    return _baseSection(
+      title: 'Discover top albums of all time',
+      items: albums,
+      itemWidget: (album) => RecommendedAlbumWidget(album),
+      placeHolder: const Text('No top albums'),
+    );
+  }
+
+  Widget _topArtistAllTime() {
+    final artists = ref.watch(homeViewModel.select(
+      (value) => value.topArtists
+    ));
+    return _baseSection(
+      title: 'Hall of fame',
+      items: artists,
+      itemWidget: (artist) => SuggestedArtistWidget(artist),
+      placeHolder: const Text('No top artists'),
     );
   }
 }
